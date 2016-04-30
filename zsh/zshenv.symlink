@@ -1,0 +1,29 @@
+# use vim as the visual editor
+export VISUAL=vim
+export EDITOR=$VISUAL
+
+export DEV_DIR=$HOME/dev
+export POSTGRES_APP=/Applications/Postgres.app/Contents/Versions/9.4/bin
+export GOPATH=$DEV_DIR/go
+export PATH="$GOPATH/bin:$PATH"
+export PATH="$POSTGRES_APP:$PATH"
+export PATH="$PATH:/usr/local/opt/go/libexec/bin"
+
+# if rbenv is present, configure it for use
+if which rbenv &> /dev/null; then
+    # enable shims and auto-completion
+    eval "$(rbenv init -)"
+fi
+
+# if Virtualenv is install
+if which virtualenvwrapper.sh &> /dev/null; then
+  export VIRTUALENVWRAPPER_LOG_DIR=$DEV_DIR/.virtualenv
+  export VIRTUALENVWRAPPER_HOOK_DIR=$DEV_DIR/.virtualenv
+  export WORKON_HOME=$DEV_DIR
+  source /usr/local/bin/virtualenvwrapper.sh
+fi
+
+export PATH="/usr/local/heroku/bin:/usr/local/bin:$HOME/.rbenv/bin:$PATH"
+
+# Local config
+[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local

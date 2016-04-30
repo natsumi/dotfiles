@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# Disable XON flow control
+stty -ixon
+
+# Mac OS X uses path_helper to preload PATH, clear it out first
+if [ -x /usr/libexec/path_helper ]; then
+    PATH=''
+    eval `/usr/libexec/path_helper -s`
+fi
+
+#/usr/local should be before anything else
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+
+# Path to the bash it configuration
+export BASH_IT=$HOME/.bash_it
+
+# Lock and Load a custom theme file
+# location /.bash_it/themes/
+export BASH_IT_THEME='bobby'
+
+# Your place for hosting Git repos. I use this for private repos.
+export GIT_HOSTING=''
+
+# Set my editor and git editor
+export EDITOR="vim -f"
+export GIT_EDITOR='vim -f'
+
+# Set the path nginx
+export NGINX_PATH='/opt/nginx'
+
+# Don't check mail when opening terminal.
+unset MAILCHECK
+
+# Set go path
+export GOPATH=$HOME/dev/go
+export PATH="$GOPATH/bin:$PATH"
+export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
+export PATH="$PATH:/usr/local/opt/go/libexec/bin"
+
+# Load Bash It
+source $BASH_IT/bash_it.sh
+
+# if Virtualenv is install
+if which virtualenvwrapper.sh &> /dev/null; then
+  export VIRTUALENVWRAPPER_LOG_DIR=$HOME/dev/.virtualenv
+  export VIRTUALENVWRAPPER_HOOK_DIR=$HOME/dev/.virtualenv
+  export WORKON_HOME=$HOME/dev
+  source /usr/local/bin/virtualenvwrapper.sh
+fi
+
+# if rbenv is present, configure it for use
+if which rbenv &> /dev/null; then
+    # Put the rbenv entry at the front of the line
+    export PATH="$HOME/.rbenv/shims:$PATH"
+
+    # enable shims and auto-completion
+    eval "$(rbenv init -)"
+fi
+PATH="/usr/local/heroku/bin:$PATH"

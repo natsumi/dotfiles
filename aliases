@@ -1,0 +1,31 @@
+# Unix
+alias ls="gls --color"
+alias ll="ls -alh"
+alias ln="ln -v"
+alias mkdir="mkdir -p"
+alias e="$EDITOR"
+alias v="$VISUAL"
+
+# Tmux
+alias tma='tmux attach'
+alias tmn='tmux new'
+alias tml='tmux list-sessions'
+
+# Bundler
+alias b="bundle"
+
+# Rails
+alias frrc="foreman run rails console"
+alias frrs="foreman run rails s -b 0.0.0.0"
+alias frrr="foreman run rails runner"
+alias frbe="foreman run bundle exec"
+alias rc="rails c"
+alias rs="rails s"
+alias migrate="rake db:migrate db:rollback && rake db:migrate"
+alias s="rspec"
+
+# Pretty print the PATH env
+alias path='echo $PATH | tr -s ":" "\n"'
+
+# Include custom aliases
+[[ -f ~/.aliases.local ]] && source ~/.aliases.local
