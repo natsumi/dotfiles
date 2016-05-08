@@ -47,6 +47,7 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'mattreduce/vim-mix'
 Plug 'fholgado/minibufexpl.vim'
 " Misc
+Plug 'scrooloose/nerdtree'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'junegunn/vim-easy-align'
@@ -221,6 +222,7 @@ EOF
 """"""""""""""""""""""
 source ~/.vim/plugins/syntastic.vim
 source ~/.vim/plugins/airline.vim
+source ~/.vim/plugins/nerdtree.vim
 
 """""""""""""""""""""
 " Functions
