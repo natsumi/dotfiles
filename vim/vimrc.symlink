@@ -10,44 +10,51 @@ endif
 
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'rking/ag.vim'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-fugitive'
-Plug 'gregsexton/gitv'
-Plug 'sjl/gundo.vim'
-Plug 'nanotech/jellybeans.vim'
-Plug 'fholgado/minibufexpl.vim'
+" Theme Plugins
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'unblevable/quick-scope'
-Plug 'ervandew/supertab'
-Plug 'scrooloose/syntastic'
-Plug 'tomtom/tcomment_vim'
-Plug 'wincent/terminus'
-Plug 'tpope/vim-bundler'
+Plug 'morhetz/gruvbox'
+Plug 'nanotech/jellybeans.vim'
 Plug 'altercation/vim-colors-solarized'
-Plug 'junegunn/vim-easy-align'
-Plug 'tpope/vim-endwise'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'elzr/vim-json'
-Plug 'mxw/vim-jsx'
-Plug 'pbrisbin/vim-mkdir'
-Plug 'tpope/vim-rails'
+" Files
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'sjl/gundo.vim'
+Plug 'rking/ag.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'scrooloose/syntastic'
+" Git Plugins
+Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv'
+Plug 'airblade/vim-gitgutter'
+" Movement
 Plug 'tpope/vim-repeat'
-Plug 'vim-ruby/vim-ruby'
-Plug 'slim-template/vim-slim'
 Plug 'tpope/vim-surround'
 Plug 'wesQ3/vim-windowswap'
-Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'airblade/vim-gitgutter'
-Plug 'morhetz/gruvbox'
+" Javascript
+Plug 'jelera/vim-javascript-syntax'
+Plug 'mxw/vim-jsx'
+Plug 'elzr/vim-json'
+" Rails
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby'
+Plug 'slim-template/vim-slim'
+Plug 'tpope/vim-bundler'
 " Elixir Plugins
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'mattreduce/vim-mix'
+Plug 'fholgado/minibufexpl.vim'
+" Misc
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'pbrisbin/vim-mkdir'
+Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-endwise'
+Plug 'unblevable/quick-scope'
+Plug 'ervandew/supertab'
+Plug 'tomtom/tcomment_vim'
+Plug 'wincent/terminus'
 
 call plug#end()
 """""""""""""""
