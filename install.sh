@@ -66,10 +66,16 @@ pip install -r pip-requirements.txt
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Node Install
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | bash
-nvm install 5.4.0
-nvm use 5.4.0
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+nvm install 6.1.0
+nvm use 6.1.0
 npm install -g npm
+# automatic version switcher
 npm install -g avn avn-nvm avn-n
+# spacemacs javascript layer
 nvm alias default node
+npm install -g tern
+npm install -g js-beautify
+npm install -g jshint
+npm install -g eslint babel-eslint eslint-plugin-react
 
