@@ -74,8 +74,6 @@ npm install -g npm
 npm install -g avn avn-nvm avn-n
 # spacemacs javascript layer
 nvm alias default node
-npm install -g tern
-npm install -g js-beautify
-npm install -g jshint
+npm install -g tern js-beautify jshint
 npm install -g eslint babel-eslint eslint-plugin-react
 
