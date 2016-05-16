@@ -56,13 +56,11 @@ values."
      git
      github
      version-control
+
+     ;; Org Mode
      org
+
      ;; Tools
-     (wakatime :variables
-               wakatime-api-key  "your-api-key"
-               ;; use the actual wakatime path
-               wakatime-cli-path "/usr/local/bin/wakatime"
-            )
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
@@ -288,6 +286,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+
+  ;; Debug path warning
+  (setq exec-path-from-shell-debug t)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

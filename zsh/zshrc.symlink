@@ -44,7 +44,6 @@ fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fpath)
 autoload -U compinit
 compinit
 
-
 ##############
 # TERMINAL SETTINGS
 ###################
@@ -81,7 +80,3 @@ unalias gls #git log conflicts with dircolors gls
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-[[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh" # load avn
