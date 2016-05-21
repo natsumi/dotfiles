@@ -58,7 +58,12 @@ values."
      version-control
 
      ;; Org Mode
-     org
+     (org :variables
+          org-enable-github-support t
+          ;; default bullet-list is: ("◉" "○" "✸" "✿")
+          ;; to cahnge set this command
+          ;; (setq org-bullets-bullet-list '("■" "◆" "▲" "▶"))
+          )
 
      ;; Tools
      (shell :variables
@@ -289,6 +294,9 @@ you should place your code here."
 
   ;; Debug path warning
   (setq exec-path-from-shell-debug t)
+  ;; Show line numbers
+  (global-linum-mode t)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
