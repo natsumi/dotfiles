@@ -299,6 +299,8 @@ you should place your code here."
   ;; Show line numbers
   (global-linum-mode t)
 
+  ;; Filetypes
+  (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
