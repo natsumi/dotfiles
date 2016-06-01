@@ -14,7 +14,7 @@ values."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
-   ;; List of configuration layers to load. If it is the symbol `all' instead
+   ;; List of
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
@@ -296,6 +296,10 @@ you should place your code here."
   (setq exec-path-from-shell-debug t)
   ;; Show line numbers
   (global-linum-mode t)
+
+  ;; Programming
+  (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+
 
   )
 
