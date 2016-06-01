@@ -51,7 +51,6 @@ values."
      auto-completion
      syntax-checking
      restclient
-     gtags
 
      ;; Source Control
      git
@@ -59,7 +58,12 @@ values."
      version-control
 
      ;; Org Mode
-     org
+     (org :variables
+          org-enable-github-support t
+          ;; default bullet-list is: ("◉" "○" "✸" "✿")
+          ;; to cahnge set this command
+          ;; (setq org-bullets-bullet-list '("■" "◆" "▲" "▶"))
+          )
 
      ;; Tools
      (shell :variables
@@ -292,6 +296,8 @@ you should place your code here."
   (setq exec-path-from-shell-debug t)
   ;; Capital :W writes to file like :w
   (evil-ex-define-cmd "W" 'evil-write)
+  ;; Show line numbers
+  (global-linum-mode t)
 
   )
 
