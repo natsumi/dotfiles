@@ -300,6 +300,11 @@ you should place your code here."
   ;; Programming
   (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
 
+  ;; Misc
+  ;;;;;;;;
+  ;; Do not be prompted to follow symlinks
+  (setq vc-follow-symlinks t)
+
 
   )
 
