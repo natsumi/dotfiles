@@ -292,21 +292,42 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  ;; Debug path warning
-  (setq exec-path-from-shell-debug t)
-  ;; Capital :W writes to file like :w
-  (evil-ex-define-cmd "W" 'evil-write)
+  ;; Programming
+  ;;;;;;;;;;;
+  (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+
+  ;; Look and Feel
+  ;;;;;;;;
   ;; Show line numbers
   (global-linum-mode t)
-
-  ;; Programming
-  (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+  ;; Make linums relative by default
+  (with-eval-after-load 'linum
+    (linum-relative-toggle))
 
   ;; Misc
   ;;;;;;;;
   ;; Do not be prompted to follow symlinks
   (setq vc-follow-symlinks t)
+  ;; Debug path warning
+  (setq exec-path-from-shell-debug t)
+  ;; Capital :W writes to file like :w
+  (evil-ex-define-cmd "W" 'evil-write)
+
+  ;; Org Mode
+  ;;;;;;;;;;;
+  (setq org-todo-keywords
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED"))
+        )
+  (setq org-agenda-files '("~/Dropbox/org/tasks"))
+  ; add a blank line before new heading or plain text list
+  (setq org-blank-before-new-entry (quote ((heading) (plain-list-item))))
+  ; force child tasks to be marked complete before parent task
+  (setq org-enforce-todo-dependencies t)
+  ; log timestamp when task is marked done
+  (setq org-log-done (quote time))
+
   )
+
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
