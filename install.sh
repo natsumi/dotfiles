@@ -67,8 +67,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Node Install
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
-nvm install 6.1.0
-nvm use 6.1.0
+nvm install 6.2.2
+nvm use 6.2.2
 npm install -g npm
 # automatic version switcher
 npm install -g avn avn-nvm avn-n
