@@ -40,6 +40,7 @@ brew 'wget'
 brew 'zsh'
 brew 'caskroom/cask/brew-cask'
 brew 'nviennot/tmate/tmate'
+brew 'global'
 brew 'universal-ctags/universal-ctags/universal-ctags', args: ['HEAD']
 brew 'ffmpeg'
 brew 'youtube-dl'
