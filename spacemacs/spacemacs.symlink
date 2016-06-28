@@ -51,6 +51,7 @@ values."
      auto-completion
      syntax-checking
      restclient
+     gtags
 
      ;; Source Control
      git

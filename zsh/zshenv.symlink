@@ -9,6 +9,10 @@ export PATH="$GOPATH/bin:$PATH"
 export PATH="$POSTGRES_APP:$PATH"
 export PATH="$PATH:/usr/local/opt/go/libexec/bin"
 
+# setup gtags to use a ctag backend
+export GTAGSCONF=$HOME/gtags.conf
+export GTAGSLABEL=ctags
+
 # if rbenv is present, configure it for use
 if which rbenv &> /dev/null; then
     # enable shims and auto-completion
