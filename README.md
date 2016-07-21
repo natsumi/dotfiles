@@ -3,6 +3,10 @@ Change Hostname:
 
   sudo scutil --set HostName
 
+Set OSX Save dialog to always be expanded
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+
 ### Vim-Plug
 
   After vim is installed run :PlugInstall
