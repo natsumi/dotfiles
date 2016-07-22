@@ -77,3 +77,5 @@ nvm alias default node
 npm install -g tern js-beautify jshint
 npm install -g eslint babel-eslint eslint-plugin-react
 npm install -g eslint-config-airbnb eslint-plugin-import eslint-plugin-jsx-a11y
+# Install offical react project generator
+npm install -g create-react-app
