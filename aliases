@@ -13,6 +13,7 @@ alias tml='tmux list-sessions'
 
 # Bundler
 alias b="bundle"
+alias be="bundle exec"
 
 # Rails
 alias frrc="foreman run rails console"
