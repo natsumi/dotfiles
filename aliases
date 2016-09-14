@@ -6,6 +6,10 @@ alias mkdir="mkdir -p"
 alias e="$EDITOR"
 alias v="$VISUAL"
 
+# Emacs
+alias e="emacsclient -t -a ''"
+alias ec="emacsclient -c -n -a ''"
+
 # Tmux
 alias tma='tmux attach'
 alias tmn='tmux new'
