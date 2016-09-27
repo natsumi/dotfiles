@@ -13,6 +13,9 @@ export PATH="$PATH:/usr/local/opt/go/libexec/bin"
 export GTAGSCONF=$HOME/gtags.conf
 export GTAGSLABEL=ctags
 
+# Tmux 2.2 fix for OSX Sierra
+export EVENT_NOKQUEUE=1
+
 # if rbenv is present, configure it for use
 if which rbenv &> /dev/null; then
     # enable shims and auto-completion
