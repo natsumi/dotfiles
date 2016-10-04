@@ -39,6 +39,8 @@ Windows Layout on [keyboard-layout-editor.com](http://www.keyboard-layout-editor
   * L_Option: `L_WIN` then: `L_Alt` then: `PN`
   * R_CMD: `R_Alt` then: `R_FN` (Win) then: `PN`
   * R_Option: `R_FN` (Win) then: `R_Alt` then: `PN`
+* Right Shift is Left Shift for ~
+  * `R_Shift` then: `L_Shift` then: `PN`
 * `FN + R_Ctrl` to exit programming
 
 Resulting programming:
