@@ -168,7 +168,7 @@ nmap ga <Plug>(EasyAlign)
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 " Index ctags from any project, including those outside Rails
-map <Leader>ct :!ctags -R .<CR>
+map <Leader>ct :!ctags -R --exclude=*.min.js .<CR>
 """""""""""""""""""
 "Misc Options
 """""""""""""""""""
