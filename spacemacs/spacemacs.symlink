@@ -26,7 +26,6 @@ values."
      ;; Look and feel
      (colors :variables colors-enable-nyan-cat-progress-bar t)
      themes-megapack
-     eyebrowse
      ;; better-defaults
 
      ;; Programming Languages
@@ -296,6 +295,8 @@ you should place your code here."
   ;; Programming
   ;;;;;;;;;;;
   (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+  (setq-default js2-basic-offset 4
+                js-indent-level 4)
 
   ;; Look and Feel
   ;;;;;;;;
@@ -304,6 +305,7 @@ you should place your code here."
   ;; Make linums relative by default
   (with-eval-after-load 'linum
     (linum-relative-toggle))
+
 
   ;; Misc
   ;;;;;;;;
@@ -332,3 +334,17 @@ you should place your code here."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (zenburn-theme yaml-mode xterm-color ws-butler window-numbering which-key web-mode volatile-highlights use-package ujelly-theme twilight-anti-bright-theme toc-org tao-theme tango-plus-theme tagedit spotify spaceline powerline shell-pop seti-theme sass-mode ruby-test-mode rubocop rspec-mode robe restclient restart-emacs pyvenv pytest projectile-rails rake inflections planet-theme pip-requirements persp-mode paradox orgit org organic-green-theme org-pomodoro alert org-plus-contrib open-junk-file omtose-phellack-theme noctilux-theme neotree naquadah-theme multi-term move-text monokai-theme moe-theme minimal-theme material-theme markdown-toc markdown-mode majapahit-theme magit-gitflow magit-gh-pulls macrostep less-css-mode json-mode js2-refactor multiple-cursors js-doc jazz-theme info+ indent-guide hydra hl-todo highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-spotify helm-pydoc helm-projectile helm-make helm-gtags helm-descbinds helm-company helm-c-yasnippet helm-ag gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate github-clone gitconfig-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter ggtags flatui-theme feature-mode farmhouse-theme eyebrowse expand-region exec-path-from-shell evil-surround evil-search-highlight-persist evil-nerd-commenter evil-mc evil-matchit evil-magit evil-iedit-state iedit evil-exchange evil-escape eshell-prompt-extras enh-ruby-mode engine-mode emmet-mode editorconfig dracula-theme diff-hl darktooth-theme cyberpunk-theme company-tern dash-functional tern company-anaconda color-theme-sanityinc-tomorrow coffee-mode bundler inf-ruby badwolf-theme auto-yasnippet yasnippet auto-compile packed apropospriate-theme anti-zenburn-theme anaconda-mode ample-theme alect-themes alchemist aggressive-indent ace-window ace-link ace-jump-helm-line auto-complete company highlight anzu smartparens bind-map evil undo-tree elixir-mode flycheck gh marshal ht magit request helm helm-core popup avy pcache projectile f s js2-mode spacemacs-theme zonokai-theme zen-and-art-theme yapfify web-beautify vimrc-mode vi-tilde-fringe uuidgen underwater-theme twilight-theme twilight-bright-theme tronesque-theme toxi-theme tangotango-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stekene-theme sql-indent spinner spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode scss-mode rvm ruby-tools reverse-theme rbenv rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme quelpa pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin pkg-info phoenix-dark-pink-theme phoenix-dark-mono-theme pcre2el pastels-on-dark-theme parent-mode ox-gfm org-projectile org-present org-download org-bullets oldlace-theme occidental-theme obsidian-theme ob-http ob-elixir niflheim-theme mustang-theme multi monochrome-theme molokai-theme mmm-mode minitest magit-popup lush-theme lorem-ipsum logito log4e livid-mode live-py-mode linum-relative link-hint light-soap-theme let-alist json-snatcher json-reformat jbeans-theme ir-black-theme inkpot-theme ido-vertical-mode hy-mode hungry-delete htmlize highlight-parentheses hide-comnt heroku-theme hemisu-theme helm-mode-manager helm-gitignore helm-flx helm-css-scss hc-zenburn-theme haml-mode goto-chg golden-ratio gnuplot gntp github-search github-browse-file gitattributes-mode git-gutter-fringe+ gist gh-md gandalf-theme flycheck-pos-tip flycheck-mix flx-ido flatland-theme firebelly-theme fill-column-indicator fancy-battery evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-numbers evil-lisp-state evil-indent-plus evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z esh-help elisp-slime-nav dumb-jump django-theme diminish define-word darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode company-web company-statistics column-enforce-mode colorsarenice-theme color-theme-sanityinc-solarized color-identifiers-mode clues-theme clean-aindent-mode chruby cherry-blossom-theme busybee-theme bubbleberry-theme bracketed-paste birds-of-paradise-plus-theme bind-key auto-highlight-symbol ample-zen-theme afternoon-theme adaptive-wrap ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:background nil)))))
