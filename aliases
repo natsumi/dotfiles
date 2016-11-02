@@ -32,5 +32,8 @@ alias s="rspec"
 # Pretty print the PATH env
 alias path='echo $PATH | tr -s ":" "\n"'
 
+# Remove lt alias so localtunnel works
+unalias lt
+
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
