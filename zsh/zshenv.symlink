@@ -7,6 +7,7 @@ export POSTGRES_APP=/Applications/Postgres.app/Contents/Versions/9.4/bin
 export GOPATH=$DEV_DIR/go
 export PATH="$GOPATH/bin:$PATH"
 export PATH="$POSTGRES_APP:$PATH"
+export PATH="$HOME/.yarn/bin:$PATH"
 export PATH="$PATH:/usr/local/opt/go/libexec/bin"
 
 # setup gtags to use a ctag backend
