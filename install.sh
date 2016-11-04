@@ -9,7 +9,7 @@ mkdir -p ~/.vim/autoload
 mkdir -p ~/.config/nvim/autoload
 mkdir -p ~/.tmux/plugins
 mkdir -p ~/dev/.virtualenv
-mkdir -p ~/dev/.spacemacs
+mkdir -p ~/.spacemacs.d
 
 # Create Symlinks
 ln -s $PWD/zsh/zshrc.symlink ~/.zshrc
