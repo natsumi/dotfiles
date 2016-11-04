@@ -9,6 +9,7 @@ mkdir -p ~/.vim/autoload
 mkdir -p ~/.config/nvim/autoload
 mkdir -p ~/.tmux/plugins
 mkdir -p ~/dev/.virtualenv
+mkdir -p ~/dev/.spacemacs
 
 # Create Symlinks
 ln -s $PWD/zsh/zshrc.symlink ~/.zshrc
@@ -16,7 +17,7 @@ ln -s $PWD/zsh/zshenv.symlink ~/.zshenv
 ln -s $PWD/zsh/zpreztorc.symlink ~/.zpreztorc
 ln -s $PWD/zsh/zprofile.symlink ~/.zprofile
 ln -s $PWD/zsh/dircolors.symlink ~/.dircolors
-ln -s $PWD/aliases ~/.aliases
+ln -s $PWD/zsh/aliases.symlink ~/.aliases
 
 ln -s $PWD/vim/bundle ~/.vim/
 ln -s $PWD/vim/snippets ~/.vim/
@@ -25,13 +26,15 @@ ln -s $PWD/vim/plugins ~/.vim/plugins
 ln -s $PWD/vim/vimrc.symlink ~/.vimrc
 ln -s $PWD/vim/ignore.vim.symlink ~/.vim/ignore.vim
 ln -s $PWD/vim/vimrc.symlink ~/.config/nvim/init.vim
-ln -s $PWD/spacemacs/spacemacs.symlink ~/.spacemacs
+# ln -s $PWD/spacemacs/spacemacs.symlink ~/.spacemacs
+ln -s $PWD/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
 
 ln -s $PWD/rails/.gemrc ~/
 ln -s $PWD/rails/.pryrc ~/
 
 ln -s $PWD/eslint/eslintrc.symlink ~/.eslintrc
 ln -s $PWD/ctags.symlink ~/.ctags
+ln -s $PWD/ctags.symlink ~/.gtags
 
 ln -s $PWD/elixir/iex.exs.symlink ~/.iex.exs
 
