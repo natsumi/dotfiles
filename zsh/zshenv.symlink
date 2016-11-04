@@ -11,7 +11,7 @@ export PATH="$HOME/.yarn/bin:$PATH"
 export PATH="$PATH:/usr/local/opt/go/libexec/bin"
 
 # setup gtags to use a ctag backend
-export GTAGSCONF=$HOME/gtags.conf
+export GTAGSCONF=$HOME/.gtags
 export GTAGSLABEL=ctags
 
 # Tmux 2.2 fix for OSX Sierra
