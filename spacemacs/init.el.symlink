@@ -369,6 +369,17 @@ you should place your code here."
 
   ;; Look and Feel
   ;;;;;;;;
+  ;; initial window
+  (setq initial-frame-alist
+        '((width . 100) ; character
+          (height . 50) ; lines
+          ))
+
+  ;; default/sebsequent window
+  (setq default-frame-alist
+        '((width . 100) ; character
+          (height . 50) ; lines
+          ))
 
   ;; Misc
   ;;;;;;;;
