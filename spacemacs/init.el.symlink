@@ -89,7 +89,8 @@ values."
      ;; Programming Tools
      auto-completion
      gtags
-     syntax-checking
+     (syntax-checking :variables
+                      syntax-checking-use-original-bitmaps t)
 
      ;; Source Control
      git
@@ -193,7 +194,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro for Powerline"
+   ;; dotspacemacs-default-font '("Source Code Pro for Powerline"
+   dotspacemacs-default-font '("Anonymous Pro for Powerline"
                                :size 15
                                :weight normal
                                :width normal
@@ -381,14 +383,22 @@ you should place your code here."
           (height . 50) ; lines
           ))
 
-  ;; Misc
+  ;; Powerline options
+  ;; https://github.com/syl20bnr/spacemacs/blob/develop/doc/DOCUMENTATION.org#powerline-separators
+  ;; this is fixes the weird seperator color in OSX
+  (setq powerline-default-separator 'utf-8)
+  (spaceline-compile)
+
+  ;;  Spacemacs configuration
   ;;;;;;;;
   ;; Do not be prompted to follow symlinks
   (setq vc-follow-symlinks t)
   ;; Debug path warning
-  (setq exec-path-from-shell-debug t)
+  ;; (setq exec-path-from-shell-debug f)
   ;; Capital :W writes to file like :w
   (evil-ex-define-cmd "W" 'evil-write)
+  ;; Suppress PATH warning on startup
+  ;; (setq exec-path-from-shell-check-startup-files nil)
 
   ;; Org Mode
   ;;;;;;;;;;;
