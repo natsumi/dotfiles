@@ -66,6 +66,22 @@ bindkey "^Y" accept-and-hold
 bindkey "^N" insert-last-word
 bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 
+##############
+# ZPLUG SETTING
+###################
+zplug "lukechilds/zsh-nvm"
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
 # Configure online help
 unalias run-help
 autoload run-help
@@ -77,9 +93,6 @@ unalias gls #git log conflicts with dircolors gls
 # Load other program settings
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
-
-# Load ZPlugins
-zplug "lukechilds/zsh-nvm"
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
