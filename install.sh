@@ -69,12 +69,9 @@ pip install -r pip-requirements.txt
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Node Install
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
-nvm install 6.2.2
-nvm use 6.2.2
+nvm install 6.9.1
+nvm use 6.9.1
 npm install -g npm
-# automatic version switcher
-npm install -g avn avn-nvm avn-n
 # spacemacs javascript layer
 nvm alias default node
 npm install -g tern js-beautify

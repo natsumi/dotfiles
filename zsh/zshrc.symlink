@@ -78,5 +78,8 @@ unalias gls #git log conflicts with dircolors gls
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
+# Load ZPlugins
+zplug "lukechilds/zsh-nvm"
+
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
