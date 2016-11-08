@@ -369,6 +369,9 @@ you should place your code here."
   (setq-default js2-basic-offset 4
                 js-indent-level 4)
 
+  ;; Set this to your projects directory
+  (setq magit-repository-directories '($DEV_DIR))
+
   ;; Look and Feel
   ;;;;;;;;
   ;; initial window
