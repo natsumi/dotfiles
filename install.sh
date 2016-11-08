@@ -72,10 +72,13 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 nvm install 6.9.1
 nvm use 6.9.1
 npm install -g npm
-# spacemacs javascript layer
 nvm alias default node
+
+# Javascript linters
 npm install -g tern js-beautify
-npm install -g eslint babel-eslint eslint-plugin-react
-npm install -g eslint-config-airbnb eslint-plugin-import eslint-plugin-jsx-a11y
+npm install -g eslint babel-eslint
+export PKG=eslint-config-airbnb;
+npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install --save-dev "$PKG@latest"
+
 # Install offical react project generator
 npm install -g create-react-app
