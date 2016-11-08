@@ -1,6 +1,8 @@
 tap 'caskroom/cask'
 tap 'homebrew/bundle'
 tap 'universal-ctags/universal-ctags'
+tap d12frosted/emacs-plus
+
 brew 'autoconf'
 brew 'xz'
 brew 'automake'
@@ -34,6 +36,7 @@ brew 'scmpuff'
 brew 'the_silver_searcher'
 brew 'tmux'
 brew 'vim'
+brew 'emacs-plus'
 brew 'neovim/neovim/neovim'
 brew 'wget'
 brew 'zsh'
