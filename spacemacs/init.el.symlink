@@ -194,12 +194,18 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
+
+
+   ;; Favorite fonts
    ;; dotspacemacs-default-font '("Source Code Pro for Powerline"
-   dotspacemacs-default-font '("Anonymous Pro for Powerline"
+   ;; dotspacemacs-default-font '("Anonymous Pro for Powerline"
+   ;; dotspacemacs-default-font '("Pragmata Pro Mono"
+   ;; dotspacemacs-default-font '("Operator Mono"
+   dotspacemacs-default-font '("Pragmata Pro"
                                :size 15
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.4)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -418,6 +424,11 @@ you should place your code here."
   (setq org-enforce-todo-dependencies t)
   ; log timestamp when task is marked done
   (setq org-log-done (quote time))
+
+  ;; Prag Pro
+  ;; this symbol file is only for pragmata .824
+  ;; (load-file "~/dev/dotfiles/spacemacs/pragmatapro-font-lock-symbols.el")
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
