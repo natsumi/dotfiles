@@ -1,0 +1,107 @@
+* OS X Options
+** Hostname
+Change Hostname:
+
+  sudo scutil --set HostName
+** File Dialogs
+
+Set OSX Save dialog to always be expanded
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+
+** Mouse
+Set mouse to a faster track speed
+Uncheck "Scroll direction: Natural"
+
+** Keyboard
+Set repeat speed fast
+Set repeat delay low
+
+* Software
+** Xcode
+** Homebrew
+   Install from: http://brew.sh/
+** Git
+brew install git
+git config --global user.name <user_name>
+git config --global user.email <email>
+git config --global push.default simple
+** Github
+Generate ssh key
+ssh-keygen
+cat ~/.ssh/id_rsa.pub | pbcopy
+Paste into github's ssh setting
+
+** Dotfile Setup
+export DEV_DIR=~/dev/dotfiles
+git clone https://github.com/natsumi/dotfiles $DEV_DIR
+** ZSH Setup
+*** Set Default Shell
+echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+chsh -s $(which zsh)
+*** Setup Prezto
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+*** Setup Symlinks
+export DEV_DIR=~/dev/dotfiles
+ln -s $DEV_DIR/zsh/zshrc.symlink ~/.zshrc
+ln -s $DEV_DIR/zsh/zshenv.symlink ~/.zshenv
+ln -s $DEV_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
+ln -s $DEV_DIR/zsh/zprofile.symlink ~/.zprofile
+ln -s $DEV_DIR/zsh/dircolors.symlink ~/.dircolors
+ln -s $DEV_DIR/zsh/aliases.symlink ~/.aliases
+*** Custom configurations
+edit ~/.zshenv and set your own DEV_DIR and other vars
+*** Restart your terminal
+** Ruby
+*** Rbenv
+brew install ruby-build rbenv
+rbenv install -l # find which is the latest ruby version
+rbenv install 2.3.0
+rbenv local 2.3.0
+rbenv global 2.3.0
+gem install bundle
+rbenv rehash
+*** Symlink
+ln -s $DEV_DIR/rails/pryrc.symlink ~/.pryrc
+
+*** Restart your terminal here
+
+
+
+
+### Vim-Plug
+
+  After vim is installed run :PlugInstall
+
+### Git Config
+
+    git config --global user.name <user_name>
+    git config --global user.email <email>
+    git config --global push.default simple
+
+### Synastic Setup
+
+    npm install -g jshint && \
+    npm install -g jsonlint
+    npm install -g eslint && \
+    npm install -g babel-eslint && \
+    npm install -g eslint-plugin-react &&\
+    npm install -g eslint-config-airbnb
+
+### Poewrline Fonts
+[Poerline Fonts](https://github.com/powerline/fonts)
+
+### Notes
+====
+  1. Make sure you edit the vimrc file and update the powerline paths
+** Brew Bundle
+   brew bundle
+** Vim
+*** Symlinks
+ln -s $PWD/vim/bundle ~/.vim/
+ln -s $PWD/vim/snippets ~/.vim/
+ln -s $PWD/vim/functions ~/.vim/functions
+ln -s $PWD/vim/plugins ~/.vim/plugins
+ln -s $PWD/vim/vimrc.symlink ~/.vimrc
+ln -s $PWD/vim/ignore.vim.symlink ~/.vim/ignore.vim
+ln -s $PWD/vim/vimrc.symlink ~/.config/nvim/init.vim
