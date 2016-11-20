@@ -1,29 +1,9 @@
 mkdir -p ~/.config/nvim/autoload
-mkdir -p ~/.tmux/plugins
 mkdir -p ~/dev/.virtualenv
-
-ln -s $PWD/rails/pryrc.symlink ~/.pryrc
 
 ln -s $PWD/eslint/eslintrc.symlink ~/.eslintrc
 ln -s $PWD/ctags.symlink ~/.ctags
 ln -s $PWD/ctags.symlink ~/.gtags
-
-ln -s $PWD/elixir/iex.exs.symlink ~/.iex.exs
-
-ln -s $PWD/tmux/.tmux.conf ~/
-ln -s $PWD/tmux/plugins/tpm ~/.tmux/plugins/tpm
-
-
-ln -s $PWD/git/gitconfig.symlink ~/.gitconfig
-ln -s $PWD/git/gitignore_global.symlink ~/.gitignore_global
-ln -s $PWD/tigrc.symlink ~/.tigrc
-
-ln -s $PWD/thymerc.symlink ~/.thymerc
-
-pip install -r pip-requirements.txt
-
-# TMux TPM
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Node Install
 nvm install 6.9.1
