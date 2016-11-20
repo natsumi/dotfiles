@@ -30,7 +30,7 @@ ln -s $PWD/vim/vimrc.symlink ~/.config/nvim/init.vim
 ln -s $PWD/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
 
 ln -s $PWD/rails/.gemrc ~/
-ln -s $PWD/rails/.pryrc ~/
+ln -s $PWD/rails/pryrc.symlink ~/.pryrc
 
 ln -s $PWD/eslint/eslintrc.symlink ~/.eslintrc
 ln -s $PWD/ctags.symlink ~/.ctags
