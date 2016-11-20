@@ -1,8 +1,6 @@
 mkdir -p ~/.config/nvim/autoload
-mkdir -p ~/dev/.virtualenv
 
 ln -s $PWD/eslint/eslintrc.symlink ~/.eslintrc
-ln -s $PWD/ctags.symlink ~/.ctags
 ln -s $PWD/ctags.symlink ~/.gtags
 
 # Node Install

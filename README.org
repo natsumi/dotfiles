@@ -97,6 +97,7 @@ ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
 ** Brew Bundle
    brew bundle
 ** Python
+mkdir -p $DOTFILE_DIR/.virtualenv
 brew install python
 pip install easy_setup
 pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
@@ -111,6 +112,7 @@ ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
 ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
 ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
 ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
+ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
 *** Plugin Installs
 Run vim
 :PlugInstall
