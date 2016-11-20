@@ -33,8 +33,8 @@ cat ~/.ssh/id_rsa.pub | pbcopy
 Paste into github's ssh setting
 
 ** Dotfile Setup
-export DEV_DIR=~/dev/dotfiles
-git clone https://github.com/natsumi/dotfiles $DEV_DIR
+export DOTFILE_DIR=~/dev/dotfiles
+git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
 ** ZSH Setup
 *** Set Default Shell
 echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
@@ -42,15 +42,15 @@ chsh -s $(which zsh)
 *** Setup Prezto
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 *** Setup Symlinks
-export DEV_DIR=~/dev/dotfiles
-ln -s $DEV_DIR/zsh/zshrc.symlink ~/.zshrc
-ln -s $DEV_DIR/zsh/zshenv.symlink ~/.zshenv
-ln -s $DEV_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
-ln -s $DEV_DIR/zsh/zprofile.symlink ~/.zprofile
-ln -s $DEV_DIR/zsh/dircolors.symlink ~/.dircolors
-ln -s $DEV_DIR/zsh/aliases.symlink ~/.aliases
+export DOTFILE_DIR=~/dev/dotfiles
+ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
+ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
+ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
+ln -s $DOTFILE_DIR/zsh/zprofile.symlink ~/.zprofile
+ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
+ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
 *** Custom configurations
-edit ~/.zshenv and set your own DEV_DIR and other vars
+edit ~/.zshenv and set your own DEV_DIR and DOTFILE_DIR
 *** Restart your terminal
 ** Ruby
 *** Rbenv
@@ -62,7 +62,7 @@ rbenv global 2.3.0
 gem install bundle
 rbenv rehash
 *** Symlink
-ln -s $DEV_DIR/rails/pryrc.symlink ~/.pryrc
+ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
 
 *** Restart your terminal here
 
@@ -97,11 +97,25 @@ ln -s $DEV_DIR/rails/pryrc.symlink ~/.pryrc
 ** Brew Bundle
    brew bundle
 ** Vim
+*** Prerequiste
+mkdir -p ~/.vim/autoload
 *** Symlinks
-ln -s $PWD/vim/bundle ~/.vim/
-ln -s $PWD/vim/snippets ~/.vim/
-ln -s $PWD/vim/functions ~/.vim/functions
-ln -s $PWD/vim/plugins ~/.vim/plugins
-ln -s $PWD/vim/vimrc.symlink ~/.vimrc
-ln -s $PWD/vim/ignore.vim.symlink ~/.vim/ignore.vim
-ln -s $PWD/vim/vimrc.symlink ~/.config/nvim/init.vim
+ln -s $DOTFILE_DIR/vim/snippets ~/.vim/
+ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
+ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
+ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
+ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
+*** Plugin Installs
+Run vim
+:PlugInstall
+** SpaceMacs
+mkdir -p ~/.spacemacs.d
+git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+** Tmux
+mkdir -p ~/.tmux/plugins
+ln -s $DOTFILE_DIR/tmux/tmux.conf.symlink ~/.tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+*** Install Plugins
+run tmux
+ctrl-s shift-i
