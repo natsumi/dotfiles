@@ -96,6 +96,12 @@ ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
   1. Make sure you edit the vimrc file and update the powerline paths
 ** Brew Bundle
    brew bundle
+** Python
+brew install python
+pip install easy_setup
+pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
+** Elixir
+ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
 ** Vim
 *** Prerequiste
 mkdir -p ~/.vim/autoload
@@ -119,3 +125,5 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 *** Install Plugins
 run tmux
 ctrl-s shift-i
+** Tig
+ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
