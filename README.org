@@ -1,0 +1,131 @@
+* OS X Options
+** Hostname
+Change Hostname:
+
+  sudo scutil --set HostName
+** File Dialogs
+
+Set OSX Save dialog to always be expanded
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+
+** Mouse
+Set mouse to a faster track speed
+Uncheck "Scroll direction: Natural"
+
+** Keyboard
+Set repeat speed fast
+Set repeat delay low
+
+* Software
+** Xcode
+** Homebrew
+   Install from: http://brew.sh/
+** Git
+brew install git
+git config --global user.name <user_name>
+git config --global user.email <email>
+git config --global push.default simple
+** Github
+Generate ssh key
+ssh-keygen
+cat ~/.ssh/id_rsa.pub | pbcopy
+Paste into github's ssh setting
+
+** Dotfile Setup
+export DOTFILE_DIR=~/dev/dotfiles
+git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
+** ZSH Setup
+*** Set Default Shell
+echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+chsh -s $(which zsh)
+*** Setup Prezto
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+*** Setup Symlinks
+export DOTFILE_DIR=~/dev/dotfiles
+ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
+ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
+ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
+ln -s $DOTFILE_DIR/zsh/zprofile.symlink ~/.zprofile
+ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
+ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
+*** Custom configurations
+edit ~/.zshenv and set your own DEV_DIR and DOTFILE_DIR
+*** Restart your terminal
+** Ruby
+*** Rbenv
+brew install ruby-build rbenv
+rbenv install -l # find which is the latest ruby version
+rbenv install 2.3.0
+rbenv local 2.3.0
+rbenv global 2.3.0
+gem install bundle
+rbenv rehash
+*** Symlink
+ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
+
+*** Restart your terminal here
+
+
+
+
+### Vim-Plug
+
+  After vim is installed run :PlugInstall
+
+### Git Config
+
+    git config --global user.name <user_name>
+    git config --global user.email <email>
+    git config --global push.default simple
+
+### Synastic Setup
+
+    npm install -g jshint && \
+    npm install -g jsonlint
+    npm install -g eslint && \
+    npm install -g babel-eslint && \
+    npm install -g eslint-plugin-react &&\
+    npm install -g eslint-config-airbnb
+
+### Poewrline Fonts
+[Poerline Fonts](https://github.com/powerline/fonts)
+
+### Notes
+====
+  1. Make sure you edit the vimrc file and update the powerline paths
+** Brew Bundle
+   brew bundle
+** Python
+mkdir -p $DOTFILE_DIR/.virtualenv
+brew install python
+pip install easy_setup
+pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
+** Elixir
+ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
+** Vim
+*** Prerequiste
+mkdir -p ~/.vim/autoload
+*** Symlinks
+ln -s $DOTFILE_DIR/vim/snippets ~/.vim/
+ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
+ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
+ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
+ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
+ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
+*** Plugin Installs
+Run vim
+:PlugInstall
+** SpaceMacs
+mkdir -p ~/.spacemacs.d
+git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+** Tmux
+mkdir -p ~/.tmux/plugins
+ln -s $DOTFILE_DIR/tmux/tmux.conf.symlink ~/.tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+*** Install Plugins
+run tmux
+ctrl-s shift-i
+** Tig
+ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc

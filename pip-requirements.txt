@@ -1,5 +1,0 @@
-virtualenv
-virtualenvwrapper
-powerline
-flake8
-pygments

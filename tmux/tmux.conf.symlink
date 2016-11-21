@@ -20,11 +20,6 @@ set-option -g status-position top
 # enable vim focus events
 set -g focus-events on
 
-# set mouse options
-# set-option -g mouse-select-pane on
-# set -g mouse-resize-pane on
-# set-option -g mouse-select-window on
-# set-window-option -g mode-mouse on
 set-option -g mouse on
 bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
 bind -n WheelDownPane select-pane -t= \; send-keys -M
@@ -91,10 +86,6 @@ bind C-n next-window
 # tm_spotify="#[fg=$tm_color_music]#(osascript $DEV_DIR/dotfiles/applescripts/spotify.scpt)"
 # tm_itunes="#[fg=$tm_color_music]#(osascript $DEV_DIR/dotfiles/applescripts/itunes.scpt)"
 # set -g status-right $tm_itunes' '$tm_spotify
-#
-# Thyme integration
-set-option -g status-right '#(cat ~/.thyme-tmux)'
-set-option -g status-interval 1
 
 # Local config
 if-shell "[ -f ~/.tmux.conf.local ]" 'source ~/.tmux.conf.local'

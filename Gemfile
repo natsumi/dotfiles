@@ -6,4 +6,3 @@ gem 'scss_lint'
 gem 'haml-lint'
 
 gem 'mdless'
-gem 'thyme'

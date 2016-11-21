@@ -26,9 +26,6 @@ defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
     npm install -g eslint-plugin-react &&\
     npm install -g eslint-config-airbnb
 
-### Postgres.app
-[Postgres.App Homepage](http://postgresapp.com/)
-
 ### Poewrline Fonts
 [Poerline Fonts](https://github.com/powerline/fonts)
 

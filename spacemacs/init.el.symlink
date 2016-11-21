@@ -75,6 +75,7 @@ values."
      javascript
      markdown
      nginx
+     php
      python
      (ruby :variables
            ruby-enable-enh-ruby-mode t
