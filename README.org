@@ -76,6 +76,24 @@ pip install easy_setup
 pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
 ** Elixir
 ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
+** Node
+*** Node Version Manager
+    nvm ls-remote # lists available versions to install
+    nvm install v6.9.1
+    nvm use v6.9.1
+    npm install -g npm
+    nvm alias default node
+
+*** React Generator
+    npm install -g create-react-app
+
+*** Linters
+    npm install -g tern js-beautify
+    npm install -g eslint babel-eslint
+    export PKG=eslint-config-airbnb;
+    npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
+
+    ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
 ** Vim
 *** Prerequiste
 mkdir -p ~/.vim/autoload
