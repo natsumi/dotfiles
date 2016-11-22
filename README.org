@@ -65,35 +65,8 @@ rbenv rehash
 ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
 
 *** Restart your terminal here
-
-
-
-
-### Vim-Plug
-
-  After vim is installed run :PlugInstall
-
-### Git Config
-
-    git config --global user.name <user_name>
-    git config --global user.email <email>
-    git config --global push.default simple
-
-### Synastic Setup
-
-    npm install -g jshint && \
-    npm install -g jsonlint
-    npm install -g eslint && \
-    npm install -g babel-eslint && \
-    npm install -g eslint-plugin-react &&\
-    npm install -g eslint-config-airbnb
-
-### Poewrline Fonts
-[Poerline Fonts](https://github.com/powerline/fonts)
-
-### Notes
-====
-  1. Make sure you edit the vimrc file and update the powerline paths
+** Poewrline Fonts
+(https://github.com/powerline/fonts)
 ** Brew Bundle
    brew bundle
 ** Python
@@ -129,3 +102,10 @@ run tmux
 ctrl-s shift-i
 ** Tig
 ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
+** Syntastic Linter
+   npm install -g jshint && \
+   npm install -g jsonlint
+   npm install -g eslint && \
+   npm install -g babel-eslint && \
+   npm install -g eslint-plugin-react &&\
+   npm install -g eslint-config-airbnb
