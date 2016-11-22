@@ -54,16 +54,17 @@ edit ~/.zshenv and set your own DEV_DIR and DOTFILE_DIR
 *** Restart your terminal
 ** Ruby
 *** Rbenv
-brew install ruby-build rbenv
-rbenv install -l # find which is the latest ruby version
-rbenv install 2.3.0
-rbenv local 2.3.0
-rbenv global 2.3.0
-gem install bundle
-rbenv rehash
+    brew install ruby-build rbenv
+    rbenv install -l # find which is the latest ruby version
+    rbenv install 2.3.0
+    rbenv local 2.3.0
+    rbenv global 2.3.0
+    gem install bundle
+    rbenv rehash
 *** Symlink
-ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
-
+    ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
+*** Linters
+    gem install ruby-lint rubocop scss_lint haml_lint
 *** Restart your terminal here
 ** Poewrline Fonts
 (https://github.com/powerline/fonts)
@@ -119,6 +120,6 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 run tmux
 ctrl-s shift-i
 ** Tig
-ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
+   ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
 ** Silver Searcher
    ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
