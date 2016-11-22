@@ -18,20 +18,25 @@
   - [Ruby](#sec-2-7)
     - [Rbenv](#sec-2-7-1)
     - [Symlink](#sec-2-7-2)
-    - [Restart your terminal here](#sec-2-7-3)
+    - [Linters](#sec-2-7-3)
+    - [Restart your terminal here](#sec-2-7-4)
   - [Poewrline Fonts](#sec-2-8)
   - [Brew Bundle](#sec-2-9)
   - [Python](#sec-2-10)
   - [Elixir](#sec-2-11)
-  - [Vim](#sec-2-12)
-    - [Prerequiste](#sec-2-12-1)
-    - [Symlinks](#sec-2-12-2)
-    - [Plugin Installs](#sec-2-12-3)
-  - [SpaceMacs](#sec-2-13)
-  - [Tmux](#sec-2-14)
-    - [Install Plugins](#sec-2-14-1)
-  - [Tig](#sec-2-15)
-  - [Syntastic Linter](#sec-2-16)
+  - [Node](#sec-2-12)
+    - [Node Version Manager](#sec-2-12-1)
+    - [React Generator](#sec-2-12-2)
+    - [Linters](#sec-2-12-3)
+  - [Vim](#sec-2-13)
+    - [Prerequiste](#sec-2-13-1)
+    - [Symlinks](#sec-2-13-2)
+    - [Plugin Installs](#sec-2-13-3)
+  - [SpaceMacs](#sec-2-14)
+  - [Tmux](#sec-2-15)
+    - [Install Plugins](#sec-2-15-1)
+  - [Tig](#sec-2-16)
+  - [Silver Searcher](#sec-2-17)
 
 # OS X Options<a id="sec-1"></a>
 
@@ -39,11 +44,18 @@
 
 Change Hostname:
 
-sudo scutil &#x2013;set HostName
+```bash
+sudo scutil --set HostName
+```
 
 ## File Dialogs<a id="sec-1-2"></a>
 
-Set OSX Save dialog to always be expanded defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+Set OSX Save dialog to always be expanded
+
+```bash
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+```
 
 ## Mouse<a id="sec-1-3"></a>
 
@@ -57,35 +69,67 @@ Set repeat speed fast Set repeat delay low
 
 ## Xcode<a id="sec-2-1"></a>
 
+```bash
+xcode-select --install
+```
+
 ## Homebrew<a id="sec-2-2"></a>
 
 Install from: <http://brew.sh/>
 
 ## Git<a id="sec-2-3"></a>
 
-brew install git git config &#x2013;global user.name <user<sub>name</sub>> git config &#x2013;global user.email <email> git config &#x2013;global push.default simple
+```bash
+brew install git
+git config --global user.name <user_name>
+git config --global user.email <email>
+git config --global push.default simple
+```
 
 ## Github<a id="sec-2-4"></a>
 
-Generate ssh key ssh-keygen cat ~/.ssh/id<sub>rsa.pub</sub> | pbcopy Paste into github's ssh setting
+Generate ssh key
+
+```bash
+ssh-keygen
+cat ~/.ssh/id_rsa.pub | pbcopy
+```
+
+Paste into github's ssh setting
 
 ## Dotfile Setup<a id="sec-2-5"></a>
 
-export DOTFILE<sub>DIR</sub>=~/dev/dotfiles git clone <https://github.com/natsumi/dotfiles> $DOTFILE<sub>DIR</sub>
+```bash
+export DOTFILE_DIR=~/dev/dotfiles
+git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
+```
 
 ## ZSH Setup<a id="sec-2-6"></a>
 
 ### Set Default Shell<a id="sec-2-6-1"></a>
 
-echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells chsh -s $(which zsh)
+```bash
+echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+chsh -s $(which zsh)
+```
 
 ### Setup Prezto<a id="sec-2-6-2"></a>
 
-git clone &#x2013;recursive <https://github.com/sorin-ionescu/prezto.git> "${ZDOTDIR:-$HOME}/.zprezto"
+```bash
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+```
 
 ### Setup Symlinks<a id="sec-2-6-3"></a>
 
-export DOTFILE<sub>DIR</sub>=~/dev/dotfiles ln -s $DOTFILE<sub>DIR</sub>/zsh/zshrc.symlink ~/.zshrc ln -s $DOTFILE<sub>DIR</sub>/zsh/zshenv.symlink ~/.zshenv ln -s $DOTFILE<sub>DIR</sub>/zsh/zpreztorc.symlink ~/.zpreztorc ln -s $DOTFILE<sub>DIR</sub>/zsh/zprofile.symlink ~/.zprofile ln -s $DOTFILE<sub>DIR</sub>/zsh/dircolors.symlink ~/.dircolors ln -s $DOTFILE<sub>DIR</sub>/zsh/aliases.symlink ~/.aliases
+```bash
+export DOTFILE_DIR=~/dev/dotfiles
+ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
+ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
+ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
+ln -s $DOTFILE_DIR/zsh/zprofile.symlink ~/.zprofile
+ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
+ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
+```
 
 ### Custom configurations<a id="sec-2-6-4"></a>
 
@@ -97,13 +141,29 @@ edit ~/.zshenv and set your own DEV<sub>DIR</sub> and DOTFILE<sub>DIR</sub>
 
 ### Rbenv<a id="sec-2-7-1"></a>
 
-brew install ruby-build rbenv rbenv install -l # find which is the latest ruby version rbenv install 2.3.0 rbenv local 2.3.0 rbenv global 2.3.0 gem install bundle rbenv rehash
+```shell
+brew install ruby-build rbenv
+rbenv install -l # find which is the latest ruby version
+rbenv install 2.3.0
+rbenv local 2.3.0
+rbenv global 2.3.0
+gem install bundle
+rbenv rehash
+```
 
 ### Symlink<a id="sec-2-7-2"></a>
 
-ln -s $DOTFILE<sub>DIR</sub>/rails/pryrc.symlink ~/.pryrc
+```shell
+ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
+```
 
-### Restart your terminal here<a id="sec-2-7-3"></a>
+### Linters<a id="sec-2-7-3"></a>
+
+```shell
+gem install ruby-lint rubocop scss_lint haml_lint
+```
+
+### Restart your terminal here<a id="sec-2-7-4"></a>
 
 ## Poewrline Fonts<a id="sec-2-8"></a>
 
@@ -111,46 +171,105 @@ ln -s $DOTFILE<sub>DIR</sub>/rails/pryrc.symlink ~/.pryrc
 
 ## Brew Bundle<a id="sec-2-9"></a>
 
+```shell
 brew bundle
+```
 
 ## Python<a id="sec-2-10"></a>
 
-mkdir -p $DOTFILE<sub>DIR</sub>/.virtualenv brew install python pip install easy<sub>setup</sub> pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
+```shell
+mkdir -p $DOTFILE_DIR/.virtualenv
+brew install python
+pip install easy_setup
+pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
+```
 
 ## Elixir<a id="sec-2-11"></a>
 
-ln -s $DOTFILE<sub>DIR</sub>/elixir/iex.exs.symlink ~/.iex.exs
+```shell
+ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
+```
 
-## Vim<a id="sec-2-12"></a>
+## Node<a id="sec-2-12"></a>
 
-### Prerequiste<a id="sec-2-12-1"></a>
+### Node Version Manager<a id="sec-2-12-1"></a>
 
+```shell
+nvm ls-remote # lists available versions to install
+nvm install v6.9.1
+nvm use v6.9.1
+npm install -g npm
+nvm alias default node
+```
+
+### React Generator<a id="sec-2-12-2"></a>
+
+```shell
+npm install -g create-react-app
+```
+
+### Linters<a id="sec-2-12-3"></a>
+
+```shell
+npm install -g tern js-beautify
+npm install -g eslint babel-eslint
+export PKG=eslint-config-airbnb;
+npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
+
+ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
+```
+
+## Vim<a id="sec-2-13"></a>
+
+### Prerequiste<a id="sec-2-13-1"></a>
+
+```shell
 mkdir -p ~/.vim/autoload
+```
 
-### Symlinks<a id="sec-2-12-2"></a>
+### Symlinks<a id="sec-2-13-2"></a>
 
-ln -s $DOTFILE<sub>DIR</sub>/vim/snippets ~/.vim/ ln -s $DOTFILE<sub>DIR</sub>/vim/functions ~/.vim/functions ln -s $DOTFILE<sub>DIR</sub>/vim/plugins ~/.vim/plugins ln -s $DOTFILE<sub>DIR</sub>/vim/vimrc.symlink ~/.vimrc ln -s $DOTFILE<sub>DIR</sub>/vim/ignore.vim.symlink ~/.vim/ignore.vim ln -s $DOTFILE<sub>DIR</sub>/ctags.symlink ~/.ctags
+```bash
+ln -s $DOTFILE_DIR/vim/snippets ~/.vim/
+ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
+ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
+ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
+ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
+ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
+```
 
-### Plugin Installs<a id="sec-2-12-3"></a>
+### Plugin Installs<a id="sec-2-13-3"></a>
 
 Run vim :PlugInstall
 
-## SpaceMacs<a id="sec-2-13"></a>
+## SpaceMacs<a id="sec-2-14"></a>
 
-mkdir -p ~/.spacemacs.d git clone <https://github.com/syl20bnr/spacemacs> ~/.emacs.d ln -s $DOTFILE<sub>DIR</sub>/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+```sh
+mkdir -p ~/.spacemacs.d
+git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+```
 
-## Tmux<a id="sec-2-14"></a>
+## Tmux<a id="sec-2-15"></a>
 
-mkdir -p ~/.tmux/plugins ln -s $DOTFILE<sub>DIR</sub>/tmux/tmux.conf.symlink ~/.tmux.conf git clone <https://github.com/tmux-plugins/tpm> ~/.tmux/plugins/tpm
+```
+mkdir -p ~/.tmux/plugins
+ln -s $DOTFILE_DIR/tmux/tmux.conf.symlink ~/.tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
 
-### Install Plugins<a id="sec-2-14-1"></a>
+### Install Plugins<a id="sec-2-15-1"></a>
 
 run tmux ctrl-s shift-i
 
-## Tig<a id="sec-2-15"></a>
+## Tig<a id="sec-2-16"></a>
 
-ln -s $DOTFILE<sub>DIR</sub>/tigrc.symlink ~/.tigrc
+```
+ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
+```
 
-## Syntastic Linter<a id="sec-2-16"></a>
+## Silver Searcher<a id="sec-2-17"></a>
 
-npm install -g jshint && \\ npm install -g jsonlint npm install -g eslint && \\ npm install -g babel-eslint && \\ npm install -g eslint-plugin-react &&\\ npm install -g eslint-config-airbnb
+```
+ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
+```

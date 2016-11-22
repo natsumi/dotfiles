@@ -1,59 +1,73 @@
 * OS X Options
 ** Hostname
-Change Hostname:
-
-  sudo scutil --set HostName
+   Change Hostname:
+   #+BEGIN_SRC bash
+   sudo scutil --set HostName
+   #+END_SRC
 ** File Dialogs
-
-Set OSX Save dialog to always be expanded
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
-
+   Set OSX Save dialog to always be expanded
+   #+BEGIN_SRC bash
+   defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+   defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+   #+END_SRC
 ** Mouse
 Set mouse to a faster track speed
 Uncheck "Scroll direction: Natural"
-
 ** Keyboard
 Set repeat speed fast
 Set repeat delay low
-
 * Software
 ** Xcode
+  #+BEGIN_SRC bash
+  xcode-select --install
+  #+END_SRC
 ** Homebrew
    Install from: http://brew.sh/
 ** Git
-brew install git
-git config --global user.name <user_name>
-git config --global user.email <email>
-git config --global push.default simple
+    #+BEGIN_SRC bash
+    brew install git
+    git config --global user.name <user_name>
+    git config --global user.email <email>
+    git config --global push.default simple
+    #+END_SRC
 ** Github
-Generate ssh key
-ssh-keygen
-cat ~/.ssh/id_rsa.pub | pbcopy
-Paste into github's ssh setting
-
+    Generate ssh key
+    #+BEGIN_SRC bash
+    ssh-keygen
+    cat ~/.ssh/id_rsa.pub | pbcopy
+    #+END_SRC
+    Paste into github's ssh setting
 ** Dotfile Setup
-export DOTFILE_DIR=~/dev/dotfiles
-git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
+  #+BEGIN_SRC bash
+  export DOTFILE_DIR=~/dev/dotfiles
+  git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
+  #+END_SRC
 ** ZSH Setup
 *** Set Default Shell
-echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
-chsh -s $(which zsh)
+    #+begin_src bash
+    echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+    chsh -s $(which zsh)
+    #+end_src
 *** Setup Prezto
-git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+    #+BEGIN_SRC bash
+    git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+    #+END_SRC
 *** Setup Symlinks
-export DOTFILE_DIR=~/dev/dotfiles
-ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
-ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
-ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
-ln -s $DOTFILE_DIR/zsh/zprofile.symlink ~/.zprofile
-ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
-ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
+    #+BEGIN_SRC bash
+    export DOTFILE_DIR=~/dev/dotfiles
+    ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
+    ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
+    ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
+    ln -s $DOTFILE_DIR/zsh/zprofile.symlink ~/.zprofile
+    ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
+    ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
+    #+END_SRC
 *** Custom configurations
-edit ~/.zshenv and set your own DEV_DIR and DOTFILE_DIR
+    edit ~/.zshenv and set your own DEV_DIR and DOTFILE_DIR
 *** Restart your terminal
 ** Ruby
 *** Rbenv
+    #+BEGIN_SRC shell
     brew install ruby-build rbenv
     rbenv install -l # find which is the latest ruby version
     rbenv install 2.3.0
@@ -61,65 +75,92 @@ edit ~/.zshenv and set your own DEV_DIR and DOTFILE_DIR
     rbenv global 2.3.0
     gem install bundle
     rbenv rehash
+    #+END_SRC
 *** Symlink
+    #+BEGIN_SRC shell
     ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
+    #+END_SRC
 *** Linters
+    #+BEGIN_SRC shell
     gem install ruby-lint rubocop scss_lint haml_lint
+    #+END_SRC
 *** Restart your terminal here
 ** Poewrline Fonts
 (https://github.com/powerline/fonts)
 ** Brew Bundle
-   brew bundle
+    #+BEGIN_SRC shell
+    brew bundle
+    #+END_SRC
 ** Python
-mkdir -p $DOTFILE_DIR/.virtualenv
-brew install python
-pip install easy_setup
-pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
+  #+BEGIN_SRC shell
+  mkdir -p $DOTFILE_DIR/.virtualenv
+  brew install python
+  pip install easy_setup
+  pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
+  #+END_SRC
 ** Elixir
-ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
+   #+BEGIN_SRC shell
+   ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
+   #+END_SRC
 ** Node
 *** Node Version Manager
+    #+BEGIN_SRC shell
     nvm ls-remote # lists available versions to install
     nvm install v6.9.1
     nvm use v6.9.1
     npm install -g npm
     nvm alias default node
-
+    #+END_SRC
 *** React Generator
+    #+BEGIN_SRC shell
     npm install -g create-react-app
-
+    #+END_SRC
 *** Linters
+    #+BEGIN_SRC shell
     npm install -g tern js-beautify
     npm install -g eslint babel-eslint
     export PKG=eslint-config-airbnb;
     npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
 
     ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
+    #+END_SRC
 ** Vim
 *** Prerequiste
-mkdir -p ~/.vim/autoload
+    #+BEGIN_SRC shell
+    mkdir -p ~/.vim/autoload
+    #+END_SRC
 *** Symlinks
-ln -s $DOTFILE_DIR/vim/snippets ~/.vim/
-ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
-ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
-ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
-ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
-ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
+    #+BEGIN_SRC bash
+    ln -s $DOTFILE_DIR/vim/snippets ~/.vim/
+    ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
+    ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
+    ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
+    ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
+    ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
+    #+END_SRC
 *** Plugin Installs
 Run vim
 :PlugInstall
 ** SpaceMacs
-mkdir -p ~/.spacemacs.d
-git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+    #+BEGIN_SRC sh
+    mkdir -p ~/.spacemacs.d
+    git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+    ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+    #+END_SRC
 ** Tmux
-mkdir -p ~/.tmux/plugins
-ln -s $DOTFILE_DIR/tmux/tmux.conf.symlink ~/.tmux.conf
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+   #+BEGIN_SRC
+   mkdir -p ~/.tmux/plugins
+   ln -s $DOTFILE_DIR/tmux/tmux.conf.symlink ~/.tmux.conf
+   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+   #+END_SRC
 *** Install Plugins
 run tmux
 ctrl-s shift-i
 ** Tig
+   #+BEGIN_SRC
    ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
+   #+END_SRC
 ** Silver Searcher
+   #+BEGIN_SRC
    ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
+   #+END_SRC
