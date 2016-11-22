@@ -120,10 +120,5 @@ run tmux
 ctrl-s shift-i
 ** Tig
 ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
-** Syntastic Linter
-   npm install -g jshint && \
-   npm install -g jsonlint
-   npm install -g eslint && \
-   npm install -g babel-eslint && \
-   npm install -g eslint-plugin-react &&\
-   npm install -g eslint-config-airbnb
+** Silver Searcher
+   ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
