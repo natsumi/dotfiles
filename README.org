@@ -111,6 +111,10 @@ Set repeat delay low
     npm install -g npm
     nvm alias default node
     #+END_SRC
+*** Bower
+    #+BEGIN_SRC shell
+    npm install -g bower
+    #+END_SRC
 *** React Generator
     #+BEGIN_SRC shell
     npm install -g create-react-app
