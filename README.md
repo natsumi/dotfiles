@@ -26,8 +26,10 @@
   - [Elixir](#sec-2-11)
   - [Node](#sec-2-12)
     - [Node Version Manager](#sec-2-12-1)
-    - [React Generator](#sec-2-12-2)
-    - [Linters](#sec-2-12-3)
+    - [Bower](#sec-2-12-2)
+    - [React Generator](#sec-2-12-3)
+    - [Linters](#sec-2-12-4)
+    - [Yarn](#sec-2-12-5)
   - [Vim](#sec-2-13)
     - [Prerequiste](#sec-2-13-1)
     - [Symlinks](#sec-2-13-2)
@@ -37,6 +39,7 @@
     - [Install Plugins](#sec-2-15-1)
   - [Tig](#sec-2-16)
   - [Silver Searcher](#sec-2-17)
+  - [Youtube-dl](#sec-2-18)
 
 # OS X Options<a id="sec-1"></a>
 
@@ -202,13 +205,19 @@ npm install -g npm
 nvm alias default node
 ```
 
-### React Generator<a id="sec-2-12-2"></a>
+### Bower<a id="sec-2-12-2"></a>
+
+```shell
+npm install -g
+```
+
+### React Generator<a id="sec-2-12-3"></a>
 
 ```shell
 npm install -g create-react-app
 ```
 
-### Linters<a id="sec-2-12-3"></a>
+### Linters<a id="sec-2-12-4"></a>
 
 ```shell
 npm install -g tern js-beautify
@@ -217,6 +226,12 @@ export PKG=eslint-config-airbnb;
 npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
 
 ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
+```
+
+### Yarn<a id="sec-2-12-5"></a>
+
+```
+brew install yarn
 ```
 
 ## Vim<a id="sec-2-13"></a>
@@ -272,4 +287,11 @@ ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
 
 ```
 ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
+```
+
+## Youtube-dl<a id="sec-2-18"></a>
+
+```
+mkdir -p ~/.config/youtube-dl
+ln -s $DOTFILE_DIR/youtube-dl.conf.symlink ~/.config/youtube-dl/config
 ```

@@ -128,6 +128,10 @@ Set repeat delay low
 
     ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
     #+END_SRC
+*** Yarn
+    #+BEGIN_SRC
+    brew install yarn
+    #+END_SRC
 ** Vim
 *** Prerequiste
     #+BEGIN_SRC shell
