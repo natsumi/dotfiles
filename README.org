@@ -113,7 +113,7 @@ Set repeat delay low
     #+END_SRC
 *** Bower
     #+BEGIN_SRC shell
-    npm install -g bower
+    npm install -g 
     #+END_SRC
 *** React Generator
     #+BEGIN_SRC shell
@@ -167,4 +167,9 @@ ctrl-s shift-i
 ** Silver Searcher
    #+BEGIN_SRC
    ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
+   #+END_SRC
+** Youtube-dl
+   #+BEGIN_SRC
+   mkdir -p ~/.config/youtube-dl
+   ln -s $DOTFILE_DIR/youtube-dl.conf.symlink ~/.config/youtube-dl/config
    #+END_SRC
