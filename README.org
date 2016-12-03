@@ -177,3 +177,10 @@ ctrl-s shift-i
    mkdir -p ~/.config/youtube-dl
    ln -s $DOTFILE_DIR/youtube-dl.conf.symlink ~/.config/youtube-dl/config
    #+END_SRC
+** Livestream
+    Configure Twitch Oauth
+    #+BEGIN_SRC bash
+    livestreamer --twitch-oauth-authenticate
+    #+END_SRC
+
+    Copy the access_token in URL to ~/.livestreamerrc
