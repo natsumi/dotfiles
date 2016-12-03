@@ -31,12 +31,18 @@ Set repeat delay low
     git config --global push.default simple
     #+END_SRC
 ** Github
-    Generate ssh key
+*** Generate ssh key
     #+BEGIN_SRC bash
     ssh-keygen
     cat ~/.ssh/id_rsa.pub | pbcopy
     #+END_SRC
     Paste into github's ssh setting
+*** Spacemacs Github Integration
+    https://github.com/settings/tokens
+    Give access to repo and gist
+    #+BEGIN_SRC bash
+    git config --global github.oauth-token <token>
+    #+END_SRC
 ** Dotfile Setup
   #+BEGIN_SRC bash
   export DOTFILE_DIR=~/dev/dotfiles
