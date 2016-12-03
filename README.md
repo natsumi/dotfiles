@@ -8,6 +8,8 @@
   - [Homebrew](#sec-2-2)
   - [Git](#sec-2-3)
   - [Github](#sec-2-4)
+    - [Generate ssh key](#sec-2-4-1)
+    - [Spacemacs Github Integration](#sec-2-4-2)
   - [Dotfile Setup](#sec-2-5)
   - [ZSH Setup](#sec-2-6)
     - [Set Default Shell](#sec-2-6-1)
@@ -40,6 +42,7 @@
   - [Tig](#sec-2-16)
   - [Silver Searcher](#sec-2-17)
   - [Youtube-dl](#sec-2-18)
+  - [Livestream](#sec-2-19)
 
 # OS X Options<a id="sec-1"></a>
 
@@ -91,7 +94,7 @@ git config --global push.default simple
 
 ## Github<a id="sec-2-4"></a>
 
-Generate ssh key
+### Generate ssh key<a id="sec-2-4-1"></a>
 
 ```bash
 ssh-keygen
@@ -99,6 +102,14 @@ cat ~/.ssh/id_rsa.pub | pbcopy
 ```
 
 Paste into github's ssh setting
+
+### Spacemacs Github Integration<a id="sec-2-4-2"></a>
+
+<https://github.com/settings/tokens> Give access to repo and gist
+
+```bash
+git config --global github.oauth-token <token>
+```
 
 ## Dotfile Setup<a id="sec-2-5"></a>
 
@@ -295,3 +306,13 @@ ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
 mkdir -p ~/.config/youtube-dl
 ln -s $DOTFILE_DIR/youtube-dl.conf.symlink ~/.config/youtube-dl/config
 ```
+
+## Livestream<a id="sec-2-19"></a>
+
+Configure Twitch Oauth
+
+```bash
+livestreamer --twitch-oauth-authenticate
+```
+
+Copy the access<sub>token</sub> in URL to ~/.livestreamerrc
