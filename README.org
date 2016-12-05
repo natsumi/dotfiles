@@ -108,6 +108,12 @@ Set repeat delay low
    #+BEGIN_SRC shell
    ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
    #+END_SRC
+*** IEx History
+    #+BEGIN_SRC bash
+    git clone git@github.com:ferd/erlang-history.git
+    cd erlang-history
+    sudo make install
+    #+END_SRC
 ** Node
 *** Node Version Manager
     #+BEGIN_SRC shell

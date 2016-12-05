@@ -26,6 +26,7 @@
   - [Brew Bundle](#sec-2-9)
   - [Python](#sec-2-10)
   - [Elixir](#sec-2-11)
+    - [IEx History](#sec-2-11-1)
   - [Node](#sec-2-12)
     - [Node Version Manager](#sec-2-12-1)
     - [Bower](#sec-2-12-2)
@@ -202,6 +203,14 @@ pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
 
 ```shell
 ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
+```
+
+### IEx History<a id="sec-2-11-1"></a>
+
+```bash
+git clone git@github.com:ferd/erlang-history.git
+cd erlang-history
+sudo make install
 ```
 
 ## Node<a id="sec-2-12"></a>
