@@ -13,7 +13,7 @@
   - [Dotfile Setup](#sec-2-5)
   - [ZSH Setup](#sec-2-6)
     - [Set Default Shell](#sec-2-6-1)
-    - [Setup Prezto](#sec-2-6-2)
+    - [Prezto](#sec-2-6-2)
     - [Setup Symlinks](#sec-2-6-3)
     - [Custom configurations](#sec-2-6-4)
     - [Restart your terminal](#sec-2-6-5)
@@ -38,6 +38,7 @@
     - [Symlinks](#sec-2-13-2)
     - [Plugin Installs](#sec-2-13-3)
   - [SpaceMacs](#sec-2-14)
+    - [Markdown Support](#sec-2-14-1)
   - [Tmux](#sec-2-15)
     - [Install Plugins](#sec-2-15-1)
   - [Tig](#sec-2-16)
@@ -82,7 +83,7 @@ xcode-select --install
 
 ## Homebrew<a id="sec-2-2"></a>
 
-Install from: <http://brew.sh/>
+[Brew](http://brew.sh/)
 
 ## Git<a id="sec-2-3"></a>
 
@@ -106,7 +107,7 @@ Paste into github's ssh setting
 
 ### Spacemacs Github Integration<a id="sec-2-4-2"></a>
 
-<https://github.com/settings/tokens> Give access to repo and gist
+Grant access to repo and gist [Set Access Tokens](https://github.com/settings/tokens)
 
 ```bash
 git config --global github.oauth-token <token>
@@ -128,7 +129,9 @@ echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
 chsh -s $(which zsh)
 ```
 
-### Setup Prezto<a id="sec-2-6-2"></a>
+### Prezto<a id="sec-2-6-2"></a>
+
+[Prezto](https://github.com/sorin-ionescu/prezto.git)
 
 ```bash
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
@@ -182,7 +185,7 @@ gem install ruby-lint rubocop scss_lint haml_lint
 
 ## Poewrline Fonts<a id="sec-2-8"></a>
 
-(<https://github.com/powerline/fonts>)
+[Powerline Fonts Repo](https://github.com/powerline/fonts)
 
 ## Brew Bundle<a id="sec-2-9"></a>
 
@@ -207,6 +210,8 @@ ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
 
 ### IEx History<a id="sec-2-11-1"></a>
 
+[Erlang History](http://www.github.com/ferd/erlang-history.git)
+
 ```bash
 git clone git@github.com:ferd/erlang-history.git
 cd erlang-history
@@ -228,7 +233,7 @@ nvm alias default node
 ### Bower<a id="sec-2-12-2"></a>
 
 ```shell
-npm install -g
+npm install -g bower
 ```
 
 ### React Generator<a id="sec-2-12-3"></a>
@@ -242,6 +247,7 @@ npm install -g create-react-app
 ```shell
 npm install -g tern js-beautify
 npm install -g eslint babel-eslint
+
 export PKG=eslint-config-airbnb;
 npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
 
@@ -283,6 +289,12 @@ Run vim :PlugInstall
 mkdir -p ~/.spacemacs.d
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+```
+
+### Markdown Support<a id="sec-2-14-1"></a>
+
+```bash
+npm install -g vmd
 ```
 
 ## Tmux<a id="sec-2-15"></a>
