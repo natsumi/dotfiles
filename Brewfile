@@ -5,6 +5,7 @@ tap 'd12frosted/emacs-plus'
 tap 'neovim/neovim'
 
 brew 'autoconf'
+brew 'readline'
 brew 'xz'
 brew 'automake'
 brew 'cmake'

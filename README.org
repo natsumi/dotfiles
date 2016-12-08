@@ -22,7 +22,7 @@ Set repeat delay low
   xcode-select --install
   #+END_SRC
 ** Homebrew
-   Install from: http://brew.sh/
+   [[http://brew.sh/][Brew]]
 ** Git
     #+BEGIN_SRC bash
     brew install git
@@ -38,8 +38,8 @@ Set repeat delay low
     #+END_SRC
     Paste into github's ssh setting
 *** Spacemacs Github Integration
-    https://github.com/settings/tokens
-    Give access to repo and gist
+    Grant access to repo and gist
+    [[https://github.com/settings/tokens][Set Access Tokens]]
     #+BEGIN_SRC bash
     git config --global github.oauth-token <token>
     #+END_SRC
@@ -54,7 +54,8 @@ Set repeat delay low
     echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
     chsh -s $(which zsh)
     #+end_src
-*** Setup Prezto
+*** Prezto
+    [[https://github.com/sorin-ionescu/prezto.git][Prezto]]
     #+BEGIN_SRC bash
     git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
     #+END_SRC
@@ -92,7 +93,7 @@ Set repeat delay low
     #+END_SRC
 *** Restart your terminal here
 ** Poewrline Fonts
-(https://github.com/powerline/fonts)
+   [[https://github.com/powerline/fonts][Powerline Fonts Repo]]
 ** Brew Bundle
     #+BEGIN_SRC shell
     brew bundle
@@ -109,6 +110,7 @@ Set repeat delay low
    ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
    #+END_SRC
 *** IEx History
+    [[http://www.github.com/ferd/erlang-history.git][Erlang History]]
     #+BEGIN_SRC bash
     git clone git@github.com:ferd/erlang-history.git
     cd erlang-history
@@ -125,7 +127,7 @@ Set repeat delay low
     #+END_SRC
 *** Bower
     #+BEGIN_SRC shell
-    npm install -g 
+    npm install -g bower
     #+END_SRC
 *** React Generator
     #+BEGIN_SRC shell
@@ -135,6 +137,7 @@ Set repeat delay low
     #+BEGIN_SRC shell
     npm install -g tern js-beautify
     npm install -g eslint babel-eslint
+
     export PKG=eslint-config-airbnb;
     npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
 
@@ -159,13 +162,17 @@ Set repeat delay low
     ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
     #+END_SRC
 *** Plugin Installs
-Run vim
-:PlugInstall
+    Run vim
+    :PlugInstall
 ** SpaceMacs
     #+BEGIN_SRC sh
     mkdir -p ~/.spacemacs.d
     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
     ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+    #+END_SRC
+*** Markdown Support
+    #+BEGIN_SRC bash
+    npm install -g vmd
     #+END_SRC
 ** Tmux
    #+BEGIN_SRC
@@ -174,8 +181,8 @@ Run vim
    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
    #+END_SRC
 *** Install Plugins
-run tmux
-ctrl-s shift-i
+     run tmux
+     ctrl-s shift-i
 ** Tig
    #+BEGIN_SRC
    ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
@@ -191,6 +198,7 @@ ctrl-s shift-i
    #+END_SRC
 ** Livestream
     Configure Twitch Oauth
+
     #+BEGIN_SRC bash
     livestreamer --twitch-oauth-authenticate
     #+END_SRC
