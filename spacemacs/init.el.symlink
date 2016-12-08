@@ -88,9 +88,14 @@ values."
      vimscript
 
      ;; Programming Tools
-     auto-completion
+     (auto-complete :variables
+                    auto-complete-enable-help-tooltip t
+                    auto-complete-enable-sort-by-usage t
+                    )
      gtags
      (syntax-checking :variables
+                      ;; tooltips can conflict w/ auto complete docs
+                      ;; syntax-checking-enable-tooltips nil
                       syntax-checking-use-original-bitmaps t)
 
      ;; Source Control
