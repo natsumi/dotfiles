@@ -1,1 +1,1 @@
---merge-output-format mkv
+-f bestvideo+bestaudio/best --all-subs --merge-output-format mkv
