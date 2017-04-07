@@ -114,9 +114,13 @@ set -g status-interval 2
 set -g status-right "#[fg=green]#(/usr/local/bin/tmux-mem-cpu-load --colors --powerline-right --interval 2 --averages-count 0)#[default]"
 
 # Other examples:
-# github_username/plugin_name    \
-# git@github.com/user/plugin     \
-# git@bitbucket.com/user/plugin  \
+# github_username/plugin_name
+# git@github.com/user/plugin
+# git@bitbucket.com/user/plugin
+
+# === !! Auto-install tpm if it hasn't been installed already !! ===
+if "test ! -d ~/.tmux/plugins/tpm" \
+     "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'"
 
 # Initializes TMUX plugin manager.
 # Keep this line at the very bottom of tmux.conf.
