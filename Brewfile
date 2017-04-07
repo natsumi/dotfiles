@@ -50,5 +50,6 @@ brew 'global'
 brew 'universal-ctags/universal-ctags/universal-ctags', args: ['HEAD']
 brew 'ffmpeg'
 brew 'youtube-dl'
+brew 'tmux-mem-cpu-load'
 
 cask 'filebot'

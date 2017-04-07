@@ -20,9 +20,8 @@ set-option -g status-position top
 # enable vim focus events
 set -g focus-events on
 
+# fix mouse scroll issues using the tmux-better-mouse-mode plugin
 set-option -g mouse on
-bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
-bind -n WheelDownPane select-pane -t= \; send-keys -M
 
 # pane color option
 set -g pane-border-fg black
@@ -102,11 +101,18 @@ if-shell 'env "$POWERLINE_CONFIG_COMMAND" tmux setup' '' 'run-shell "powerline-c
 # prefix + I - To Install Plugins
 # prefix + U - To update plugins
 # prefix + alt + u - Uninstall unused plugins
-set -g @tpm_plugins '              \
-  tmux-plugins/tpm                 \
-  tmux-plugins/tmux-resurrect      \
-  # nhdaly/tmux-scroll-copy-mode      \
-'
+set -g @plugins 'tmux-plugins/tpm'
+set -g @plugins 'tmux-plugins/tmux-resurrect'
+# set -g @plugins 'nhdaly/tmux-scroll-copy-mode'
+set -g @plugins 'nhdaly/tmux-better-mouse-mode'
+
+# Override the right-status with memory and cpu usage (in powerline format).
+# https://github.com/thewtex/tmux-mem-cpu-load
+
+set -g @plugin 'thewtex/tmux-mem-cpu-load'
+set -g status-interval 2
+set -g status-right "#[fg=green]#(/usr/local/bin/tmux-mem-cpu-load --colors --powerline-right --interval 2 --averages-count 0)#[default]"
+
 # Other examples:
 # github_username/plugin_name    \
 # git@github.com/user/plugin     \
