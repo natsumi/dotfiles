@@ -77,9 +77,9 @@ Set repeat delay low
     #+BEGIN_SRC shell
     brew install ruby-build rbenv
     rbenv install -l # find which is the latest ruby version
-    rbenv install 2.3.0
-    rbenv local 2.3.0
-    rbenv global 2.3.0
+    rbenv install 2.4.1
+    rbenv local 2.4.1
+    rbenv global 2.4.1
     gem install bundle
     rbenv rehash
     #+END_SRC
@@ -120,8 +120,8 @@ Set repeat delay low
 *** Node Version Manager
     #+BEGIN_SRC shell
     nvm ls-remote # lists available versions to install
-    nvm install v6.9.1
-    nvm use v6.9.1
+    nvm install --lts
+    nvm use --lts
     npm install -g npm
     nvm alias default node
     #+END_SRC
