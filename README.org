@@ -206,3 +206,14 @@ Set repeat delay low
     #+END_SRC
 
     Copy the access_token in URL to ~/.livestreamerrc
+
+** KWM / KHD (Tilling Window Manager)
+    This is experimental.
+
+    * [KWM](https://github.com/koekeishiya/chunkwm)
+    * [KHD](https://github.com/koekeishiya/khd)
+
+    #+BEGIN_SRC bash
+    ln -s $DOTFILE_DIR/chunkwm/chunkwmrc ~/.chunkwmrc
+    ln -s $DOTFILE_DIR/chunkwm/khdrc ~/.khdrc
+    #+END_SRC

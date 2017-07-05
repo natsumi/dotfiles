@@ -52,4 +52,6 @@ brew 'ffmpeg'
 brew 'youtube-dl'
 brew 'tmux-mem-cpu-load'
 
+brew 'koekeishiya/formulae/khd'
+
 cask 'filebot'
