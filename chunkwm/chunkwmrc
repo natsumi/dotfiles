@@ -5,8 +5,9 @@
 #       loading a plugin. '~' expansion is supported.
 #
 
-chunkc core::plugin_dir ~/.chunkwm_plugins
-
+# chunkc core::plugin_dir ~/.chunkwm_plugins
+chunkc plugin_dir /usr/local/opt/chunkwm/share/chunkwm_plugins
+chunkc core::plugin_dir /usr/local/opt/chunkwm/share/chunkwm_plugins
 #
 # NOTE: if enabled, chunkwm will monitor the specified plugin_dir
 #       and automatically reload any '.so' file that is changed.

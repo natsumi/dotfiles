@@ -53,5 +53,6 @@ brew 'youtube-dl'
 brew 'tmux-mem-cpu-load'
 
 brew 'koekeishiya/formulae/khd'
+brew crisidev/homebrew-chunkwm/chunkwm, args: ['HEAD']
 
 cask 'filebot'
