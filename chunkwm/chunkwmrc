@@ -92,4 +92,6 @@ chunkc tiling::rule --owner Finder --state float
 chunkc tiling::rule --owner Archive Utility --state float
 chunkc tiling::rule --owner ForkLift --state float
 chunkc tiling::rule --owner Adium --name Contacts --state float
+# this tiling rule is to fix tooltip windows in emacs
+chunkc tiling::rule --owner Emacs --name "^$"  --state float
 chunkc tiling::rule --owner Emacs --state tile
