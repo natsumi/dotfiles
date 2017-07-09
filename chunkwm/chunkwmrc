@@ -91,6 +91,7 @@ chunkc core::load border.so
 # chunkc tiling::rule --owner \"System Preferences\" --state tile
 chunkc tiling::rule --owner Finder --state float
 chunkc tiling::rule --owner Archive Utility --state float
+chunkc tiling::rule --owner Preview --state float
 chunkc tiling::rule --owner ForkLift --state float
 chunkc tiling::rule --owner Adium --name Contacts --state float
 # this tiling rule is to fix tooltip windows in emacs
