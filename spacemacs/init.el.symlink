@@ -124,7 +124,6 @@ values."
 
                                       ;; Programming
                                       vue-mode
-                                      (:type template :name slm :mode slim-mode)
                                       )
 
    ;; A list of packages that cannot be updated.
