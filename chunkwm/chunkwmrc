@@ -95,6 +95,8 @@ chunkc tiling::rule --owner Preview --state float
 chunkc tiling::rule --owner ForkLift --state float
 chunkc tiling::rule --owner 1Password 6 --state float
 chunkc tiling::rule --owner Adium --name Contacts --state float
+chunkc tiling::rule --owner VLC --state float
+chunkc tiling::rule --owner Google Chrome --name Developer Tools --state float
 # this tiling rule is to fix tooltip windows in emacs
 chunkc tiling::rule --owner Emacs --name "^$"  --state float
 chunkc tiling::rule --owner Emacs --state tile
