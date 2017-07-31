@@ -28,11 +28,15 @@ chunkc set global_desktop_mode           bsp
 
 # set global desktop offset and window gap
 
-chunkc set global_desktop_offset_top     20
-chunkc set global_desktop_offset_bottom  20
-chunkc set global_desktop_offset_left    20
-chunkc set global_desktop_offset_right   20
-chunkc set global_desktop_offset_gap     10
+if [ -f ~/.chunkwmrc.local ]; then
+    source ~/.chunkwmrc.local
+fi
+
+# chunkc set global_desktop_offset_top     20
+# chunkc set global_desktop_offset_bottom  20
+# chunkc set global_desktop_offset_left    20
+# chunkc set global_desktop_offset_right   20
+# chunkc set global_desktop_offset_gap     10
 
 # set desktop offset and window gap for a specific desktop
 
@@ -116,10 +120,11 @@ chunkc tiling::rule --owner Finder --state float
 chunkc tiling::rule --owner Archive Utility --state float
 chunkc tiling::rule --owner Preview --state float
 chunkc tiling::rule --owner ForkLift --state float
+chunkc tiling::rule --owner Calculator --state float
 chunkc tiling::rule --owner \"1Password 6\" --state float
 chunkc tiling::rule --owner Adium --name Contacts --state float
 chunkc tiling::rule --owner VLC --state float
-chunkc tiling::rule --owner \"Google Chrome\" --name \"Developer Tools\" --state float
+chunkc tiling::rule --owner \"Google Chrome\" --name \"Developer Tools.\*\" --state float
 # this tiling rule is to fix tooltip windows in emacs
 chunkc tiling::rule --owner Emacs --name "^$"  --state float
 chunkc tiling::rule --owner Emacs --state tile
