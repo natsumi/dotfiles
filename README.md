@@ -26,7 +26,6 @@
   - [Brew Bundle](#sec-2-9)
   - [Python](#sec-2-10)
   - [Elixir](#sec-2-11)
-    - [IEx History](#sec-2-11-1)
   - [Node](#sec-2-12)
     - [Node Version Manager](#sec-2-12-1)
     - [Bower](#sec-2-12-2)
@@ -45,6 +44,7 @@
   - [Silver Searcher](#sec-2-17)
   - [Youtube-dl](#sec-2-18)
   - [Livestream](#sec-2-19)
+  - [KWM / KHD (Tilling Window Manager)](#sec-2-20)
 
 # OS X Options<a id="sec-1"></a>
 
@@ -208,16 +208,6 @@ pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
 ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
 ```
 
-### IEx History<a id="sec-2-11-1"></a>
-
-[Erlang History](http://www.github.com/ferd/erlang-history.git)
-
-```bash
-git clone git@github.com:ferd/erlang-history.git
-cd erlang-history
-sudo make install
-```
-
 ## Node<a id="sec-2-12"></a>
 
 ### Node Version Manager<a id="sec-2-12-1"></a>
@@ -339,3 +329,15 @@ livestreamer --twitch-oauth-authenticate
 ```
 
 Copy the access<sub>token</sub> in URL to ~/.livestreamerrc
+
+## KWM / KHD (Tilling Window Manager)<a id="sec-2-20"></a>
+
+This is experimental.
+
+-   [KWM](<https://github.com/koekeishiya/chunkwm>)
+-   [KHD](<https://github.com/koekeishiya/khd>)
+
+```bash
+ln -s $DOTFILE_DIR/chunkwm/chunkwmrc ~/.chunkwmrc
+ln -s $DOTFILE_DIR/chunkwm/khdrc ~/.khdrc
+```
