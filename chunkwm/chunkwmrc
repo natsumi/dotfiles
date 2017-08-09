@@ -5,8 +5,6 @@
 #       loading a plugin. '~' expansion is supported.
 #
 
-# chunkc core::plugin_dir ~/.chunkwm_plugins
-chunkc plugin_dir /usr/local/opt/chunkwm/share/chunkwm_plugins
 chunkc core::plugin_dir /usr/local/opt/chunkwm/share/chunkwm_plugins
 #
 # NOTE: if enabled, chunkwm will monitor the specified plugin_dir
@@ -102,7 +100,7 @@ chunkc set focused_border_skip_floating  0
 
 chunkc core::load tiling.so
 # chunkc core::load ffm.so
-chunkc core::load border.so
+# chunkc core::load border.so
 
 # App Specific Tiling Rules
 chunkc set window_float_topmost          0
@@ -128,3 +126,4 @@ chunkc tiling::rule --owner \"Google Chrome\" --name \"Developer Tools.\*\" --st
 # this tiling rule is to fix tooltip windows in emacs
 chunkc tiling::rule --owner Emacs --name "^$"  --state float
 chunkc tiling::rule --owner Emacs --state tile
+chunkc tiling::rule --owner \"Microsoft Outlook\"  --name ".*Reminder"  --state float
