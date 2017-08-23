@@ -5,7 +5,7 @@
 #       loading a plugin. '~' expansion is supported.
 #
 
-chunkc core::plugin_dir /usr/local/opt/chunkwm/share/chunkwm_plugins
+chunkc core::plugin_dir /usr/local/opt/chunkwm/share/chunkwm/plugins
 #
 # NOTE: if enabled, chunkwm will monitor the specified plugin_dir
 #       and automatically reload any '.so' file that is changed.
@@ -123,7 +123,7 @@ chunkc tiling::rule --owner \"1Password 6\" --state float
 chunkc tiling::rule --owner Adium --name Contacts --state float
 chunkc tiling::rule --owner VLC --state float
 chunkc tiling::rule --owner IINA --state float
-chunkc tiling::rule --owner \"Google Chrome\" --name \"Developer Tools.\*\" --state float
+chunkc tiling::rule --owner "Google Chrome" --name "chrome-devtools.*" --state float
 # this tiling rule is to fix tooltip windows in emacs
 chunkc tiling::rule --owner Emacs --name "^$"  --state float
 chunkc tiling::rule --owner Emacs --state tile
