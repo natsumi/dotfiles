@@ -127,6 +127,5 @@ chunkc tiling::rule --owner "Google Chrome" --name "chrome-devtools.*" --state f
 # float Flipboard
 chunkc tiling::rule --owner "Google Chrome" --name ".*Flipboard" --state float
 # this tiling rule is to fix tooltip windows in emacs
-chunkc tiling::rule --owner Emacs --name "^$"  --state float
-chunkc tiling::rule --owner Emacs --state tile
+chunkc tiling::rule --owner Emacs --except "^$" --state tile
 chunkc tiling::rule --owner \"Microsoft Outlook\"  --name ".*Reminder"  --state float
