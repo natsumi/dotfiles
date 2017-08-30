@@ -136,7 +136,5 @@ ctrl + alt - w : chunkc tiling::desktop --deserialize ~/.chunkwm_layouts/dev_1
 # macos sierra can also perform this remap for a given keyboard
 # - capslock : khd -p "- escape"
 
-# key remap for norwegian layout \ { }
-# cmd - 7 : khd -p "shift + alt - 7"
-# cmd - 8 : khd -p "shift + alt - 8"
-# cmd - 9 : khd -p "shift + alt - 9"
+# fix screen bug https://github.com/koekeishiya/chunkwm/issues/98
+cmd + shift - 4 -> : chunkc border::clear
