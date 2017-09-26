@@ -6,8 +6,11 @@ bind C-s send-prefix
 ###############
 # TMUX SETTINGS
 ###############
+
+# Massive scrollback history
 set -g history-limit 100000
 set -g default-terminal "screen-256color"
+# Allow fast key repeats
 set -g repeat-time 0
 # address vim mode switching delay (http://superuser.com/a/252717/65504)
 set -s escape-time 0
@@ -16,6 +19,15 @@ setw -g aggressive-resize on
 
 # status bar
 set-option -g status-position top
+
+# Set window/pane colors and add "padding" around panes and windows
+setw -g window-style 'bg=#121212'
+setw -g window-active-style 'bg=#242424'
+# set-option -g pane-active-border-style 'bg=#3a3a3a'
+# set-option -ag pane-active-border-style 'bg=#3a3a3a'
+# set-option -g pane-active-border-fg colour237
+# set-option -g pane-border-fg colour237
+# setw -g pane-border-status bottom
 
 # enable vim focus events
 set -g focus-events on

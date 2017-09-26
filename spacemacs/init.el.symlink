@@ -217,8 +217,9 @@ values."
    ;; dotspacemacs-default-font '("Anonymous Pro for Powerline"
    ;; dotspacemacs-default-font '("Pragmata Pro Mono"
    ;; dotspacemacs-default-font '("Pragmata Pro"
-   dotspacemacs-default-font '("Operator Mono"
-                               :size 15
+   ;; dotspacemacs-default-font '("Operator Mono"
+   dotspacemacs-default-font '("Input Mono"
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 1.4)
