@@ -51,8 +51,4 @@ brew 'universal-ctags/universal-ctags/universal-ctags', args: ['HEAD']
 brew 'ffmpeg'
 brew 'youtube-dl'
 brew 'tmux-mem-cpu-load'
-
-brew 'koekeishiya/formulae/khd'
-brew crisidev/homebrew-chunkwm/chunkwm, args: ['HEAD']
-
 cask 'filebot'
