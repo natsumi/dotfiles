@@ -82,6 +82,11 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
 
+# Ensure that brew python path comes first
+# this fixes an issue of brew installing python2 and python3 and 
+# keeping system python
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
 # Configure online help
 unalias run-help
 autoload run-help
