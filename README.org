@@ -33,7 +33,7 @@ Set repeat delay low
 ** Github
 *** Generate ssh key
     #+BEGIN_SRC bash
-    ssh-keygen
+    ssh-keygen -t rsa
     cat ~/.ssh/id_rsa.pub | pbcopy
     #+END_SRC
     Paste into github's ssh setting
