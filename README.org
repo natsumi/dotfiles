@@ -100,7 +100,7 @@ Set repeat delay low
     #+END_SRC
 ** Python
   #+BEGIN_SRC shell
-  mkdir -p $DOTFILE_DIR/.virtualenv
+  mkdir -p $DEV_DIR/.virtualenv
   brew install python
   pip install easy_setup
   pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
