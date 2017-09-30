@@ -6,7 +6,7 @@ export VISUAL=vim
 export EDITOR=$VISUAL
 
 export DEV_DIR=$HOME/dev
-export DOTFILE_DIR=$HOME/dev/dotfiles
+export DOTFILE_DIR=$DEV_DIR/dotfiles
 export GOPATH=$DEV_DIR/go
 export PATH="$GOPATH/bin:$PATH"
 export PATH="$HOME/.yarn/bin:$PATH"
