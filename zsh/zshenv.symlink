@@ -19,9 +19,6 @@ export GTAGSLABEL=ctags
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-# Tmux 2.2 fix for OSX Sierra
-export EVENT_NOKQUEUE=1
-
 # if rbenv is present, configure it for use
 if which rbenv &> /dev/null; then
     # enable shims and auto-completion
