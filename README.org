@@ -102,7 +102,6 @@ Set repeat delay low
   #+BEGIN_SRC shell
   mkdir -p $DEV_DIR/.virtualenv
   brew install python
-  pip install easy_setup
   pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
   #+END_SRC
 ** Elixir
@@ -128,7 +127,7 @@ Set repeat delay low
     #+END_SRC
 *** Yarn
     #+BEGIN_SRC
-    brew install yarn
+    npm install -g yarn
     #+END_SRC
 *** Linters
     #+BEGIN_SRC shell
