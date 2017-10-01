@@ -101,7 +101,10 @@ values."
      ;; Source Control
      git
      github
-     version-control
+     (version-control :variables
+                      version-control-diff-tool 'diff-hl
+                      version-control-diff-side 'left
+                      version-control-global-margin t)
 
      ;; Tools
      (shell :variables
