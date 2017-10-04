@@ -89,11 +89,12 @@ Set repeat delay low
     #+END_SRC
 *** Linters
     #+BEGIN_SRC shell
-    gem install rufo ruby-lint rubocop scss_lint scss_lint_reporter_checkstyle
+    gem install rufo rubocop scss_lint scss_lint_reporter_checkstyle
     #+END_SRC
 *** Restart your terminal here
-** Poewrline Fonts
+** Fonts
    [[https://github.com/powerline/fonts][Powerline Fonts Repo]]
+   [[http://input.fontbureau.com/download/][Input Mono]]
 ** Brew Bundle
     #+BEGIN_SRC shell
     brew bundle
