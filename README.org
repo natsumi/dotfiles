@@ -164,6 +164,14 @@ Set repeat delay low
     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
     ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
     #+END_SRC
+
+    User develop branch
+    #+BEGIN_SRC sh
+    cd ~/.emacs.d
+    git fetch
+    git checkout develop
+    git pull
+    #+END_SRC
 *** Markdown Support
     #+BEGIN_SRC bash
     npm install -g vmd

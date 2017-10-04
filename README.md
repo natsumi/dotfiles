@@ -1,343 +1,437 @@
-- [OS X Options](#sec-1)
-  - [Hostname](#sec-1-1)
-  - [File Dialogs](#sec-1-2)
-  - [Mouse](#sec-1-3)
-  - [Keyboard](#sec-1-4)
-- [Software](#sec-2)
-  - [Xcode](#sec-2-1)
-  - [Homebrew](#sec-2-2)
-  - [Git](#sec-2-3)
-  - [Github](#sec-2-4)
-    - [Generate ssh key](#sec-2-4-1)
-    - [Spacemacs Github Integration](#sec-2-4-2)
-  - [Dotfile Setup](#sec-2-5)
-  - [ZSH Setup](#sec-2-6)
-    - [Set Default Shell](#sec-2-6-1)
-    - [Prezto](#sec-2-6-2)
-    - [Setup Symlinks](#sec-2-6-3)
-    - [Custom configurations](#sec-2-6-4)
-    - [Restart your terminal](#sec-2-6-5)
-  - [Ruby](#sec-2-7)
-    - [Rbenv](#sec-2-7-1)
-    - [Symlink](#sec-2-7-2)
-    - [Linters](#sec-2-7-3)
-    - [Restart your terminal here](#sec-2-7-4)
-  - [Poewrline Fonts](#sec-2-8)
-  - [Brew Bundle](#sec-2-9)
-  - [Python](#sec-2-10)
-  - [Elixir](#sec-2-11)
-  - [Node](#sec-2-12)
-    - [Node Version Manager](#sec-2-12-1)
-    - [Bower](#sec-2-12-2)
-    - [React Generator](#sec-2-12-3)
-    - [Yarn](#sec-2-12-4)
-    - [Linters](#sec-2-12-5)
-  - [Vim](#sec-2-13)
-    - [Prerequiste](#sec-2-13-1)
-    - [Symlinks](#sec-2-13-2)
-    - [Plugin Installs](#sec-2-13-3)
-  - [SpaceMacs](#sec-2-14)
-    - [Markdown Support](#sec-2-14-1)
-  - [Tmux](#sec-2-15)
-    - [Install Plugins](#sec-2-15-1)
-  - [Tig](#sec-2-16)
-  - [Silver Searcher](#sec-2-17)
-  - [Youtube-dl](#sec-2-18)
-  - [Livestream](#sec-2-19)
-  - [KWM / KHD (Tilling Window Manager)](#sec-2-20)
 
-# OS X Options<a id="sec-1"></a>
+# Table of Contents
 
-## Hostname<a id="sec-1-1"></a>
+1.  [OS X Options](#org3f0cfe8)
+    1.  [Hostname](#orga26acc7)
+    2.  [File Dialogs](#org71a5ece)
+    3.  [Mouse](#org794cebe)
+    4.  [Keyboard](#orgad78dc6)
+2.  [Software](#org5512bd8)
+    1.  [Xcode](#orgb0df728)
+    2.  [Homebrew](#orgfcedb54)
+    3.  [Git](#org2ab03d1)
+    4.  [Github](#orgd9be324)
+        1.  [Generate ssh key](#orgc2728dc)
+        2.  [Spacemacs Github Integration](#orgae77d78)
+    5.  [Dotfile Setup](#org9d66a0b)
+    6.  [ZSH Setup](#org4aac9b5)
+        1.  [Set Default Shell](#org2db791b)
+        2.  [Prezto](#org403f02e)
+        3.  [Setup Symlinks](#org08f5838)
+        4.  [Custom configurations](#org2031ec1)
+        5.  [Restart your terminal](#orgc9773d9)
+    7.  [Ruby](#org8699d61)
+        1.  [Rbenv](#org0165ef9)
+        2.  [Symlink](#org639c630)
+        3.  [Linters](#orge95c8a7)
+        4.  [Restart your terminal here](#orgc7d0b7b)
+    8.  [Poewrline Fonts](#orgef1ccb4)
+    9.  [Brew Bundle](#orgebbbfa8)
+    10. [Python](#org7437369)
+    11. [Elixir](#org98bd002)
+    12. [Node](#orga6bc686)
+        1.  [Node Version Manager](#orgb1687b1)
+        2.  [Bower](#org8bebb5f)
+        3.  [React Generator](#org490fc4d)
+        4.  [Yarn](#org3f47026)
+        5.  [Linters](#org386b397)
+    13. [Vim](#org3cd7748)
+        1.  [Prerequiste](#org24f0dd7)
+        2.  [Symlinks](#org2f56cdb)
+        3.  [Plugin Installs](#org96c7462)
+    14. [SpaceMacs](#org2b1ae3e)
+        1.  [Markdown Support](#orgfaf85c1)
+    15. [Tmux](#orgb3b5280)
+        1.  [Install Plugins](#orgdec9f55)
+    16. [Tig](#orgc59d0cb)
+    17. [Silver Searcher](#orgd3ce23c)
+    18. [Youtube-dl](#orgc377bf1)
+    19. [Livestream](#orge63e38a)
+    20. [KWM / KHD (Tilling Window Manager)](#orge4913a3)
+
+
+<a id="org3f0cfe8"></a>
+
+# OS X Options
+
+
+<a id="orga26acc7"></a>
+
+## Hostname
 
 Change Hostname:
 
-```bash
-sudo scutil --set HostName
-```
+    sudo scutil --set HostName
 
-## File Dialogs<a id="sec-1-2"></a>
+
+<a id="org71a5ece"></a>
+
+## File Dialogs
 
 Set OSX Save dialog to always be expanded
 
-```bash
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
-```
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
 
-## Mouse<a id="sec-1-3"></a>
 
-Set mouse to a faster track speed Uncheck "Scroll direction: Natural"
+<a id="org794cebe"></a>
 
-## Keyboard<a id="sec-1-4"></a>
+## Mouse
 
-Set repeat speed fast Set repeat delay low
+Set mouse to a faster track speed
+Uncheck "Scroll direction: Natural"
 
-# Software<a id="sec-2"></a>
 
-## Xcode<a id="sec-2-1"></a>
+<a id="orgad78dc6"></a>
 
-```bash
-xcode-select --install
-```
+## Keyboard
 
-## Homebrew<a id="sec-2-2"></a>
+Set repeat speed fast
+Set repeat delay low
+
+
+<a id="org5512bd8"></a>
+
+# Software
+
+
+<a id="orgb0df728"></a>
+
+## Xcode
+
+    xcode-select --install
+
+
+<a id="orgfcedb54"></a>
+
+## Homebrew
 
 [Brew](http://brew.sh/)
 
-## Git<a id="sec-2-3"></a>
 
-```bash
-brew install git
-git config --global user.name <user_name>
-git config --global user.email <email>
-git config --global push.default simple
-```
+<a id="org2ab03d1"></a>
 
-## Github<a id="sec-2-4"></a>
+## Git
 
-### Generate ssh key<a id="sec-2-4-1"></a>
+    brew install git
+    git config --global user.name <user_name>
+    git config --global user.email <email>
+    git config --global push.default simple
 
-```bash
-ssh-keygen
-cat ~/.ssh/id_rsa.pub | pbcopy
-```
+
+<a id="orgd9be324"></a>
+
+## Github
+
+
+<a id="orgc2728dc"></a>
+
+### Generate ssh key
+
+    ssh-keygen -t rsa
+    cat ~/.ssh/id_rsa.pub | pbcopy
 
 Paste into github's ssh setting
 
-### Spacemacs Github Integration<a id="sec-2-4-2"></a>
 
-Grant access to repo and gist [Set Access Tokens](https://github.com/settings/tokens)
+<a id="orgae77d78"></a>
 
-```bash
-git config --global github.oauth-token <token>
-```
+### Spacemacs Github Integration
 
-## Dotfile Setup<a id="sec-2-5"></a>
+Grant access to repo and gist
+[Set Access Tokens](https://github.com/settings/tokens)
 
-```bash
-export DOTFILE_DIR=~/dev/dotfiles
-git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
-```
+    git config --global github.oauth-token <token>
 
-## ZSH Setup<a id="sec-2-6"></a>
 
-### Set Default Shell<a id="sec-2-6-1"></a>
+<a id="org9d66a0b"></a>
 
-```bash
-echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
-chsh -s $(which zsh)
-```
+## Dotfile Setup
 
-### Prezto<a id="sec-2-6-2"></a>
+    export DOTFILE_DIR=~/dev/dotfiles
+    git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
+
+
+<a id="org4aac9b5"></a>
+
+## ZSH Setup
+
+
+<a id="org2db791b"></a>
+
+### Set Default Shell
+
+    echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+    chsh -s $(which zsh)
+
+
+<a id="org403f02e"></a>
+
+### Prezto
 
 [Prezto](https://github.com/sorin-ionescu/prezto.git)
 
-```bash
-git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-```
+    git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
-### Setup Symlinks<a id="sec-2-6-3"></a>
 
-```bash
-export DOTFILE_DIR=~/dev/dotfiles
-ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
-ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
-ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
-ln -s $DOTFILE_DIR/zsh/zprofile.symlink ~/.zprofile
-ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
-ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
-```
+<a id="org08f5838"></a>
 
-### Custom configurations<a id="sec-2-6-4"></a>
+### Setup Symlinks
+
+    export DOTFILE_DIR=~/dev/dotfiles
+    ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
+    ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
+    ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
+    ln -s $DOTFILE_DIR/zsh/zprofile.symlink ~/.zprofile
+    ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
+    ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
+
+
+<a id="org2031ec1"></a>
+
+### Custom configurations
 
 edit ~/.zshenv and set your own DEV<sub>DIR</sub> and DOTFILE<sub>DIR</sub>
 
-### Restart your terminal<a id="sec-2-6-5"></a>
 
-## Ruby<a id="sec-2-7"></a>
+<a id="orgc9773d9"></a>
 
-### Rbenv<a id="sec-2-7-1"></a>
+### Restart your terminal
 
-```shell
-brew install ruby-build rbenv
-rbenv install -l # find which is the latest ruby version
-rbenv install 2.4.1
-rbenv local 2.4.1
-rbenv global 2.4.1
-gem install bundle
-rbenv rehash
-```
 
-### Symlink<a id="sec-2-7-2"></a>
+<a id="org8699d61"></a>
 
-```shell
-ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
-```
+## Ruby
 
-### Linters<a id="sec-2-7-3"></a>
 
-```shell
-gem install rufo ruby-lint rubocop scss_lint scss_lint_reporter_checkstyle
-```
+<a id="org0165ef9"></a>
 
-### Restart your terminal here<a id="sec-2-7-4"></a>
+### Rbenv
 
-## Poewrline Fonts<a id="sec-2-8"></a>
+    brew install ruby-build rbenv
+    rbenv install -l # find which is the latest ruby version
+    rbenv install 2.4.1
+    rbenv local 2.4.1
+    rbenv global 2.4.1
+    gem install bundle
+    rbenv rehash
+
+
+<a id="org639c630"></a>
+
+### Symlink
+
+    ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
+
+
+<a id="orge95c8a7"></a>
+
+### Linters
+
+    gem install rufo ruby-lint rubocop scss_lint scss_lint_reporter_checkstyle
+
+
+<a id="orgc7d0b7b"></a>
+
+### Restart your terminal here
+
+
+<a id="orgef1ccb4"></a>
+
+## Poewrline Fonts
 
 [Powerline Fonts Repo](https://github.com/powerline/fonts)
 
-## Brew Bundle<a id="sec-2-9"></a>
 
-```shell
-brew bundle
-```
+<a id="orgebbbfa8"></a>
 
-## Python<a id="sec-2-10"></a>
+## Brew Bundle
 
-```shell
-mkdir -p $DOTFILE_DIR/.virtualenv
-brew install python
-pip install easy_setup
-pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
-```
+    brew bundle
 
-## Elixir<a id="sec-2-11"></a>
 
-```shell
-ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
-```
+<a id="org7437369"></a>
 
-## Node<a id="sec-2-12"></a>
+## Python
 
-### Node Version Manager<a id="sec-2-12-1"></a>
+    mkdir -p $DEV_DIR/.virtualenv
+    brew install python
+    pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
 
-```shell
-nvm ls-remote # lists available versions to install
-nvm install --lts
-nvm use --lts
-npm install -g npm
-nvm alias default node
-```
 
-### Bower<a id="sec-2-12-2"></a>
+<a id="org98bd002"></a>
 
-```shell
-npm install -g bower
-```
+## Elixir
 
-### React Generator<a id="sec-2-12-3"></a>
+    ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
 
-```shell
-npm install -g create-react-app
-```
 
-### Yarn<a id="sec-2-12-4"></a>
+<a id="orga6bc686"></a>
 
-```
-brew install yarn
-```
+## Node
 
-### Linters<a id="sec-2-12-5"></a>
 
-```shell
-npm install -g tern js-beautify
-npm install -g eslint babel-eslint
+<a id="orgb1687b1"></a>
 
-export PKG=eslint-config-airbnb;
-npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
+### Node Version Manager
 
-ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
+    nvm ls-remote # lists available versions to install
+    nvm install --lts
+    nvm use --lts
+    npm install -g npm
+    nvm alias default node
 
-yarn global add prettier
-```
 
-## Vim<a id="sec-2-13"></a>
+<a id="org8bebb5f"></a>
 
-### Prerequiste<a id="sec-2-13-1"></a>
+### Bower
 
-```shell
-mkdir -p ~/.vim/autoload
-```
+    npm install -g bower
 
-### Symlinks<a id="sec-2-13-2"></a>
 
-```bash
-ln -s $DOTFILE_DIR/vim/snippets ~/.vim/
-ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
-ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
-ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
-ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
-ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
-```
+<a id="org490fc4d"></a>
 
-### Plugin Installs<a id="sec-2-13-3"></a>
+### React Generator
 
-Run vim :PlugInstall
+    npm install -g create-react-app
 
-## SpaceMacs<a id="sec-2-14"></a>
 
-```sh
-mkdir -p ~/.spacemacs.d
-git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
-```
+<a id="org3f47026"></a>
 
-### Markdown Support<a id="sec-2-14-1"></a>
+### Yarn
 
-```bash
-npm install -g vmd
-```
+    npm install -g yarn
 
-## Tmux<a id="sec-2-15"></a>
 
-```
-mkdir -p ~/.tmux/plugins
-ln -s $DOTFILE_DIR/tmux/tmux.conf.symlink ~/.tmux.conf
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
+<a id="org386b397"></a>
 
-### Install Plugins<a id="sec-2-15-1"></a>
+### Linters
 
-run tmux ctrl-s shift-i
+    npm install -g tern js-beautify
+    npm install -g eslint babel-eslint
+    
+    export PKG=eslint-config-airbnb;
+    npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
+    
+    ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
+    
+    yarn global add prettier
 
-## Tig<a id="sec-2-16"></a>
 
-```
-ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
-```
+<a id="org3cd7748"></a>
 
-## Silver Searcher<a id="sec-2-17"></a>
+## Vim
 
-```
-ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
-```
 
-## Youtube-dl<a id="sec-2-18"></a>
+<a id="org24f0dd7"></a>
 
-```
-mkdir -p ~/.config/youtube-dl
-ln -s $DOTFILE_DIR/youtube-dl.conf.symlink ~/.config/youtube-dl/config
-```
+### Prerequiste
 
-## Livestream<a id="sec-2-19"></a>
+    mkdir -p ~/.vim/autoload
+
+
+<a id="org2f56cdb"></a>
+
+### Symlinks
+
+    ln -s $DOTFILE_DIR/vim/snippets ~/.vim/
+    ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
+    ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
+    ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
+    ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
+    ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
+
+
+<a id="org96c7462"></a>
+
+### Plugin Installs
+
+Run vim
+:PlugInstall
+
+
+<a id="org2b1ae3e"></a>
+
+## SpaceMacs
+
+    mkdir -p ~/.spacemacs.d
+    git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+    ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+
+User develop branch
+
+    cd ~/.emacs.d
+    git fetch
+    git checkout develop
+    git pull
+
+
+<a id="orgfaf85c1"></a>
+
+### Markdown Support
+
+    npm install -g vmd
+
+
+<a id="orgb3b5280"></a>
+
+## Tmux
+
+    mkdir -p ~/.tmux/plugins
+    ln -s $DOTFILE_DIR/tmux/tmux.conf.symlink ~/.tmux.conf
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+
+<a id="orgdec9f55"></a>
+
+### Install Plugins
+
+run tmux
+ctrl-s shift-i
+
+
+<a id="orgc59d0cb"></a>
+
+## Tig
+
+    ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
+
+
+<a id="orgd3ce23c"></a>
+
+## Silver Searcher
+
+    ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
+
+
+<a id="orgc377bf1"></a>
+
+## Youtube-dl
+
+    mkdir -p ~/.config/youtube-dl
+    ln -s $DOTFILE_DIR/youtube-dl.conf.symlink ~/.config/youtube-dl/config
+
+
+<a id="orge63e38a"></a>
+
+## Livestream
 
 Configure Twitch Oauth
 
-```bash
-livestreamer --twitch-oauth-authenticate
-```
+    livestreamer --twitch-oauth-authenticate
 
 Copy the access<sub>token</sub> in URL to ~/.livestreamerrc
 
-## KWM / KHD (Tilling Window Manager)<a id="sec-2-20"></a>
+
+<a id="orge4913a3"></a>
+
+## KWM / KHD (Tilling Window Manager)
 
 This is experimental.
 
 -   [KWM](<https://github.com/koekeishiya/chunkwm>)
 -   [KHD](<https://github.com/koekeishiya/khd>)
 
-```bash
-ln -s $DOTFILE_DIR/chunkwm/chunkwmrc ~/.chunkwmrc
-ln -s $DOTFILE_DIR/chunkwm/khdrc ~/.khdrc
-```
+    ln -s $DOTFILE_DIR/chunkwm/chunkwmrc ~/.chunkwmrc
+    ln -s $DOTFILE_DIR/chunkwm/khdrc ~/.khdrc
+
