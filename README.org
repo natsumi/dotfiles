@@ -45,7 +45,7 @@ Set repeat delay low
     #+END_SRC
 ** Dotfile Setup
   #+BEGIN_SRC bash
-  export DOTFILE_DIR=~/dev/dotfiles
+  export DOTFILE_DIR=~/path/to/dotfile
   git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
   #+END_SRC
 ** ZSH Setup
@@ -61,7 +61,7 @@ Set repeat delay low
     #+END_SRC
 *** Setup Symlinks
     #+BEGIN_SRC bash
-    export DOTFILE_DIR=~/dev/dotfiles
+    export DOTFILE_DIR=~/path/to/dotfile
     ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
     ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
     ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
@@ -70,7 +70,7 @@ Set repeat delay low
     ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
     #+END_SRC
 *** Custom configurations
-    edit ~/.zshenv and set your own DEV_DIR and DOTFILE_DIR
+    edit ~/.zshenv and set your own ~$DEV_DIR~ and ~$DOTFILE_DIR~
 *** Restart your terminal
 ** Ruby
 *** Rbenv
@@ -211,8 +211,8 @@ Set repeat delay low
 ** KWM / KHD (Tilling Window Manager)
     This is experimental.
 
-    * [KWM](https://github.com/koekeishiya/chunkwm)
-    * [KHD](https://github.com/koekeishiya/khd)
+    [[https://github.com/koekeishiya/chunkwm][Chunkwmrc Window Manager]]
+    [[https://github.com/koekeishiya/khd][Keyboard Hot Keys]]
 
     #+BEGIN_SRC bash
     ln -s $DOTFILE_DIR/chunkwm/chunkwmrc ~/.chunkwmrc
