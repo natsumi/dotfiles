@@ -21,8 +21,8 @@ setw -g aggressive-resize on
 set-option -g status-position top
 
 # Set window/pane colors and add "padding" around panes and windows
-setw -g window-style 'bg=#121212'
-setw -g window-active-style 'bg=#242424'
+setw -g window-style 'bg=#242424'
+setw -g window-active-style 'bg=#121212'
 # set-option -g pane-active-border-style 'bg=#3a3a3a'
 # set-option -ag pane-active-border-style 'bg=#3a3a3a'
 # set-option -g pane-active-border-fg colour237
