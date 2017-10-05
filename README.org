@@ -70,7 +70,7 @@ Set repeat delay low
     ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
     #+END_SRC
 *** Custom configurations
-    edit ~/.zshenv and set your own ~$DEV_DIR~ and ~$DOTFILE_DIR~
+    edit ~~/.zshenv~ and set your own ~$DEV_DIR~ and ~$DOTFILE_DIR~
 *** Restart your terminal
 ** Ruby
 *** Rbenv
@@ -94,6 +94,7 @@ Set repeat delay low
 *** Restart your terminal here
 ** Fonts
    [[https://github.com/powerline/fonts][Powerline Fonts Repo]]
+
    [[http://input.fontbureau.com/download/][Input Mono]]
 ** Brew Bundle
     #+BEGIN_SRC shell
@@ -212,6 +213,7 @@ Set repeat delay low
     This is experimental.
 
     [[https://github.com/koekeishiya/chunkwm][Chunkwmrc Window Manager]]
+
     [[https://github.com/koekeishiya/khd][Keyboard Hot Keys]]
 
     #+BEGIN_SRC bash
