@@ -141,7 +141,7 @@ Set repeat delay low
 
     ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
 
-    yarn global add prettier
+    npm install -g prettier
     #+END_SRC
 ** Vim
 *** Prerequiste
