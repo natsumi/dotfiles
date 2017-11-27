@@ -108,7 +108,9 @@ Set repeat delay low
   #+END_SRC
 ** Elixir
    #+BEGIN_SRC shell
-   ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
+     ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
+     mix local.hex
+     mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
    #+END_SRC
 ** Node
 *** Node Version Manager
