@@ -137,13 +137,14 @@ Set repeat delay low
     #+BEGIN_SRC shell
     npm install -g tern js-beautify
     npm install -g eslint babel-eslint
+    npm install -g prettier
 
     export PKG=eslint-config-airbnb;
     npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install -g "$PKG@latest"
 
     ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
+    ln -s $DOTFILE_DIR/prettierrc.symlink ~/.prettierrc
 
-    npm install -g prettier
     #+END_SRC
 ** Vim
 *** Prerequiste
