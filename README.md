@@ -1,61 +1,61 @@
 
 # Table of Contents
 
-1.  [OS X Options](#org34a7611)
-    1.  [Hostname](#org905b898)
-    2.  [File Dialogs](#org9d6d08e)
-    3.  [Mouse](#org5f05ae8)
-    4.  [Keyboard](#orgcc32ea0)
-2.  [Software](#org1de0e92)
-    1.  [Xcode](#org4f8609e)
-    2.  [Homebrew](#org1b5df95)
-    3.  [Git](#orgd850b23)
-    4.  [Github](#org6e6049d)
-        1.  [Generate ssh key](#org505ccaf)
-        2.  [Spacemacs Github Integration](#orgc9f20fa)
-    5.  [Dotfile Setup](#orgbc3c58e)
-    6.  [ZSH Setup](#orgc9d6e23)
-        1.  [Set Default Shell](#orge84f034)
-        2.  [Prezto](#orgf2661b2)
-        3.  [Setup Symlinks](#orgc07843e)
-        4.  [Custom configurations](#org99fcad9)
-        5.  [Restart your terminal](#orgf379e01)
-    7.  [Ruby](#org7c1ba6d)
-        1.  [Rbenv](#orga532da9)
-        2.  [Symlink](#org86dabc3)
-        3.  [Linters / Dev gems](#orgadca88e)
-        4.  [Restart your terminal here](#org811dc58)
-    8.  [Fonts](#orgf7abae9)
-    9.  [Brew Bundle](#org9d36d97)
-    10. [Python](#orga89e521)
-    11. [Elixir](#org1a5fb61)
-    12. [Node](#org7b0e825)
-        1.  [Node Version Manager](#org684932f)
-        2.  [Bower](#orgd439cd0)
-        3.  [React Generator](#org92b2d19)
-        4.  [Yarn](#org49e9761)
-        5.  [Linters](#org4461d8c)
-    13. [Vim](#orga9ac809)
-        1.  [Prerequiste](#orgd7cfc39)
-        2.  [Symlinks](#orge033627)
-        3.  [Plugin Installs](#orgfacc505)
-    14. [SpaceMacs](#org8419bf3)
-        1.  [Markdown Support](#org74e70ad)
-    15. [Tmux](#org4c38f7e)
-        1.  [Install Plugins](#org51b5079)
-    16. [Tig](#orgace7844)
-    17. [Silver Searcher](#orgecb5514)
-    18. [Youtube-dl](#org89620c6)
-    19. [Livestream](#orgde10ce1)
-    20. [KWM / KHD (Tilling Window Manager)](#org84d3af3)
+1.  [OS X Options](#org9599ace)
+    1.  [Hostname](#orgfa71e11)
+    2.  [File Dialogs](#org65f273a)
+    3.  [Mouse](#org0d4e692)
+    4.  [Keyboard](#org3c83d7c)
+2.  [Software](#orgf7f6a1d)
+    1.  [Xcode](#org487ee45)
+    2.  [Homebrew](#org17d430d)
+    3.  [Git](#org669b44a)
+    4.  [Github](#org029b529)
+        1.  [Generate ssh key](#org503da8d)
+        2.  [Spacemacs Github Integration](#orgf3209fb)
+    5.  [Dotfile Setup](#org274564d)
+    6.  [ZSH Setup](#org48b8d62)
+        1.  [Set Default Shell](#org3628394)
+        2.  [Prezto](#org675d800)
+        3.  [Setup Symlinks](#org3be8330)
+        4.  [Custom configurations](#org93d3c80)
+        5.  [Restart your terminal](#org66dffba)
+    7.  [Ruby](#org011f325)
+        1.  [Rbenv](#org5e98861)
+        2.  [Symlink](#orgc5f9c73)
+        3.  [Linters / Dev gems](#org7f6bb4d)
+        4.  [Restart your terminal here](#org6d912f1)
+    8.  [Fonts](#org4066bfe)
+    9.  [Brew Bundle](#org1a64a72)
+    10. [Python](#org9b526bb)
+    11. [Elixir](#org9b9db25)
+    12. [Node](#org31591de)
+        1.  [Node Version Manager](#org30707eb)
+        2.  [Bower](#org46b503d)
+        3.  [React Generator](#orgb8f5b23)
+        4.  [Yarn](#org648846d)
+        5.  [Linters](#orgc413089)
+    13. [Vim](#org0171958)
+        1.  [Prerequiste](#org72fd54a)
+        2.  [Symlinks](#org18cf580)
+        3.  [Plugin Installs](#org1f2085e)
+    14. [SpaceMacs](#orgf4f50a7)
+        1.  [Markdown Support](#org73ec50d)
+    15. [Tmux](#org00d8f06)
+        1.  [Install Plugins](#org53114ee)
+    16. [Tig](#orgae1d077)
+    17. [Silver Searcher](#org1cd94e8)
+    18. [Youtube-dl](#org79ce3d7)
+    19. [Livestream](#orgb78ad57)
+    20. [KWM / KHD (Tilling Window Manager)](#orgf15ba1e)
 
 
-<a id="org34a7611"></a>
+<a id="org9599ace"></a>
 
 # OS X Options
 
 
-<a id="org905b898"></a>
+<a id="orgfa71e11"></a>
 
 ## Hostname
 
@@ -64,7 +64,7 @@ Change Hostname:
     sudo scutil --set HostName
 
 
-<a id="org9d6d08e"></a>
+<a id="org65f273a"></a>
 
 ## File Dialogs
 
@@ -74,7 +74,7 @@ Set OSX Save dialog to always be expanded
     defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
 
 
-<a id="org5f05ae8"></a>
+<a id="org0d4e692"></a>
 
 ## Mouse
 
@@ -82,7 +82,7 @@ Set mouse to a faster track speed
 Uncheck "Scroll direction: Natural"
 
 
-<a id="orgcc32ea0"></a>
+<a id="org3c83d7c"></a>
 
 ## Keyboard
 
@@ -90,26 +90,26 @@ Set repeat speed fast
 Set repeat delay low
 
 
-<a id="org1de0e92"></a>
+<a id="orgf7f6a1d"></a>
 
 # Software
 
 
-<a id="org4f8609e"></a>
+<a id="org487ee45"></a>
 
 ## Xcode
 
     xcode-select --install
 
 
-<a id="org1b5df95"></a>
+<a id="org17d430d"></a>
 
 ## Homebrew
 
 [Brew](http://brew.sh/)
 
 
-<a id="orgd850b23"></a>
+<a id="org669b44a"></a>
 
 ## Git
 
@@ -119,12 +119,12 @@ Set repeat delay low
     git config --global push.default simple
 
 
-<a id="org6e6049d"></a>
+<a id="org029b529"></a>
 
 ## Github
 
 
-<a id="org505ccaf"></a>
+<a id="org503da8d"></a>
 
 ### Generate ssh key
 
@@ -134,7 +134,7 @@ Set repeat delay low
 Paste into github's ssh setting
 
 
-<a id="orgc9f20fa"></a>
+<a id="orgf3209fb"></a>
 
 ### Spacemacs Github Integration
 
@@ -144,7 +144,7 @@ Grant access to repo and gist
     git config --global github.oauth-token <token>
 
 
-<a id="orgbc3c58e"></a>
+<a id="org274564d"></a>
 
 ## Dotfile Setup
 
@@ -152,12 +152,12 @@ Grant access to repo and gist
     git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
 
 
-<a id="orgc9d6e23"></a>
+<a id="org48b8d62"></a>
 
 ## ZSH Setup
 
 
-<a id="orge84f034"></a>
+<a id="org3628394"></a>
 
 ### Set Default Shell
 
@@ -165,7 +165,7 @@ Grant access to repo and gist
     chsh -s $(which zsh)
 
 
-<a id="orgf2661b2"></a>
+<a id="org675d800"></a>
 
 ### Prezto
 
@@ -174,7 +174,7 @@ Grant access to repo and gist
     git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
 
-<a id="orgc07843e"></a>
+<a id="org3be8330"></a>
 
 ### Setup Symlinks
 
@@ -187,24 +187,24 @@ Grant access to repo and gist
     ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
 
 
-<a id="org99fcad9"></a>
+<a id="org93d3c80"></a>
 
 ### Custom configurations
 
 edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
 
 
-<a id="orgf379e01"></a>
+<a id="org66dffba"></a>
 
 ### Restart your terminal
 
 
-<a id="org7c1ba6d"></a>
+<a id="org011f325"></a>
 
 ## Ruby
 
 
-<a id="orga532da9"></a>
+<a id="org5e98861"></a>
 
 ### Rbenv
 
@@ -217,26 +217,26 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
     rbenv rehash
 
 
-<a id="org86dabc3"></a>
+<a id="orgc5f9c73"></a>
 
 ### Symlink
 
     ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
 
 
-<a id="orgadca88e"></a>
+<a id="org7f6bb4d"></a>
 
 ### Linters / Dev gems
 
     gem install pry pry-doc pry-bloodline ruby_parser rufo rubocop scss_lint scss_lint_reporter_checkstyle
 
 
-<a id="org811dc58"></a>
+<a id="org6d912f1"></a>
 
 ### Restart your terminal here
 
 
-<a id="orgf7abae9"></a>
+<a id="org4066bfe"></a>
 
 ## Fonts
 
@@ -245,14 +245,14 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
 [Input Mono](http://input.fontbureau.com/download/)
 
 
-<a id="org9d36d97"></a>
+<a id="org1a64a72"></a>
 
 ## Brew Bundle
 
     brew bundle
 
 
-<a id="orga89e521"></a>
+<a id="org9b526bb"></a>
 
 ## Python
 
@@ -261,7 +261,7 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
     pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
 
 
-<a id="org1a5fb61"></a>
+<a id="org9b9db25"></a>
 
 ## Elixir
 
@@ -270,12 +270,12 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
     mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
 
 
-<a id="org7b0e825"></a>
+<a id="org31591de"></a>
 
 ## Node
 
 
-<a id="org684932f"></a>
+<a id="org30707eb"></a>
 
 ### Node Version Manager
 
@@ -286,52 +286,52 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
     nvm alias default node
 
 
-<a id="orgd439cd0"></a>
+<a id="org46b503d"></a>
 
 ### Bower
 
     npm install -g bower
 
 
-<a id="org92b2d19"></a>
+<a id="orgb8f5b23"></a>
 
 ### React Generator
 
     npm install -g create-react-app
 
 
-<a id="org49e9761"></a>
+<a id="org648846d"></a>
 
 ### Yarn
 
     npm install -g yarn
 
 
-<a id="org4461d8c"></a>
+<a id="orgc413089"></a>
 
 ### Linters
 
     npm install -g tern js-beautify
-    npm install -g eslint babel-eslint
+    npm install -g eslint babel-eslint eslint-plugin-react
     npm install -g prettier
     
     ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
     ln -s $DOTFILE_DIR/prettierrc.symlink ~/.prettierrc
 
 
-<a id="orga9ac809"></a>
+<a id="org0171958"></a>
 
 ## Vim
 
 
-<a id="orgd7cfc39"></a>
+<a id="org72fd54a"></a>
 
 ### Prerequiste
 
     mkdir -p ~/.vim/autoload
 
 
-<a id="orge033627"></a>
+<a id="org18cf580"></a>
 
 ### Symlinks
 
@@ -343,7 +343,7 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
     ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
 
 
-<a id="orgfacc505"></a>
+<a id="org1f2085e"></a>
 
 ### Plugin Installs
 
@@ -351,7 +351,7 @@ Run vim
 :PlugInstall
 
 
-<a id="org8419bf3"></a>
+<a id="orgf4f50a7"></a>
 
 ## SpaceMacs
 
@@ -367,14 +367,14 @@ User develop branch
     git pull
 
 
-<a id="org74e70ad"></a>
+<a id="org73ec50d"></a>
 
 ### Markdown Support
 
     npm install -g vmd
 
 
-<a id="org4c38f7e"></a>
+<a id="org00d8f06"></a>
 
 ## Tmux
 
@@ -383,7 +383,7 @@ User develop branch
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 
-<a id="org51b5079"></a>
+<a id="org53114ee"></a>
 
 ### Install Plugins
 
@@ -391,21 +391,21 @@ run tmux
 ctrl-s shift-i
 
 
-<a id="orgace7844"></a>
+<a id="orgae1d077"></a>
 
 ## Tig
 
     ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
 
 
-<a id="orgecb5514"></a>
+<a id="org1cd94e8"></a>
 
 ## Silver Searcher
 
     ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
 
 
-<a id="org89620c6"></a>
+<a id="org79ce3d7"></a>
 
 ## Youtube-dl
 
@@ -413,7 +413,7 @@ ctrl-s shift-i
     ln -s $DOTFILE_DIR/youtube-dl.conf.symlink ~/.config/youtube-dl/config
 
 
-<a id="orgde10ce1"></a>
+<a id="orgb78ad57"></a>
 
 ## Livestream
 
@@ -424,7 +424,7 @@ Configure Twitch Oauth
 Copy the access<sub>token</sub> in URL to ~/.livestreamerrc
 
 
-<a id="org84d3af3"></a>
+<a id="orgf15ba1e"></a>
 
 ## KWM / KHD (Tilling Window Manager)
 

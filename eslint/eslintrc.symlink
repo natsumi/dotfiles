@@ -8,7 +8,11 @@
         "brace-style": ["error", "stroustrup"]
     },
     "parserOptions": {
-      "ecmaVersion": 2017
+        "ecmaVersion": 2017,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
     },
     "env": {
         "browser": true,

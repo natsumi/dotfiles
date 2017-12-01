@@ -135,12 +135,12 @@ Set repeat delay low
     #+END_SRC
 *** Linters
     #+BEGIN_SRC shell
-    npm install -g tern js-beautify
-    npm install -g eslint babel-eslint
-    npm install -g prettier
+      npm install -g tern js-beautify
+      npm install -g eslint babel-eslint eslint-plugin-react
+      npm install -g prettier
 
-    ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
-    ln -s $DOTFILE_DIR/prettierrc.symlink ~/.prettierrc
+      ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
+      ln -s $DOTFILE_DIR/prettierrc.symlink ~/.prettierrc
 
     #+END_SRC
 ** Vim
