@@ -1,8 +1,11 @@
 {
     "extends": "prettier",
     "rules": {
-        "indent": ["error", 2],
+        "indent": ["error", 4],
         "brace-style": ["error", "stroustrup"]
+    },
+    "parserOptions": {
+      "ecmaVersion": 2017
     },
     "env": {
         "browser": true,
