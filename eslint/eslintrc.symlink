@@ -1,22 +1,16 @@
 {
-    "extends": [
-      "prettier",
-      "plugin:react/recommended"
-    ],
-    "rules": {
-        "indent": ["error", 4],
-        "brace-style": ["error", "stroustrup"]
-    },
-    "parserOptions": {
-        "ecmaVersion": 2017,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "env": {
-        "browser": true,
-        "es6": true,
-        "jquery": true
+  "extends": ["prettier", "plugin:react/recommended"],
+  "rules": {},
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
     }
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jquery": true
+  }
 }

@@ -385,6 +385,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; Enable prettier-js
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode)
+  (add-hook 'json-mode-hook 'prettier-js-mode)
+  (add-hook 'scss-mode-hook 'prettier-js-mode)
 
   ;; Enable full screen magit
   (setq-default git-magit-status-fullscreen t)
