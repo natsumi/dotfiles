@@ -1,5 +1,8 @@
 {
-    "extends": "prettier",
+    "extends": [
+      "prettier",
+      "plugin:react/recommended"
+    ],
     "rules": {
         "indent": ["error", 4],
         "brace-style": ["error", "stroustrup"]
