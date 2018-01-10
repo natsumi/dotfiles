@@ -77,9 +77,9 @@ Set repeat delay low
     #+BEGIN_SRC shell
     brew install ruby-build rbenv
     rbenv install -l # find which is the latest ruby version
-    rbenv install 2.4.1
-    rbenv local 2.4.1
-    rbenv global 2.4.1
+    rbenv install 2.5.0
+    rbenv local 2.5.0
+    rbenv global 2.5.0
     gem install bundle
     rbenv rehash
     #+END_SRC
