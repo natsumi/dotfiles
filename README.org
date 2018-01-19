@@ -58,6 +58,7 @@ Set repeat delay low
     [[https://github.com/sorin-ionescu/prezto.git][Prezto]]
     #+BEGIN_SRC bash
     git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+    git clone --recursive https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
     #+END_SRC
 *** Setup Symlinks
     #+BEGIN_SRC bash
