@@ -31,11 +31,13 @@ zstyle ':prezto:load' pmodule \
   'homebrew' \
   'ruby' \
   'rails' \
+  'node' \
   'git' \
   'fasd' \
   'tmux' \
   'completion' \
   'syntax-highlighting' \
+  'autosuggestions' \
   'history-substring-search' \
   'contrib-prompt' \
   'prompt'
