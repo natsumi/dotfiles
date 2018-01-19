@@ -1,5 +1,5 @@
 # ZPlug
-export ZPLUG_HOME=/usr/local/opt/zplug
+# export ZPLUG_HOME=/usr/local/opt/zplug
 
 # use vim as the visual editor
 export VISUAL=vim
@@ -19,12 +19,6 @@ export GTAGSLABEL=ctags
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-# if rbenv is present, configure it for use
-if which rbenv &> /dev/null; then
-    # enable shims and auto-completion
-    eval "$(rbenv init -)"
-fi
-
 # if Virtualenv is install
 if which virtualenvwrapper.sh &> /dev/null; then
   export VIRTUALENVWRAPPER_LOG_DIR=$DEV_DIR/.virtualenv
@@ -36,7 +30,7 @@ fi
 export PATH="/usr/local/heroku/bin:/usr/local/bin:$HOME/.rbenv/bin:$PATH"
 
 # Init Zplug
-[[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
+# [[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local

@@ -44,7 +44,7 @@ fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fpath)
 autoload -U compinit
 compinit
 
-##############
+###################
 # TERMINAL SETTINGS
 ###################
 
@@ -71,15 +71,15 @@ bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 ###################
 
 # Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
+# if ! zplug check --verbose; then
+#     printf "Install? [y/N]: "
+#     if read -q; then
+#         echo; zplug install
+#     fi
+# fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+# zplug load --verbose
 
 # Ensure that brew python path comes first
 # this fixes an issue of brew installing python2 and python3 and 
