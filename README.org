@@ -176,6 +176,15 @@ Set repeat delay low
     git checkout develop
     git pull
     #+END_SRC
+
+*** Gtag
+    [[https://www.gnu.org/software/global/download.html][Download Global]]
+    #+BEGIN_SRC sh
+      tar xvzf <filenamee>
+      cd <global_dir>
+      ./configure --with-universal-ctags=/usr/local/bin/ctags --with-sqlite3
+      ./make install
+    #+END_SRC
 *** Markdown Support
     #+BEGIN_SRC bash
     npm install -g vmd
