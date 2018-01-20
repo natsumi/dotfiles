@@ -13,7 +13,7 @@ export PATH="$HOME/.yarn/bin:$PATH"
 export PATH="$PATH:/usr/local/opt/go/libexec/bin"
 
 # setup gtags to use a ctag backend
-export GTAGSCONF=$HOME/.gtags
+export GTAGSCONF=$HOME/.gtags.conf
 export GTAGSLABEL=ctags
 
 # Elixir IEX History

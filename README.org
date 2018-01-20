@@ -166,6 +166,7 @@ Set repeat delay low
     mkdir -p ~/.spacemacs.d
     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
     ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
+    ln -s $DOTFILE_DIR/gtags.symlink ~/.gtags.conf
     #+END_SRC
 
     User develop branch
