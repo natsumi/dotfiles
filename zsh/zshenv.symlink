@@ -14,7 +14,7 @@ export PATH="$PATH:/usr/local/opt/go/libexec/bin"
 
 # setup gtags to use a ctag backend
 export GTAGSCONF=$HOME/.gtags.conf
-export GTAGSLABEL=ctags
+export GTAGSLABEL=pygments
 
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled"
