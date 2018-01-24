@@ -1,5 +1,5 @@
 # ZPlug
-# export ZPLUG_HOME=/usr/local/opt/zplug
+export ZPLUG_HOME=/usr/local/opt/zplug
 
 # use vim as the visual editor
 export VISUAL=vim
@@ -30,7 +30,8 @@ fi
 export PATH="/usr/local/heroku/bin:/usr/local/bin:$HOME/.rbenv/bin:$PATH"
 
 # Init Zplug
-# [[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
+export NVM_AUTO_USE=true
+[[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
