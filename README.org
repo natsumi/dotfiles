@@ -128,13 +128,14 @@ Set repeat delay low
     #+END_SRC
 *** Yarn
     #+BEGIN_SRC
-    npm install -g yarn
+    brew install yarn --without-node
     #+END_SRC
 *** Linters
     #+BEGIN_SRC shell
       npm install -g tern js-beautify
       npm install -g eslint babel-eslint eslint-plugin-react
       npm install -g prettier
+      npm install -g stylelint stylelint-scss
 
       ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
       ln -s $DOTFILE_DIR/prettierrc.symlink ~/.prettierrc
