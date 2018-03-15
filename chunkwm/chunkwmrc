@@ -140,7 +140,7 @@ chunkc set window_fade_duration          0.5
 #       to pass value containing a whitespace.
 #
 
-# chunkc tiling::rule --owner \"System Preferences\" --state tile
+chunkc tiling::rule --name \".*Preferences.*\" --state float
 chunkc tiling::rule --owner Finder --state float
 chunkc tiling::rule --owner Archive Utility --state float
 chunkc tiling::rule --owner Preview --state float
