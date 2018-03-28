@@ -4,4 +4,7 @@ Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 Metrics/MethodLength:
   Max: 30
-      
+Layout/TrailingBlankLines:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
