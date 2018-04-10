@@ -87,6 +87,7 @@ Set repeat delay low
 *** Symlink
     #+BEGIN_SRC shell
     ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
+    ln -s $DOTFILE_DIR/rails/gemrc.symlink ~/.gemrc
     ln -s $DOTFILE_DIR/rails/rubocop.yml.symlink ~/.rubocop.yml
     #+END_SRC
 *** Linters / Dev gems
