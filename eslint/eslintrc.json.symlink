@@ -1,5 +1,5 @@
 {
-  "extends": ["prettier", "plugin:react/recommended"],
+  "extends": ["airbnb", "prettier", "plugin:react/recommended"],
   "rules": {},
   "parserOptions": {
     "ecmaVersion": 2017,
@@ -11,6 +11,5 @@
   "env": {
     "browser": true,
     "es6": true,
-    "jquery": true
   }
 }

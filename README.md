@@ -316,8 +316,8 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
     npm install -g tern js-beautify
     npm install -g eslint babel-eslint eslint-plugin-react
     npm install -g prettier
-    
-    ln -s $DOTFILE_DIR/eslint/eslintrc.symlink ~/.eslintrc
+
+    ln -s $DOTFILE_DIR/eslint/eslintrc.json.symlink ~/.eslintrc.json
     ln -s $DOTFILE_DIR/prettierrc.symlink ~/.prettierrc
 
 
