@@ -145,6 +145,13 @@ Set repeat delay low
       ln -s $DOTFILE_DIR/prettierrc.symlink ~/.prettierrc
 
     #+END_SRC
+*** Alfred Integration
+    #+BEGIN_SRC shell
+      ln -s $(which node) /usr/local/bin/node
+      npm install -g alfred-fkill
+      npm install -g alfred-hl
+    #+END_SRC
+
 ** Vim
 *** Prerequiste
     #+BEGIN_SRC shell
