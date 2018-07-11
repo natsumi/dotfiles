@@ -108,7 +108,11 @@ Set repeat delay low
 ** Python
   #+BEGIN_SRC shell
   mkdir -p $DEV_DIR/.virtualenv
-  brew install python
+  brew install pyenv
+  pyenv install 3.7.0
+  pyenv install 2.7.15
+  pyenv local 3.7.0
+  pyenv global 3.7.0
   pip install virtualenv virtualenvwrapper powerline-status flake8 pygments
   #+END_SRC
 ** Elixir
