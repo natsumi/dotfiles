@@ -6,6 +6,7 @@ export VISUAL=vim
 export EDITOR=$VISUAL
 
 export DEV_DIR=$HOME/dev
+export WORKON_HOME=$DEV_DIR
 export DOTFILE_DIR=$DEV_DIR/dotfiles
 export GOPATH=$DEV_DIR/go
 export PATH="$GOPATH/bin:$PATH"
@@ -18,14 +19,6 @@ export GTAGSLABEL=pygments
 
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled"
-
-# if Virtualenv is install
-if which virtualenvwrapper.sh &> /dev/null; then
-  export VIRTUALENVWRAPPER_LOG_DIR=$DEV_DIR/.virtualenv
-  export VIRTUALENVWRAPPER_HOOK_DIR=$DEV_DIR/.virtualenv
-  export WORKON_HOME=$DEV_DIR
-  source /usr/local/bin/virtualenvwrapper.sh
-fi
 
 export PATH="/usr/local/heroku/bin:/usr/local/bin:$HOME/.rbenv/bin:$PATH"
 
