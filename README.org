@@ -209,6 +209,10 @@ Set repeat delay low
 *** Install Plugins
      run tmux
      ctrl-s shift-i
+** FZF
+   #+BEGIN_SRC
+    /usr/local/opt/fzf/install
+   #+END_SRC
 ** Tig
    #+BEGIN_SRC
    ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
