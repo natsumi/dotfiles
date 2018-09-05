@@ -1,0 +1,16 @@
+-o "%(title)s - (%(duration)ss) [%(resolution)s] [%(id)s].%(ext)s"
+
+# Uniform Format
+--prefer-ffmpeg
+--merge-output-format mkv
+
+# Get All Subs to SRT
+--embed-subs
+--all-subs
+
+# Get metadata
+--add-metadata
+--write-all-thumbnails
+
+# Ignore playlists
+--no-playlist

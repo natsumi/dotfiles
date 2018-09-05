@@ -224,7 +224,7 @@ Set repeat delay low
 ** Youtube-dl
    #+BEGIN_SRC
    mkdir -p ~/.config/youtube-dl
-   ln -s $DOTFILE_DIR/youtube-dl.conf.symlink ~/.config/youtube-dl/config
+   ln -s $DOTFILE_DIR/youtube-dl/youtube-dl.conf.symlink ~/.config/youtube-dl/config
    #+END_SRC
 ** Livestream
     Configure Twitch Oauth
