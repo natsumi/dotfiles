@@ -1,7 +1,10 @@
 # taken form: https://www.reddit.com/r/DataHoarder/comments/858ny5/my_youtubedl_config_downloading_entire_channels/
 
 -i
--o "%(uploader)s (%(uploader_id)s)/%(upload_date)s - %(title)s - (%(duration)ss) [%(resolution)s] [%(id)s].%(ext)s"
+-o "%(uploader)s (%(uploader_id)s)/%(playlist)s/%(upload_date)s - %(title)s - (%(duration)ss) [%(resolution)s] [%(id)s].%(ext)s"
+
+# Downloader
+--external-downloader axel
 
 # Archive Settings
 --download-archive youtube-dl-archive.txt
@@ -12,14 +15,13 @@
 --merge-output-format mkv
 
 # Get All Subs to SRT
---write-sub
+--embed-sub
 --all-subs
---convert-subs srt
 
 # Get metadata
 --add-metadata
 --write-description
---write-thumbnail
+--write-all-thumbnails
 
 # Debug
 -v

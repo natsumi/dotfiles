@@ -1,5 +1,8 @@
 -o "%(title)s - (%(duration)ss) [%(resolution)s] [%(id)s].%(ext)s"
 
+# Downloader
+--external-downloader axel
+
 # Uniform Format
 --prefer-ffmpeg
 --merge-output-format mkv
