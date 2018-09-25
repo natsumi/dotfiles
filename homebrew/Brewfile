@@ -3,6 +3,9 @@ tap "homebrew/bundle"
 tap "universal-ctags/universal-ctags"
 tap "d12frosted/emacs-plus"
 tap "neovim/neovim"
+tap mas-cli/tap
+tap-pin mas-cli/tap
+brew mas
 
 brew "autoconf"
 brew "readline"

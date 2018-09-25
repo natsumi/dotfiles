@@ -7,7 +7,6 @@ brew cask install google-chrome
 brew cask install homebrew/cask-versions/firefox-developer-edition
 brew cask install alfred
 brew cask install dropbox
-brew cask install 1password
 
 # Development
 brew cask install iterm2
