@@ -1,21 +1,7 @@
 * OS X Options
-** Hostname
-   Change Hostname:
-   #+BEGIN_SRC bash
-   sudo scutil --set HostName
-   #+END_SRC
-** File Dialogs
-   Set OSX Save dialog to always be expanded
-   #+BEGIN_SRC bash
-   defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-   defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
-   #+END_SRC
 ** Mouse
 Set mouse to a faster track speed
 Uncheck "Scroll direction: Natural"
-** Keyboard
-Set repeat speed fast
-Set repeat delay low
 * Software
 ** Xcode
   #+BEGIN_SRC bash
