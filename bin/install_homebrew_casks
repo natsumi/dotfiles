@@ -1,0 +1,26 @@
+#! /usr/bin/env bash
+
+# Installs applications for new systems
+
+# Producitvity applications
+brew cask install google-chrome
+brew cask install homebrew/cask-versions/firefox-developer-edition
+brew cask install alfred
+brew cask install dropbox
+brew cask install 1password
+
+# Development
+brew cask install iterm2
+brew cask install slack
+brew cask install visual-studio-code
+brew cask install tableplus
+brew cask install ngrok
+
+# Utilities
+brew cask install the-unarchiver
+brew cask install caffeine
+
+# Media Players
+brew cask install vlc
+brew cask install iina
+brew cask install spotify
