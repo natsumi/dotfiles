@@ -52,6 +52,7 @@ Set repeat delay low
 *** Set Default Shell
     #+begin_src bash
     brew install zsh
+    brew install zplug
     echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
     chsh -s $(which zsh)
     #+end_src
