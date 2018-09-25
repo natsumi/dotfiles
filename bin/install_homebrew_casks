@@ -14,6 +14,7 @@ brew cask install iterm2
 brew cask install slack
 brew cask install visual-studio-code
 brew cask install tableplus
+brew cask install dbngin
 brew cask install ngrok
 
 # Utilities
