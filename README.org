@@ -30,6 +30,10 @@ Set repeat delay low
     git config --global user.email <email>
     git config --global push.default simple
     #+END_SRC
+** Desktop Applications
+    #+BEGIN_SRC bash
+    brew bundle $DEV_DIR/homebrew/applications_caskfile
+    #+END_SRC
 ** Github
 *** Generate ssh key
     #+BEGIN_SRC bash
@@ -105,7 +109,7 @@ Set repeat delay low
    [[http://input.fontbureau.com/download/][Input Mono]]
 ** Brew Bundle
     #+BEGIN_SRC shell
-    brew bundle
+    brew bundle $DEV_DIR/homebrew/Brewfile
     #+END_SRC
 ** Python
   #+BEGIN_SRC shell

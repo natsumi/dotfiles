@@ -1,0 +1,29 @@
+# Installs applications for new systems
+
+# Install Cask Support
+tap "caskroom/cask"
+tap "homebrew/bundle"
+tap homebrew/cask-versions/firefox-developer-edition
+
+# Producitvity applications
+cask install google-chrome
+cask install firefox
+cask install alfred
+cask install dropbox
+cask install 1password
+
+# Development
+cask install iterm2
+cask install slack
+cask install visual-studio-code
+cask install tableplus
+cask install ngrok
+
+# Utilities
+cask install the-unarchiver
+cask install caffeine
+
+# Media Players
+cask install vlc
+cask install iina
+cask install spotify
