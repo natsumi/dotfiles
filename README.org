@@ -51,6 +51,7 @@ Set repeat delay low
 ** ZSH Setup
 *** Set Default Shell
     #+begin_src bash
+    brew install zsh
     echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
     chsh -s $(which zsh)
     #+end_src
@@ -62,7 +63,7 @@ Set repeat delay low
     #+END_SRC
 *** Setup Symlinks
     #+BEGIN_SRC bash
-    export DOTFILE_DIR=~/path/to/dotfile
+    export DOTFILE_DIR=~/path/to/dotfiles
     ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
     ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
     ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
