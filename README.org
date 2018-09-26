@@ -106,18 +106,17 @@
     #+END_SRC
 *** Yarn
     #+BEGIN_SRC
-    brew install yarn --without-node
+    npm install -g yarn
     #+END_SRC
 *** Linters
     #+BEGIN_SRC shell
-      npm install -g tern js-beautify
-      npm install -g eslint babel-eslint eslint-plugin-react
-      npm install -g prettier
-      npm install -g stylelint stylelint-scss
+     npm install -g tern js-beautify \
+    eslint babel-eslint eslint-plugin-react \
+    prettier \
+    stylelint stylelint-scss
 
-      ln -s $DOTFILE_DIR/eslint/eslintrc.json.symlink ~/.eslintrc.json
-      ln -s $DOTFILE_DIR/prettierrc.symlink ~/.prettierrc
-
+    stow -v --target=$HOME eslint
+    stow -v --target=$HOME prettier
     #+END_SRC
 *** Alfred Integration
     #+BEGIN_SRC shell
