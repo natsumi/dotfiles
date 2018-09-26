@@ -2,7 +2,7 @@
 ** Mouse
 Set mouse to a faster track speed
 Uncheck "Scroll direction: Natural"
-* Software
+* Software Prerequiste
 ** Xcode
   #+BEGIN_SRC bash
   xcode-select --install
@@ -11,36 +11,46 @@ Uncheck "Scroll direction: Natural"
    [[http://brew.sh/][Brew]]
 ** Git
     #+BEGIN_SRC bash
-    sh bin/apply_git_settings
+    brew install git
     #+END_SRC
-** Desktop Applications
+* Usage
+** Apply Basic System Settings
     #+BEGIN_SRC bash
-    brew bundle $DEV_DIR/homebrew/applications_caskfile
+    sh bin/apply_basic_settings
     #+END_SRC
-*** Spacemacs Github Integration
-    Grant access to repo and gist
-    [[https://github.com/settings/tokens][Set Access Tokens]]
+** Apply System Defaults
     #+BEGIN_SRC bash
-    git config --global github.oauth-token <token>
+    sh bin/apply_default_settings
     #+END_SRC
-** Dotfile Setup
-  #+BEGIN_SRC bash
-  export DOTFILE_DIR=~/path/to/dotfile
-  git clone https://github.com/natsumi/dotfiles $DOTFILE_DIR
-  #+END_SRC
+** Install Desktop Applications
+    #+BEGIN_SRC bash
+    sh bin/install_homebrew_casks
+    #+END_SRC
+** Install CLI Software
+    #+BEGIN_SRC bash
+    export DOTFILE_DIR=<~/path/to/dotfile>
+    brew bundle $DEV_DIR/homebrew/Brewfile
+    #+END_SRC
+* Software Configuration
 ** ZSH Setup
 *** Set Default Shell
-    #+begin_src bash
-    brew install zsh
-    brew install zplug
+    #+BEGIN_SRC bash
     echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
     chsh -s $(which zsh)
-    #+end_src
+    #+END_SRC
 *** Prezto
     [[https://github.com/sorin-ionescu/prezto.git][Prezto]]
     #+BEGIN_SRC bash
     git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
     git clone --recursive https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
+    #+END_SRC
+*** Custom configurations
+    edit ~~/.zshenv~ and set your own ~$DEV_DIR~ and ~$DOTFILE_DIR~
+*** Spacemacs Github Integration
+    Grant access to repo and gist
+    [[https://github.com/settings/tokens][Set Access Tokens]]
+    #+BEGIN_SRC bash
+    git config --global github.oauth-token <token>
     #+END_SRC
 *** Setup Symlinks
     #+BEGIN_SRC bash
@@ -52,8 +62,6 @@ Uncheck "Scroll direction: Natural"
     ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
     ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
     #+END_SRC
-*** Custom configurations
-    edit ~~/.zshenv~ and set your own ~$DEV_DIR~ and ~$DOTFILE_DIR~
 *** Restart your terminal
 ** Ruby
 *** Rbenv
