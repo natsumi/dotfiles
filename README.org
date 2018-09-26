@@ -53,13 +53,13 @@
     stow -v --target=$HOME zsh
     #+END_SRC
 ** Python
-  #+BEGIN_SRC shell
-  mkdir -p $DEV_DIR/.virtualenv
-  pyenv install 3.7.0
-  pyenv install 2.7.15
-  pyenv global 3.7.0
-  pip install powerline-status flake8 pygments
-  #+END_SRC
+   #+BEGIN_SRC shell
+   mkdir -p $DEV_DIR/.virtualenv
+   pyenv install 3.7.0
+   pyenv install 2.7.15
+   pyenv global 3.7.0
+   pip install powerline-status flake8 pygments
+   #+END_SRC
 ** Elixir
    #+BEGIN_SRC shell
     stow -v --target=$HOME elixir
@@ -90,8 +90,8 @@
     prettier \
     stylelint stylelint-scss
 
-    stow -v --target=$HOME eslint
-    stow -v --target=$HOME prettier
+    stow -v --target=$HOME --dir=$DOTFILE_DIR eslint
+    stow -v --target=$HOME --dir=$DOTFILE_DIR prettier
     #+END_SRC
 *** Alfred Integration
     #+BEGIN_SRC shell
