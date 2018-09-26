@@ -1,7 +1,3 @@
-* OS X Options
-** Mouse
-Set mouse to a faster track speed
-Uncheck "Scroll direction: Natural"
 * Software Prerequiste
 ** Xcode
   #+BEGIN_SRC bash
@@ -236,3 +232,10 @@ Uncheck "Scroll direction: Natural"
     ln -s $DOTFILE_DIR/chunkwm/chunkwmrc ~/.chunkwmrc
     ln -s $DOTFILE_DIR/chunkwm/khdrc ~/.khdrc
     #+END_SRC
+
+* Post Install Settings
+** OS X Options
+*** Mouse
+Set mouse to a faster track speed
+
+Uncheck "Scroll direction: Natural"

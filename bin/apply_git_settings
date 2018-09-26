@@ -18,7 +18,7 @@ printf "Setting git user informaiton config. \n"
 git config --global user.name "$git_name"
 git config --global user.email $git_email
 
-printf "Setting git default push to simple.n"
+printf "Setting git default push to simple.\n"
 git config --global push.default simple
 
 printf "Setting git diff-so-fancy configuration.\n"
