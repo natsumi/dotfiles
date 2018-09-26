@@ -25,7 +25,7 @@
 ** Install CLI Software
     #+BEGIN_SRC bash
     export DOTFILE_DIR=<~/path/to/dotfile>
-    brew bundle $DEV_DIR/homebrew/Brewfile
+    brew bundle --file=$DOTFILE_DIR/homebrew/Brewfile
     #+END_SRC
 * Software Configuration
 ** ZSH Setup
