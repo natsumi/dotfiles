@@ -101,21 +101,15 @@
     #+END_SRC
 
 ** Vim
-*** Prerequiste
+*** Install
     #+BEGIN_SRC shell
     mkdir -p ~/.vim/autoload
-    #+END_SRC
-*** Symlinks
-    #+BEGIN_SRC bash
-    ln -s $DOTFILE_DIR/vim/snippets ~/.vim/
-    ln -s $DOTFILE_DIR/vim/functions ~/.vim/functions
-    ln -s $DOTFILE_DIR/vim/plugins ~/.vim/plugins
-    ln -s $DOTFILE_DIR/vim/vimrc.symlink ~/.vimrc
-    ln -s $DOTFILE_DIR/vim/ignore.vim.symlink ~/.vim/ignore.vim
-    ln -s $DOTFILE_DIR/ctags.symlink ~/.ctags
+    stow -v --target=$HOME --dir=$DOTFILE_DIR vim
+    stow -v --target=$HOME --dir=$DOTFILE_DIR ctags
     #+END_SRC
 *** Plugin Installs
     Run vim
+
     :PlugInstall
 ** SpaceMacs
     #+BEGIN_SRC sh
