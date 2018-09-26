@@ -87,9 +87,9 @@
   #+END_SRC
 ** Elixir
    #+BEGIN_SRC shell
-     ln -s $DOTFILE_DIR/elixir/iex.exs.symlink ~/.iex.exs
-     mix local.hex
-     mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
+    stow -v --target=$HOME elixir
+    mix local.hex
+    mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
    #+END_SRC
 ** Node
 *** Node Version Manager
@@ -173,7 +173,7 @@
 ** Tmux
    #+BEGIN_SRC
    mkdir -p ~/.tmux/plugins
-   ln -s $DOTFILE_DIR/tmux/tmux.conf.symlink ~/.tmux.conf
+   stow -v --target=$HOME tmux
    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
    #+END_SRC
 *** Install Plugins
@@ -185,16 +185,16 @@
    #+END_SRC
 ** Tig
    #+BEGIN_SRC
-   ln -s $DOTFILE_DIR/tigrc.symlink ~/.tigrc
+   stow -v --target=$HOME tig
    #+END_SRC
 ** Silver Searcher
    #+BEGIN_SRC
-   ln -s $DOTFILE_DIR/agignore.symlink ~/.agignore
+   stow -v --target=$HOME silver_searcher
    #+END_SRC
 ** Youtube-dl
    #+BEGIN_SRC
    mkdir -p ~/.config/youtube-dl
-   ln -s $DOTFILE_DIR/youtube-dl/youtube-dl.conf.symlink ~/.config/youtube-dl/config
+   stow -v --target=$HOME youtube-dl
    #+END_SRC
 ** Livestream
     Configure Twitch Oauth
