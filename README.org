@@ -11,22 +11,12 @@ Uncheck "Scroll direction: Natural"
    [[http://brew.sh/][Brew]]
 ** Git
     #+BEGIN_SRC bash
-    brew install git
-    git config --global user.name <user_name>
-    git config --global user.email <email>
-    git config --global push.default simple
+    sh bin/apply_git_settings
     #+END_SRC
 ** Desktop Applications
     #+BEGIN_SRC bash
     brew bundle $DEV_DIR/homebrew/applications_caskfile
     #+END_SRC
-** Github
-*** Generate ssh key
-    #+BEGIN_SRC bash
-    ssh-keygen -t rsa
-    cat ~/.ssh/id_rsa.pub | pbcopy
-    #+END_SRC
-    Paste into github's ssh setting
 *** Spacemacs Github Integration
     Grant access to repo and gist
     [[https://github.com/settings/tokens][Set Access Tokens]]
