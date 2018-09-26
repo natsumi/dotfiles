@@ -1,0 +1,29 @@
+#! /usr/bin/env bash
+
+# DESCRIPTION
+# Installs the dev environments
+# for Ruby, Node, Python
+
+# EXECUTION
+printf "Installing Ruby... \n"
+rbenv install -l # find which is the latest ruby version
+
+read -p "Which version do you want to install? " dev_version
+if [[ -z "$dev_version" ]]; then
+  printf "ERROR: Invalid version. \n"
+  exit 1
+fi
+
+rbenv install $dev_version
+rbenv local $dev_version
+rbenv global $dev_version
+gem install bundle
+rbenv rehash
+
+stow -v --target=$HOME $DEV_DIR/ruby
+
+printf "Installing Gems... \n"
+gem install pry pry-doc pry-bloodline ruby_parser rufo rubocop scss_lint \
+  scss_lint_reporter_checkstyle spirit_fingers \
+  ruby-debug-ide debase solargraph
+rbenv rehash
