@@ -50,13 +50,7 @@
     #+END_SRC
 *** Setup Symlinks
     #+BEGIN_SRC bash
-    export DOTFILE_DIR=~/path/to/dotfiles
-    ln -s $DOTFILE_DIR/zsh/zshrc.symlink ~/.zshrc
-    ln -s $DOTFILE_DIR/zsh/zshenv.symlink ~/.zshenv
-    ln -s $DOTFILE_DIR/zsh/zpreztorc.symlink ~/.zpreztorc
-    ln -s $DOTFILE_DIR/zsh/zprofile.symlink ~/.zprofile
-    ln -s $DOTFILE_DIR/zsh/dircolors.symlink ~/.dircolors
-    ln -s $DOTFILE_DIR/zsh/aliases.symlink ~/.aliases
+    stow -v --target=$HOME zsh
     #+END_SRC
 *** Restart your terminal
 ** Ruby
@@ -83,10 +77,6 @@
     rbenv rehash
     #+END_SRC
 *** Restart your terminal here
-** Fonts
-   [[https://github.com/powerline/fonts][Powerline Fonts Repo]]
-
-   [[http://input.fontbureau.com/download/][Input Mono]]
 ** Python
   #+BEGIN_SRC shell
   mkdir -p $DEV_DIR/.virtualenv
@@ -230,6 +220,10 @@
 
 * Post Install Settings
 ** OS X Options
+*** Fonts
+   [[https://github.com/powerline/fonts][Powerline Fonts Repo]]
+
+   [[http://input.fontbureau.com/download/][Input Mono]]
 *** Mouse
 Set mouse to a faster track speed
 
