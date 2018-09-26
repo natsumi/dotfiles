@@ -87,17 +87,12 @@
    [[https://github.com/powerline/fonts][Powerline Fonts Repo]]
 
    [[http://input.fontbureau.com/download/][Input Mono]]
-** Brew Bundle
-    #+BEGIN_SRC shell
-    brew bundle $DEV_DIR/homebrew/Brewfile
-    #+END_SRC
 ** Python
   #+BEGIN_SRC shell
   mkdir -p $DEV_DIR/.virtualenv
   pyenv install 3.7.0
   pyenv install 2.7.15
   pyenv global 3.7.0
-  brew install pyenv pyenv-virtualenv pyenv-virtualenvwrapper
   pip install powerline-status flake8 pygments
   #+END_SRC
 ** Elixir

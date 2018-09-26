@@ -26,7 +26,9 @@ brew "rbenv"
 brew "elixir"
 brew "nvm"
 brew "go"
-brew "python"
+brew "pyenv"
+brew "pyenv-virtualenv"
+brew "pyenv-virtualenvwrapper"
 
 # Utitlies
 brew "zsh"
