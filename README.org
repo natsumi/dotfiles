@@ -192,6 +192,10 @@
    [[https://github.com/powerline/fonts][Powerline Fonts Repo]]
 
    [[http://input.fontbureau.com/download/][Input Mono]]
+
+    #+BEGIN_SRC bash
+    sh bin/install_fonts
+    #+END_SRC
 *** Mouse
 Set mouse to a faster track speed
 

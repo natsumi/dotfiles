@@ -1,0 +1,27 @@
+#! /usr/bin/env bash
+
+# Install powerline fonts
+brew tap homebrew/cask-fonts
+
+# Powerline Fonts
+brew cask install font-anonymice-powerline
+brew cask install font-consolas-for-powerline
+brew cask install font-dejavu-sans-mono-for-powerline
+brew cask install font-droid-sans-mono-for-powerline
+brew cask install font-fira-mono-for-powerline
+brew cask install font-inconsolata-dz-for-powerline
+brew cask install font-inconsolata-for-powerline
+brew cask install font-inconsolata-g-for-powerline
+brew cask install font-liberation-mono-for-powerline
+brew cask install font-menlo-for-powerline
+brew cask install font-meslo-for-powerline
+brew cask install font-monofur-for-powerline
+brew cask install font-noto-mono-for-powerline
+brew cask install font-roboto-mono-for-powerline
+brew cask install font-source-code-pro-for-powerline
+brew cask install font-ubuntu-mono-derivative-powerline
+
+# Programming Fonts
+brew cask install font-input
+brew cask install font-iosevka-nerd-font-mono
+brew cask install font-iosevka-nerd-font
