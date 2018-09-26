@@ -73,3 +73,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 .ruby-version
+vim/.vim/autoload/plug.vim
+vim/.vim/plugged
