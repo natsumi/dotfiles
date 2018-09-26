@@ -72,15 +72,15 @@
     #+END_SRC
 *** Symlink
     #+BEGIN_SRC shell
-    ln -s $DOTFILE_DIR/rails/pryrc.symlink ~/.pryrc
-    ln -s $DOTFILE_DIR/rails/gemrc.symlink ~/.gemrc
-    ln -s $DOTFILE_DIR/rails/rubocop.yml.symlink ~/.rubocop.yml
+    stow -v --target=$HOME ruby
     #+END_SRC
 *** Linters / Dev gems
     #+BEGIN_SRC shell
-    gem install pry pry-doc pry-bloodline ruby_parser rufo rubocop scss_lint scss_lint_reporter_checkstyle
-    gem install spirit_fingers
-    gem install ruby-debug-ide debase solargraph
+    gem install pry pry-doc pry-bloodline ruby_parser rufo rubocop scss_lint \
+    scss_lint_reporter_checkstyle spirit_fingers \
+    ruby-debug-ide debase solargraph
+
+    rbenv rehash
     #+END_SRC
 *** Restart your terminal here
 ** Fonts
