@@ -201,5 +201,5 @@ Set mouse to a faster track speed
 
 Uncheck "Scroll direction: Natural"
 ** iTerm 2
-Font: Fira Mono 12pt
+Font: Fira Mono 12pt / Iosevka Term Slab
 [[https://github.com/jsit/night-owl-iterm2-theme][Night Owl Theme]]
