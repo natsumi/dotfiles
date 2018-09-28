@@ -1,4 +1,3 @@
-
 # ZPlug
 export ZPLUG_HOME=/usr/local/opt/zplug
 
