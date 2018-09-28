@@ -50,7 +50,7 @@
     #+END_SRC
 *** Setup Symlinks
     #+BEGIN_SRC bash
-    stow -v --target=$HOME zsh
+    stow -v --target=$HOME --dir=$DOTFILE_DIR zsh
     #+END_SRC
 ** Python
    #+BEGIN_SRC shell
@@ -62,7 +62,7 @@
    #+END_SRC
 ** Elixir
    #+BEGIN_SRC shell
-    stow -v --target=$HOME elixir
+    stow -v --target=$HOME --dir=$DOTFILE_DIR elixir
     mix local.hex
     mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
    #+END_SRC
@@ -142,7 +142,7 @@
 ** Tmux
    #+BEGIN_SRC
    mkdir -p ~/.tmux/plugins
-   stow -v --target=$HOME tmux
+   stow -v --target=$HOME --dir=$DOTFILE_DIR tmux
    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
    #+END_SRC
 *** Install Plugins
@@ -154,16 +154,16 @@
    #+END_SRC
 ** Tig
    #+BEGIN_SRC
-   stow -v --target=$HOME tig
+   stow -v --target=$HOME --dir=$DOTFILE_DIR tig
    #+END_SRC
 ** Silver Searcher
    #+BEGIN_SRC
-   stow -v --target=$HOME silver_searcher
+   stow -v --target=$HOME --dir=$DOTFILE_DIR silver_searcher
    #+END_SRC
 ** Youtube-dl
    #+BEGIN_SRC
    mkdir -p ~/.config/youtube-dl
-   stow -v --target=$HOME youtube-dl
+   stow -v --target=$HOME --dir=$DOTFILE_DIR youtube-dl
    #+END_SRC
 ** Livestream
     Configure Twitch Oauth
