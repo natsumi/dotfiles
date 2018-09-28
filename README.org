@@ -115,8 +115,8 @@
     #+BEGIN_SRC sh
     mkdir -p ~/.spacemacs.d
     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-    ln -s $DOTFILE_DIR/spacemacs/init.el.symlink ~/.spacemacs.d/init.el
-    ln -s $DOTFILE_DIR/gtags.conf.symlink ~/.gtags.conf
+    stow -v --target=$HOME/.spacemacs.d --dir=$DOTFILE_DIR spacemacs
+    stow -v --target=$HOME --dir=$DOTFILE_DIR gtags
     #+END_SRC
 
     User develop branch
@@ -200,3 +200,6 @@
 Set mouse to a faster track speed
 
 Uncheck "Scroll direction: Natural"
+** iTerm 2
+Font: Fira Mono 12pt
+[[https://github.com/jsit/night-owl-iterm2-theme][Night Owl Theme]]
