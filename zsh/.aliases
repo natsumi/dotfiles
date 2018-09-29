@@ -1,11 +1,23 @@
-# Unix
-alias ls="gls --color"
+# CLI Aliases
 alias ll="ls -alh"
 alias ln="ln -v"
 alias mkdir="mkdir -p"
 alias e="$EDITOR"
 alias v="$VISUAL"
-alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+
+# Custom binary aliases
+if [ -x "$(command -v exa)" ]; then
+  alias ls="exa --group-directories-first -F"
+  alias ll="ls -algh"
+fi
+
+if [ -x "$(command -v ncdu)" ]; then
+  alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+fi
+
+if [ -x "$(command -v bat)" ]; then
+  alias cat="bat"
+fi
 
 # Emacs
 alias e="emacsclient -t -a ''"
