@@ -203,3 +203,6 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
 printf "App Store - Enable Debug Menu in the Mac App Store\n"
 defaults write com.apple.appstore ShowDebugMenu -bool true
+
+printf "To Fix Blurry Fonts in Mojave uncomment last line"
+#defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO
