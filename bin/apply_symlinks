@@ -17,3 +17,4 @@ stow -v --target=$HOME --dir=$DOTFILE_DIR tig
 stow -v --target=$HOME --dir=$DOTFILE_DIR silver_searcher
 stow -v --target=$HOME --dir=$DOTFILE_DIR youtube-dl
 stow -v --target=$HOME --dir=$DOTFILE_DIR alacritty
+stow -v --target=$HOME --dir=$DOTFILE_DIR chunkwmrc

@@ -96,6 +96,7 @@
 *** Alfred Integration
     #+BEGIN_SRC shell
       ln -s $(which node) /usr/local/bin/node
+      npm install -g fkill-cli
       npm install -g alfred-fkill
       npm install -g alfred-hl
     #+END_SRC
@@ -186,8 +187,7 @@
     [[https://github.com/koekeishiya/khd][Keyboard Hot Keys]]
 
     #+BEGIN_SRC bash
-    ln -s $DOTFILE_DIR/chunkwm/chunkwmrc ~/.chunkwmrc
-    ln -s $DOTFILE_DIR/chunkwm/khdrc ~/.khdrc
+    stow -v --target=$HOME --dir=$DOTFILE_DIR chunkwmrc
     #+END_SRC
 
 * Post Install Settings
