@@ -28,6 +28,10 @@
     brew bundle --file=$DOTFILE_DIR/homebrew/Brewfile
     #+END_SRC
 * Software Configuration
+** Apply Software Symlink
+    #+BEGIN_SRC bash
+    sh bin/apply_symlinks
+    #+END_SRC
 ** ZSH Setup
 *** Set Default Shell
     #+BEGIN_SRC bash
