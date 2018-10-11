@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+
+# DESCRIPTION
+# Applies symlinks using stow
+
+stow -v --target=$HOME --dir=$DOTFILE_DIR ruby
+stow -v --target=$HOME --dir=$DOTFILE_DIR zsh
+stow -v --target=$HOME --dir=$DOTFILE_DIR elixir
+stow -v --target=$HOME --dir=$DOTFILE_DIR eslint
+stow -v --target=$HOME --dir=$DOTFILE_DIR prettier
+stow -v --target=$HOME --dir=$DOTFILE_DIR vim
+stow -v --target=$HOME --dir=$DOTFILE_DIR ctags
+stow -v --target=$HOME/.spacemacs.d --dir=$DOTFILE_DIR spacemacs
+stow -v --target=$HOME --dir=$DOTFILE_DIR gtags
+stow -v --target=$HOME --dir=$DOTFILE_DIR tmux
+stow -v --target=$HOME --dir=$DOTFILE_DIR tig
+stow -v --target=$HOME --dir=$DOTFILE_DIR silver_searcher
+stow -v --target=$HOME --dir=$DOTFILE_DIR youtube-dl
+stow -v --target=$HOME --dir=$DOTFILE_DIR alacritty
