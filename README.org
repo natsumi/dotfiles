@@ -22,11 +22,6 @@
     #+BEGIN_SRC bash
     sh bin/install_homebrew_casks
     #+END_SRC
-** Install CLI Software
-    #+BEGIN_SRC bash
-    export DOTFILE_DIR=<~/path/to/dotfile>
-    brew bundle --file=$DOTFILE_DIR/homebrew/Brewfile
-    #+END_SRC
 * Software Configuration
 ** Apply Software Symlink
     #+BEGIN_SRC bash
@@ -104,7 +99,11 @@
       npm install -g alfred-fkill
       npm install -g alfred-hl
     #+END_SRC
-
+** Install CLI Software
+    #+BEGIN_SRC bash
+    export DOTFILE_DIR=<~/path/to/dotfile>
+    brew bundle --file=$DOTFILE_DIR/homebrew/Brewfile
+    #+END_SRC
 ** Vim
 *** Install
     #+BEGIN_SRC shell
