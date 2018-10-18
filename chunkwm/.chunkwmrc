@@ -151,9 +151,9 @@ chunkc tiling::rule --owner \"1Password 6\" --state float
 chunkc tiling::rule --owner Adium --name Contacts --state float
 chunkc tiling::rule --owner VLC --state float
 chunkc tiling::rule --owner IINA --state float
-chunkc tiling::rule --owner "Google Chrome" --name "chrome-devtools.*" --state float
+# chunkc tiling::rule --owner "Google Chrome" --name "chrome-devtools.*" --state float
 # float Flipboard
-chunkc tiling::rule --owner "Google Chrome" --name "Add to magazine.*" --state float
+# chunkc tiling::rule --owner "Google Chrome" --name "Add to magazine.*" --state float
 # this tiling rule is to fix tooltip windows in emacs
 chunkc tiling::rule --owner Emacs --except "^$" --state tile
 chunkc tiling::rule --owner \"Microsoft Outlook\"  --name ".*Reminder"  --state float

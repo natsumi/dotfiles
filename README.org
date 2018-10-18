@@ -187,7 +187,7 @@
 
     [[https://github.com/koekeishiya/chunkwm][Chunkwmrc Window Manager]]
 
-    [[https://github.com/koekeishiya/khd][Keyboard Hot Keys]]
+    [[https://github.com/koekeishiya/skhd][Simple Keyboard Hot Keys]]
 
     #+BEGIN_SRC bash
     stow -v --target=$HOME --dir=$DOTFILE_DIR chunkwmrc
