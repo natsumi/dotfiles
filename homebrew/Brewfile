@@ -7,6 +7,7 @@ tap "mas-cli/tap"
 
 # Build Tools
 brew "readline"
+brew "xz"
 brew "coreutils"
 brew "openssl"
 
