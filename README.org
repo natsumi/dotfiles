@@ -84,7 +84,7 @@
     #+END_SRC
 *** Linters
     #+BEGIN_SRC shell
-     npm install -g tern js-beautify \
+    npm install -g tern js-beautify \
     eslint babel-eslint eslint-plugin-react \
     prettier \
     stylelint stylelint-scss
@@ -95,9 +95,7 @@
 *** Alfred Integration
     #+BEGIN_SRC shell
       ln -s $(which node) /usr/local/bin/node
-      npm install -g fkill-cli
-      npm install -g alfred-fkill
-      npm install -g alfred-hl
+      npm install -g fkill fkill-cli alfred-fkill alfred-hl
     #+END_SRC
 ** Install CLI Software
     #+BEGIN_SRC bash
