@@ -4,10 +4,6 @@
 # Installs the dev environment
 
 # EXECUTION
-printf "Installing build dependencies... \n"
-brew install automake autoconf libyaml libxslt libtool unixodbc \
- readline xz coreutils openssl gpg
-
 printf "Adding plguins\n"
 stow -v --target=$HOME --dir=$DOTFILE_DIR asdf
 asdf plugin-add ruby

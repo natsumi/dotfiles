@@ -54,7 +54,7 @@
 ** Programming Dev setup
 *** asdf
    #+BEGIN_SRC shell
-   git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.6.2
+   brew install asdf
    #+END_SRC
 
    Restart Shell
@@ -73,6 +73,9 @@
     #+END_SRC
 ** Vim
 *** Install
+    Might want to use SpaceVim instead
+
+
     #+BEGIN_SRC shell
     mkdir -p ~/.vim/autoload
     stow -v --target=$HOME --dir=$DOTFILE_DIR vim

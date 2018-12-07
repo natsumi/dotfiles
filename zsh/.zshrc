@@ -97,5 +97,5 @@ unalias gls #git log conflicts with dircolors gls
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
-[[ -f ~/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
-[[ -f ~/.asdf/asdf.sh ]] && . $HOME/.asdf/completions/asdf.bash
+[[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/opt/asdf/asdf.sh
+[[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/etc/bash_completion.d/asdf.bash

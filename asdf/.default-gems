@@ -2,7 +2,8 @@ pry
 pry-doc
 pry-bloodline
 ruby_parser
-rufo rubocop
+rufo
+rubocop
 scss_lint
 scss_lint_reporter_checkstyle
 spirit_fingers
