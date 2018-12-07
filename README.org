@@ -52,42 +52,19 @@
     stow -v --target=$HOME --dir=$DOTFILE_DIR zsh
     #+END_SRC
 ** Programming Dev setup
-** asdf
+*** asdf
    #+BEGIN_SRC shell
    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.6.2
    #+END_SRC
+
    Restart Shell
 
-   pip install powerline-status flake8 pygments
-** Elixir
    #+BEGIN_SRC shell
-    stow -v --target=$HOME --dir=$DOTFILE_DIR elixir
-    mix local.hex
-    mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
+   sh bin/install_dev_env
    #+END_SRC
-** Node
-*** React Generator
-    #+BEGIN_SRC shell
-    npm install -g create-react-app
-    #+END_SRC
-*** Yarn
-    #+BEGIN_SRC
-    npm install -g yarn
-    #+END_SRC
-*** Linters
-    #+BEGIN_SRC shell
-    npm install -g tern js-beautify \
-    eslint babel-eslint eslint-plugin-react \
-    prettier \
-    stylelint stylelint-scss
-
-    stow -v --target=$HOME --dir=$DOTFILE_DIR eslint
-    stow -v --target=$HOME --dir=$DOTFILE_DIR prettier
-    #+END_SRC
 *** Alfred Integration
     #+BEGIN_SRC shell
       ln -s $(which node) /usr/local/bin/node
-      npm install -g fkill fkill-cli alfred-fkill alfred-hl
     #+END_SRC
 ** Install CLI Software
     #+BEGIN_SRC bash

@@ -1,0 +1,48 @@
+#! /usr/bin/env bash
+
+# DESCRIPTION
+# Installs the dev environment
+
+# EXECUTION
+printf "Installing build dependencies... \n"
+brew install automake autoconf libyaml libxslt libtool unixodbc \
+ readline xz coreutils openssl gpg
+
+printf "Adding plguins\n"
+stow -v --target=$HOME --dir=$DOTFILE_DIR asdf
+asdf plugin-add ruby
+asdf plugin-add nodejs
+asdf plugin-add python
+asdf plugin-add erlang
+asdf plugin-add elixir
+asdf plugin-add golang
+
+printf "Installing Ruby 2.5.3..\n"
+stow -v --target=$HOME --dir=$DOTFILE_DIR ruby
+asdf install ruby 2.5.3
+asdf global ruby 2.5.3
+
+printf "Installing Node 10.14.1..\n"
+stow -v --target=$HOME --dir=$DOTFILE_DIR eslint
+stow -v --target=$HOME --dir=$DOTFILE_DIR prettier
+
+bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+
+asdf install nodejs 10.14.1
+asdf global nodejs 10.14.1
+
+printf "Installing Python 3.7.1 and 2.7.15 \n"
+asdf install python 3.7.1
+asdf install python 2.7.15
+asdf global python 3.7.1 2.7.15
+
+printf "Installing Elixir\n"
+stow -v --target=$HOME --dir=$DOTFILE_DIR elixir
+
+asdf install erlang 21.1.4
+asdf global erlang 21.1.4
+
+asdf install elixir 1.7.4
+asdf global elixir 1.7.4
+
+printf "Restart your terminal"
