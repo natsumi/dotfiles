@@ -23,10 +23,9 @@ export GTAGSLABEL=pygments
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-export PATH="/usr/local/heroku/bin:/usr/local/bin:$HOME/.rbenv/bin:$PATH"
+export PATH="/usr/local/heroku/bin:/usr/local/bin:$PATH"
 
 # Init Zplug
-export NVM_AUTO_USE=true
 [[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
 
 # Local config

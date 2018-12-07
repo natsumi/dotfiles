@@ -6,6 +6,12 @@ tap "neovim/neovim"
 tap "mas-cli/tap"
 
 # Build Tools
+brew "automake"
+brew "autoconf"
+brew "libyaml"
+brew "libxslt"
+brew "libtool"
+brew "unixodbc"
 brew "readline"
 brew "xz"
 brew "coreutils"
@@ -23,13 +29,6 @@ brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 
 # Programming Languages
 brew "ruby-build"
-brew "rbenv"
-brew "elixir"
-brew "nvm"
-brew "go"
-brew "pyenv"
-brew "pyenv-virtualenv"
-brew "pyenv-virtualenvwrapper"
 
 # Utitlies
 brew "zsh"
