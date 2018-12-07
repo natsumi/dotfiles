@@ -32,6 +32,10 @@ asdf install python 3.7.1
 asdf install python 2.7.15
 asdf global python 3.7.1 2.7.15
 
+printf "Installing Go\n"
+asdf install golang 1.11.2
+asdf global golang 1.11.2
+
 printf "Installing Elixir\n"
 stow -v --target=$HOME --dir=$DOTFILE_DIR elixir
 
