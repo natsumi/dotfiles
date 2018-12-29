@@ -4,6 +4,7 @@ tap "universal-ctags/universal-ctags"
 tap "d12frosted/emacs-plus"
 tap "neovim/neovim"
 tap "mas-cli/tap"
+tap "buo/cask-upgrade"
 
 # Build Tools
 brew "automake"
@@ -42,7 +43,6 @@ brew "tmux-mem-cpu-load"
 brew "reattach-to-user-namespace"
 brew "terminal-notifier"
 brew "ffmpeg"
-brew "youtube-dl"
 brew "rtmpdump"
 
 brew "tree"
