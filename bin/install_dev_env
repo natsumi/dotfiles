@@ -12,6 +12,7 @@ asdf plugin-add python
 asdf plugin-add erlang
 asdf plugin-add elixir
 asdf plugin-add golang
+asdf plugin-add elm
 
 printf "Installing Ruby 2.5.3..\n"
 stow -v --target=$HOME --dir=$DOTFILE_DIR ruby
@@ -44,5 +45,9 @@ asdf global erlang 21.1.4
 
 asdf install elixir 1.7.4
 asdf global elixir 1.7.4
+
+printf "Installing Go\n"
+asdf install elm 0.19.0
+asdf global elm 0.19.0
 
 printf "Restart your terminal"
