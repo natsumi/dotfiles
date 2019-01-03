@@ -54,6 +54,6 @@ brew "axel"
 brew "stow"
 
 # Text Editors
-brew "vim"
-brew "emacs-plus"
-brew "neovim"
+# brew "vim"
+# brew "emacs-plus"
+# brew "neovim"
