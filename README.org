@@ -22,6 +22,10 @@
     #+BEGIN_SRC bash
     sh bin/install_homebrew_casks
     #+END_SRC
+** Install Brew base packages
+    #+BEGIN_SRC bash
+    brew bundle --file ~/dev/dotfiles/homebrew/Brewfile
+    #+END_SRC
 * Software Configuration
 ** Apply Software Symlink
     #+BEGIN_SRC bash
