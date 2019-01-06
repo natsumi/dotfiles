@@ -2,3 +2,6 @@ powerline-status
 flake8
 pygments
 youtube-dl
+pgcli
+litecli
+mycli
