@@ -2,26 +2,38 @@
 
 # Install powerline fonts
 brew tap homebrew/cask-fonts
+brew tap caskroom/fonts
 
 # Powerline Fonts
-brew cask install font-anonymice-powerline
 brew cask install font-consolas-for-powerline
-brew cask install font-dejavu-sans-mono-for-powerline
-brew cask install font-droid-sans-mono-for-powerline
-brew cask install font-fira-mono-for-powerline
-brew cask install font-inconsolata-dz-for-powerline
-brew cask install font-inconsolata-for-powerline
-brew cask install font-inconsolata-g-for-powerline
-brew cask install font-liberation-mono-for-powerline
 brew cask install font-menlo-for-powerline
-brew cask install font-meslo-for-powerline
-brew cask install font-monofur-for-powerline
-brew cask install font-noto-mono-for-powerline
-brew cask install font-roboto-mono-for-powerline
-brew cask install font-source-code-pro-for-powerline
-brew cask install font-ubuntu-mono-derivative-powerline
+
+# Nerd Fonts
+# https://github.com/ryanoasis/nerd-fonts
+brew cask install font-anonymouspro-nerd-font
+brew cask install font-anonymouspro-nerd-font-mono
+brew cask install font-dejavusansmono-nerd-font
+brew cask install font-dejavusansmono-nerd-font-mono
+brew cask install font-droidsansmono-nerd-font
+brew cask install font-droidsansmono-nerd-font-mono
+brew cask install font-firacode-nerd-font
+brew cask install font-firacode-nerd-font-mono
+brew cask install font-firamono-nerd-font
+brew cask install font-firamono-nerd-font-mono
+brew cask install font-go-mono-nerd-font
+brew cask install font-go-mono-nerd-font-mono
+brew cask install font-iosevka-nerd-font-mono
+brew cask install font-iosevka-nerd-font
+brew cask install font-liberationmono-nerd-font
+brew cask install font-liberationmono-nerd-font-mono
+brew cask install font-meslo-nerd-font
+brew cask install font-meslo-nerd-font-mono
+brew cask install font-noto-nerd-font
+brew cask install font-noto-nerd-font-mono
+brew cask install font-robotomono-nerd-font
+brew cask install font-robotomono-nerd-font-mono
+brew cask install font-sourcecodepro-nerd-font
+brew cask install font-sourcecodepro-nerd-font-mono
 
 # Programming Fonts
 brew cask install font-input
-brew cask install font-iosevka-nerd-font-mono
-brew cask install font-iosevka-nerd-font
