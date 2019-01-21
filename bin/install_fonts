@@ -28,8 +28,6 @@ brew cask install font-liberationmono-nerd-font
 brew cask install font-liberationmono-nerd-font-mono
 brew cask install font-meslo-nerd-font
 brew cask install font-meslo-nerd-font-mono
-brew cask install font-noto-nerd-font
-brew cask install font-noto-nerd-font-mono
 brew cask install font-robotomono-nerd-font
 brew cask install font-robotomono-nerd-font-mono
 brew cask install font-sourcecodepro-nerd-font
