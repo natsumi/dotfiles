@@ -4,7 +4,14 @@
 -o "%(uploader)s (%(uploader_id)s)/%(playlist)s/%(upload_date)s - %(title)s - (%(duration)ss) [%(resolution)s] [%(id)s].%(ext)s"
 
 # Downloader
---external-downloader axel
+--external-downloader aria2c
+
+# -c continue paritally downloaded files
+# -j max concurrent download
+# -x max connections per server
+# -s split file using N connections
+# -k min-split size
+--external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M"
 
 # Archive Settings
 --download-archive youtube-dl-archive.txt
@@ -24,4 +31,4 @@
 --write-all-thumbnails
 
 # Debug
--v
+# -v

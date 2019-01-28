@@ -50,7 +50,7 @@ brew "tree"
 brew "bat"
 brew "fzf"
 brew "exa"
-brew "axel"
+brew "aria2c"
 brew "stow"
 
 # Text Editors
