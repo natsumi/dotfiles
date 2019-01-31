@@ -1,6 +1,8 @@
 {
   "extends": ["airbnb", "prettier", "plugin:react/recommended"],
-  "rules": {},
+  "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+  },
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module",
