@@ -2,6 +2,7 @@ pry
 pry-doc
 pry-bloodline
 pry-clipboard
+pry-byebug
 ruby_parser
 rufo
 rubocop
