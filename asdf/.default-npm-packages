@@ -8,6 +8,7 @@ eslint-plugin-react
 prettier
 stylelint
 stylelint-scss
+stylelint-config-recommended-scss
 fkill
 fkill-cli
 alfred-fkill
