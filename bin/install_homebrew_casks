@@ -21,6 +21,7 @@ brew cask install sublime-merge
 # Utilities
 brew cask install the-unarchiver
 brew cask install caffeine
+brew cask install rocket
 
 # Media Players
 brew cask install vlc
