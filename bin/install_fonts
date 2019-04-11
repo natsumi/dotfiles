@@ -2,7 +2,6 @@
 
 # Install powerline fonts
 brew tap homebrew/cask-fonts
-brew tap caskroom/fonts
 
 # Powerline Fonts
 brew cask install font-consolas-for-powerline
