@@ -20,7 +20,7 @@ export GTAGSLABEL=pygments
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 # Init Zplug
-[[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
+# [[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
