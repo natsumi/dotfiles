@@ -26,6 +26,7 @@ printf "Installing Node 10.14.1..\n"
 stow -v --target=$HOME --dir=$DOTFILE_DIR eslint
 stow -v --target=$HOME --dir=$DOTFILE_DIR prettier
 
+brew install gpg
 bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 
 asdf install nodejs 10.14.1
