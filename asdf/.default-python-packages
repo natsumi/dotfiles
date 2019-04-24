@@ -5,3 +5,5 @@ youtube-dl
 pgcli
 litecli
 mycli
+pylint
+pipenv
