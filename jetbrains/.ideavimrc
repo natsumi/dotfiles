@@ -1,0 +1,4 @@
+set surround
+# yank to clipboard
+set clipboard+=unnamed
+
