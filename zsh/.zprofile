@@ -26,6 +26,7 @@ fi
 #
 # Paths
 #
+export PATH="/usr/local/opt/openssl/bin:$PATH"
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path

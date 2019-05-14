@@ -4,7 +4,7 @@ export ZPLUG_HOME=/usr/local/opt/zplug
 # Homebrew
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-# use vim as the visual editor
+# use nvim as the visual editor
 export VISUAL=nvim
 export EDITOR=$VISUAL
 
