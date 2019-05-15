@@ -19,6 +19,10 @@ if [ -x "$(command -v bat)" ]; then
   alias cat="bat"
 fi
 
+if [ -x "$(command -v diff-so-fancy)" ]; then
+  alias diff="git diff --no-index"
+fi
+
 # Emacs
 alias e="emacsclient -t -a ''"
 alias ec="emacsclient -c -n -a ''"
@@ -31,7 +35,7 @@ alias tml='tmux list-sessions'
 # Bundler
 alias b="bundle"
 alias be="bundle exec"
-alias be="bundle exec rspec"
+alias ber="bundle exec rspec"
 
 # Rails
 alias frrc="foreman run rails console"
