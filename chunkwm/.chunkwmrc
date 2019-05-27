@@ -153,6 +153,7 @@ chunkc tiling::rule --owner Adium --name Contacts --state float
 chunkc tiling::rule --owner VLC --state float
 chunkc tiling::rule --owner IINA --state float
 chunkc tiling::rule --owner Skitch --state float
+chunkc tiling::rule --owner Hedge --state float
 # chunkc tiling::rule --owner "Google Chrome" --name "chrome-devtools.*" --state float
 # float Flipboard
 # chunkc tiling::rule --owner "Google Chrome" --name "Add to magazine.*" --state float
