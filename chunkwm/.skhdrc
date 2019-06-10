@@ -29,52 +29,52 @@ shift + cmd - k : chunkc tiling::window --warp north
 shift + cmd - l : chunkc tiling::window --warp east
 
 # move floating windows / windows on a floating space
-shift + alt - up     : chunkc tiling::window --warp-floating fullscreen
-shift + alt - left   : chunkc tiling::window --warp-floating left
-shift + alt - right  : chunkc tiling::window --warp-floating right
-shift + cmd - left   : chunkc tiling::window --warp-floating top-left
-shift + cmd - right  : chunkc tiling::window --warp-floating top-right
-shift + ctrl - left  : chunkc tiling::window --warp-floating bottom-left
-shift + ctrl - right : chunkc tiling::window --warp-floating bottom-right
+# shift + alt - up     : chunkc tiling::window --warp-floating fullscreen
+# shift + alt - left   : chunkc tiling::window --warp-floating left
+# shift + alt - right  : chunkc tiling::window --warp-floating right
+# shift + cmd - left   : chunkc tiling::window --warp-floating top-left
+# shift + cmd - right  : chunkc tiling::window --warp-floating top-right
+# shift + ctrl - left  : chunkc tiling::window --warp-floating bottom-left
+# shift + ctrl - right : chunkc tiling::window --warp-floating bottom-right
 
 # send window to desktop
-shift + alt - x : chunkc tiling::window --send-to-desktop $(chunkc get _last_active_desktop)
-shift + alt - z : chunkc tiling::window --send-to-desktop prev
-shift + alt - c : chunkc tiling::window --send-to-desktop next
-shift + alt - 1 : chunkc tiling::window --send-to-desktop 1
-shift + alt - 2 : chunkc tiling::window --send-to-desktop 2
-shift + alt - 3 : chunkc tiling::window --send-to-desktop 3
-shift + alt - 4 : chunkc tiling::window --send-to-desktop 4
-shift + alt - 5 : chunkc tiling::window --send-to-desktop 5
-shift + alt - 6 : chunkc tiling::window --send-to-desktop 6
+# shift + alt - x : chunkc tiling::window --send-to-desktop $(chunkc get _last_active_desktop)
+# shift + alt - z : chunkc tiling::window --send-to-desktop prev
+# shift + alt - c : chunkc tiling::window --send-to-desktop next
+# shift + alt - 1 : chunkc tiling::window --send-to-desktop 1
+# shift + alt - 2 : chunkc tiling::window --send-to-desktop 2
+# shift + alt - 3 : chunkc tiling::window --send-to-desktop 3
+# shift + alt - 4 : chunkc tiling::window --send-to-desktop 4
+# shift + alt - 5 : chunkc tiling::window --send-to-desktop 5
+# shift + alt - 6 : chunkc tiling::window --send-to-desktop 6
 
 # send window to desktop and switch desktop
-shift + cmd - x : `id=$(chunkc get _last_active_desktop); chunkc tiling::window -d $id; khd -p "cmd + alt - $id" &> /dev/null`
-shift + cmd - z : chunkc tiling::window -d prev; khd -p "cmd + alt - z"
-shift + cmd - c : chunkc tiling::window -d next; khd -p "cmd + alt - c"
-shift + cmd - 1 : chunkc tiling::window -d 1; khd -p "cmd + alt - 1"
-shift + cmd - 2 : chunkc tiling::window -d 2; khd -p "cmd + alt - 2"
-shift + cmd - 3 : chunkc tiling::window -d 3; khd -p "cmd + alt - 3"
-shift + cmd - 4 : chunkc tiling::window -d 4; khd -p "cmd + alt - 4"
-shift + cmd - 5 : chunkc tiling::window -d 5; khd -p "cmd + alt - 5"
-shift + cmd - 6 : chunkc tiling::window -d 6; khd -p "cmd + alt - 6"
+# shift + cmd - x : `id=$(chunkc get _last_active_desktop); chunkc tiling::window -d $id; khd -p "cmd + alt - $id" &> /dev/null`
+# shift + cmd - z : chunkc tiling::window -d prev; khd -p "cmd + alt - z"
+# shift + cmd - c : chunkc tiling::window -d next; khd -p "cmd + alt - c"
+# shift + cmd - 1 : chunkc tiling::window -d 1; khd -p "cmd + alt - 1"
+# shift + cmd - 2 : chunkc tiling::window -d 2; khd -p "cmd + alt - 2"
+# shift + cmd - 3 : chunkc tiling::window -d 3; khd -p "cmd + alt - 3"
+# shift + cmd - 4 : chunkc tiling::window -d 4; khd -p "cmd + alt - 4"
+# shift + cmd - 5 : chunkc tiling::window -d 5; khd -p "cmd + alt - 5"
+# shift + cmd - 6 : chunkc tiling::window -d 6; khd -p "cmd + alt - 6"
 
 # switch to last active desktop
-cmd + alt - x   : `id=$(chunkc get _last_active_desktop); khd -p "cmd + alt - $id" &> /dev/null`
+# cmd + alt - x   : `id=$(chunkc get _last_active_desktop); khd -p "cmd + alt - $id" &> /dev/null`
 
 # focus monitor
-ctrl + alt - z  : chunkc tiling::monitor -f prev
-ctrl + alt - c  : chunkc tiling::monitor -f next
-ctrl + alt - 1  : chunkc tiling::monitor -f 1
-ctrl + alt - 2  : chunkc tiling::monitor -f 2
-ctrl + alt - 3  : chunkc tiling::monitor -f 3
+ctrl + cmd - h  : chunkc tiling::monitor -f prev
+ctrl + cmd - l  : chunkc tiling::monitor -f next
+# ctrl + alt - 1  : chunkc tiling::monitor -f 1
+# ctrl + alt - 2  : chunkc tiling::monitor -f 2
+# ctrl + alt - 3  : chunkc tiling::monitor -f 3
 
 # send window to monitor and follow focus
-ctrl + cmd - z  : chunkc tiling::window --send-to-monitor prev; chunkc tiling::monitor -f prev
-ctrl + cmd - c  : chunkc tiling::window --send-to-monitor next; chunkc tiling::monitor -f next
-ctrl + cmd - 1  : chunkc tiling::window --send-to-monitor 1; chunkc tiling::monitor -f 1
-ctrl + cmd - 2  : chunkc tiling::window --send-to-monitor 2; chunkc tiling::monitor -f 2
-ctrl + cmd - 3  : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
+# ctrl + cmd - z  : chunkc tiling::window --send-to-monitor prev; chunkc tiling::monitor -f prev
+# ctrl + cmd - c  : chunkc tiling::window --send-to-monitor next; chunkc tiling::monitor -f next
+# ctrl + cmd - 1  : chunkc tiling::window --send-to-monitor 1; chunkc tiling::monitor -f 1
+# ctrl + cmd - 2  : chunkc tiling::window --send-to-monitor 2; chunkc tiling::monitor -f 2
+# ctrl + cmd - 3  : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
 
 # increase region size
 shift + alt - a : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge west
