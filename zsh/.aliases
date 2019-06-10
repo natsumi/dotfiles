@@ -17,6 +17,7 @@ fi
 
 if [ -x "$(command -v bat)" ]; then
   alias cat="bat"
+  alias less="bat"
 fi
 
 if [ -x "$(command -v diff-so-fancy)" ]; then
