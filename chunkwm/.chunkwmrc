@@ -50,7 +50,7 @@ fi
 # chunkc set global_desktop_offset_bottom  20
 # chunkc set global_desktop_offset_left    20
 # chunkc set global_desktop_offset_right   20
-# chunkc set global_desktop_offset_gap     10
+# chunkc set global_desktop_offset_gap     20
 
 #
 # NOTE: syntax for desktop-specific settings
@@ -75,7 +75,7 @@ chunkc set bsp_split_ratio               0.5
 chunkc set monitor_focus_cycle            1
 chunkc set window_focus_cycle            monitor
 
-chunkc set mouse_follows_focus           0
+chunkc set mouse_follows_focus          intrinsic
 chunkc set window_float_next             0
 chunkc set window_float_center           1
 
@@ -155,6 +155,7 @@ chunkc tiling::rule --owner VLC --state float
 chunkc tiling::rule --owner IINA --state float
 chunkc tiling::rule --owner Skitch --state float
 chunkc tiling::rule --owner Hedge --state float
+chunkc tiling::rule --owner \"Cisco AnyConnect Secure Mobility Client\" --state float
 # chunkc tiling::rule --owner "Google Chrome" --name "chrome-devtools.*" --state float
 # float Flipboard
 # chunkc tiling::rule --owner "Google Chrome" --name "Add to magazine.*" --state float
