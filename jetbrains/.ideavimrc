@@ -6,3 +6,5 @@ set clipboard+=unnamed
 set ignorecase
 set smartcase
 
+# show results while search
+set incsearch
