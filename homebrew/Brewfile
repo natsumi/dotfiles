@@ -52,6 +52,7 @@ brew "fzf"
 brew "exa"
 brew "aria2"
 brew "stow"
+brew "fd"
 
 # Text Editors
 # brew "vim"
