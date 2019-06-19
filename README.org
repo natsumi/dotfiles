@@ -42,7 +42,6 @@
     #+BEGIN_SRC bash
     git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
     git clone --recursive https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
-    git clone https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
     cd && curl -fsSLO https://raw.githubusercontent.com/romkatv/dotfiles-public/master/.purepower
     #+END_SRC
 *** Custom configurations
