@@ -6,6 +6,8 @@ fi
 ################
 # THEME SETTINGS
 ################
+[[ -f  ~/.powerlevel10k/powerlevel10k.zsh-theme ]] && source ~/.powerlevel10k/powerlevel10k.zsh-theme
+[[ -f  ~/.purepower ]] && source ~/.purepower
 
 # makes color constants available
 autoload -U colors
