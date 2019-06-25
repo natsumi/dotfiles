@@ -44,13 +44,13 @@ asdf global golang 1.11.2
 printf "Installing Elixir\n"
 stow -v --target=$HOME --dir=$DOTFILE_DIR elixir
 
-asdf install erlang 21.1.4
-asdf global erlang 21.1.4
+asdf install erlang 22.0.4
+asdf global erlang 22.0.4
 
-asdf install elixir 1.8.0
-asdf global elixir 1.8.0
+asdf install elixir 1.9.0
+asdf global elixir 1.9.0
 
-printf "Installing Go\n"
+printf "Installing Elm\n"
 asdf install elm 0.19.0
 asdf global elm 0.19.0
 
