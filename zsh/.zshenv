@@ -17,7 +17,7 @@ export GTAGSCONF=$HOME/.gtags.conf
 export GTAGSLABEL=pygments
 
 # Elixir IEX History
-export ERL_AFLAGS="-kernel shell_history enabled"
+export ERL_AFLAGS="-kernel shell_history enabled shell_history_file_bytes 20240000"
 
 # Init Zplug
 # [[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
