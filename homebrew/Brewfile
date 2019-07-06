@@ -1,58 +1,59 @@
-tap "caskroom/cask"
-tap "homebrew/bundle"
-tap "universal-ctags/universal-ctags"
-tap "d12frosted/emacs-plus"
-tap "neovim/neovim"
-tap "mas-cli/tap"
-tap "buo/cask-upgrade"
+tap 'caskroom/cask'
+tap 'homebrew/bundle'
+tap 'universal-ctags/universal-ctags'
+tap 'd12frosted/emacs-plus'
+tap 'neovim/neovim'
+tap 'mas-cli/tap'
+tap 'buo/cask-upgrade'
 
 # Build Tools
-brew "automake"
-brew "autoconf"
-brew "libyaml"
-brew "libffi"
-brew "libxslt"
-brew "libtool"
-brew "unixodbc"
-brew "readline"
-brew "xz"
-brew "coreutils"
-brew "openssl"
+brew 'automake'
+brew 'autoconf'
+brew 'libyaml'
+brew 'libffi'
+brew 'libxslt'
+brew 'libtool'
+brew 'unixodbc'
+brew 'readline'
+brew 'xz'
+brew 'coreutils'
+brew 'openssl'
 
 # Development Tools
-brew "git"
-brew "tig"
-brew "pgcli"
-brew "sqlite"
-brew "diff-so-fancy"
-brew "scmpuff"
-brew "the_silver_searcher"
-brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
+brew 'git'
+brew 'tig'
+brew 'pgcli'
+brew 'sqlite'
+brew 'diff-so-fancy'
+brew 'scmpuff'
+brew 'the_silver_searcher'
+brew 'ag'
+brew 'universal-ctags/universal-ctags/universal-ctags', args: ['HEAD']
 
 # Programming Languages
-brew "ruby-build"
+brew 'ruby-build'
 
 # Utitlies
-brew "zsh"
-brew "zplug"
-brew "mas"
-brew "htop-osx"
-brew "wget"
-brew "tmux"
-brew "tmate"
-brew "tmux-mem-cpu-load"
-brew "reattach-to-user-namespace"
-brew "terminal-notifier"
-brew "ffmpeg"
-brew "rtmpdump"
+brew 'zsh'
+brew 'zplug'
+brew 'mas'
+brew 'htop-osx'
+brew 'wget'
+brew 'tmux'
+brew 'tmate'
+brew 'tmux-mem-cpu-load'
+brew 'reattach-to-user-namespace'
+brew 'terminal-notifier'
+brew 'ffmpeg'
+brew 'rtmpdump'
 
-brew "tree"
-brew "bat"
-brew "fzf"
-brew "exa"
-brew "aria2"
-brew "stow"
-brew "fd"
+brew 'tree'
+brew 'bat'
+brew 'fzf'
+brew 'exa'
+brew 'aria2'
+brew 'stow'
+brew 'fd'
 
 # Text Editors
 # brew "vim"
