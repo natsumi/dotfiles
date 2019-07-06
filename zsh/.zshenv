@@ -19,6 +19,12 @@ export GTAGSLABEL=pygments
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled shell_history_file_bytes 20240000"
 
+# FZF Settings
+# set default file search to be ripgrep
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+# To apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 # Init Zplug
 # [[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
 
