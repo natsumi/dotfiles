@@ -140,6 +140,10 @@
    #+BEGIN_SRC
    stow -v --target=$HOME --dir=$DOTFILE_DIR silver_searcher
    #+END_SRC
+** Ripgrep
+   #+BEGIN_SRC
+   stow -v --target=$HOME --dir=$DOTFILE_DIR ripgrep
+   #+END_SRC
 ** Youtube-dl
    #+BEGIN_SRC
    mkdir -p ~/.config/youtube-dl
