@@ -9,10 +9,7 @@ ruby_parser
 ruby-debug-ide
 rufo
 rubocop
-scss_lint
-scss_lint_reporter_checkstyle
 spirit_fingers
-ruby-debug-ide
 rcodetools
 debase
 solargraph
