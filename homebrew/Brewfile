@@ -22,7 +22,6 @@ brew 'openssl'
 # Development Tools
 brew 'git'
 brew 'tig'
-brew 'pgcli'
 brew 'sqlite'
 brew 'diff-so-fancy'
 brew 'scmpuff'
