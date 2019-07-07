@@ -26,7 +26,7 @@ brew 'sqlite'
 brew 'diff-so-fancy'
 brew 'scmpuff'
 brew 'the_silver_searcher'
-brew 'ag'
+brew 'ripgrep'
 brew 'universal-ctags/universal-ctags/universal-ctags', args: ['HEAD']
 
 # Programming Languages
