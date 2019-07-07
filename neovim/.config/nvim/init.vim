@@ -27,6 +27,8 @@ Plug 'altercation/vim-colors-solarized'
 " TODO Find a new syntax highlighter
 " Try neomake
 Plug 'editorconfig/editorconfig-vim'
+" Code autocomplete
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Git Plugins
 Plug 'tpope/vim-fugitive'
