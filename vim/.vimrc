@@ -1,5 +1,6 @@
 """"""""""
 "VIM PLUG"
+"https://github.com/junegunn/vim-plug"
 """"""""""
 " Automatic install of vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
