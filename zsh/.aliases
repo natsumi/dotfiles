@@ -24,6 +24,11 @@ if [ -x "$(command -v diff-so-fancy)" ]; then
   alias diff="git diff --no-index"
 fi
 
+# Vim
+if [ -x "$(command -v nvim)" ]; then
+  alias vim="nvim"
+fi
+
 # Emacs
 alias e="emacsclient -t -a ''"
 alias ec="emacsclient -c -n -a ''"
@@ -45,8 +50,7 @@ alias frrr="foreman run rails runner"
 alias frbe="foreman run bundle exec"
 alias rc="rails c"
 alias rs="rails s"
-alias migrate="rake db:migrate db:rollback && rake db:migrate"
-alias s="rspec"
+alias rmigrate="rake db:migrate db:rollback && rake db:migrate"
 
 # Pretty print the PATH env
 alias path='echo $PATH | tr -s ":" "\n"'
