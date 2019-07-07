@@ -23,6 +23,52 @@ Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
 Plug 'altercation/vim-colors-solarized'
 
+" Files
+" TODO Find a new syntax highlighter
+" Try neomake
+Plug 'editorconfig/editorconfig-vim'
+
+" Git Plugins
+Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv' " gitk clone
+Plug 'airblade/vim-gitgutter'
+
+" Movement
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'wesQ3/vim-windowswap'
+
+" Javascript
+" Plug 'jelera/vim-javascript-syntax'
+" Plug 'mxw/vim-jsx'
+" Plug 'elzr/vim-json'
+
+" Rails
+" Plug 'tpope/vim-rails'
+" Plug 'vim-ruby/vim-ruby'
+" Plug 'slim-template/vim-slim'
+" Plug 'tpope/vim-bundler'
+
+" Elixir Plugins
+Plug 'elixir-lang/vim-elixir'
+Plug 'slashmili/alchemist.vim'
+Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'mattreduce/vim-mix'
+Plug 'fholgado/minibufexpl.vim'
+
+" Misc
+Plug 'scrooloose/nerdtree'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'pbrisbin/vim-mkdir'
+Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-endwise'
+Plug 'unblevable/quick-scope'
+Plug 'ervandew/supertab'
+Plug 'tomtom/tcomment_vim'
+Plug 'wincent/terminus'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+
 " Initialize plugin system
 call plug#end()
 
