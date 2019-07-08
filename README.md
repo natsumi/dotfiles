@@ -125,11 +125,12 @@ brew bundle --file=$DOTFILE_DIR/homebrew/Brewfile
 Might want to use SpaceVim instead
 
 ``` shell
+stow -v --target=$HOME --dir=$DOTFILE_DIR vim
+stow -v --target=$HOME --dir=$DOTFILE_DIR ctags
+
 # Install vim-plug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-stow -v --target=$HOME --dir=$DOTFILE_DIR vim
-stow -v --target=$HOME --dir=$DOTFILE_DIR ctags
 ```
 
 ### Plugin Installs
@@ -145,10 +146,11 @@ Run `vim`
 Might want to use SpaceVim instead
 
 ``` shell
+stow -v --target=$HOME --dir=$DOTFILE_DIR neovim
+
 # Install vim-plug
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vimm
-stow -v --target=$HOME --dir=$DOTFILE_DIR neovim
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
 ## SpaceMacs
