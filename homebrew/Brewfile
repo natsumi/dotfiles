@@ -45,6 +45,7 @@ brew 'reattach-to-user-namespace'
 brew 'terminal-notifier'
 brew 'ffmpeg'
 brew 'rtmpdump'
+brew 'ncdu'
 
 brew 'tree'
 brew 'bat'
