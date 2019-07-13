@@ -58,15 +58,18 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'mattreduce/vim-mix'
 Plug 'fholgado/minibufexpl.vim'
 
-" Misc
-Plug 'scrooloose/nerdtree'
-Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'pbrisbin/vim-mkdir'
+" Text manipulation plugins
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-endwise'
 Plug 'unblevable/quick-scope'
 Plug 'tomtom/tcomment_vim'
 Plug 'wincent/terminus'
+Plug 'jiangmiao/auto-pairs'
+
+" Misc
+Plug 'scrooloose/nerdtree'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'pbrisbin/vim-mkdir'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
