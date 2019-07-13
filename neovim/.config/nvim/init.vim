@@ -65,7 +65,6 @@ Plug 'pbrisbin/vim-mkdir'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-endwise'
 Plug 'unblevable/quick-scope'
-Plug 'ervandew/supertab'
 Plug 'tomtom/tcomment_vim'
 Plug 'wincent/terminus'
 Plug '/usr/local/opt/fzf'
@@ -115,22 +114,6 @@ set foldlevel=99 " Enable code folding
 set bs=2 " Backspace overrides anything in INSERT mode
 set ttyfast " Better scrolling
 set noerrorbells " No noise
-
-"Tab completion
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-let g:SuperTabCrMapping = 0
-let g:SuperTabDefaultCompletionType = 'context'
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
- autocmd FileType *
-     \ if &omnifunc != '' |
-     \     call SuperTabChain(&omnifunc, '<c-p>') |
-     \ endif
-set completeopt=menuone,longest,preview
 
 "Tab spacing
 set tabstop=2
