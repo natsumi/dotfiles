@@ -125,7 +125,7 @@ set softtabstop=2 " Make backspace go back 2 spaces
 "autocmd FileType * set tabstop=2|set shiftwidth=2|set noexpandtab
 autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab
 
-set colorcolumn=80 "Mark colum 80
+set colorcolumn=80 " Mark colum 80
 
 " Support for es6
 autocmd BufRead,BufNewFile *.es6 setfiletype javascript
@@ -154,8 +154,8 @@ nmap <Left> :bprev<CR>
 "Open gundo
 map <leader>g :GundoToggle<CR>
 let g:pep8_map='<leader>8' " Pep 8 keybinding
-"ag bindings
-nnoremap <leader>a :Ag
+" ripgrep search  bindings
+nnoremap <leader>r :Rg
 "Insert a comment
 map <F5> :TComment<CR>
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
@@ -202,8 +202,6 @@ set wildmenu " Show more than 1 item for tab completion
 set wildmode=list:longest  " Tab completes up to point of ambiguity
 set encoding=utf-8 " Set encoding type
 
-let g:ag_working_path_mode="r" " AG search starts at project root
-
 """"""""""""""""""""""
 " Plugins Configurations
 """"""""""""""""""""""
@@ -223,3 +221,6 @@ source ~/.vim/functions/next-close-fold.vim
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
