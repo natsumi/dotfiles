@@ -27,8 +27,11 @@ Plug 'altercation/vim-colors-solarized'
 " TODO Find a new syntax highlighter
 " Try neomake
 Plug 'editorconfig/editorconfig-vim'
+
 " Code autocomplete
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Make sure to pip install pynvim
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Git Plugins
 Plug 'tpope/vim-fugitive'
@@ -204,6 +207,20 @@ set shortmess=atI " Reduces prompts check :help shortmess for more info
 set wildmenu " Show more than 1 item for tab completion
 set wildmode=list:longest  " Tab completes up to point of ambiguity
 set encoding=utf-8 " Set encoding type
+
+"""""""""""""""""""
+" Autocomplete options
+"""""""""""""""""""
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+
+" Enable autocomplete for these filetypes
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
 """"""""""""""""""""""
 " Plugins Configurations
