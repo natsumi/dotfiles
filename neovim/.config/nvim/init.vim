@@ -177,10 +177,11 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 " Index ctags from any project, including those outside Rails
 map <Leader>ct :!ctags -R --exclude=*.min.js .<CR>
+
 """""""""""""""""""
-"Misc Options
+" General Options
 """""""""""""""""""
-set hidden
+set hidden " hide buffers instead of closing
 
 set nobackup       " no backup files
 set nowritebackup  " only in case you don't want a backup file while editing
@@ -189,6 +190,8 @@ set autoread " Automatically reload files on changes
 
 set timeoutlen=250 " Time to wait after ESC (default causes an annoying delay)
 set history=256
+set undolevels=99 " max undo levels
+set encoding=utf-8 " Set encoding type
 
 "Ctags options
 set tags+=gems.tags
@@ -201,15 +204,13 @@ set diffopt+=iwhite " Ignore whitespace when using vimdiff
 """""""""""""""""""
 set ignorecase " Case insensitive search
 set hlsearch " Highlight search terms
-"disable highlighted searched terms
-:nmap \q :nohlsearch<CR>
+nmap \q :nohlsearch<CR> " Disable search highlight
 set incsearch " Highlight as term is being typed
 set smartcase " Case sensitive search if theres a capital letter in search string
 
 set shortmess=atI " Reduces prompts check :help shortmess for more info
 set wildmenu " Show more than 1 item for tab completion
 set wildmode=list:longest  " Tab completes up to point of ambiguity
-set encoding=utf-8 " Set encoding type
 
 """""""""""""""""""
 " Autocomplete options
