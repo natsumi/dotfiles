@@ -14,3 +14,5 @@ fkill-cli
 alfred-fkill
 alfred-hl
 neovim
+tmux-mem
+tmux-cpu
