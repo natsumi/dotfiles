@@ -225,7 +225,6 @@ autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 """"""""""""""""""""""
 " Plugins Configurations
 """"""""""""""""""""""
-source ~/.vim/plugins/syntastic.vim
 source ~/.vim/plugins/airline.vim
 source ~/.vim/plugins/nerdtree.vim
 
@@ -243,4 +242,4 @@ if filereadable($HOME . "/.vimrc.local")
 endif
 
 command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0g
