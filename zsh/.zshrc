@@ -77,7 +77,8 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug 'zdharma/fast-syntax-highlighting'
 zplug 'wfxr/forgit'
 # Forgit options
-forgit_stash_show=gsv
+forgit_stash_show=gsf
+forgit_diff=gdf
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
