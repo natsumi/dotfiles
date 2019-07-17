@@ -142,7 +142,7 @@ source ~/.vim/ignore.vim
 set clipboard+=unnamedplus
 
 """""""""""""""
-"KEY BINDINGS"
+"KEYBINDINGS"
 """""""""""""""
 let mapleader=','
 "Toggle visible tab/trailing space with ,l
@@ -175,6 +175,8 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 " Index ctags from any project, including those outside Rails
 map <Leader>ct :!ctags -R --exclude=*.min.js .<CR>
+
+nmap ,n :NERDTreeFind<CR> " Nerdtree reveal current file
 
 """""""""""""""""""
 " General Options
@@ -272,13 +274,13 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Enable autocomplete for these filetypes
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-
+" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+"
 """"""""""""""""""""""
 " Plugins Configurations
 """"""""""""""""""""""
