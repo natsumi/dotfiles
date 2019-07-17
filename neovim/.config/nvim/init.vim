@@ -157,11 +157,9 @@ map <c-h> <c-w>h
 "Remap keys to go forward and back on buffer
 nmap <Right> :bnext<CR>
 nmap <Left> :bprev<CR>
-"Open gundo
-map <leader>g :GundoToggle<CR>
-let g:pep8_map='<leader>8' " Pep 8 keybinding
+
 " ripgrep search  bindings
-nnoremap <leader>r :Rg
+nnoremap <leader>r :Rg<CR>
 "Insert a comment
 map <F5> :TComment<CR>
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
@@ -241,5 +239,5 @@ if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
 
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0g
+" command! -bang -nargs=? -complete=dir Files
+"   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0g
