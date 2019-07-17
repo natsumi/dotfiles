@@ -75,6 +75,9 @@ source ${ZPLUG_HOME}/init.zsh
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug 'zdharma/fast-syntax-highlighting'
+zplug 'wfxr/forgit'
+# Forgit options
+forgit_stash_show=gsv
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -83,6 +86,7 @@ if ! zplug check --verbose; then
         echo; zplug install
     fi
 fi
+
 
 # Then, source plugins and add commands to $PATH
 zplug load
