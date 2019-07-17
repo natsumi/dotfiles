@@ -140,6 +140,9 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 "List of files to ignore
 source ~/.vim/ignore.vim
 
+" Copy to systen clipboard by default
+set clipboard+=unnamedplus
+
 """""""""""""""
 "KEY BINDINGS"
 """""""""""""""
@@ -151,9 +154,6 @@ map <c-j> <c-w>j
 map <c-k> <c-w>k
 map <c-l> <c-w>l
 map <c-h> <c-w>h
-"Remap keys to copy and paste using clipboard
-vmap <leader>c y:call system("pbcopy", getreg("\""))<CR>
-nmap <leader>v :call setreg("\"",system("pbpaste"))<CR>p
 "Remap keys to go forward and back on buffer
 nmap <Right> :bnext<CR>
 nmap <Left> :bprev<CR>
