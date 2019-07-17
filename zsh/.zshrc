@@ -74,6 +74,7 @@ bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 source ${ZPLUG_HOME}/init.zsh
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+zplug 'zdharma/fast-syntax-highlighting'
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
