@@ -160,6 +160,11 @@ nmap <Left> :bprev<CR>
 
 " ripgrep search  bindings
 nnoremap <leader>r :Rg<CR>
+" FZF bindings
+nnoremap <C-p> :Files<CR>
+nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>h :History<CR>
+
 "Insert a comment
 map <F5> :TComment<CR>
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
@@ -238,6 +243,3 @@ source ~/.vim/functions/next-close-fold.vim
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
-
-" command! -bang -nargs=? -complete=dir Files
-"   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0g
