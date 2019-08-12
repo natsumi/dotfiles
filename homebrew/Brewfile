@@ -31,6 +31,7 @@ brew 'universal-ctags/universal-ctags/universal-ctags', args: ['HEAD']
 
 # Programming Languages
 brew 'ruby-build'
+brew 'jemalloc'
 
 # Utitlies
 brew 'zsh'

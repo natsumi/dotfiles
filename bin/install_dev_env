@@ -19,7 +19,7 @@ asdf plugin-update --all
 printf "Installing Ruby 2.6.1.\n"
 
 stow -v --target=$HOME --dir=$DOTFILE_DIR ruby
-RUBY_CONFIGURE_OPTS=--with-readline-dir="$(brew --prefix readline)" asdf install ruby 2.6.1
+RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 2.6.1
 asdf global ruby 2.6.1
 
 printf "Installing Node 10.14.1..\n"
