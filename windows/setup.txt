@@ -1,0 +1,34 @@
+# Install 5700XT Drivers
+# Install MB Chipset Drivers
+https://www.gigabyte.com/us/Motherboard/X570-I-AORUS-PRO-WIFI-rev-10/support#support-dl-driver-chipset
+
+
+# install chocolately
+
+Set-ExecutionPolicy AllSigned
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+choco install googlechrome -y 
+choco install winrar -y
+choco install vscode -y
+choco install steam -y
+choco install epicgameslauncher
+choco install vlc -y
+choco install spotify -y
+choco install retroarch -y
+choco install terminus -y
+
+# enable WSL
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+choco install wsl -y
+choco install cinebench -y
+
+choco install msiafterburner -y
+
+# Ubuntu
+
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get install git
+sudo apt install fish
+chsh -s $(which fish)
