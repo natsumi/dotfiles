@@ -1,0 +1,30 @@
+# Download latest release here
+# https://github.com/Disassembler0/Win10-Initial-Setup-Script/releases
+#
+
+# To Use:
+# https://github.com/Disassembler0/Win10-Initial-Setup-Script/releases
+DisableTelemetry
+DisableWebSearch
+DisableAppSuggestions
+DisableTailoredExperiences
+DisableAdvertisingID
+DisableCortana
+
+# Network
+SetCurrentNetworkPrivate
+
+### Explorer UI Tweaks ###
+ShowKnownExtensions
+SetExplorerThisPC
+ShowThisPCOnDesktop
+HideDownloadsFromThisPC
+HideVideosFromThisPC
+HidePicturesFromThisPC
+DisableThumbsDBOnNetwork
+
+### Application Tweaks ###
+DisableOneDrive
+UninstallOneDrive
+UninstallMsftBloat
+UninstallThirdPartyBloat
