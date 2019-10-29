@@ -31,6 +31,8 @@ brew cask install font-robotomono-nerd-font
 brew cask install font-robotomono-nerd-font-mono
 brew cask install font-sourcecodepro-nerd-font
 brew cask install font-sourcecodepro-nerd-font-mono
+brew cask install font-victor-mono
+
 
 # Programming Fonts
 brew cask install font-input
