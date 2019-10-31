@@ -37,14 +37,14 @@ Write-Host ""
 Write-Host "Add 'This PC' Desktop Icon..." -ForegroundColor Green
 Write-Host "------------------------------------" -ForegroundColor Green
 $thisPCIconRegPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel"
-$thisPCRegValname = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" 
-$item = Get-ItemProperty -Path $thisPCIconRegPath -Name $thisPCRegValname -ErrorAction SilentlyContinue 
-if ($item) { 
-    Set-ItemProperty  -Path $thisPCIconRegPath -name $thisPCRegValname -Value 0  
-} 
-else { 
-    New-ItemProperty -Path $thisPCIconRegPath -Name $thisPCRegValname -Value 0 -PropertyType DWORD | Out-Null  
-} 
+$thisPCRegValname = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+$item = Get-ItemProperty -Path $thisPCIconRegPath -Name $thisPCRegValname -ErrorAction SilentlyContinue
+if ($item) {
+    Set-ItemProperty  -Path $thisPCIconRegPath -name $thisPCRegValname -Value 0
+}
+else {
+    New-ItemProperty -Path $thisPCIconRegPath -Name $thisPCRegValname -Value 0 -PropertyType DWORD | Out-Null
+}
 # -----------------------------------------------------------------------------
 Write-Host ""
 Write-Host "Removing Edge Desktop Icon..." -ForegroundColor Green
@@ -111,6 +111,7 @@ $apps = @(
     "googlechrome",
     "7zip.install",
     "bulkrenameutility",
+    "powertoys",
 
     # Game
     "steam",
