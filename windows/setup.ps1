@@ -110,6 +110,7 @@ $apps = @(
     # Common Apps
     "googlechrome",
     "7zip.install",
+    "bulkrenameutility",
 
     # Game
     "steam",
