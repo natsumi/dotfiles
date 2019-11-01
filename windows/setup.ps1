@@ -112,6 +112,7 @@ $apps = @(
     "7zip.install",
     "bulkrenameutility",
     "powertoys",
+    "conemu",
 
     # Game
     "steam",
@@ -128,7 +129,11 @@ $apps = @(
     "terminus",
 
     # Misc
-    "spotify"
+    "spotify",
+
+    # Fonts
+    "cascadiacode",
+
 )
 foreach ($app in $apps) {
 Write-Host ""
