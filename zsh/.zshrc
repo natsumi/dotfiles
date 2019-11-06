@@ -6,8 +6,8 @@ fi
 ################
 # THEME SETTINGS
 ################
-[[ -f  ~/.powerlevel10k/powerlevel10k.zsh-theme ]] && source ~/.powerlevel10k/powerlevel10k.zsh-theme
-[[ -f  ~/.purepower ]] && source ~/.purepower
+# Theme loaded in .zprezto
+
 
 # makes color constants available
 autoload -U colors
@@ -110,3 +110,6 @@ unalias gls #git log conflicts with dircolors gls
 
 [[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/opt/asdf/asdf.sh
 [[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/etc/bash_completion.d/asdf.bash
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
