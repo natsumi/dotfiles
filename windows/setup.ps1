@@ -112,7 +112,7 @@ $apps = @(
     "7zip.install",
     "bulkrenameutility",
     "powertoys",
-    "conemu",
+    "sumatrapdf.install",
 
     # Game
     "steam",
@@ -127,6 +127,7 @@ $apps = @(
     # Dev
     "vscode",
     "terminus",
+    "conemu",
 
     # Misc
     "spotify",
