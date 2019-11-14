@@ -19,6 +19,9 @@ export GTAGSLABEL=pygments
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled shell_history_file_bytes 20240000"
 
+# Ripgrep
+export RIPGREP_CONFIG_PATH=~/.ripgreprc
+
 # FZF Settings
 # set default file search to be ripgrep
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
