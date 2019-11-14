@@ -1,7 +1,7 @@
 DOTFILES_DIR=$HOME/dev/dotfiles
 umask 022
-sudo apt-get update
-sudo apt-get upgrade
+sudo apt update
+sudo apt upgrade
 
 # Build tools
 sudo apt install \
@@ -10,9 +10,13 @@ sudo apt install \
   libxslt-dev libffi-dev libtool unixodbc-dev \
   unzip curl \
   build-essential openssl libssl-dev \
-  tmux \
+  tig tmux \
   htop stow \
   zsh
+
+echo 'Installing bat'
+curl -sL https://api.github.com/repos/sharkdp/bat/releases/latest  | jq -r '.assets[].browser_download_url' | grep amd | tail -n 1 | xargs wget
+ls *.deb | sudo xargs dpkg -i
 
 echo 'Installing scmpuff'
 curl -sL https://api.github.com/repos/mroth/scmpuff/releases/latest  | jq -r '.assets[].browser_download_url' | grep linux | xargs -I % wget % -O - |  tar xvz scmpuff
