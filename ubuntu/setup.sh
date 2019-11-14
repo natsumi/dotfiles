@@ -28,6 +28,10 @@ wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party
 chmod +x /usr/local/bin/diff-so-fancy
 sudo mv diff-so-fancy /usr/local/bin
 
+echo 'Installing fzf'
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+
 echo 'Installing ripgrep'
 curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
 sudo dpkg -i ripgrep_11.0.2_amd64.deb

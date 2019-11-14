@@ -71,6 +71,12 @@ Plug 'wincent/terminus'
 Plug 'scrooloose/nerdtree'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'pbrisbin/vim-mkdir'
+
+if empty(glob('~/.fzf'))
+  Plug '/usr/local/opt/fzf'
+else
+  Plug '~/.fzf'
+endif
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
