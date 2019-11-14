@@ -1,5 +1,5 @@
 # ZPlug
-export ZPLUG_HOME=/usr/local/opt/zplug
+export ZPLUG_HOME=~/.zplug
 
 # Homebrew
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
