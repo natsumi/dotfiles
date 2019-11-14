@@ -4,14 +4,21 @@ sudo apt update
 sudo apt upgrade
 
 # Build tools
-sudo apt install \
+sudo apt install -y \
   automake autoconf libreadline-dev \
   libncurses-dev libssl-dev libyaml-dev \
   libxslt-dev libffi-dev libtool unixodbc-dev \
-  unzip curl \
-  build-essential openssl libssl-dev \
-  tig tmux \
+  build-essential openssl libssl-dev
+
+# Python Build Tools
+sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
+  libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+  xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+# Utils
+sudo apt install -y \
   htop stow \
+  tig tmux \
+  wget unzip curl \
   zsh
 
 echo 'Installing asdf'
