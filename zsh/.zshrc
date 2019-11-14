@@ -1,4 +1,9 @@
-# Source PreztoV
+# Fix umask bug in WSL where it is always set to 000
+if [[ ! -z "$WSL_DISTRO_NAME" ]]; then
+  umask 022
+fi
+
+# Source Prezto
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
@@ -37,7 +42,6 @@ setopt beep nomatch notify
 
 # Vim Bindings
 bindkey -v
-zstyle :compinstall filename '/Users/aseng/.zshrc'
 
 # load our own completion functions
 fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fpath)
@@ -90,11 +94,6 @@ fi
 
 # Then, source plugins and add commands to $PATH
 zplug load
-
-# Configure online help
-unalias run-help
-autoload run-help
-HELPDIR=/usr/local/share/zsh/help
 
 # Remove aliases
 unalias gls #git log conflicts with dircolors gls
