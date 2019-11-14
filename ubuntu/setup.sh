@@ -14,14 +14,14 @@ sudo apt install \
   htop stow \
   zsh
 
+echo 'Installing asdf'
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+cd ~/.asdf
+git checkout "$(git describe --abbrev=0 --tags)"
+
 echo 'Installing bat'
 curl -sL https://api.github.com/repos/sharkdp/bat/releases/latest  | jq -r '.assets[].browser_download_url' | grep amd | tail -n 1 | xargs wget
 ls *.deb | sudo xargs dpkg -i
-
-echo 'Installing scmpuff'
-curl -sL https://api.github.com/repos/mroth/scmpuff/releases/latest  | jq -r '.assets[].browser_download_url' | grep linux | xargs -I % wget % -O - |  tar xvz scmpuff
-chmod +x /usr/local/bin/scmpuff
-sudo mv scmpuff /usr/local/bin
 
 echo 'Installing diff-so-fancy'
 wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
@@ -33,10 +33,10 @@ curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_
 sudo dpkg -i ripgrep_11.0.2_amd64.deb
 rm ripgrep_11.0.2_amd64.deb
 
-echo 'Installing asdf'
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-cd ~/.asdf
-git checkout "$(git describe --abbrev=0 --tags)"
+echo 'Installing scmpuff'
+curl -sL https://api.github.com/repos/mroth/scmpuff/releases/latest  | jq -r '.assets[].browser_download_url' | grep linux | xargs -I % wget % -O - |  tar xvz scmpuff
+chmod +x /usr/local/bin/scmpuff
+sudo mv scmpuff /usr/local/bin
 
 # Clone dotfiles dir
 mkdir ~/dev
