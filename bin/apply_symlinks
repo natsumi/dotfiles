@@ -3,6 +3,8 @@
 # DESCRIPTION
 # Applies symlinks using stow
 
+[[ -z "${DOTFILE_DIR}" ]] && DOTFILE_DIR=$HOME/dev/dotfiles
+
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR ruby
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR zsh
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR elixir
