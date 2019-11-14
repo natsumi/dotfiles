@@ -70,6 +70,14 @@ git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$H
 git clone --recursive https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
 ```
 
+### Zplug
+
+[Zplug](https://github.com/zplug/zplug)
+
+``` bash
+curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+```
+
 ### Custom configurations
 
 edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
