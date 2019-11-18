@@ -13,6 +13,7 @@ stow -v -R --target=$HOME --dir=$DOTFILE_DIR elixir
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR eslint
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR gtags
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR jetbrains
+stow -v -R --target=$HOME --dir=$DOTFILE_DIR neovim
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR prettier
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR ripgrep
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR ruby
