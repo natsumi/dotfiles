@@ -16,42 +16,39 @@ asdf plugin-add elm
 
 asdf plugin-update --all
 
-printf "Installing Ruby 2.6.1.\n"
+RUBY_VER=2.6.5
+printf "Installing Ruby 2.6.5.\n"
 
-stow -v --target=$HOME --dir=$DOTFILE_DIR ruby
-RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 2.6.1
-asdf global ruby 2.6.1
+RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 2.6.5
+asdf global ruby 2.6.5
 
 printf "Installing Node 10.14.1..\n"
-stow -v --target=$HOME --dir=$DOTFILE_DIR eslint
-stow -v --target=$HOME --dir=$DOTFILE_DIR prettier
 
 brew install gpg
-bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+sh ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 
-asdf install nodejs 10.14.1
-asdf global nodejs 10.14.1
+asdf install nodejs 13.1.0
+asdf global nodejs  13.1.0
 
-printf "Installing Python 3.7.1 and 2.7.15 \n"
+printf "Installing Python 3.8.0 and 2.7.17 \n"
 asdf install python 3.8.0
-asdf install python 2.7.15
-asdf global python 3.8.0 2.7.15
+asdf install python 2.7.17
+asdf global python 3.8.0 2.7.17
 
-printf "Installing Go\n"
-asdf install golang 1.11.2
-asdf global golang 1.11.2
+printf "Installing Go 1.13.4\n"
+asdf install golang 1.13.4
+asdf global golang 1.13.4
 
 printf "Installing Elixir\n"
-stow -v --target=$HOME --dir=$DOTFILE_DIR elixir
 
-asdf install erlang 22.0.4
-asdf global erlang 22.0.4
+asdf install erlang 22.1.7
+asdf global erlang 22.1.7
 
-asdf install elixir 1.9.0
-asdf global elixir 1.9.0
+asdf install elixir 1.9.4
+asdf global elixir 1.9.4
 
 printf "Installing Elm\n"
-asdf install elm 0.19.0
-asdf global elm 0.19.0
+asdf install elm 0.19.1
+asdf global elm 0.19.1
 
 printf "Restart your terminal"
