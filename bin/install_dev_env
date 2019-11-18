@@ -5,7 +5,7 @@
 
 # EXECUTION
 printf "Adding plguins\n"
-stow -v --target=$HOME --dir=$DOTFILE_DIR asdf
+stow -v -R --target=$HOME --dir=$DOTFILE_DIR asdf
 asdf plugin-add ruby
 asdf plugin-add nodejs
 asdf plugin-add python

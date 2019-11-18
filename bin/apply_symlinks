@@ -5,6 +5,7 @@
 
 [[ -z "${DOTFILE_DIR}" ]] && DOTFILE_DIR=$HOME/dev/dotfiles
 
+stow -v -R --target=$HOME --dir=$DOTFILE_DIR asdf
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR alacritty
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR chunkwm
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR ctags
