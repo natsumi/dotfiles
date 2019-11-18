@@ -194,13 +194,14 @@ stow -v --target=$HOME --dir=$DOTFILE_DIR chunkwmrc
 
 ### Fonts
 
+```bash
+sh bin/install_fonts
+```
+
+### Deprecated
 [Powerline Fonts Repo](https://github.com/powerline/fonts)
 
 [Input Mono](http://input.fontbureau.com/download/)
-
-``` bash
-sh bin/install_fonts
-```
 
 ### Mouse
 
