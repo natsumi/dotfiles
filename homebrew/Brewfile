@@ -35,7 +35,6 @@ brew 'jemalloc'
 
 # Utitlies
 brew 'zsh'
-brew 'zplug'
 brew 'mas'
 brew 'htop-osx'
 brew 'wget'
