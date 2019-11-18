@@ -2,7 +2,7 @@
 
 ## Xcode
 
-``` bash
+```bash
 xcode-select --install
 ```
 
@@ -12,7 +12,7 @@ xcode-select --install
 
 ## Git
 
-``` bash
+```bash
 brew install git
 sh bin/apply_git_settings
 ```
@@ -21,25 +21,25 @@ sh bin/apply_git_settings
 
 ## Apply Basic System Settings
 
-``` bash
+```bash
 sh bin/apply_basic_settings
 ```
 
 ## Apply System Defaults
 
-``` bash
+```bash
 sh bin/apply_default_settings
 ```
 
 ## Install Desktop Applications
 
-``` bash
+```bash
 sh bin/install_homebrew_casks
 ```
 
 ## Install Brew base packages
 
-``` bash
+```bash
 brew bundle --file=~/dev/dotfiles/homebrew/Brewfile
 ```
 
@@ -47,7 +47,7 @@ brew bundle --file=~/dev/dotfiles/homebrew/Brewfile
 
 ## Apply Software Symlink
 
-``` bash
+```bash
 sh bin/apply_symlinks
 ```
 
@@ -55,7 +55,7 @@ sh bin/apply_symlinks
 
 ### Set Default Shell
 
-``` bash
+```bash
 echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
 chsh -s $(which zsh)
 ```
@@ -64,7 +64,7 @@ chsh -s $(which zsh)
 
 [Prezto](https://github.com/sorin-ionescu/prezto.git)
 
-``` bash
+```bash
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 git clone --recursive https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
 ```
@@ -73,7 +73,7 @@ git clone --recursive https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME
 
 [Zplug](https://github.com/zplug/zplug)
 
-``` bash
+```bash
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 ```
 
@@ -86,7 +86,7 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
 Grant access to repo and gist [Set Access
 Tokens](https://github.com/settings/tokens)
 
-``` bash
+```bash
 git config --global github.oauth-token <token>
 ```
 
@@ -125,7 +125,7 @@ brew install vim neovim
 
 ## SpaceMacs
 
-``` bash
+```bash
 mkdir -p ~/.spacemacs.d
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 stow -v --target=$HOME/.spacemacs.d --dir=$DOTFILE_DIR spacemacs
@@ -134,7 +134,7 @@ stow -v --target=$HOME --dir=$DOTFILE_DIR gtags
 
 User develop branch
 
-``` bash
+```bash
 cd ~/.emacs.d
 git fetch
 git checkout develop
@@ -145,7 +145,7 @@ git pull
 
 [Download Global](https://www.gnu.org/software/global/download.html)
 
-``` bash
+```bash
 tar xvzf <filenamee>
 cd <global_dir>
 ./configure --with-universal-ctags=/usr/local/bin/ctags --with-sqlite3
@@ -154,7 +154,7 @@ cd <global_dir>
 
 ### Markdown Support
 
-``` bash
+```bash
 npm install -g vmd
 ```
 
@@ -170,7 +170,7 @@ run tmux ctrl-s shift-i
 
 Configure Twitch Oauth
 
-``` bash
+```bash
 livestreamer --twitch-oauth-authenticate
 ```
 
@@ -184,7 +184,7 @@ This is experimental.
 
 [Simple Keyboard Hot Keys](https://github.com/koekeishiya/skhd)
 
-``` bash
+```bash
 stow -v --target=$HOME --dir=$DOTFILE_DIR chunkwmrc
 ```
 
