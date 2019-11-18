@@ -92,6 +92,12 @@ git config --global github.oauth-token <token>
 
 ## Programming Dev setup
 
+### Fonts
+
+```bash
+sh bin/install_fonts
+```
+
 ### asdf
 
 ```bash
