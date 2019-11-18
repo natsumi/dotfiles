@@ -95,8 +95,9 @@ git config --global github.oauth-token <token>
 
 ### asdf
 
-``` shell
-brew install asdf
+```bash
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.5
+
 ```
 
 Restart Shell
