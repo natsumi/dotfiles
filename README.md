@@ -117,13 +117,6 @@ sh bin/install_dev_env
 ln -s $(which node) /usr/local/bin/node
 ```
 
-## Install CLI Software
-
-``` bash
-export DOTFILE_DIR=<~/path/to/dotfile>
-brew bundle --file=$DOTFILE_DIR/homebrew/Brewfile
-```
-
 ## Vim
 
 ### Install
