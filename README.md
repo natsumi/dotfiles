@@ -10,12 +10,11 @@ xcode-select --install
 
 [Brew](http://brew.sh/)
 
-
-
 ## Git
 
 ``` bash
 brew install git
+sh bin/apply_git_settings
 ```
 
 # Usage
