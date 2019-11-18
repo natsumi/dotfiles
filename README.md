@@ -117,39 +117,10 @@ sh bin/install_dev_env
 ln -s $(which node) /usr/local/bin/node
 ```
 
-## Vim
+## Editors
 
-### Install
-
-Might want to use SpaceVim instead
-
-``` shell
-stow -v --target=$HOME --dir=$DOTFILE_DIR vim
-stow -v --target=$HOME --dir=$DOTFILE_DIR ctags
-
-# Install vim-plug
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-```
-
-### Plugin Installs
-
-Run `vim`
-
-`:PlugInstall`
-
-## NeoVim
-
-### Install
-
-Might want to use SpaceVim instead
-
-``` shell
-stow -v --target=$HOME --dir=$DOTFILE_DIR neovim
-
-# Install vim-plug
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```bash
+brew install vim neovim
 ```
 
 ## SpaceMacs
@@ -190,37 +161,10 @@ npm install -g vmd
 ## Tmux
 
     mkdir -p ~/.tmux/plugins
-    stow -v --target=$HOME --dir=$DOTFILE_DIR tmux
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ### Install Plugins
 
 run tmux ctrl-s shift-i
-
-## FZF
-
-    /usr/local/opt/fzf/install
-
-## Tig
-
-    stow -v --target=$HOME --dir=$DOTFILE_DIR tig
-
-## Silver Searcher
-
-    stow -v --target=$HOME --dir=$DOTFILE_DIR silver_searcher
-
-## Ripgrep
-
-    stow -v --target=$HOME --dir=$DOTFILE_DIR ripgrep
-
-## Youtube-dl
-
-    mkdir -p ~/.config/youtube-dl
-    stow -v --target=$HOME --dir=$DOTFILE_DIR youtube-dl
-
-## Alacritty
-
-    stow -v --target=$HOME --dir=$DOTFILE_DIR alacritty
 
 ## Livestream
 
