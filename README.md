@@ -91,12 +91,6 @@ Tokens](https://github.com/settings/tokens)
 git config --global github.oauth-token <token>
 ```
 
-### Setup Symlinks
-
-``` bash
-stow -v --target=$HOME --dir=$DOTFILE_DIR zsh
-```
-
 ## Programming Dev setup
 
 ### asdf
