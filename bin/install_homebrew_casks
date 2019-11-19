@@ -6,22 +6,21 @@
 brew cask install google-chrome
 brew cask install homebrew/cask-versions/firefox-developer-edition
 brew cask install alfred
-brew cask install dropbox
 brew cask install adium
+brew cask install forklift
 
 # Development
 brew cask install iterm2
-brew cask install slack
 brew cask install visual-studio-code
 brew cask install tableplus
 brew cask install dbngin
 brew cask install ngrok
 brew cask install sublime-merge
+brew cask install slack
 
 # Utilities
 brew cask install the-unarchiver
 brew cask install caffeine
-brew cask install rocket
 
 # Media Players
 brew cask install vlc
