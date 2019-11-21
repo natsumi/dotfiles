@@ -35,6 +35,11 @@ wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party
 chmod +x diff-so-fancy
 sudo mv diff-so-fancy /usr/local/bin
 
+echo 'Installing fd'
+wget https://github.com/sharkdp/fd/releases/download/v7.4.0/fd_7.4.0_amd64.deb
+sudo dpkg -i fd_7.4.0_amd64.deb
+rm fd_7.4.0_amd64.deb
+
 echo 'Installing fzf'
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
