@@ -32,7 +32,7 @@ ls *.deb | sudo xargs dpkg -i
 
 echo 'Installing diff-so-fancy'
 wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
-chmod +x /usr/local/bin/diff-so-fancy
+chmod +x diff-so-fancy
 sudo mv diff-so-fancy /usr/local/bin
 
 echo 'Installing fzf'
