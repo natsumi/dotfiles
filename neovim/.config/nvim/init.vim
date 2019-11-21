@@ -226,9 +226,31 @@ set wildmode=list:longest  " Tab completes up to point of ambiguity
 
 " COC Settings
 """""""""""""""""""
-let g:coc_global_extensions = ['coc-solargraph', 'bash-language-server']
+let g:coc_global_extensions = [
+      \ 'coc-css',
+      \ 'coc-elixir',
+      \ 'coc-html',
+      \ 'coc-json',
+      \ 'coc-markdownlint',
+      \ 'coc-python',
+      \ 'coc-solargraph',
+      \ 'coc-yaml']
+" You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
 set cmdheight=2 " Better display for messges
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -248,6 +270,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use `[c` and `]c` to navigate diagnostics
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
@@ -278,6 +302,16 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Enable autocomplete for these filetypes
 " autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
