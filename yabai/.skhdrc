@@ -1,0 +1,69 @@
+# reload config
+cmd + alt + ctrl - r : khd -e "reload"
+
+# open terminal, blazingly fast compared to iTerm/Hyper
+# cmd - return : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance -d ~
+
+# focus window
+alt - h : yabai -m window --focus west
+alt - k : yabai -m window --focus north
+alt - l : yabai -m window --focus east
+
+# swap window
+shift + alt - h : yabai -m window --swap west
+shift + alt - k : yabai -m window --swap north
+shift + alt - l : yabai -m window --swap east
+
+# balance size of windows
+shift + alt - 0 : yabai -m space --balance
+
+# move window
+shift + cmd - h : yabai -m window --warp west
+shift + cmd - j : yabai -m window --warp south
+shift + cmd - k : yabai -m window --warp north
+shift + cmd - l : yabai -m window --warp east
+
+# make floating window fill screen
+# shift + alt - up     : yabai -m window --grid 1:1:0:0:1:1
+
+# make floating window fill left-half of screen
+# shift + alt - left   : yabai -m window --grid 1:2:0:0:1:1
+
+# make floating window fill right-half of screen
+# shift + alt - right  : yabai -m window --grid 1:2:1:0:1:1
+
+# rotate tree
+alt - r : yabai -m space --rotate 90
+
+# mirror tree y-axis
+alt - y : yabai -m space --mirror y-axis
+
+# mirror tree x-axis
+alt - x : yabai -m space --mirror x-axis
+
+# toggle desktop offset
+alt - a : yabai -m space --toggle padding; yabai -m space --toggle gap
+
+# toggle window parent zoom
+alt - d : yabai -m window --toggle zoom-parent
+
+# toggle window fullscreen zoom
+alt - f : yabai -m window --toggle zoom-fullscreen
+
+# toggle window native fullscreen
+shift + alt - f : yabai -m window --toggle native-fullscreen
+
+# toggle window border
+shift + alt - b : yabai -m window --toggle border
+
+# toggle window split type
+alt - e : yabai -m window --toggle split
+
+# float next window to be tiled
+shift + alt - t : yabai set window_float_next 1
+
+# float / unfloat window and center on screen
+alt - t : yabai -m window --toggle float;\
+          yabai -m window --grid 4:4:1:1:2:2# float / unfloat window and center on screen
+alt - t : yabai -m window --toggle float;\
+          yabai -m window --grid 4:4:1:1:2:2
