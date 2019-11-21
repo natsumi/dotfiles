@@ -9,9 +9,11 @@ export HOMEBREW_NO_ANALYTICS=1
 export VISUAL=nvim
 export EDITOR=$VISUAL
 
+# Dev Dirs
 export DEV_DIR=$HOME/dev
 export WORKON_HOME=$DEV_DIR
 export DOTFILE_DIR=$DEV_DIR/dotfiles
+export GOTPATH=$DEV_DIR/go
 
 # setup gtags to use a ctag backend
 export GTAGSCONF=$HOME/.gtags.conf
