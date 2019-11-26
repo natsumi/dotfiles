@@ -1,4 +1,12 @@
+# https://github.com/JetBrains/ideavim
+
+# Extensions to enable
+set commentary
+set easymotion
 set surround
+
+# Vim Specific Setings
+######################
 # yank to clipboard
 set clipboard+=unnamed
 
