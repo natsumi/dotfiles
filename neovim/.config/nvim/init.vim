@@ -77,7 +77,6 @@ if empty(glob('~/.fzf'))
 else
   Plug '~/.fzf'
 endif
-Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Initialize plugin system
