@@ -29,13 +29,8 @@ brew 'the_silver_searcher'
 brew 'ripgrep'
 brew 'jq'
 
-# Programming Languages
-brew 'ruby-build'
-brew 'jemalloc'
-
 # Utitlies
 brew 'zsh'
-brew 'mas'
 brew 'htop-osx'
 brew 'wget'
 brew 'tmux'
@@ -45,14 +40,21 @@ brew 'reattach-to-user-namespace'
 brew 'terminal-notifier'
 brew 'ffmpeg'
 brew 'rtmpdump'
+# du replacement
 brew 'ncdu'
 
 brew 'tree'
+# Cat replacement
 brew 'bat'
+# Fuzzy search
 brew 'fzf'
+# ls replacement
 brew 'exa'
+# multiple concurrent downloads
 brew 'aria2'
+# symlink management
 brew 'stow'
+# find replacement
 brew 'fd'
 
 # Text Editors
