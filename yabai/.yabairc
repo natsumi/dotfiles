@@ -87,4 +87,16 @@ yabai -m config status_bar_power_icon_strip   
 yabai -m config status_bar_space_icon        
 yabai -m config status_bar_clock_icon        
 
+###############################
+# Rules
+###############################
+
+yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="ForkLift" manage=off
+# yabai tiling::rule --owner Finder --state float
+# yabai tiling::rule --owner Archive Utility --state float
+# yabai tiling::rule --owner \"The Unarchiver\" --state float
+# yabai tiling::rule --owner Preview --state float
+# yabai tiling::rule --owner ".*Acrobat.*" --state float
+# yabai tiling::rule --owner ForkLift --state float
 echo "YABAI CONFIGURATION LOADED.."
