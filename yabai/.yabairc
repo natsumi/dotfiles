@@ -8,7 +8,7 @@ yabai -m config top_padding                  20
 yabai -m config bottom_padding               20
 yabai -m config left_padding                 20
 yabai -m config right_padding                20
-yabai -m config window_gap                   10
+yabai -m config window_gap                   20
 
 # Override default layout for space 2 only
 # yabai -m config --space 2 layout float
