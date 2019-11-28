@@ -64,6 +64,4 @@ shift + alt - t : yabai set window_float_next 1
 
 # float / unfloat window and center on screen
 alt - t : yabai -m window --toggle float;\
-          yabai -m window --grid 4:4:1:1:2:2# float / unfloat window and center on screen
-alt - t : yabai -m window --toggle float;\
           yabai -m window --grid 4:4:1:1:2:2
