@@ -88,7 +88,7 @@ call plug#end()
 """""""""""""""
 syntax on " Syntax highlighting
 set background=dark
-colorscheme apprentice " Colorscheme to pick
+colorscheme apprentice " Colorscheme Theme to pick
 
 "Font settings
 """""""""""""""
