@@ -22,6 +22,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
 Plug 'altercation/vim-colors-solarized'
+Plug 'romainl/Apprentice'
 
 " Files
 " TODO Find a new syntax highlighter
@@ -87,7 +88,7 @@ call plug#end()
 """""""""""""""
 syntax on " Syntax highlighting
 set background=dark
-colorscheme gruvbox " Colorscheme to pick
+colorscheme apprentice " Colorscheme to pick
 
 "Font settings
 """""""""""""""
