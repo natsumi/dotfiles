@@ -11,6 +11,7 @@ brew cask install font-menlo-for-powerline
 # https://github.com/ryanoasis/nerd-fonts
 brew cask install font-anonymouspro-nerd-font
 brew cask install font-anonymouspro-nerd-font-mono
+brew cask install font-cascadia
 brew cask install font-dejavusansmono-nerd-font
 brew cask install font-dejavusansmono-nerd-font-mono
 brew cask install font-droidsansmono-nerd-font
@@ -21,8 +22,8 @@ brew cask install font-firamono-nerd-font
 brew cask install font-firamono-nerd-font-mono
 brew cask install font-go-mono-nerd-font
 brew cask install font-go-mono-nerd-font-mono
-brew cask install font-iosevka-nerd-font-mono
 brew cask install font-iosevka-nerd-font
+brew cask install font-iosevka-nerd-font-mono
 brew cask install font-liberationmono-nerd-font
 brew cask install font-liberationmono-nerd-font-mono
 brew cask install font-meslo-nerd-font
@@ -32,7 +33,6 @@ brew cask install font-robotomono-nerd-font-mono
 brew cask install font-sourcecodepro-nerd-font
 brew cask install font-sourcecodepro-nerd-font-mono
 brew cask install font-victor-mono
-brew cask install font-cascadia
 
 
 # Programming Fonts
