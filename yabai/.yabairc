@@ -91,6 +91,7 @@ yabai -m config status_bar_clock_icon        
 # Rules
 ###############################
 
+yabai -m rule --add app="Calculator" manage=off
 yabai -m rule --add app="Finder" manage=off
 yabai -m rule --add app="ForkLift" manage=off
 yabai -m rule --add app="IINA" manage=off
