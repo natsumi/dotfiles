@@ -103,26 +103,36 @@ font:
   normal:
     # family: OperatorSSm Nerd Font
     # style: Book
-    family: SauceCodePro Nerd Font Mono
+    #
+    # family: SauceCodePro Nerd Font Mono
     # The `style` can be specified to pick a specific face.
-    style: Medium
+    # style: Medium
+    #
+    family: BlexMono Nerd Font
+    style: Book
 
   # Bold font face
   bold:
-    family: SauceCodePro Nerd Font Mono
-    family: OperatorSSm Nerd Font
+    # family: SauceCodePro Nerd Font Mono
+    # family: OperatorSSm Nerd Font
     # The `style` can be specified to pick a specific face.
-    style: Bold
+    # style: Bold
+
+    family: BlexMono Nerd Font
+    style: Book
 
   # Italic font face
   italic:
-    family: SauceCodePro Nerd Font Mono
-    style: Medium Italic
+    # family: SauceCodePro Nerd Font Mono
+    # style: Medium Italic
     # family: OperatorSSm Nerd Font
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
     #family: monospace
+
+    family: BlexMono Nerd Font
+    style: Book
 
     # The `style` can be specified to pick a specific face.
     # style: Book Italic
