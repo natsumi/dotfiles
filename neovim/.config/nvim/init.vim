@@ -94,7 +94,8 @@ colorscheme apprentice " Colorscheme Theme to pick
 "Font settings
 """""""""""""""
 " set gfn=Menlo\ for\ Powerline:h14 " Font settings for OSX
-set gfn=OperatorSSm\ Nerd\ Font:h14 " Font settings for OSX
+" set gfn=OperatorSSm\ Nerd\ Font:h14 " Font settings for OSX
+set gfn=BlexMono\ Nerd\ Font:h14 " Font settings for OSX
 "256 Color temrinal support
 set t_Co=256
 
