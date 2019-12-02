@@ -72,6 +72,7 @@ Plug 'wincent/terminus'
 Plug 'scrooloose/nerdtree'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'pbrisbin/vim-mkdir'
+Plug 'wakatime/vim-wakatime'
 
 if empty(glob('~/.fzf'))
   Plug '/usr/local/opt/fzf'
@@ -94,7 +95,6 @@ colorscheme apprentice " Colorscheme Theme to pick
 """""""""""""""
 " set gfn=Menlo\ for\ Powerline:h14 " Font settings for OSX
 set gfn=OperatorSSm\ Nerd\ Font:h14 " Font settings for OSX
-
 "256 Color temrinal support
 set t_Co=256
 
