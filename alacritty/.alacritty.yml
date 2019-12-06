@@ -33,12 +33,12 @@ window:
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-  padding:
-    x: 2
-    y: 2
+  # padding:
+  #   x: 0
+  #   y: 0
 
   # Spread additional padding evenly around the terminal content.
-  dynamic_padding: false
+  # dynamic_padding: false
 
   # Window decorations
   #
@@ -64,6 +64,7 @@ window:
 
   # Window title
   #title: Alacritty
+
   # Window class (Linux only):
   #class: Alacritty
 
@@ -75,15 +76,6 @@ scrolling:
   # Number of lines the viewport will move for every line scrolled when
   # scrollback is enabled (history > 0).
   multiplier: 3
-
-  # Faux Scrolling
-  #
-  # The `faux_multiplier` setting controls the number of lines the terminal
-  # should scroll when the alternate screen buffer is active. This is used
-  # to allow mouse scrolling for applications like `man`.
-  #
-  # Specifying `0` will disable faux scrolling.
-  faux_multiplier: 3
 
   # Scroll to the bottom when new text is written to the terminal.
   auto_scroll: false
@@ -97,7 +89,7 @@ scrolling:
 # change the `it` value in terminfo when altering this setting.
 tabspaces: 8
 
-# Font configuration (changes require restart)
+# Font configuration
 font:
   # Normal (roman) font face
   normal:
@@ -167,64 +159,90 @@ font:
   #
   # This is a global setting and will require a log out or restart to take
   # effect.
-  use_thin_strokes: true
+  use_thin_strokes: false
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
-# Colors (Night Owl by Sarah Drasner)
+# Colors (One Half Dark)
 colors:
-  # Default colors
   primary:
-    background: '0x011627'
-    foreground: '0xd6deeb'
+    background: '0x282c34'
+    foreground: '0xdcdfe4'
 
-    # Bright and dim foreground colors
-    #
-    # The dimmed foreground color is calculated automatically if it is not present.
-    # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
-  # Colors the cursor will use if `custom_cursor_colors` is true
-  #dim_foreground: '0x9a9a9a'
-  #bright_foreground: '0xffffff'
-
-  # Cursor colors
-  #
-  # Colors which should be used to draw the terminal cursor. If these are unset,
-  # the cursor color will be the inverse of the cell color.
-  cursor:
-    text: '0xffffff'
-    cursor: '0x7e57c2'
-
-  # Selection colors
-  #
-  # Colors which should be used to draw the selection area. If selection
-  # background is unset, selection color will be the inverse of the cell colors.
-  # If only text is unset the cell text color will remain the same.
-  #selection:
-  #  text: '0xeaeaea'
-  #  background: '0x404040'
-
-  # Normal colors
   normal:
-    black: '0x000000'
-    red: '0xef5350'
-    green: '0x22da6e'
-    yellow: '0xaddb67'
-    blue: '0x82aaff'
-    magenta: '0xc792ea'
-    cyan: '0x21c7a8'
-    white: '0xffffff'
+    black: '0x282c34'
+    red: '0xe06c75'
+    green: '0x98c379'
+    yellow: '0xe5c07b'
+    blue: '0x61afef'
+    magenta: '0xc678dd'
+    cyan: '0x56b6c2'
+    white: '0xdcdfe4'
 
-  # Bright colors
   bright:
-    black: '0x575656'
-    red: '0xef5350'
-    green: '0x22da6e'
-    yellow: '0xffeb95'
-    blue: '0x82aaff'
-    magenta: '0xc792ea'
-    cyan: '0x7fdbca'
-    white: '0xffffff'
+    black: '0x282c34'
+    red: '0xe06c75'
+    green: '0x98c379'
+    yellow: '0xe5c07b'
+    blue: '0x61afef'
+    magenta: '0xc678dd'
+    cyan: '0x56b6c2'
+    white: '0xdcdfe4'
+
+# Colors (Night Owl by Sarah Drasner)
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x011627'
+#     foreground: '0xd6deeb'
+
+#     # Bright and dim foreground colors
+#     #
+#     # The dimmed foreground color is calculated automatically if it is not present.
+#     # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
+#   # Colors the cursor will use if `custom_cursor_colors` is true
+#   #dim_foreground: '0x9a9a9a'
+#   #bright_foreground: '0xffffff'
+
+#   # Cursor colors
+#   #
+#   # Colors which should be used to draw the terminal cursor. If these are unset,
+#   # the cursor color will be the inverse of the cell color.
+#   cursor:
+#     text: '0xffffff'
+#     cursor: '0x7e57c2'
+
+#   # Selection colors
+#   #
+#   # Colors which should be used to draw the selection area. If selection
+#   # background is unset, selection color will be the inverse of the cell colors.
+#   # If only text is unset the cell text color will remain the same.
+#   #selection:
+#   #  text: '0xeaeaea'
+#   #  background: '0x404040'
+
+#   # Normal colors
+#   normal:
+#     black: '0x000000'
+#     red: '0xef5350'
+#     green: '0x22da6e'
+#     yellow: '0xaddb67'
+#     blue: '0x82aaff'
+#     magenta: '0xc792ea'
+#     cyan: '0x21c7a8'
+#     white: '0xffffff'
+
+#   # Bright colors
+#   bright:
+#     black: '0x575656'
+#     red: '0xef5350'
+#     green: '0x22da6e'
+#     yellow: '0xffeb95'
+#     blue: '0x82aaff'
+#     magenta: '0xc792ea'
+#     cyan: '0x7fdbca'
+#     white: '0xffffff'
 
   # Colors (Tomorrow Night Bright)
   # colors:
