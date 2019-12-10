@@ -4,9 +4,12 @@ begin
   require "awesome_print"
   # User awesome print by default
   AwesomePrint.pry!
-  AwesomePrint.defaults = { indent: -2 }
+  AwesomePrint.defaults = {
+  indent: -2,
+  sort_keys: true,
+  }
 rescue LoadError => e
-  warn "can't load awesome_print"
+  warn "AwesomePrint gem missing.  Install with gem install awesome_printcan't load awesome_print"
 end
 
 if defined?(PryByebug)
