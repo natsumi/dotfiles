@@ -1,18 +1,26 @@
-# https://github.com/JetBrains/ideavim
+" https://github.com/JetBrains/ideavim#executing-ide-actions
+" Find IDE actions by name pattern:
+"     :actionlist [pattern]
+" https://github.com/JetBrains/ideavim
 
-# Extensions to enable
+" Extensions to enable
 set commentary
 set easymotion
 set surround
 
-# Vim Specific Setings
-######################
-# yank to clipboard
+" Vim Specific Setings
+"#####################
+" yank to clipboard
 set clipboard+=unnamed
 
-# case insensitive search
+" case insensitive search
 set ignorecase
 set smartcase
 
-# show results while search
+" show results while search
 set incsearch
+
+" navigation
+" <M-?> find actions...
+" SHIFT-SHIFT find anything
+nnoremap gO       :action FileStructurePopup<CR>
