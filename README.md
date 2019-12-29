@@ -166,16 +166,6 @@ npm install -g vmd
 
 run tmux ctrl-s shift-i
 
-## Livestream
-
-Configure Twitch Oauth
-
-```bash
-livestreamer --twitch-oauth-authenticate
-```
-
-Copy the access<sub>token</sub> in URL to \~/.livestreamerrc
-
 ## KWM / KHD (Tilling Window Manager)
 
 This is experimental.
