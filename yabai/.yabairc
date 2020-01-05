@@ -96,10 +96,11 @@ yabai -m rule --add app="Finder" manage=off
 yabai -m rule --add app="ForkLift" manage=off
 yabai -m rule --add app="IINA" manage=off
 yabai -m rule --add app="Preview" manage=off
+yabai -m rule --add app="TextEdit" manage=off
 yabai -m rule --add app="VLC" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
-yabai -m rule --add title="^Preferences$" manage=off
 yabai -m rule --add title="^Picture-in-Picture$" manage=off
+yabai -m rule --add title="^Preferences$" manage=off
 
 # Float any non-resizable window
 # https://github.com/koekeishiya/yabai/issues/322#issuecomment-557847511
