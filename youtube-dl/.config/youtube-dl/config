@@ -30,13 +30,12 @@
 # Get metadata
 --add-metadata
 --write-all-thumbnails
---embed-thumbnail
 
 # Ignore playlists
 --no-playlist
 
 # Show debugging info
---verbose
+# --verbose
 
 --force-ipv4
 
