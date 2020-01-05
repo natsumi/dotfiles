@@ -1,7 +1,11 @@
--o "%(title)s - (%(duration)ss) [%(resolution)s] [%(id)s].%(ext)s"
+# some options cribbed from:
+# https://gitlab.com/TheFrenchGhosty/TheFrenchGhostys-YouTube-DL-Archivist-Scripts#archive-and-active-scripts
+#
+# output filename
+-o "%(title)s - (%(uploader)s) [%(duration)ss] [%(resolution)s] [%(id)s].%(ext)s"
 
 # Downloader
---external-downloader aria2c
+--external-downloader "aria2c"
 
 # -c continue paritally downloaded files
 # -j max concurrent download
@@ -10,17 +14,34 @@
 # -k min-split size
 --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M"
 
+# Quality to download
+# Download best quality available prioritizing the most compressed / recent codecs
+--format "(bestvideo[vcodec^=av01][height>=1080][fps>30]/bestvideo[vcodec=vp9.2][height>=1080][fps>30]/bestvideo[vcodec=vp9][height>=1080][fps>30]/bestvideo[vcodec^=av01][height>=1080]/bestvideo[vcodec=vp9.2][height>=1080]/bestvideo[vcodec=vp9][height>=1080]/bestvideo[height>=1080]/bestvideo[vcodec^=av01][height>=720][fps>30]/bestvideo[vcodec=vp9.2][height>=720][fps>30]/bestvideo[vcodec=vp9][height>=720][fps>30]/bestvideo[vcodec^=av01][height>=720]/bestvideo[vcodec=vp9.2][height>=720]/bestvideo[vcodec=vp9][height>=720]/bestvideo[height>=720]/bestvideo)+(bestaudio[acodec=opus]/bestaudio)/best"
+
 # Uniform Format
 --prefer-ffmpeg
---merge-output-format mkv
+--merge-output-format "mkv"
 
-# Get All Subs to SRT
---embed-subs
+# Download all subtitles and prefer srt format
 --all-subs
+--sub-format "srt"
+--embed-subs
 
 # Get metadata
 --add-metadata
 --write-all-thumbnails
+--embed-thumbnail
 
 # Ignore playlists
 --no-playlist
+
+# Show debugging info
+--verbose
+
+--force-ipv4
+
+# continue on error and skip unavailable videos in playlist
+--ignore-errors
+
+# Disable resuming partial downloads
+--no-continue
