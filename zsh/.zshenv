@@ -13,7 +13,7 @@ export EDITOR=$VISUAL
 export DEV_DIR=$HOME/dev
 export WORKON_HOME=$DEV_DIR
 export DOTFILE_DIR=$DEV_DIR/dotfiles
-export GOTPATH=$DEV_DIR/go
+# export GOTPATH=$DEV_DIR/go
 
 # setup gtags to use a ctag backend
 export GTAGSCONF=$HOME/.gtags.conf
