@@ -29,7 +29,8 @@
 
 # Get metadata
 --add-metadata
---write-all-thumbnails
+# --write-all-thumbnails
+--embed-thumbnail
 
 # Ignore playlists
 --no-playlist
@@ -44,3 +45,6 @@
 
 # Disable resuming partial downloads
 --no-continue
+
+# Do not use the last-modifided header to set the file modification time
+--no-mtime
