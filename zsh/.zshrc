@@ -24,7 +24,7 @@ export GREP_COLOR="00;38;5;61"
 export GREP_COLORS="00;38;5;61"
 
 # Dir colors
-# eval $(gdircolors ~/.dircolors)
+eval $(gdircolors ~/.dircolors)
 
 # SCMPuff
 eval "$(scmpuff init -s)"
