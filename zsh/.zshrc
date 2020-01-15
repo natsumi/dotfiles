@@ -79,6 +79,7 @@ source ${ZPLUG_HOME}/init.zsh
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug 'zdharma/fast-syntax-highlighting'
+zplug  'Aloxaf/fzf-tab'
 # Forgit options
 forgit_stash_show=gsf
 forgit_diff=gdf
@@ -106,6 +107,7 @@ unalias gls #git log conflicts with dircolors gls
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -f ~/.fzf_commands.zsh ]] && source ~/.fzf_commands.zsh
 
 [[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/opt/asdf/asdf.sh
 [[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/etc/bash_completion.d/asdf.bash
