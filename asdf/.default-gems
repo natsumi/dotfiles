@@ -2,7 +2,6 @@ bundler
 byebug
 pry
 pry-doc
-pry-bloodline
 pry-clipboard
 pry-byebug
 fastri
@@ -10,7 +9,6 @@ ruby_parser
 ruby-debug-ide
 rufo
 rubocop
-spirit_fingers
 rcodetools
 debase
 solargraph
