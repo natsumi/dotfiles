@@ -1,4 +1,22 @@
 # pry-clipboard configuration
+#
+# Add all gems in the global gemset to the $LOAD_PATH so they can be used even
+# in places like 'rails console'.
+if defined?(::Bundler)
+  global_gemset = ENV['GEM_PATH'].split(':').grep(/ruby.*@global/).first
+  $LOAD_PATH.concat(Dir.glob("#{global_gemset}/gems/*/lib")) if global_gemset
+end
+
+# Use fzf for history search
+# it is required to
+# gem install rb-readline
+require 'rb-readline'
+if defined?(RbReadline)
+  def RbReadline.rl_reverse_search_history(sign, key)
+    rl_insert_text  `cat ~/.pry_history | fzf --tac |  tr '\n' ' '`
+  end
+end
+
 # awesome_print configuration
 begin
   require "awesome_print"
