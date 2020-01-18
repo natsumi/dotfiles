@@ -39,3 +39,7 @@ brew cask install font-victor-mono
 brew cask install font-input
 
 cd ~/Library/Fonts && curl -fLo "Blex Mono Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Nerd%20Font%20Complete.ttf
+cd ~/Library/Fonts && curl -fLo "Blex Mono Bold Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Bold%20Nerd%20Font%20Complete.ttf
+cd ~/Library/Fonts && curl -fLo "Blex Mono Italic Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Italic%20Nerd%20Font%20Complete.ttf
+cd ~/Library/Fonts && curl -fLo "Blex Mono Bold Italic Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Bold%20Italic%20Nerd%20Font%20Complete.ttf
+cd ~/Library/Fonts && curl -fLo "Blex Mono ExtraLight Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20ExtraLight%20Nerd%20Font%20Complete.ttf
