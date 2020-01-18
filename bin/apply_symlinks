@@ -24,4 +24,4 @@ stow -v -R --target=$HOME --dir=$DOTFILE_DIR tmux
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR vim
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR youtube-dl
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR zsh
-stow -v -R --target=$HOME/.spacemacs.d --dir=$DOTFILE_DIR spacemacs
+# stow -v -R --target=$HOME/.spacemacs.d --dir=$DOTFILE_DIR spacemacs
