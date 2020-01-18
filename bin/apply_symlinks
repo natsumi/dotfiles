@@ -7,6 +7,7 @@
 
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR asdf
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR alacritty
+stow -v -R --target=$HOME --dir=$DOTFILE_DIR bat
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR chunkwm
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR ctags
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR elixir

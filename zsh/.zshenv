@@ -9,6 +9,9 @@ export HOMEBREW_NO_ANALYTICS=1
 export VISUAL=nvim
 export EDITOR=$VISUAL
 
+######################
+# Programming Env
+######################
 # Dev Dirs
 export DEV_DIR=$HOME/dev
 export WORKON_HOME=$DEV_DIR
@@ -21,6 +24,13 @@ export GTAGSLABEL=pygments
 
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled shell_history_file_bytes 20240000"
+
+######################
+# CLI Env
+######################
+#
+# Bat
+export BAT_THEME="nord"
 
 # Ripgrep
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
