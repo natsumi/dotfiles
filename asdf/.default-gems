@@ -5,6 +5,8 @@ pry
 pry-doc
 pry-clipboard
 pry-byebug
+pry-toys
+pry-macro
 fastri
 ruby_parser
 ruby-debug-ide
