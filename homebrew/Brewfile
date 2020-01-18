@@ -46,6 +46,8 @@ brew 'ncdu'
 brew streamlink
 
 brew 'tree'
+# tree replacement
+brew 'broot'
 # Cat replacement
 brew 'bat'
 # Fuzzy search
