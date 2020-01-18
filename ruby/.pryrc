@@ -16,11 +16,12 @@ end
 require 'rb-readline'
 if defined?(RbReadline)
   def RbReadline.rl_reverse_search_history(sign, key)
+    # tac reverses the history to preserve latest first
     # awk is used to make sure the history contains only
     # uniqs (non adjacent)
     # first awk command trims leading and trailing whitespace to reduce matches
     # tiebreak gives precedence to the most recent history
-    rl_insert_text  `cat  ~/.pry_history | awk '{$1=$1};1' | awk '!x[$0]++' | fzf --tac --tiebreak=index |  tr '\n' ' '`
+    rl_insert_text  `tac  ~/.pry_history | awk '{$1=$1};1' | awk '!x[$0]++' | fzf --tiebreak=index |  tr '\n' ' '`
   end
 end
 
