@@ -23,6 +23,7 @@ Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'romainl/Apprentice'
+Plug 'arcticicestudio/nord-vim'
 
 " Files
 " TODO Find a new syntax highlighter
@@ -68,6 +69,9 @@ Plug 'unblevable/quick-scope'
 Plug 'tomtom/tcomment_vim'
 Plug 'wincent/terminus'
 
+" Use neovim for firefox
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+
 " Misc
 Plug 'scrooloose/nerdtree'
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -89,7 +93,7 @@ call plug#end()
 """""""""""""""
 syntax on " Syntax highlighting
 set background=dark
-colorscheme apprentice " Colorscheme Theme to pick
+colorscheme nord " Colorscheme Theme to pick
 
 "Font settings
 """""""""""""""
