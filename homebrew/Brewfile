@@ -28,6 +28,7 @@ brew 'scmpuff'
 brew 'the_silver_searcher'
 brew 'ripgrep'
 brew 'jq'
+brew 'awk'
 
 # Utitlies
 brew 'zsh'
