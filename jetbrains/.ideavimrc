@@ -16,11 +16,34 @@ set clipboard+=unnamed
 " case insensitive search
 set ignorecase
 set smartcase
+" searcheswarp around the end of file
+set wrapscan
+" highlight matches the last search pattern
+set hlsearch
 
 " show results while search
 set incsearch
 
+" KEYBINDINGS
+"""""""""""""
+
+let mapleader=','
+nnoremap <Leader>n :action ActivateProjectToolWindow<CR>
+
+"Remape keys to navigate windows use Ctrl+key
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+
+" method movement
+nnoremap [m :action MethodUp<cr>
+nnoremap ]m :action MethodDown<cr>
+
 " navigation
 " <M-?> find actions...
 " SHIFT-SHIFT find anything
+" :actionlist to see all actions
 nnoremap gO       :action FileStructurePopup<CR>
+nnoremap <Leader>se    :action ShowErrorDescription<CR>
+nnoremap <C-p>    :action GotoFile<CR>
