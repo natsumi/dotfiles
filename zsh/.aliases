@@ -20,6 +20,10 @@ if [ -x "$(command -v bat)" ]; then
   alias less="bat"
 fi
 
+if [ -x "$(command -v fd)" ]; then
+  alias find="fd"
+fi
+
 if [ -x "$(command -v diff-so-fancy)" ]; then
   alias diff="git diff --no-index"
 fi
