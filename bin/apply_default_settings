@@ -16,8 +16,8 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo Hos
 printf "System - Expand save panel by default\n"
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 
-# printf "System - Disable the 'Are you sure you want to open this application?' dialog\n"
-# defaults write com.apple.LaunchServices LSQuarantine -bool false
+printf "System - Disable the 'Are you sure you want to open this application?' dialog\n"
+defaults write com.apple.LaunchServices LSQuarantine -bool false
 
 # printf "System - Increase window resize speed for Cocoa applications\n"
 # defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
@@ -38,8 +38,9 @@ printf "System - Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-printf "System - Avoid creating .DS_Store files on network volumes\n"
+printf "System - Avoid creating .DS_Store files on network volumes or USB volumes\n"
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 printf "System - Automatically restart if system freezes\n"
 systemsetup -setrestartfreeze on
@@ -113,8 +114,8 @@ defaults write com.apple.dock "dashboard-in-overlay" -bool true
 # printf "Finder - Show the $HOME/Library folder\n"
 # chflags nohidden $HOME/Library
 
-printf "Finder - Show hidden files\n"
-defaults write com.apple.finder AppleShowAllFiles -bool true
+# printf "Finder - Show hidden files\n"
+# defaults write com.apple.finder AppleShowAllFiles -bool true
 
 printf "Finder - Show filename extensions\n"
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
@@ -200,6 +201,10 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
 # printf "App Store - Enable the WebKit Developer Tools in the Mac App Store\n"
 # defaults write com.apple.appstore WebKitDeveloperExtras -bool true
+
+printf "Don’t automatically rearrange Spaces based on most recent use"
+defaults write com.apple.dock mru-spaces -bool false
+
 
 printf "App Store - Enable Debug Menu in the Mac App Store\n"
 defaults write com.apple.appstore ShowDebugMenu -bool true
