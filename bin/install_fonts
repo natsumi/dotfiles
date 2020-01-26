@@ -1,43 +1,5 @@
 #! /usr/bin/env bash
 
-# Install powerline fonts
-brew tap homebrew/cask-fonts
-
-# Powerline Fonts
-brew cask install font-consolas-for-powerline
-brew cask install font-menlo-for-powerline
-
-# Nerd Fonts
-# https://github.com/ryanoasis/nerd-fonts
-brew cask install font-anonymouspro-nerd-font
-brew cask install font-anonymouspro-nerd-font-mono
-brew cask install font-cascadia
-brew cask install font-dejavusansmono-nerd-font
-brew cask install font-dejavusansmono-nerd-font-mono
-brew cask install font-droidsansmono-nerd-font
-brew cask install font-droidsansmono-nerd-font-mono
-brew cask install font-firacode-nerd-font
-brew cask install font-firacode-nerd-font-mono
-brew cask install font-firamono-nerd-font
-brew cask install font-firamono-nerd-font-mono
-brew cask install font-go-mono-nerd-font
-brew cask install font-go-mono-nerd-font-mono
-brew cask install font-iosevka-nerd-font
-brew cask install font-iosevka-nerd-font-mono
-brew cask install font-liberationmono-nerd-font
-brew cask install font-liberationmono-nerd-font-mono
-brew cask install font-meslo-nerd-font
-brew cask install font-meslo-nerd-font-mono
-brew cask install font-robotomono-nerd-font
-brew cask install font-robotomono-nerd-font-mono
-brew cask install font-sourcecodepro-nerd-font
-brew cask install font-sourcecodepro-nerd-font-mono
-brew cask install font-victor-mono
-
-
-# Programming Fonts
-brew cask install font-input
-
 # Blex Mono
 wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Nerd%20Font%20Complete.ttf
 wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Bold%20Nerd%20Font%20Complete.ttf
