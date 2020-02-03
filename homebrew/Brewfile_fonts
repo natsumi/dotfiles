@@ -1,0 +1,35 @@
+tap 'homebrew/cask-fonts'
+
+# Powerline Fonts
+cask 'font-consolas-for-powerline'
+cask 'font-menlo-for-powerline'
+cask 'font-cascadia-mono-pl'
+
+# Nerd Fonts
+# https://github.com/ryanoasis/nerd-fonts
+cask 'font-anonymouspro-nerd-font'
+cask 'font-anonymouspro-nerd-font-mono'
+cask 'font-dejavusansmono-nerd-font'
+cask 'font-dejavusansmono-nerd-font-mono'
+cask 'font-droidsansmono-nerd-font'
+cask 'font-droidsansmono-nerd-font-mono'
+cask 'font-firacode-nerd-font'
+cask 'font-firacode-nerd-font-mono'
+cask 'font-firamono-nerd-font'
+cask 'font-firamono-nerd-font-mono'
+cask 'font-go-mono-nerd-font'
+cask 'font-go-mono-nerd-font-mono'
+cask 'font-iosevka-nerd-font'
+cask 'font-iosevka-nerd-font-mono'
+cask 'font-liberationmono-nerd-font'
+cask 'font-liberationmono-nerd-font-mono'
+cask 'font-meslo-nerd-font'
+cask 'font-meslo-nerd-font-mono'
+cask 'font-robotomono-nerd-font'
+cask 'font-robotomono-nerd-font-mono'
+cask 'font-sourcecodepro-nerd-font'
+cask 'font-sourcecodepro-nerd-font-mono'
+cask 'font-victor-mono'
+
+# Programming Fonts
+cask 'font-input'

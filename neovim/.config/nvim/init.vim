@@ -45,6 +45,10 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'wesQ3/vim-windowswap'
 
+"
+" Programming Languages
+"""""""""""""""""""""""
+
 " Javascript
 " Plug 'jelera/vim-javascript-syntax'
 " Plug 'mxw/vim-jsx'
@@ -62,6 +66,9 @@ Plug 'slashmili/alchemist.vim'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'mattreduce/vim-mix'
 Plug 'fholgado/minibufexpl.vim'
+
+" GoLang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " Text manipulation plugins
 Plug 'junegunn/vim-easy-align'

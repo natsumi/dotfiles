@@ -95,6 +95,9 @@ git config --global github.oauth-token <token>
 ### Fonts
 
 ```bash
+brew bundle --file=~/dev/dotfiles/homebrew/Brewfile_fonts
+
+# fonts not included in brew
 sh bin/install_fonts
 ```
 

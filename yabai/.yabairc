@@ -88,6 +88,24 @@ yabai -m config status_bar_space_icon        
 yabai -m config status_bar_clock_icon        
 
 ###############################
+# Space Configurations
+###############################
+# yabai -m space 1 --label "Primary"
+# yabai -m space 2 --label "Comms"
+# yabai -m space 3 --label "Tools"
+# yabai -m space 4 --label "Media"
+# yabai -m space 5 --label "Social"
+# yabai -m space 6 --label "Float"
+# yabai -m space 7 --label "Secondary"
+
+# Space config
+# yabai -m config --space 6 layout float
+
+# Primary
+# yabai -m rule --add app="Brave Browser"         space=1
+# yabai -m rule --add app="kitty"                 space=1
+
+###############################
 # Rules
 ###############################
 
