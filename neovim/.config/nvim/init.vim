@@ -24,6 +24,7 @@ Plug 'nanotech/jellybeans.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'romainl/Apprentice'
 Plug 'arcticicestudio/nord-vim'
+Plug 'bluz71/vim-nightfly-guicolors'
 
 " Files
 " TODO Find a new syntax highlighter
@@ -99,8 +100,10 @@ call plug#end()
 "LOOK AND FEEL"
 """""""""""""""
 syntax on " Syntax highlighting
-set background=dark
-colorscheme nord " Colorscheme Theme to pick
+" set background=dark
+set termguicolors " enable true color mode in terminal
+" colorscheme nord " Colorscheme Theme to pick
+colorscheme nightfly " Colorscheme Theme to pick
 
 "Font settings
 """""""""""""""
