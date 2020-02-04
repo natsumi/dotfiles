@@ -177,12 +177,22 @@ map <c-h> <c-w>h
 nmap <Right> :bnext<CR>
 nmap <Left> :bprev<CR>
 
-" ripgrep search  bindings
-nnoremap <leader>r :Rg<CR>
+" ripgrep search bindings
+nnoremap <leader>r :RG<CR>
 " FZF bindings
 nnoremap <C-p> :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>h :History<CR>
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 "Insert a comment
 map <F5> :TComment<CR>
