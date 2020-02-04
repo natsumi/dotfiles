@@ -102,6 +102,8 @@ call plug#end()
 syntax on " Syntax highlighting
 " set background=dark
 set termguicolors " enable true color mode in terminal
+"256 Color temrinal support
+" set t_Co=256
 " colorscheme nord " Colorscheme Theme to pick
 colorscheme nightfly " Colorscheme Theme to pick
 
@@ -110,8 +112,6 @@ colorscheme nightfly " Colorscheme Theme to pick
 " set gfn=Menlo\ for\ Powerline:h14 " Font settings for OSX
 " set gfn=OperatorSSm\ Nerd\ Font:h14 " Font settings for OSX
 set gfn=BlexMono\ Nerd\ Font:h14 " Font settings for OSX
-"256 Color temrinal support
-set t_Co=256
 
 filetype plugin indent on " Filetype highlighting
 set title " Show filename in titlebar
