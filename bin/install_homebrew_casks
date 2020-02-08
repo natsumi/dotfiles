@@ -24,6 +24,5 @@ brew cask install caffeine
 
 # Media Players
 brew cask install vlc
-brew cask install iina
 brew cask install spotify
 brew cask install spotmenu
