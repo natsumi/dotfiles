@@ -38,6 +38,9 @@ zstyle ':prezto:load' pmodule \
   'contrib-prompt' \
   'prompt'
 
+# Completion
+# color the files to match LS_COLORS
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 #
 # Editor
 #
@@ -85,7 +88,7 @@ zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 #
 
 # Auto switch the Ruby version on directory change.
-zstyle ':prezto:module:ruby:chruby' auto-switch 'yes'
+# zstyle ':prezto:module:ruby:chruby' auto-switch 'yes'
 
 #
 # Screen
