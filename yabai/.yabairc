@@ -122,6 +122,9 @@ yabai -m rule --add app="^System Preferences$" manage=off
 yabai -m rule --add title="^Picture-in-Picture$" manage=off
 yabai -m rule --add title="^Preferences$" manage=off
 
+yabai -m rule --add title="IDE and Plugin Updates" manage=off
+
+
 # Float any non-resizable window
 # https://github.com/koekeishiya/yabai/issues/322#issuecomment-557847511
 yabai -m signal --add event=window_created action='yabai -m query --windows --window $YABAI_WINDOW_ID | jq -er ".resizable == 0 and .floating == 0" && yabai -m window $YABAI_WINDOW_ID --toggle float'
