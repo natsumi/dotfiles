@@ -35,9 +35,9 @@ asdf install python 3.8.0
 asdf install python 2.7.17
 asdf global python 3.8.0 2.7.17
 
-printf "Installing Go 1.13.4\n"
-asdf install golang 1.13.4
-asdf global golang 1.13.4
+printf "Installing Go 1.14\n"
+asdf install golang 1.14
+asdf global golang 1.14
 
 printf "Installing Elixir\n"
 
