@@ -6,7 +6,7 @@ Pry.config.history.file = "~/.pry_history"
 # Add all gems in the global gemset to the $LOAD_PATH so they can be used even
 # in places like 'rails console'.
 if defined?(::Bundler)
-  global_gemset = ENV['GEM_PATH'].split(':').grep(/ruby.*@global/).first
+  global_gemset = ENV['GEM_PATH']&.split(':')&.grep(/ruby.*@global/)&.first
   $LOAD_PATH.concat(Dir.glob("#{global_gemset}/gems/*/lib")) if global_gemset
 end
 
