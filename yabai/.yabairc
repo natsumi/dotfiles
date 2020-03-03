@@ -116,6 +116,7 @@ yabai -m rule --add app="Finder" manage=off
 yabai -m rule --add app="ForkLift" manage=off
 yabai -m rule --add app="IINA" manage=off
 yabai -m rule --add app="Preview" manage=off
+yabai -m rule --add app="Skitch" manage=off
 yabai -m rule --add app="TextEdit" manage=off
 yabai -m rule --add app="VLC" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
