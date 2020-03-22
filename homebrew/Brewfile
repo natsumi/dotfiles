@@ -1,4 +1,3 @@
-tap 'caskroom/cask'
 tap 'homebrew/bundle'
 tap 'universal-ctags/universal-ctags'
 tap 'd12frosted/emacs-plus'
@@ -18,6 +17,7 @@ brew 'readline'
 brew 'xz'
 brew 'coreutils'
 brew 'openssl'
+brew 'jemalloc'
 
 # Development Tools
 brew 'git'
@@ -44,7 +44,7 @@ brew 'rtmpdump'
 # du replacement
 brew 'ncdu'
 # twitch livestreamer
-brew streamlink
+brew 'streamlink'
 
 brew 'tree'
 # tree replacement
@@ -61,6 +61,10 @@ brew 'aria2'
 brew 'stow'
 # find replacement
 brew 'fd'
+
+# Desktop Managers
+brew 'koekeishiya/formulae/skhd'
+brew 'yabai'
 
 # Text Editors
 # brew "vim"
