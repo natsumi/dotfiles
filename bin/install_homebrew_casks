@@ -13,14 +13,14 @@ brew cask install forklift
 brew cask install iterm2
 brew cask install visual-studio-code
 brew cask install tableplus
-brew cask install dbngin
 brew cask install ngrok
 brew cask install sublime-merge
 brew cask install slack
+brew cask install kitty
 
 # Utilities
 brew cask install the-unarchiver
-brew cask install caffeine
+brew cask install amphetamine
 
 # Media Players
 brew cask install vlc
