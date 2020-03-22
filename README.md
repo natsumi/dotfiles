@@ -77,6 +77,11 @@ git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git "${Z
 git clone --recursive --depth 1 https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
 ```
 
+### Fix Completion
+```bash
+compaudit | xargs chmod g-w
+```
+
 ### Custom configurations
 
 edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
