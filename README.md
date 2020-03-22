@@ -60,21 +60,21 @@ echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
 chsh -s $(which zsh)
 ```
 
-### Prezto
-
-[Prezto](https://github.com/sorin-ionescu/prezto.git)
-
-```bash
-git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-git clone --recursive https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
-```
-
 ### Zplug
 
 [Zplug](https://github.com/zplug/zplug)
 
 ```bash
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+```
+
+### Prezto
+
+[Prezto](https://github.com/sorin-ionescu/prezto.git)
+
+```bash
+git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+git clone --recursive --depth 1 https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
 ```
 
 ### Custom configurations
@@ -104,7 +104,7 @@ sh bin/install_fonts
 ### asdf
 
 ```bash
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.5
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.7
 
 ```
 
