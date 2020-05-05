@@ -1,7 +1,6 @@
 # pry-clipboard configuration
 
 # Pry Configuration
-Pry.config.history.file = "~/.pry_history"
 #
 # Add all gems in the global gemset to the $LOAD_PATH so they can be used even
 # in places like 'rails console'.
@@ -21,18 +20,18 @@ if defined?(RbReadline)
     # uniqs (non adjacent)
     # first awk command trims leading and trailing whitespace to reduce matches
     # tiebreak gives precedence to the most recent history
-    rl_insert_text  `tac  ~/.pry_history | awk '{$1=$1};1' | awk '!x[$0]++' | fzf --tiebreak=index |  tr '\n' ' '`
+    rl_insert_text `tac  ~/.pry_history | awk '{$1=$1};1' | awk '!x[$0]++' | fzf --tiebreak=index |  tr '\n' ' '`
   end
 end
 
 # awesome_print configuration
 begin
-  require "awesome_print"
+  require 'awesome_print'
   # User awesome print by default
   AwesomePrint.pry!
   AwesomePrint.defaults = {
-  indent: -2,
-  sort_keys: true,
+    indent: -2,
+    sort_keys: true,
   }
 rescue LoadError => e
   warn "AwesomePrint gem missing.  Install with gem install awesome_printcan't load awesome_print"
@@ -46,10 +45,10 @@ if defined?(PryByebug)
 end
 
 # Hit Enter to repeat last command
-Pry::Commands.command /^$/, "repeat last command" do
-_pry_.run_command Pry.history.to_a.last
+Pry::Commands.command /^$/, 'repeat last command' do
+  _pry_.run_command Pry.history.to_a.last
 end
 
 # Set the current theme
 # needs the pry-theme gem
-Pry.config.theme = "zenburn"
+Pry.config.theme = 'zenburn'
