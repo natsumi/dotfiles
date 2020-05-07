@@ -22,13 +22,13 @@ printf "Installing Ruby 2.6.5.\n"
 RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 2.6.5
 asdf global ruby 2.6.5
 
-printf "Installing Node 10.14.1..\n"
+printf "Installing Node 13.11.0..\n"
 
 brew install gpg
 sh ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 
-asdf install nodejs 13.1.0
-asdf global nodejs  13.1.0
+asdf install nodejs 13.11.0
+asdf global nodejs  13.11.0
 
 printf "Installing Python 3.8.0 and 2.7.17 \n"
 asdf install python 3.8.0
@@ -36,16 +36,16 @@ asdf install python 2.7.17
 asdf global python 3.8.0 2.7.17
 
 printf "Installing Go 1.14\n"
-asdf install golang 1.14
-asdf global golang 1.14
+asdf install golang 1.14.1
+asdf global golang 1.14.1
 
 printf "Installing Elixir\n"
 
-asdf install erlang 22.1.7
-asdf global erlang 22.1.7
+asdf install erlang 22.3
+asdf global erlang 22.3
 
 asdf install elixir 1.9.4
-asdf global elixir 1.9.4
+asdf global elixir 1.10.2
 
 printf "Installing Elm\n"
 asdf install elm 0.19.1
