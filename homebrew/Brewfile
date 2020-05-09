@@ -21,13 +21,14 @@ brew 'jemalloc'
 
 # Development Tools
 brew 'git'
-brew 'tig'
+brew 'tig' # git log
 brew 'sqlite'
-brew 'diff-so-fancy'
-brew 'scmpuff'
-brew 'the_silver_searcher'
-brew 'ripgrep'
-brew 'jq'
+brew 'diff-so-fancy' # git diff
+brew 'git-delta' # git diff
+brew 'scmpuff' # git management
+brew 'the_silver_searcher' # search
+brew 'ripgrep' # search
+brew 'jq' # json
 brew 'awk'
 
 # Utitlies
