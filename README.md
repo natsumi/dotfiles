@@ -174,16 +174,16 @@ npm install -g vmd
 
 run tmux ctrl-s shift-i
 
-## KWM / KHD (Tilling Window Manager)
+## Yabai Window Manager
 
 This is experimental.
 
-[Chunkwmrc Window Manager](https://github.com/koekeishiya/chunkwm)
+[Yabai Window Manager](https://github.com/koekeishiya/yabai)
 
 [Simple Keyboard Hot Keys](https://github.com/koekeishiya/skhd)
 
 ```bash
-stow -v --target=$HOME --dir=$DOTFILE_DIR chunkwmrc
+stow -v --target=$HOME --dir=$DOTFILE_DIR yabai
 ```
 
 # Post Install Settings
