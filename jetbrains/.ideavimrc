@@ -7,6 +7,7 @@
 set commentary
 set easymotion
 set surround
+set exchange
 
 " Vim Specific Setings
 "#####################
