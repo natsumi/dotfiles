@@ -18,7 +18,7 @@ sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
 sudo apt install -y \
   htop jq fd-find fzf stow \
   tig tmux ripgrep\
-  wget unzip curl \
+  wget unzip curl vim neovim \
   zsh
 
 echo 'Installing asdf'
