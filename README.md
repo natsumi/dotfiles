@@ -106,11 +106,10 @@ brew bundle --file=~/dev/dotfiles/homebrew/Brewfile_fonts
 sh bin/install_fonts
 ```
 
-### asdf
+### [asdf](https://github.com/asdf-vm/asdf)
 
 ```bash
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.7
-
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
 ```
 
 Restart Shell

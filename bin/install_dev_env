@@ -16,24 +16,22 @@ asdf plugin-add elm
 
 asdf plugin-update --all
 
-RUBY_VER=2.6.5
-printf "Installing Ruby 2.6.5.\n"
+RUBY_VER=2.7.2
+printf "Installing Ruby 2.7.2.\n"
 
-RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 2.6.5
-asdf global ruby 2.6.5
+RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 2.7.2
+asdf global ruby 2.7.2
 
-printf "Installing Node 13.11.0..\n"
+printf "Installing Node 15.5.0\n"
 
-brew install gpg
-sh ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
+asdf install nodejs 15.5.0
+asdf global nodejs  15.5.0
 
-asdf install nodejs 13.11.0
-asdf global nodejs  13.11.0
-
-printf "Installing Python 3.8.0 and 2.7.17 \n"
-asdf install python 3.8.0
-asdf install python 2.7.17
-asdf global python 3.8.0 2.7.17
+printf "Installing Python 3.9.1 and 2.7.18 \n"
+asdf install python 3.9.1
+asdf install python 2.7.18
+asdf global python 3.8.0 2.7.18
 
 printf "Installing Go 1.14\n"
 asdf install golang 1.14.1

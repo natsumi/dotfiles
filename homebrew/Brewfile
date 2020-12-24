@@ -8,6 +8,7 @@ tap 'buo/cask-upgrade'
 # Build Tools
 brew 'automake'
 brew 'autoconf'
+brew 'gpg'
 brew 'libyaml'
 brew 'libffi'
 brew 'libxslt'
