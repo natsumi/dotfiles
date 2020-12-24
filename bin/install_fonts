@@ -1,8 +1,0 @@
-#! /usr/bin/env bash
-
-# Blex Mono
-wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Nerd%20Font%20Complete.ttf
-wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Bold%20Nerd%20Font%20Complete.ttf
-wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Italic%20Nerd%20Font%20Complete.ttf
-wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Bold%20Italic%20Nerd%20Font%20Complete.ttf
-wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20ExtraLight%20Nerd%20Font%20Complete.ttf

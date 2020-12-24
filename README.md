@@ -101,9 +101,6 @@ git config --global github.oauth-token <token>
 
 ```bash
 brew bundle --file=~/dev/dotfiles/homebrew/Brewfile_fonts
-
-# fonts not included in brew
-sh bin/install_fonts
 ```
 
 ### [asdf](https://github.com/asdf-vm/asdf)
