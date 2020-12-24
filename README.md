@@ -185,28 +185,17 @@ This is experimental.
 stow -v --target=$HOME --dir=$DOTFILE_DIR yabai
 ```
 
-# Post Install Settings
+* Disable Sip
+`csrutil disable --with kext --with dtrace --with nvram --with basesystem`
 
-## OS X Options
+* Install SA
+`sudo yabai install-sa`
+`sudo yabai load-sa`
+
+# Post Install Settings
 
 ### Fonts
 
 ```bash
 sh bin/install_fonts
 ```
-
-### Deprecated
-[Powerline Fonts Repo](https://github.com/powerline/fonts)
-
-[Input Mono](http://input.fontbureau.com/download/)
-
-### Mouse
-
-Set mouse to a faster track speed
-
-Uncheck "Scroll direction: Natural"
-
-## iTerm 2
-
-Font: Fira Mono 12pt / Iosevka Term Slab [Night Owl
-Theme](https://github.com/jsit/night-owl-iterm2-theme)
