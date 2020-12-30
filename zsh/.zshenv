@@ -44,8 +44,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # Kitty Terminal
 export KITTY_CONFIG_DIRECTORY="${HOME}/.config/kitty"
 
-# Init Zplug
-# [[ -f $ZPLUG_HOME/init.zsh ]] && source $ZPLUG_HOME/init.zsh
+# Bundle - Allow mulitple gems to be installed at once
+export BUNDLE_JOBS="$(/usr/local/bin/nproc)"
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
