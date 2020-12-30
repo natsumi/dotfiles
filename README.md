@@ -80,6 +80,10 @@ git clone --recursive --depth 1 https://github.com/belak/prezto-contrib  "${ZDOT
 ### Fix Completion
 ```bash
 compaudit | xargs chmod g-w
+
+### [FZF](https://github.com/junegunn/fzf#installation)
+
+`$(brew --prefix)/opt/fzf/install`
 ```
 
 ### Custom configurations
