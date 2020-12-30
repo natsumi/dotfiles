@@ -1,3 +1,5 @@
+Pry.config.history_file = "~/.pry_history"
+
 # pry-clipboard configuration
 
 # Pry Configuration
@@ -5,7 +7,7 @@
 # Add all gems in the global gemset to the $LOAD_PATH so they can be used even
 # in places like 'rails console'.
 if defined?(::Bundler)
-  global_gemset = ENV['GEM_PATH']&.split(':')&.grep(/ruby.*@global/)&.first
+  global_gemset = Gem.dir
   $LOAD_PATH.concat(Dir.glob("#{global_gemset}/gems/*/lib")) if global_gemset
 end
 
@@ -24,17 +26,17 @@ if defined?(RbReadline)
   end
 end
 
-# awesome_print configuration
+# amazing_print configuration
 begin
-  require 'awesome_print'
+  require 'amazing_print'
   # User awesome print by default
-  AwesomePrint.pry!
-  AwesomePrint.defaults = {
+  AmazingPrint.pry!
+  AmazingPrint.defaults = {
     indent: -2,
     sort_keys: true,
   }
 rescue LoadError => e
-  warn "AwesomePrint gem missing.  Install with gem install awesome_printcan't load awesome_print"
+  warn "AmazingPrint gem missing.  Install with gem install amazing_print can't load amazing_print"
 end
 
 if defined?(PryByebug)
