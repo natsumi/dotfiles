@@ -30,12 +30,6 @@ export CLICOLOR=1
 export GREP_COLOR="00;38;5;61"
 export GREP_COLORS="00;38;5;61"
 
-# Dir colors
-eval $(gdircolors ~/.dircolors)
-
-# SCMPuff
-eval "$(scmpuff init -s)"
-
 ################
 # HISTORY SETTINGS
 ################
@@ -109,8 +103,13 @@ unalias gls #git log conflicts with dircolors gls
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
+# OSX FZF
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/.fzf_commands.zsh ]] && source ~/.fzf_commands.zsh
+
+# Linux / WSL FZF
+[[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+[[ -f /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
 
 [[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/opt/asdf/asdf.sh
 [[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/etc/bash_completion.d/asdf.bash
@@ -119,3 +118,10 @@ unalias gls #git log conflicts with dircolors gls
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+#
+# Dir colors
+# eval $(gdircolors ~/.dircolors)
+
+# SCMPuff
+eval "$(scmpuff init -s)"
+
