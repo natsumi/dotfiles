@@ -85,11 +85,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'wakatime/vim-wakatime'
 
-if empty(glob('~/.fzf'))
-  Plug '/usr/local/opt/fzf'
-else
-  Plug '~/.fzf'
-endif
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Initialize plugin system
