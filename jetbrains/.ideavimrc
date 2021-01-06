@@ -41,6 +41,9 @@ map <c-h> <c-w>h
 nnoremap [m :action MethodUp<cr>
 nnoremap ]m :action MethodDown<cr>
 
+" yank line without leading whitepsace
+nnoremap <Leader>yy ^yg_
+
 " navigation
 " <M-?> find actions...
 " SHIFT-SHIFT find anything

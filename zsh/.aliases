@@ -55,6 +55,7 @@ alias frbe="foreman run bundle exec"
 alias rc="rails c"
 alias rs="rails s"
 alias rmigrate="rake db:migrate db:rollback && rake db:migrate"
+alias rfix="bundle exec rubocop --safe-auto-correct"
 
 # Pretty print the PATH env
 alias path='echo $PATH | tr -s ":" "\n"'
