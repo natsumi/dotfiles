@@ -4,10 +4,12 @@
 " https://github.com/JetBrains/ideavim
 
 " Extensions to enable
+" https://github.com/JetBrains/ideavim/wiki/Emulated-plugins
 set commentary
 set easymotion
 set surround
 set exchange
+set highlightedyank
 
 " Vim Specific Setings
 "#####################
