@@ -61,3 +61,6 @@ if [[ ! -d "$TMPDIR" ]]; then
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
+
+# Apple Silicon support
+[[ -f /opt/homebrew/bin/brew ]] &&  eval $(/opt/homebrew/bin/brew shellenv)
