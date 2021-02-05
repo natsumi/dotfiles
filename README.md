@@ -56,7 +56,7 @@ sh bin/apply_symlinks
 ### Set Default Shell
 
 ```bash
-echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+echo $(which zsh) | sudo tee -a /etc/shells
 chsh -s $(which zsh)
 ```
 
@@ -83,7 +83,7 @@ compaudit | xargs chmod g-w
 
 ### [FZF](https://github.com/junegunn/fzf#installation)
 
-`$(brew --prefix)/opt/fzf/install`
+$(brew --prefix)/opt/fzf/install
 ```
 
 ### Custom configurations
@@ -128,7 +128,19 @@ ln -s $(which node) /usr/local/bin/node
 ## Editors
 
 ```bash
-brew install vim neovim
+brew install vim
+
+brew install tree-sitter
+brew install --HEAD luajit
+brew install --HEAD neovim
+```
+
+## Bat
+
+To pickup the Nord theme.
+
+```shell
+bat cache --build
 ```
 
 ## SpaceMacs
@@ -199,4 +211,12 @@ stow -v --target=$HOME --dir=$DOTFILE_DIR yabai
 
 ```bash
 sh bin/install_fonts
+```
+
+### Visual Studio Code
+
+Enable key repeat
+
+```bash
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 ```
