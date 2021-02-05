@@ -143,35 +143,6 @@ To pickup the Nord theme.
 bat cache --build
 ```
 
-## SpaceMacs
-
-```bash
-mkdir -p ~/.spacemacs.d
-git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-stow -v --target=$HOME/.spacemacs.d --dir=$DOTFILE_DIR spacemacs
-stow -v --target=$HOME --dir=$DOTFILE_DIR gtags
-```
-
-User develop branch
-
-```bash
-cd ~/.emacs.d
-git fetch
-git checkout develop
-git pull
-```
-
-### Gtag
-
-[Download Global](https://www.gnu.org/software/global/download.html)
-
-```bash
-tar xvzf <filenamee>
-cd <global_dir>
-./configure --with-universal-ctags=/usr/local/bin/ctags --with-sqlite3
-./make install
-```
-
 ### Markdown Support
 
 ```bash
