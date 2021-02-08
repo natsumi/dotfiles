@@ -27,6 +27,10 @@ set hlsearch
 " show results while search
 set incsearch
 
+" no system beep
+set visualbell
+set noerrorbells
+
 " KEYBINDINGS
 """""""""""""
 
