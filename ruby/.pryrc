@@ -11,6 +11,9 @@ if defined?(::Bundler)
   $LOAD_PATH.concat(Dir.glob("#{global_gemset}/gems/*/lib")) if global_gemset
 end
 
+# Pry-rails sometimes doesn't load pry-doc, explicitly load it
+require 'pry-doc'
+
 # Use fzf for history search
 # it is required to
 # gem install rb-readline
