@@ -123,6 +123,7 @@ yabai -m rule --add app="TablePlus" manage=off
 yabai -m rule --add app="VLC" manage=off
 yabai -m rule --add app="zoom.us" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^System Information$" manage=off
 yabai -m rule --add title="^Picture-in-Picture$" manage=off
 yabai -m rule --add title="Preferences$" manage=off
 
