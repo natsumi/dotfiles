@@ -76,7 +76,6 @@ source ${ZPLUG_HOME}/init.zsh
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug 'zdharma/fast-syntax-highlighting'
-zplug  'Aloxaf/fzf-tab'
 # Forgit options
 forgit_stash_show=gsf
 forgit_diff=gdf
