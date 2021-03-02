@@ -57,3 +57,7 @@ nnoremap <Leader>yy ^yg_
 nnoremap gO       :action FileStructurePopup<CR>
 nnoremap <Leader>se    :action ShowErrorDescription<CR>
 nnoremap <C-p>    :action GotoFile<CR>
+
+nnoremap zC :action CollapseRegionRecursively<CR>
+nnoremap zO :action ExpandRegionRecursively<CR>
+
