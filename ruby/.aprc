@@ -1,0 +1,4 @@
+AmazingPrint.defaults = {
+  indent: -2,
+  sort_keys: true,
+}
