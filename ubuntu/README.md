@@ -72,6 +72,24 @@ Allow services
 sudo ufw allow 2222
 sudo ufw allow http
 sudo ufw allow https
+
+sudo ufw allow https
+sudo ufw allow https
+sudo ufw allow https
+
+# 3000 TCP for initial Captain Installation (can be blocked once Captain is attached to a domain)
+sudo ufw allow 3000/tcp
+# 7946 TCP/UDP for Container Network Discovery
+sudo ufw allow 7946/tcp
+sudo ufw allow 7946/udp
+# 4789 TCP/UDP for Container Overlay Network
+sudo ufw allow 4789/tcp
+sudo ufw allow 4789/udp
+# 2377 TCP/UDP for Docker swarm API
+sudo ufw allow 2377/tcp
+sudo ufw allow 2377/udp
+# 996 TCP for secure HTTPS connections specific to Docker Registry
+sudo ufw allow 996/tcp
 ```
 
 # Fail2Ban
