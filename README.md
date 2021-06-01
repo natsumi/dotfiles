@@ -1,14 +1,12 @@
-# Software Prerequiste
+A collection of dotfile configuration scripts
 
-## Xcode
-
-```bash
-xcode-select --install
-```
-
-## Homebrew
+## 1. Install Homebrew
 
 [Brew](http://brew.sh/)
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
 ## Git
 
@@ -191,3 +189,60 @@ Enable key repeat
 ```bash
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 ```
+
+# Tools Included
+
+- awk
+- [bat](https://github.com/sharkdp/bat)
+
+  A better cat
+
+- [delta](https://github.com/dandavison/delta)
+
+  Better git diff
+
+- [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)
+
+  Better git diff
+
+- [exa](https://github.com/ogham/exa)
+
+  A modern ls
+
+- [fd](https://github.com/sharkdp/fd)
+
+  A better find
+
+- [fzf](https://github.com/junegunn/fzf)
+
+  CLI Fuzzy Finder
+
+- [jq](https://github.com/stedolan/jq)
+
+  JSON parsing
+
+- [ripgrep](https://github.com/BurntSushi/ripgrep)
+
+  Super fast search
+
+- [scm-puff](https://github.com/mroth/scmpuff)
+
+  Easier git file actions
+
+- [silver searcher](https://github.com/ggreer/the_silver_searcher)
+
+  Super fast search
+
+- stow
+
+  Symlink manager
+
+- [tig](https://github.com/jonas/tig)
+
+  Ncurses git logs
+
+- tmux
+
+  Terminal multiplexer
+
+- tree
