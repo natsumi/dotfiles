@@ -4,10 +4,16 @@
 
 # Specs
 
-- Case: ai03 Polaris Gasket Mounted PCB
-- Switches: Holy Pandas
-- Stablizers: Durock V2
-- Keycaps: GMK Olivia
+- Case: ai03 Polaris ($225)
+- Brass Plate ($40)
+- Switches: Holy Pandas ($118)
+  - Switch Film ($10)
+  - Tribosys 3203 Lube
+  - Krytox 250g0 for Stabilizers
+- Stablizers: Durock V2 ($16.50)
+- Keycaps: GMK Olivia ($190)
+- PCB: Gasket Mounted
+  - Hotswap Mod ($32) - [7305 MillMax Connectors](https://www.mouser.com/ProductDetail/mill-max/7305-0-15-15-47-27-10-0/?qs=QVz7UnnaAAGZJgZDI7Hd%2FA%3D%3D&countrycode=US&currencycode=USD)
 - Port: USB-C
 - Microcontroller: amtmeg32u4
 
