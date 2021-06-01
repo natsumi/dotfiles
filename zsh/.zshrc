@@ -102,16 +102,21 @@ unalias gls #git log conflicts with dircolors gls
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
-# OSX FZF
+# Load fzf commands
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/.fzf_commands.zsh ]] && source ~/.fzf_commands.zsh
+
+# Load FZF key bindings and completion
+# ARM M1
+[[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+[[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]] && source /opt/homebrew/opt/fzf/shell/completion.zsh
+# x86 FZF
+[[ -f ~/usr/local/opt/fzf/shell/key-bindings.zsh ]] && source ~/usr/local/opt/fzf/shell/key-bindings.zsh ]]
+[[ -f ~/usr/local/opt/fzf/shell/completion.zsh ]] && source ~/usr/local/opt/fzf/shell/completion.zsh ]]
 
 # Linux / WSL FZF
 [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 [[ -f /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
-
-[[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/opt/asdf/asdf.sh
-[[ -f /usr/local/opt/asdf/asdf.sh ]] && source /usr/local/etc/bash_completion.d/asdf.bash
 
 [[ -f ~/.asdf/asdf.sh ]] && source ~/.asdf/asdf.sh
 
