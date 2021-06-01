@@ -3,6 +3,10 @@
 "     :actionlist [pattern]
 " https://github.com/JetBrains/ideavim
 
+" Leader mapping needs to be first
+" for easymotion to work
+let mapleader=','
+
 " Extensions to enable
 " https://github.com/JetBrains/ideavim/wiki/Emulated-plugins
 set commentary
@@ -34,8 +38,6 @@ set noerrorbells
 
 " KEYBINDINGS
 """""""""""""
-
-let mapleader=','
 nnoremap <Leader>n :action ActivateProjectToolWindow<CR>
 
 "Remape keys to navigate windows use Ctrl+key
