@@ -36,6 +36,8 @@ return require("packer").startup(function()
           }
         }
 
+        use "kyazdani42/nvim-tree.lua"
+
         -- utils
         use 'tomtom/tcomment_vim'
         use 'tpope/vim-repeat'

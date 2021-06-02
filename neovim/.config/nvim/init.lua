@@ -8,3 +8,4 @@ vim.g.mapleader = ','
 
 -- Plugin Configuration
 require "telescope-config"
+require 'nvimTree'
