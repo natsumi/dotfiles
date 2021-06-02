@@ -37,6 +37,7 @@ return require("packer").startup(function()
         }
 
         use "kyazdani42/nvim-tree.lua"
+        use "kyazdani42/nvim-web-devicons"
 
         -- utils
         use 'tomtom/tcomment_vim'
