@@ -10,3 +10,4 @@ vim.g.mapleader = ','
 require "telescope-config"
 require 'nvimTree'
 require 'file-icons' -- Icons for nvimTree
+require 'indent-blankline-config'

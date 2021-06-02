@@ -22,6 +22,9 @@ return require("packer").startup(function()
         use 'shaunsingh/solarized.nvim'
         use 'shaunsingh/moonlight.nvim'
         use 'shaunsingh/nord.nvim'
+
+        -- Look & Feel
+        use {"lukas-reineke/indent-blankline.nvim", branch = "lua"}
 	--
         -- lang stuff
 
