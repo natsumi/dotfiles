@@ -1,4 +1,5 @@
 -- Load plugins with packer
+require "settings"
 require "plugins"
 
 -- key bindings
