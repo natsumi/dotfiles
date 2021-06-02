@@ -1,6 +1,7 @@
 -- Load plugins with packer
 require "settings"
 require "plugins"
+require "themes"
 
 -- key bindings
 vim.g.mapleader = ','

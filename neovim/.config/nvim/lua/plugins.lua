@@ -19,6 +19,9 @@ return require("packer").startup(function()
         use "wbthomason/packer.nvim"
 
         -- Themes
+        use 'shaunsingh/solarized.nvim'
+        use 'shaunsingh/moonlight.nvim'
+        use 'shaunsingh/nord.nvim'
 	--
         -- lang stuff
 
