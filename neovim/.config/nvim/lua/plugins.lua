@@ -29,9 +29,16 @@ return require("packer").startup(function()
 
         -- file managing , picker etc
         use {
-  'nvim-telescope/telescope.nvim',
-  requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
-}
+          'nvim-telescope/telescope.nvim',
+          requires = {
+            {'nvim-lua/popup.nvim'},
+            {'nvim-lua/plenary.nvim'}
+          }
+        }
 
-        -- misc
+        -- utils
+        use 'tomtom/tcomment_vim'
+        use 'tpope/vim-repeat'
+        use 'tpope/vim-surround'
+        use 'machakann/vim-highlightedyank'
 end)
