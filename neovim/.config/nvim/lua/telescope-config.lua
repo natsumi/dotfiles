@@ -9,6 +9,13 @@ vim.api.nvim_set_keymap(
 
 vim.api.nvim_set_keymap(
     "n",
+    "<C-p>",
+    [[<cmd>lua require('telescope.builtin').find_files()<CR>]],
+    opt
+)
+
+vim.api.nvim_set_keymap(
+    "n",
     "<Leader>fg",
     [[<cmd>lua require('telescope.builtin').live_grep()<CR>]],
     opt
