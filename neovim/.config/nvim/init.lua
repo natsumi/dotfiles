@@ -7,7 +7,8 @@ require "themes"
 vim.g.mapleader = ','
 
 -- Plugin Configuration
-require "telescope-config"
 require 'nvimTree'
 require 'file-icons' -- Icons for nvimTree
+require "galaxy-line-config"
+require "telescope-config"
 require 'indent-blankline-config'
