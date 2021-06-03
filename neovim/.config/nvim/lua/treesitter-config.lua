@@ -21,6 +21,9 @@ ts_config.setup {
   highlight = {
     enable = true, -- false will disable the whole extension
     use_languagetree = true
+  },
+  indent = {
+    enable = true
   }
 }
 
