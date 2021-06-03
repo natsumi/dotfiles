@@ -9,6 +9,7 @@ vim.g.mapleader = ','
 -- Plugin Configuration
 require 'nvimTree'
 require 'file-icons' -- Icons for nvimTree
+require "bufferline-config"
 require "galaxy-line-config"
 require "telescope-config"
 require 'indent-blankline-config'

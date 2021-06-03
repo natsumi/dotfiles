@@ -24,6 +24,7 @@ return require("packer").startup(function()
         use 'shaunsingh/nord.nvim'
 
         -- Look & Feel
+        use "akinsho/nvim-bufferline.lua"
         use {
   'glepnir/galaxyline.nvim',
     branch = 'main',
