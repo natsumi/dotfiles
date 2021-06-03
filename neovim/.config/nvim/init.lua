@@ -13,3 +13,6 @@ require "bufferline-config"
 require "galaxy-line-config"
 require "telescope-config"
 require 'indent-blankline-config'
+
+-- Initialize Plugins
+require("nvim-autopairs").setup()

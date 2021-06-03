@@ -36,6 +36,7 @@ return require("packer").startup(function()
         use {"lukas-reineke/indent-blankline.nvim", branch = "lua"}
 	--
         -- lang stuff
+        use "windwp/nvim-autopairs"
 
         -- snippet support
 
