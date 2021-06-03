@@ -26,7 +26,7 @@ vim.g.mapleader = ' ' -- set leader to space
 require 'nvimTree'
 require 'file-icons' -- Icons for nvimTree
 require "bufferline-config"
-require "galaxy-line-config"
+-- require "galaxy-line-config"
 require "telescope-config"
 require 'indent-blankline-config'
 require 'gitsigns-config'

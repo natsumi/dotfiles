@@ -26,4 +26,4 @@ require("gitsigns").setup {
     status_formatter = nil -- Use default
 }
 
-vim.opt("o", "updatetime", 250) -- update interval time
+vim.o.updatetime = 250 -- update interval time

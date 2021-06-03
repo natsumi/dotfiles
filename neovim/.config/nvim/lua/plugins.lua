@@ -23,7 +23,7 @@ return require("packer").startup(function()
           'glepnir/galaxyline.nvim',
             branch = 'main',
             -- your statusline
-            config = function() require'my_statusline' end,
+            config = function() require 'galaxy-line-config' end,
             -- some optional icons
             requires = {'kyazdani42/nvim-web-devicons', opt = true}
         }
@@ -56,7 +56,10 @@ return require("packer").startup(function()
           }
         }
 
-        use "kyazdani42/nvim-tree.lua"
+        use {
+          "kyazdani42/nvim-tree.lua",
+          requires = {'kyazdani42/nvim-web-devicons', opt = true}
+        }
 
         -- utils
         use 'tomtom/tcomment_vim'
