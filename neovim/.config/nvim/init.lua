@@ -13,6 +13,7 @@ require "bufferline-config"
 require "galaxy-line-config"
 require "telescope-config"
 require 'indent-blankline-config'
+require 'gitsigns-config'
 
--- Initialize Plugins
-require("nvim-autopairs").setup()
+require 'nvim-autopairs'.setup()
+require 'colorizer'.setup()
