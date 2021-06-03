@@ -41,6 +41,10 @@ return require("packer").startup(function()
         --
         -- Language Specific
         --
+        use {
+          "nvim-treesitter/nvim-treesitter",
+          config = function() require 'treesitter-config' end,
+        }
 
         -- Auto add closing pair
         use "windwp/nvim-autopairs"
