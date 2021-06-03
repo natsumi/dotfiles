@@ -1,17 +1,4 @@
--- bootstrap snippet from: https://github.com/wbthomason/packer.nvim/issues/198#issuecomment-808927939
-local fn = vim.fn
 
--- Auto install packer.nvim
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-
-if fn.isdirectory(install_path) == 0 then
-  fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
---   require('plugin_specification')
---   vim.cmd 'autocmd User PackerComplete ++once lua require("my_config")'
-  require('packer').sync()
--- else
---   require('my_config')
-end
 
 
 return require("packer").startup(function()
@@ -76,8 +63,5 @@ return require("packer").startup(function()
         use 'tpope/vim-repeat'
         use 'tpope/vim-surround'
         use 'machakann/vim-highlightedyank'
-        use {
-          "folke/which-key.nvim",
-          config = function() require("which-key").setup() end
-        }
+        use "folke/which-key.nvim"
 end)
