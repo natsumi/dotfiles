@@ -1,4 +1,4 @@
--- Load plugins with packer
+-- Global settings
 require "settings"
 
 -- bootstrap snippet from: https://github.com/wbthomason/packer.nvim/issues/198#issuecomment-808927939
@@ -16,8 +16,10 @@ else
   require('plugins')
 end
 
--- require "plugins"
 require "themes"
+
+-- LSP
+require "nvim-lspconfig"
 
 -- key bindings
 vim.g.mapleader = ' ' -- set leader to space
