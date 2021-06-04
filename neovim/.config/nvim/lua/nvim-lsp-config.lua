@@ -40,7 +40,7 @@ local on_attach = function(client, bufnr)
     autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
     autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     augroup END
-    ]], false)
+      ]], false)
   end
 end
 
@@ -80,30 +80,30 @@ end
 
 -- Install missing servers
 function install_servers()
-    local required_servers = {
-        "bash",
-        "css",
-        "dockerfile",
-        "elixir",
-        "go",
-        "html",
-        "json",
-        "lua",
-        "python",
-        "ruby",
-        "tailwindcss",
-        "tailwindcss",
-        "typescript",
-        "vue",
-        "yaml",
-    }
+  local required_servers = {
+    "bash",
+    "css",
+    "dockerfile",
+    "elixir",
+    "go",
+    "html",
+    "json",
+    "lua",
+    "python",
+    "ruby",
+    "tailwindcss",
+    "tailwindcss",
+    "typescript",
+    "vue",
+    "yaml",
+  }
 
-    local installed_servers = require'lspinstall'.installed_servers()
-    for _, server in pairs(required_servers) do
-        if not vim.tbl_contains(installed_servers, server) then
-            require'lspinstall'.install_server(server)
-        end
+  local installed_servers = require'lspinstall'.installed_servers()
+  for _, server in pairs(required_servers) do
+    if not vim.tbl_contains(installed_servers, server) then
+      require'lspinstall'.install_server(server)
     end
+  end
 end
 
 -- lsp-install
