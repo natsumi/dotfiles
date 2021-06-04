@@ -176,7 +176,7 @@ gls.right[5] = {
 gls.right[6] = {
     time = {
         provider = function()
-            return "  " .. os.date("%H:%M") .. " "
+            return "  " .. os.date("%I:%M") .. " "
         end,
         highlight = {colors.green, colors.lightbg}
     }
