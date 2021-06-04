@@ -82,6 +82,12 @@ return require("packer").startup(function()
   --
   -- snippet support
   --
+  use {
+    "rafamadriz/friendly-snippets",
+    requires = {
+      {'hrsh7th/vim-vsnip'},
+    }
+  }
 
   --
   -- file managing , picker etc
