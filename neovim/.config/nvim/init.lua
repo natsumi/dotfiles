@@ -1,4 +1,5 @@
 -- Global settings
+require "mappings"
 require "settings"
 
 -- bootstrap snippet from: https://github.com/wbthomason/packer.nvim/issues/198#issuecomment-808927939
