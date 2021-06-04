@@ -22,9 +22,12 @@ opt("o", "showmatch", true) -- Show matching brackets.
 opt("o", "mat", 5) -- Bracket blinking.
 opt("o", "colorcolumn", '80,100') -- Mark column 80
 -- opt("o", "cursorline", true) -- Highlights current line
+opt("w", "signcolumn", "yes")
+
 --
 -- General options
 --
+opt("o", "mouse", "a") -- enable mouse support
 opt("o", "hidden", true) -- hide buffers instead of closing
 -- opt("o", "nobackup", true) -- no backup files
 -- opt("o", "nowritebackup", true) -- no backup files
