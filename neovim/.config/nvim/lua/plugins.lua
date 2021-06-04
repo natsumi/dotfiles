@@ -50,6 +50,7 @@ return require("packer").startup(function()
     "neovim/nvim-lspconfig",
     config = function() require 'nvim-lsp-config' end,
   }
+  use 'kabouzeid/nvim-lspinstall' -- adds LspInstall command
 
   -- Auto add closing pair
   use "windwp/nvim-autopairs"
