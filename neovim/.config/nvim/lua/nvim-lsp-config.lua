@@ -92,7 +92,6 @@ function install_servers()
     "python",
     "ruby",
     "tailwindcss",
-    "tailwindcss",
     "typescript",
     "vue",
     "yaml",
