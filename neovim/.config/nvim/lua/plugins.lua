@@ -15,6 +15,7 @@ return require("packer").startup(function()
     "norcalli/nvim-colorizer.lua",
     config = function() require('colorizer').setup() end,
   }
+  use 'folke/lsp-colors.nvim' --  Add LSP diagnostics highlight groups
 
   -- Top status bar
   use {
