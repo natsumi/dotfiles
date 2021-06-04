@@ -89,8 +89,9 @@ return require("packer").startup(function()
     'nvim-telescope/telescope.nvim',
     config = function() require 'telescope-config' end,
     requires = {
+      {'nvim-lua/plenary.nvim'},
       {'nvim-lua/popup.nvim'},
-      {'nvim-lua/plenary.nvim'}
+      {'nvim-telescope/telescope-media-files.nvim'}
     }
   }
 
