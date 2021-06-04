@@ -21,8 +21,12 @@ opt("o", "title", true) -- Show filename in titlebar
 opt("o", "showmatch", true) -- Show matching brackets.
 opt("o", "mat", 5) -- Bracket blinking.
 opt("o", "colorcolumn", '80,100') -- Mark column 80
--- opt("o", "cursorline", true) -- Highlights current line
 opt("w", "signcolumn", "yes")
+
+-- hide line numbers in terminal windows
+vim.api.nvim_exec([[
+   au BufEnter term://* setlocal nonumber
+]], false)
 
 --
 -- General options
