@@ -19,8 +19,5 @@ end
 
 require "themes"
 
--- key bindings
-vim.g.mapleader = ' ' -- set leader to space
-
 -- Plugin Configuration
 require 'file-icons' -- Icons for nvimTree

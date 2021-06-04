@@ -62,3 +62,7 @@ opt("o", "tabstop", 2)  -- Case sensitive if theres a capital letter
 opt("o", "shiftwidth", 2)  -- Case sensitive if theres a capital letter
 opt("o", "expandtab", true)  -- convert tabs to whitepsace
 opt("o", "softtabstop", 2)  -- Make backspace go back 2 spaces
+
+-- file extension specific tabbing
+-- Python uses 4 tabs as standard
+vim.cmd([[autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4]])
