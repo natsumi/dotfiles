@@ -22,14 +22,14 @@ require "themes"
 vim.g.mapleader = ' ' -- set leader to space
 
 -- Plugin Configuration
-require 'nvimTree'
+-- require 'nvimTree'
 require 'file-icons' -- Icons for nvimTree
-require "bufferline-config"
+-- require "bufferline-config"
 -- require "galaxy-line-config"
-require "telescope-config"
-require 'indent-blankline-config'
-require 'gitsigns-config'
-require "whichkey-config"
+-- require "telescope-config"
+-- require 'indent-blankline-config'
+-- require 'gitsigns-config'
+-- require "whichkey-config"
 
-require 'nvim-autopairs'.setup()
-require 'colorizer'.setup()
+-- require 'nvim-autopairs'.setup()
+-- require 'colorizer'.setup()
