@@ -46,12 +46,21 @@ return require("packer").startup(function()
     config = function() require 'treesitter-config' end,
   }
 
+  use {
+    "neovim/nvim-lspconfig"
+    config = function() require 'nvim-lsp-config' end,
+  }
+
   -- Auto add closing pair
   use "windwp/nvim-autopairs"
 
+  --
   -- snippet support
+  --
 
+  --
   -- file managing , picker etc
+  --
   use {
     'nvim-telescope/telescope.nvim',
     requires = {

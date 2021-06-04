@@ -18,9 +18,6 @@ end
 
 require "themes"
 
--- LSP
-require "nvim-lspconfig"
-
 -- key bindings
 vim.g.mapleader = ' ' -- set leader to space
 
