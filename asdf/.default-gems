@@ -1,5 +1,4 @@
 amazing_print
-awesome_print
 bundler
 byebug
 debase
@@ -20,3 +19,4 @@ ruby-debug-ide
 ruby_parser
 rufo
 solargraph
+standard
