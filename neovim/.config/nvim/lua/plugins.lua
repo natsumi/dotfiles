@@ -72,6 +72,14 @@ return require("packer").startup(function()
     "hrsh7th/nvim-compe",
     config = function() require 'compe-config' end
   }
+  -- Show diagnostics in a buffer window
+  use {
+    'folke/trouble.nvim',
+    config = function() require('trouble').setup() end,
+    requires = {
+      'kyazdani42/nvim-web-devicons'
+    }
+  }
 
 
   -- Auto add closing pair
