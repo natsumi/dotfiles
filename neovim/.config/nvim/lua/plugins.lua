@@ -3,9 +3,10 @@ return require("packer").startup(function()
   use "wbthomason/packer.nvim"
 
   -- Themes
-  use 'shaunsingh/solarized.nvim'
   use 'shaunsingh/moonlight.nvim'
   use 'shaunsingh/nord.nvim'
+  use 'shaunsingh/solarized.nvim'
+  use 'folke/tokyonight.nvim'
 
   --
   -- Look & Feel
@@ -78,6 +79,9 @@ return require("packer").startup(function()
     "windwp/nvim-autopairs",
     config = function() require('nvim-autopairs').setup() end,
   }
+
+  -- Language Formatter
+  -- use "sbdchd/neoformat"
 
   --
   -- snippet support

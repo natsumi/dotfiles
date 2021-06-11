@@ -32,9 +32,17 @@
 -------------
 -- Nord
 -------------
-vim.g.nord_contrast = true
-vim.g.nord_borders = false
-vim.g.nord_disable_background = false
+-- vim.g.nord_contrast = true
+-- vim.g.nord_borders = false
+-- vim.g.nord_disable_background = false
 
 -- Load the colorscheme
-require('nord').set()
+-- require('nord').set()
+
+-------------
+-- Tokyo Night
+-------------
+vim.g.tokyonight_style = "storm"
+vim.g.tokyonight_italic_functions = true
+vim.g.tokyonight_italic_variables = true
+vim.cmd[[colorscheme tokyonight]]
