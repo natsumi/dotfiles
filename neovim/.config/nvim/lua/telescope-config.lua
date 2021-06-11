@@ -69,7 +69,7 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
   "n",
   "<C-p>",
-  [[<cmd>lua require('telescope.builtin').find_files()<CR>]],
+  [[<cmd>lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<CR>]],
   opt
 )
 
