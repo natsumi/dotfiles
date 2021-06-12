@@ -60,6 +60,9 @@ alias rfix="bundle exec rubocop --safe-auto-correct"
 # Pretty print the PATH env
 alias path='echo $PATH | tr -s ":" "\n"'
 
+# pictures in console
+alias icat="kitty +kitten icat"
+
 # Remove lt alias so localtunnel works
 unalias lt
 
