@@ -88,15 +88,6 @@ $(brew --prefix)/opt/fzf/install
 
 edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
 
-### Spacemacs Github Integration
-
-Grant access to repo and gist [Set Access
-Tokens](https://github.com/settings/tokens)
-
-```bash
-git config --global github.oauth-token <token>
-```
-
 ## Programming Dev setup
 
 ### Fonts
