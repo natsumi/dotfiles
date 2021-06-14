@@ -21,6 +21,8 @@ cask 'font-roboto-mono-nerd-font'
 cask 'font-sauce-code-pro-nerd-font'
 cask 'font-victor-mono-nerd-font'
 cask 'font-blex-mono-nerd-font'
+cask 'font-fantasque-sans-mono-nerd-font'
+
 
 # Programming Fonts
 cask 'font-input'
