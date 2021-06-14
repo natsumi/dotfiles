@@ -1,5 +1,4 @@
 tap 'homebrew/bundle'
-tap 'universal-ctags/universal-ctags'
 tap 'd12frosted/emacs-plus'
 tap 'neovim/neovim'
 tap 'mas-cli/tap'
