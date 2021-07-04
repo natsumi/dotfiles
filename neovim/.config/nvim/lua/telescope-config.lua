@@ -24,10 +24,8 @@ require("telescope").setup {
       vertical = {
         mirror = false
       },
-      height = 1,
-      width = 0.75,
-      prompt_position = "bottom",
     },
+    scroll_strategy = "cycle",
     border = {},
     file_sorter = require "telescope.sorters".get_fuzzy_file,
     file_ignore_patterns = {},
@@ -65,7 +63,7 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
   "n",
   "<C-p>",
-  [[<cmd>lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<CR>]],
+  [[<cmd>lua require('telescope.builtin').find_files({ previewer = false, find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<CR>]],
   opt
 )
 
