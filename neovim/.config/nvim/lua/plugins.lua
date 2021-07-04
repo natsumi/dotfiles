@@ -36,7 +36,7 @@ return require("packer").startup(function()
 
   -- Show tab indicators
   use {
-    "lukas-reineke/indent-blankline.nvim", branch = "lua",
+    "lukas-reineke/indent-blankline.nvim",
     config = function() require 'indent-blankline-config' end,
   }
 
