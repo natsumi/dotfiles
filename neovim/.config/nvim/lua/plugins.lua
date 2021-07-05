@@ -90,6 +90,10 @@ return require("packer").startup(function()
 
   -- Language Formatter
   -- use "sbdchd/neoformat"
+  use {
+    "mhartington/formatter.nvim",
+    config = function() require 'formatter-config' end,
+  }
 
   --
   -- snippet support
