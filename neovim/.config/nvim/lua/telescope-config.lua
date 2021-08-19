@@ -16,7 +16,8 @@ require("telescope").setup {
     initial_mode = "insert",
     selection_strategy = "reset",
     sorting_strategy = "descending",
-    layout_strategy = "horizontal",
+    -- layout_strategy = "horizontal",
+    layout_strategy = "vertical",
     layout_config = {
       horizontal = {
         mirror = false,
@@ -30,7 +31,9 @@ require("telescope").setup {
     file_sorter = require "telescope.sorters".get_fuzzy_file,
     file_ignore_patterns = {},
     generic_sorter = require "telescope.sorters".get_generic_fuzzy_sorter,
-    path_display = {'shorten'},
+    path_display = {
+      shorten = 5
+    },
     winblend = 0,
     borderchars = {"─", "│", "─", "│", "╭", "╮", "╯", "╰"},
     color_devicons = true,
@@ -64,7 +67,7 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
   "n",
   "<C-p>",
-  [[<cmd>lua require('telescope.builtin').find_files({ previewer = false, find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<CR>]],
+  [[<cmd>lua require('telescope.builtin').find_files({find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<CR>]],
   opt
 )
 
