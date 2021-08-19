@@ -153,6 +153,7 @@ return require("packer").startup(
       requires = {
         {"nvim-lua/plenary.nvim"},
         {"nvim-lua/popup.nvim"},
+        {"nvim-telescope/telescope-fzy-native.nvim"},
         {"nvim-telescope/telescope-media-files.nvim"}
       }
     }
