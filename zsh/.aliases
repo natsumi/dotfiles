@@ -46,6 +46,7 @@ alias tml='tmux list-sessions'
 alias b="bundle"
 alias be="bundle exec"
 alias ber="bundle exec rspec"
+alias berc="bundle exec rubocop"
 
 # Rails
 alias frrc="foreman run rails console"
