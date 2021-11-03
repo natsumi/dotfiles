@@ -16,7 +16,7 @@ ts_config.setup {
     "ruby",
     "scss",
     "typescript",
-    "yaml",
+    "yaml"
   },
   highlight = {
     enable = true, -- false will disable the whole extension
@@ -28,6 +28,6 @@ ts_config.setup {
 }
 
 -- Enable TreeSitter folding
-vim.wo.foldmethod = 'expr'
+vim.wo.foldmethod = "expr"
 vim.wo.foldlevel = 99
-vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.wo.foldexpr = "nvim_treesitter#foldexpr()"

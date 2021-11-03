@@ -20,11 +20,11 @@ require("telescope").setup {
     layout_strategy = "vertical",
     layout_config = {
       horizontal = {
-        mirror = false,
+        mirror = false
       },
       vertical = {
         mirror = false
-      },
+      }
     },
     scroll_strategy = "cycle",
     border = {},
@@ -71,23 +71,8 @@ vim.api.nvim_set_keymap(
   opt
 )
 
-vim.api.nvim_set_keymap(
-  "n",
-  "<Leader>fg",
-  [[<cmd>lua require('telescope.builtin').live_grep()<CR>]],
-  opt
-)
+vim.api.nvim_set_keymap("n", "<Leader>fg", [[<cmd>lua require('telescope.builtin').live_grep()<CR>]], opt)
 
-vim.api.nvim_set_keymap(
-  "n",
-  "<Leader>fb",
-  [[<leader>fb <cmd>lua require('telescope.builtin').buffers()<CR>]],
-  opt
-)
+vim.api.nvim_set_keymap("n", "<Leader>fb", [[<leader>fb <cmd>lua require('telescope.builtin').buffers()<CR>]], opt)
 
-vim.api.nvim_set_keymap(
-  "n",
-  "<Leader>fh",
-  [[<cmd>lua require('telescope.builtin').help_tags()<CR>]],
-  opt
-)
+vim.api.nvim_set_keymap("n", "<Leader>fh", [[<cmd>lua require('telescope.builtin').help_tags()<CR>]], opt)

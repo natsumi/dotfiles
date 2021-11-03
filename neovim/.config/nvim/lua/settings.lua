@@ -20,7 +20,7 @@ opt("o", "termguicolors", true) -- enable true color mode in terminal
 opt("o", "title", true) -- Show filename in titlebar
 opt("o", "showmatch", true) -- Show matching brackets.
 opt("o", "mat", 5) -- Bracket blinking.
-opt("o", "colorcolumn", '80,100') -- Mark column 80
+opt("o", "colorcolumn", "80,100") -- Mark column 80
 opt("w", "signcolumn", "yes")
 
 -- hide line numbers in terminal windows
@@ -44,24 +44,24 @@ opt("o", "undolevels", 99) -- Max undo levels
 -- opt("o", "encoding=utf-8", true) -- Set encoding type
 
 opt("o", "clipboard", "unnamedplus") -- copy to system clipboard
-opt("o", "number", true)  --line numbers
-opt("o", "numberwidth", 2)  --line numbers
+opt("o", "number", true) --line numbers
+opt("o", "numberwidth", 2) --line numbers
 opt("o", "cursorline", true) -- highlights current line
 opt("o", "scrolloff", 5) -- Number of lines to below cursor to start auto scroll
 
 --
 -- Search Options
 --
-opt("o", "ignorecase", true)  -- case insensitive search
-opt("o", "smartcase", true)  -- Case sensitive if theres a capital letter
+opt("o", "ignorecase", true) -- case insensitive search
+opt("o", "smartcase", true) -- Case sensitive if theres a capital letter
 
 --
 -- Tab spacing
 --
-opt("o", "tabstop", 2)  -- Case sensitive if theres a capital letter
-opt("o", "shiftwidth", 2)  -- Case sensitive if theres a capital letter
-opt("o", "expandtab", true)  -- convert tabs to whitepsace
-opt("o", "softtabstop", 2)  -- Make backspace go back 2 spaces
+opt("o", "tabstop", 2) -- Case sensitive if theres a capital letter
+opt("o", "shiftwidth", 2) -- Case sensitive if theres a capital letter
+opt("o", "expandtab", true) -- convert tabs to whitepsace
+opt("o", "softtabstop", 2) -- Make backspace go back 2 spaces
 
 -- file extension specific tabbing
 -- Python uses 4 tabs as standard
