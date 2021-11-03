@@ -171,6 +171,7 @@ return require("packer").startup(
     use "tpope/vim-repeat"
     use "tpope/vim-surround"
     use "machakann/vim-highlightedyank"
+    use "wakatime/vim-wakatime"
     use {
       "folke/which-key.nvim",
       config = function()
