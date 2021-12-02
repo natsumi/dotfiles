@@ -53,10 +53,10 @@ AddressFamily inet
 
 ## Firewall
 
-Edit `/etc/default/ufw` to disable ipv6
+Edit `/etc/default/ufw` to enable ipv6
 
 ```
-IPV6=no
+IPV6=yes
 ```
 
 ```
