@@ -75,7 +75,7 @@ bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 source ${ZPLUG_HOME}/init.zsh
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug ' zdharma-continuum /fast-syntax-highlighting'
+zplug ' zdharma-continuum/fast-syntax-highlighting'
 # Forgit options
 forgit_stash_show=gsf
 forgit_diff=gdf
