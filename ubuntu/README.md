@@ -1,10 +1,16 @@
-# VPS
+# VPS Ubuntu 20.04
 
 ## Add User
 
 ```
-sudo adduser username
-sudo usermod -aG sudo username
+adduser <username>
+usermod -aG sudo <username>
+```
+
+## Copy over SSH Keys to new user
+
+```
+rsync --archive --chown=<username>:<username> ~/.ssh /home/<username>
 ```
 
 ## Set Hostname
@@ -54,27 +60,14 @@ IPV6=no
 ```
 
 ```
-sudo systemctl start ufw
-sudo systemctl enable ufw
-```
-
-Set defaults
-
-```
+# Default rules
 sudo ufw default allow outgoing
 sudo ufw default deny incoming
-```
 
-Allow services
-
-```
-# change to ssh port
+# App specific rules
+sudo ufw disable openssh
 sudo ufw allow 2222
 sudo ufw allow http
-sudo ufw allow https
-
-sudo ufw allow https
-sudo ufw allow https
 sudo ufw allow https
 
 # 3000 TCP for initial Captain Installation (can be blocked once Captain is attached to a domain)
@@ -92,11 +85,12 @@ sudo ufw allow 2377/udp
 sudo ufw allow 996/tcp
 ```
 
-# Fail2Ban
+```
+sudo ufw enable
+sudo ufw status
+```
 
-```
-sudo systemctl enable fail2ban.service
-```
+# Fail2Ban
 
 `/etc/fail2ban/jail.local`
 
@@ -110,4 +104,8 @@ maxretry = 3
 findtime = 300
 bantime = 3600
 ignoreip = 127.0.0.1
+```
+
+```
+sudo systemctl enable fail2ban.service
 ```

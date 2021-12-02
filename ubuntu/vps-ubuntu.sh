@@ -13,28 +13,29 @@ sudo apt install -y \
 # Utils
 sudo apt install -y \
   htop jq fd-find fzf stow \
-  tig tmux ripgrep\
-  wget unzip curl vim neovim \
+  tig tmux \
+  wget unzip curl neovim \
   zsh git fail2ban
 
-# Docker
-echo 'Installing Docker'
-sudo apt install apt-transport-https ca-certificates curl software-properties-common gnupg
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo apt-key fingerprint 0EBFCD88
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt install docker-ce
-sudo usermod -aG docker $USER
-systemctl start docker
-systemctl enable docker
+# RG and Bat
+sudo apt install ripgrep
+sudo sed -i '/\/usr\/.crates2.json/d' /var/lib/dpkg/info/ripgrep.list
+sudo apt install bat
+sudo ln -s batcat /usr/bin/bat
 
+sudo ln -s /usr/bin/batcat ~/usr/local/bin/bat
 
-echo 'Installing asdf'
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
+# # Docker
+# echo 'Installing Docker'
+# sudo apt install apt-transport-https ca-certificates curl software-properties-common gnupg
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# sudo apt-key fingerprint 0EBFCD88
+# sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+# sudo apt install docker-ce
+# sudo usermod -aG docker $USER
+# systemctl start docker
+# systemctl enable docker
 
-echo 'Installing bat'
-curl -sL https://api.github.com/repos/sharkdp/bat/releases/latest  | jq -r '.assets[].browser_download_url' | grep amd | tail -n 1 | xargs wget
-ls *.deb | sudo xargs dpkg -i
 
 echo 'Installing diff-so-fancy'
 wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
