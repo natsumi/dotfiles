@@ -36,6 +36,8 @@ hooks.add("install_plugins", function(use)
     --
     -- Look & Feel
     --
+
+    use("rebelot/kanagawa.nvim")
     use({
         "karb94/neoscroll.nvim",
         opt = true,
