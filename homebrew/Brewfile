@@ -31,6 +31,10 @@ brew 'ripgrep' # search
 brew 'jq' # json
 brew 'awk'
 
+# Formatters
+brew 'shfmt'
+brew 'stylua'
+
 # Utitlies
 brew 'zsh'
 brew 'htop-osx'
