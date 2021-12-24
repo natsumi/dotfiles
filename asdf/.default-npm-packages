@@ -3,6 +3,7 @@ create-react-app
 
 bash-language-server
 dockerfile-language-server-nodejs
+@tailwindcss/language-server
 typescript-language-server
 vscode-css-languageserver-bin
 vscode-html-languageserver-bin
