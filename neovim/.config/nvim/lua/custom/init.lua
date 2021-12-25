@@ -89,6 +89,9 @@ hooks.add("install_plugins", function(use)
     -- Utils
     --
     use({
+        "easymotion/vim-easymotion",
+    })
+    use({
         "tpope/vim-repeat",
     })
     use({
