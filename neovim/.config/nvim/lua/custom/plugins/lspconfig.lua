@@ -31,6 +31,11 @@ M.setup_lsp = function(attach, capabilities)
         })
     end
 
+    -- Elixir
+    lspconfig.elixirls.setup({
+        cmd = { "/Users/natsumi/dev/elixirls/language_server.sh" },
+    })
+
     -- ruby - Use null-ls / standardrb for formatting instead
     lspconfig.solargraph.setup({
         on_attach = function(client, bufnr)
