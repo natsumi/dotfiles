@@ -22,6 +22,7 @@ local sources = {
 
     -- Ruby
     b.formatting.standardrb,
+    b.diagnostics.standardrb,
 
     -- Shell
     b.formatting.shfmt,
