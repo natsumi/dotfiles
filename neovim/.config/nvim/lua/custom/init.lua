@@ -74,8 +74,26 @@ hooks.add("install_plugins", function(use)
             require("custom.plugins.null-ls").setup()
         end,
     })
-
     -- load it after nvim-lspconfig , since we'll use some lspconfig stuff in the null-ls config!
+
+    -- Show lint errors in a diagnostic window
+    use({
+        "folke/trouble.nvim",
+        requires = "kyazdani42/nvim-web-devicons",
+        config = function()
+            require("trouble").setup({})
+        end,
+    })
+
+    --
+    -- Utils
+    --
+    use({
+        "tpope/vim-repeat",
+    })
+    use({
+        "tpope/vim-surround",
+    })
 end)
 
 -- NOTE: we heavily suggest using Packer's lazy loading (with the 'event' field)
