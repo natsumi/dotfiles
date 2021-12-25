@@ -16,6 +16,10 @@ M.plugins = {
             setup_lspconf = "custom.plugins.lspconfig",
         },
     },
+    status = {
+        colorizer = true,
+        dashboard = true,
+    },
 }
 
 return M
