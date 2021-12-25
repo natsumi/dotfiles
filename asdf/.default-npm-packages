@@ -3,6 +3,7 @@ create-react-app
 
 bash-language-server
 dockerfile-language-server-nodejs
+@fsouza/prettierd
 @tailwindcss/language-server
 typescript-language-server
 vscode-langservers-extracted

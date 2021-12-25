@@ -7,8 +7,18 @@ local sources = {
     --  b.formatting.deno_fmt,
 
     -- Lua
-    b.formatting.stylua.with({ extra_args = { "--indent-type", "Spaces", "--indent-width", "4" } }),
+    b.formatting.stylua.with({
+        extra_args = {
+            "--indent-type",
+            "Spaces",
+            "--indent-width",
+            "4",
+        },
+    }),
     --  b.diagnostics.luacheck.with { extra_args = { "--global vim" } },
+
+    -- Prettierd
+    b.formatting.prettierd,
 
     -- Ruby
     b.formatting.standardrb,
@@ -35,4 +45,3 @@ M.setup = function()
 end
 
 return M
-
