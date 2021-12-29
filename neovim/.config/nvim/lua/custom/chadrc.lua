@@ -6,9 +6,9 @@ local M = {}
 -- make sure you maintain the structure of `core/default_config.lua` here,
 -- example of changing theme:
 
--- M.ui = {
---     theme = "gruvchad",
--- }
+M.ui = {
+    theme = "everforest",
+}
 
 M.plugins = {
     default_plugin_config_replace = {
