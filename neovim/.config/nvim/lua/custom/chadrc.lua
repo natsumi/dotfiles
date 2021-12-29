@@ -11,6 +11,9 @@ local M = {}
 -- }
 
 M.plugins = {
+    default_plugin_config_replace = {
+        nvim_treesitter = "custom.plugins.treesitter",
+    },
     options = {
         lspconfig = {
             setup_lspconf = "custom.plugins.lspconfig",
