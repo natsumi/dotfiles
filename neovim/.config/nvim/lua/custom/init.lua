@@ -124,6 +124,9 @@ hooks.add("install_plugins", function(use)
     use({
         "tpope/vim-surround",
     })
+    use({
+        "wakatime/vim-wakatime",
+    })
 
     --
     -- Debuggers
