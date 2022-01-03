@@ -13,7 +13,9 @@ hooks.add("setup_mappings", function(map)
     map(
         "n",
         "<C-p>",
-        [[<cmd>lua require('telescope.builtin').find_files({find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<CR>]],
+        -- [[<cmd>lua require('telescope.builtin').find_files({find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<CR>]],
+        -- [[<cmd>Telescope find_files<cr>]],
+        [[<cmd>Telescope find_files find_command=rg,--hidden,--files<CR>]],
         opt
     )
     map("n", "<leader>q", ":q <CR>", opt)
