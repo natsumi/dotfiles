@@ -7,8 +7,11 @@ local M = {}
 -- example of changing theme:
 
 M.ui = {
-    theme = "everforest",
+    theme = "catppuccin",
 }
+
+-- /lua/custom/chadrc.lualocal
+userPlugins = require("custom.plugins")
 
 M.plugins = {
     default_plugin_config_replace = {
@@ -23,6 +26,7 @@ M.plugins = {
         colorizer = true,
         dashboard = true,
     },
+    install = userPlugins,
 }
 
 return M
