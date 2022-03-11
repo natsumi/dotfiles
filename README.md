@@ -39,6 +39,7 @@ sh bin/install_homebrew_casks
 
 ```bash
 brew bundle --file=~/dev/dotfiles/homebrew/Brewfile
+brew bundle --file=~/dev/dotfiles/homebrew/Brewfile_fonts
 ```
 
 # Software Configuration
@@ -93,7 +94,6 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
 ### Fonts
 
 ```bash
-brew bundle --file=~/dev/dotfiles/homebrew/Brewfile_fonts
 ```
 
 ### [asdf](https://github.com/asdf-vm/asdf)
@@ -114,28 +114,12 @@ sh bin/install_dev_env
 ln -s $(which node) /usr/local/bin/node
 ```
 
-## Editors
-
-```bash
-brew install vim
-
-brew install tree-sitter
-brew install --HEAD luajit
-brew install --HEAD neovim
-```
-
 ## Bat
 
 To pickup the Nord theme.
 
 ```shell
 bat cache --build
-```
-
-### Markdown Support
-
-```bash
-npm install -g vmd
 ```
 
 ## Tmux
@@ -166,12 +150,6 @@ stow -v --target=$HOME --dir=$DOTFILE_DIR yabai
 `sudo yabai load-sa`
 
 # Post Install Settings
-
-### Fonts
-
-```bash
-sh bin/install_fonts
-```
 
 ### Visual Studio Code
 
