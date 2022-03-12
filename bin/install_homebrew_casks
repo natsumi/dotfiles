@@ -8,6 +8,7 @@ brew install --cask alfred
 brew install --cask forklift
 brew install --cask google-chrome
 brew install --cask homebrew/cask-versions/firefox-developer-edition
+brew install --cask sensiblesidebuttons
 
 # Development
 brew install --cask iterm2

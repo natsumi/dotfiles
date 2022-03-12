@@ -18,6 +18,7 @@ brew 'xz'
 brew 'coreutils'
 brew 'openssl'
 brew 'jemalloc'
+brew 'zlib'
 
 # Development Tools
 brew 'git'
@@ -50,7 +51,6 @@ brew 'rtmpdump'
 brew 'ncdu'
 # twitch livestreamer
 brew 'streamlink'
-brew 'sensiblesidebuttons'
 
 brew 'tree'
 # tree replacement
