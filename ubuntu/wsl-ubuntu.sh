@@ -10,21 +10,20 @@ sudo apt install -y \
   libxslt-dev libffi-dev libtool unixodbc-dev \
   build-essential openssl libssl-dev
 
-# Python Build Tools
+# Build Tools
 sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
   libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
-  xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+  xz-utils tk-dev libffi-dev liblzma-dev git
+  
 # Utils
 sudo apt install -y \
   htop jq fd-find fzf stow \
-  tig tmux ripgrep\
+  tig tree tmux ripgrep\
   wget unzip curl vim neovim \
   zsh
 
 echo 'Installing asdf'
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-cd ~/.asdf
-git checkout "$(git describe --abbrev=0 --tags)"
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 
 echo 'Installing bat'
 curl -sL https://api.github.com/repos/sharkdp/bat/releases/latest  | jq -r '.assets[].browser_download_url' | grep amd | tail -n 1 | xargs wget
@@ -43,6 +42,9 @@ sudo mv scmpuff /usr/local/bin
 # Clone dotfiles dir
 mkdir ~/dev
 git clone https://github.com/natsumi/dotfiles.git $DOTFILES_DIR
+
+# Install NVCHAD
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
 
 # apply symlinks
 bash $DOTFILES_DIR/bin/apply_symlinks
