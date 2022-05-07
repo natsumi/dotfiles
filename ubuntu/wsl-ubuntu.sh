@@ -23,9 +23,7 @@ sudo apt install -y \
   zsh
 
 echo 'Installing asdf'
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-cd ~/.asdf
-git checkout "$(git describe --abbrev=0 --tags)"
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 
 echo 'Installing bat'
 curl -sL https://api.github.com/repos/sharkdp/bat/releases/latest  | jq -r '.assets[].browser_download_url' | grep amd | tail -n 1 | xargs wget
@@ -44,6 +42,9 @@ sudo mv scmpuff /usr/local/bin
 # Clone dotfiles dir
 mkdir ~/dev
 git clone https://github.com/natsumi/dotfiles.git $DOTFILES_DIR
+
+# Install NVCHAD
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
 
 # apply symlinks
 bash $DOTFILES_DIR/bin/apply_symlinks
