@@ -1,8 +1,4 @@
 flake8
-litecli
-mycli
-pgcli
-pipenv
 powerline-status
 pygments
 pylint
