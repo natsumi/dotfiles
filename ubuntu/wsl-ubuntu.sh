@@ -10,14 +10,15 @@ sudo apt install -y \
   libxslt-dev libffi-dev libtool unixodbc-dev \
   build-essential openssl libssl-dev
 
-# Python Build Tools
+# Build Tools
 sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
   libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
-  xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+  xz-utils tk-dev libffi-dev liblzma-dev git
+
 # Utils
 sudo apt install -y \
   htop jq fd-find fzf stow \
-  tig tmux ripgrep\
+  tig tmux ripgrep tree \
   wget unzip curl vim neovim \
   zsh
 
@@ -36,7 +37,7 @@ chmod +x diff-so-fancy
 sudo mv diff-so-fancy /usr/local/bin
 
 echo 'Installing scmpuff'
-curl -sL https://api.github.com/repos/mroth/scmpuff/releases/latest  | jq -r '.assets[].browser_download_url' | grep linux | xargs -I % wget % -O - |  tar xvz scmpuff
+curl -sL https://api.github.com/repos/mroth/scmpuff/releases/latest  | jq -r '.assets[].browser_download_url' | grep linux_x64 | xargs -I % wget % -O - |  tar xvz scmpuff
 chmod +x scmpuff
 sudo mv scmpuff /usr/local/bin
 
