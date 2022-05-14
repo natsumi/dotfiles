@@ -1,72 +1,73 @@
+-- custom/plugins/init.lua
+
 return {
     --
     -- Look & Feel
     --
 
-    { "rebelot/kanagawa.nvim" },
-    {
-        "karb94/neoscroll.nvim",
+    [ "rebelot/kanagawa.nvim" ] = {},
+    -- Smooth Scrolling
+    ["karb94/neoscroll.nvim"] = {
         opt = true,
         config = function()
             require("neoscroll").setup()
         end,
+
         -- lazy loading
         setup = function()
-            require("core.utils").packer_lazy_load("neoscroll.nvim")
+            nvchad.packer_lazy_load "neoscroll.nvim"
         end,
-    },
-    {
-        "luukvbaal/stabilize.nvim",
+        },
+        -- Stablize window open/close events
+
+        [ "luukvbaal/stabilize.nvim"] = {
         config = function()
             require("stabilize").setup()
         end,
-    },
+
+        },
+
     --
     -- file managing , picker etc
     --
-    {
-        "nathom/filetype.nvim",
-    },
+    [ "nathom/filetype.nvim"] = {},
+
     --
     -- Formatting / Linting
     --
-    {
-        "jose-elias-alvarez/null-ls.nvim",
+
+    ["jose-elias-alvarez/null-ls.nvim"] = {
+
+    -- load it after nvim-lspconfig , since we'll  some lspconfig stuff in the null-ls config!
         after = "nvim-lspconfig",
         config = function()
             require("custom.plugins.null-ls").setup()
         end,
-    },
-    -- load it after nvim-lspconfig , since we'll  some lspconfig stuff in the null-ls config!
+        },
 
-    -- Show lint errors in a diagnostic window
-    {
-        "folke/trouble.nvim",
+
+    -- -- Show lint errors in a diagnostic window
+
+[ "folke/trouble.nvim"] = {
         requires = "kyazdani42/nvim-web-devicons",
         config = function()
             require("trouble").setup({})
         end,
-    },
+
+        },
+
     --
     -- Utils
     --
-    {
-        "easymotion/vim-easymotion",
-    },
-    {
-        "tpope/vim-repeat",
-    },
-    {
-        "tpope/vim-surround",
-    },
-    {
-        "wakatime/vim-wakatime",
-    },
+    [ "easymotion/vim-easymotion"] = {},
+    [ "tpope/vim-repeat" ] = {},
+    [ "tpope/vim-surround" ] = {},
+    [ "wakatime/vim-wakatime" ] = {},
+
     --
     -- Debuggers
     --
-    {
-        "mfussenegger/nvim-dap",
+    [ "mfussenegger/nvim-dap"] = {
         requires = {
             {
                 "suketa/nvim-dap-ruby",
@@ -94,11 +95,11 @@ return {
             },
         },
     },
-    {
-        "nvim-telescope/telescope-dap.nvim", -- Show project dependant history
+ -- Show project dependant history
+    [ "nvim-telescope/telescope-dap.nvim"] = {
         after = "telescope.nvim",
         config = function()
             require("telescope").load_extension("dap")
         end,
     },
-}
+ }
