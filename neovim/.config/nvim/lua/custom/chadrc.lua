@@ -1,5 +1,4 @@
--- This is an example chadrc file , its supposed to be placed in /lua/custom dir
--- lua/custom/chadrc.lua
+-- Just an example, supposed to be placed in /lua/custom/
 
 local M = {}
 
@@ -7,26 +6,32 @@ local M = {}
 -- example of changing theme:
 
 M.ui = {
-    theme = "catppuccin",
+    theme = "kanagawa"
 }
 
 -- /lua/custom/chadrc.lualocal
-userPlugins = require("custom.plugins")
+-- userPlugins = require("custom.plugins")
+
+-- M.plugins = {
+--     default_plugin_config_replace = {
+--         nvim_treesitter = "custom.plugins.treesitter",
+--     },
+--     options = {
+--         lspconfig = {
+--             setup_lspconf = "custom.plugins.lspconfig",
+--         },
+--     },
+--     status = {
+--         colorizer = true,
+--         dashboard = true,
+--     },
+--     install = userPlugins,
+-- }
 
 M.plugins = {
-    default_plugin_config_replace = {
-        nvim_treesitter = "custom.plugins.treesitter",
-    },
-    options = {
-        lspconfig = {
-            setup_lspconf = "custom.plugins.lspconfig",
-        },
-    },
-    status = {
-        colorizer = true,
-        dashboard = true,
-    },
-    install = userPlugins,
+    user = require "custom.plugins"
 }
+
+M.mappings = require "custom.mappings"
 
 return M
