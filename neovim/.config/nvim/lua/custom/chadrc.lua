@@ -31,6 +31,11 @@ M.ui = {
 -- }
 
 M.plugins = {
+options = {
+      lspconfig = {
+         setup_lspconf = "custom.plugins.lspconfig",
+      },
+   },
     override = {
         ["nvim-treesitter/nvim-treesitter"] = override.treesitter
     },

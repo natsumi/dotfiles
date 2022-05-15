@@ -1,5 +1,10 @@
 -- overriding default plugin configs!
 
+-- Enable TreeSitter folding
+vim.wo.foldmethod = "expr"
+vim.wo.foldlevel = 99
+vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
+
 local M = {}
 -- one of "all", "maintained" (parsers with maintainers), or a list of languages
 M.treesitter = {
@@ -18,11 +23,11 @@ M.treesitter = {
         "ruby",
         "scss",
         "typescript",
-        "yaml",
+        "yaml"
     },
     highlight = {
         enable = true, -- false will disable the whole extension
-        use_languagetree = true,
+        use_languagetree = true
     },
     incremental_selection = {
         enable = true,
@@ -30,17 +35,12 @@ M.treesitter = {
             init_selection = "gnn",
             node_incremental = "grn",
             scope_incremental = "grc",
-            node_decremental = "grm",
-        },
+            node_decremental = "grm"
+        }
     },
     indent = {
-        enable = true,
-    },
+        enable = true
+    }
 }
 
 return M
-
--- Enable TreeSitter folding
--- vim.wo.foldmethod = "expr"
--- vim.wo.foldlevel = 99
--- vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
