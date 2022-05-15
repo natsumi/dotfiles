@@ -79,7 +79,8 @@ git clone --recursive --depth 1 https://github.com/belak/prezto-contrib  "${ZDOT
 ### [FZF](https://github.com/junegunn/fzf#installation)
 
 $(brew --prefix)/opt/fzf/install
-```
+
+````
 
 ### Custom configurations
 
@@ -87,26 +88,21 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
 
 ## Programming Dev setup
 
-### Fonts
-
-```bash
-```
-
 ### [asdf](https://github.com/asdf-vm/asdf)
 
 ```bash
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
-```
+````
 
 Restart Shell
 
-``` shell
+```shell
 sh bin/install_dev_env
 ```
 
 ### Alfred Integration
 
-``` shell
+```shell
 ln -s $(which node) /usr/local/bin/node
 ```
 
@@ -138,12 +134,12 @@ This is experimental.
 stow -v --target=$HOME --dir=$DOTFILE_DIR yabai
 ```
 
-* Disable Sip
-`csrutil disable --with kext --with dtrace --with nvram --with basesystem`
+- Disable Sip
+  `csrutil disable --with kext --with dtrace --with nvram --with basesystem`
 
-* Install SA
-`sudo yabai install-sa`
-`sudo yabai load-sa`
+- Install SA
+  `sudo yabai install-sa`
+  `sudo yabai load-sa`
 
 # Post Install Settings
 
