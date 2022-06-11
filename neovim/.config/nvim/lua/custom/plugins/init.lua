@@ -13,18 +13,18 @@ return {
         end,
         -- lazy loading
         setup = function()
-            nvchad.packer_lazy_load "neoscroll.nvim"
-        end
+            require("core.utils").packer_lazy_load("neoscroll.nvim")
+        end,
     },
     -- Stablize window open/close events
     ["luukvbaal/stabilize.nvim"] = {
         config = function()
             require("stabilize").setup()
-        end
+        end,
     },
     -- Enable Dashboard
     ["goolord/alpha-nvim"] = {
-        disable = false
+        disable = false,
     },
     --
     -- file managing , picker etc
@@ -38,7 +38,7 @@ return {
         after = "nvim-lspconfig",
         config = function()
             require("custom.plugins.null-ls").setup()
-        end
+        end,
     },
     -- Show lint errors in a diagnostic window
 
@@ -46,7 +46,7 @@ return {
         requires = "kyazdani42/nvim-web-devicons",
         config = function()
             require("trouble").setup({})
-        end
+        end,
     },
     --
     -- Utils
@@ -65,7 +65,7 @@ return {
                 after = "nvim-dap",
                 config = function()
                     require("dap-ruby").setup()
-                end
+                end,
             },
             {
                 "rcarriga/nvim-dap-ui", -- Nice UI for debugging
@@ -82,15 +82,15 @@ return {
                         dapui.close()
                     end
                     require("dapui").setup()
-                end
-            }
-        }
+                end,
+            },
+        },
     },
     -- Show project dependant history
     ["nvim-telescope/telescope-dap.nvim"] = {
         after = "telescope.nvim",
         config = function()
             require("telescope").load_extension("dap")
-        end
-    }
+        end,
+    },
 }
