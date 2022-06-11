@@ -20,7 +20,6 @@ brew install --cask tableplus
 brew install --cask visual-studio-code
 
 # Utilities
-brew install --cask amphetamine
 brew install --cask mounty
 brew install --cask stats
 brew install --cask the-unarchiver

@@ -12,26 +12,24 @@ asdf plugin-add python
 asdf plugin-add erlang
 asdf plugin-add elixir
 asdf plugin-add golang
-asdf plugin-add elm
 
 asdf plugin-update --all
 
-RUBY_VER=2.7.2
-printf "Installing Ruby 2.7.2.\n"
+RUBY_VER=3.1.2
+printf "Installing Ruby 3.1.2.\n"
 
-RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 2.7.2
-asdf global ruby 2.7.2
+RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 3.1.2
+asdf global ruby 3.1.2
 
-printf "Installing Node 15.5.0\n"
+printf "Installing Node 18.3.0\n"
 
-bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
-asdf install nodejs 15.5.0
-asdf global nodejs  15.5.0
+asdf install nodejs 18.3.0
+asdf global nodejs  18.3.0
 
-printf "Installing Python 3.9.1 and 2.7.18 \n"
-asdf install python 3.9.1
+printf "Installing Python 3.9.13 and 2.7.18 \n"
+asdf install python 3.9.13
 asdf install python 2.7.18
-asdf global python 3.8.0 2.7.18
+asdf global python 3.9.13 2.7.18
 
 printf "Installing Go 1.14\n"
 asdf install golang 1.14.1
@@ -44,9 +42,5 @@ asdf global erlang 22.3
 
 asdf install elixir 1.9.4
 asdf global elixir 1.10.2
-
-printf "Installing Elm\n"
-asdf install elm 0.19.1
-asdf global elm 0.19.1
 
 printf "Restart your terminal"

@@ -17,7 +17,7 @@ sh bin/apply_git_settings
 
 # Usage
 
-## Apply Basic System Settings
+## Set hostname
 
 ```bash
 sh bin/apply_basic_settings
@@ -35,11 +35,10 @@ sh bin/apply_default_settings
 sh bin/install_homebrew_casks
 ```
 
-## Install Brew base packages
+## Install Brew packages
 
 ```bash
-brew bundle --file=~/dev/dotfiles/homebrew/Brewfile
-brew bundle --file=~/dev/dotfiles/homebrew/Brewfile_fonts
+brew bundle --file=homebrew/Brewfile
 ```
 
 # Software Configuration
@@ -86,7 +85,7 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
 
 ```bash
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
-````
+```
 
 Restart Shell
 
@@ -121,7 +120,6 @@ run tmux ctrl-s shift-i
 [Yabai Window Manager](https://github.com/koekeishiya/yabai)
 
 [Simple Keyboard Hot Keys](https://github.com/koekeishiya/skhd)
-
 
 # Post Install Settings
 
