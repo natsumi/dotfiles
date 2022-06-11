@@ -76,12 +76,6 @@ git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git "${Z
 git clone --recursive --depth 1 https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
 ```
 
-### [FZF](https://github.com/junegunn/fzf#installation)
-
-$(brew --prefix)/opt/fzf/install
-
-````
-
 ### Custom configurations
 
 edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
@@ -91,7 +85,7 @@ edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
 ### [asdf](https://github.com/asdf-vm/asdf)
 
 ```bash
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 ````
 
 Restart Shell
@@ -124,22 +118,10 @@ run tmux ctrl-s shift-i
 
 ## Yabai Window Manager
 
-This is experimental.
-
 [Yabai Window Manager](https://github.com/koekeishiya/yabai)
 
 [Simple Keyboard Hot Keys](https://github.com/koekeishiya/skhd)
 
-```bash
-stow -v --target=$HOME --dir=$DOTFILE_DIR yabai
-```
-
-- Disable Sip
-  `csrutil disable --with kext --with dtrace --with nvram --with basesystem`
-
-- Install SA
-  `sudo yabai install-sa`
-  `sudo yabai load-sa`
 
 # Post Install Settings
 
