@@ -48,6 +48,6 @@
 # Links
 
 - [ai03](https://kb.ai03.me/projects/polaris.html)
-- Custom Layer Guide: https://jayliu50.github.io/qmk-cheatsheet/#layers
-- Bootmagic Settings: https://beta.docs.qmk.fm/features/feature_bootmagic
-- Keyboard Tester: https://www.keyboardtester.com/
+- [Custom Layer Guide](https://jayliu50.github.io/qmk-cheatsheet/#layers)
+- [Bootmagic Settings](https://beta.docs.qmk.fm/features/feature_bootmagic)
+- [Keyboard Tester](https://www.keyboardtester.com/)
