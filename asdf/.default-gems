@@ -18,3 +18,5 @@ ruby_parser
 rufo
 solargraph
 standard
+debug
+ruby-debug-ide
