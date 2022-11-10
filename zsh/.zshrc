@@ -20,6 +20,8 @@ fi
 ################
 # Theme loaded in .zprezto
 
+# enable truecolor support
+export COLORTERM=truecolor
 
 # makes color constants available
 autoload -U colors
