@@ -17,6 +17,7 @@ rubocop
 ruby_parser
 rufo
 solargraph
+solargraph-standardrb
 standard
 debug
 ruby-debug-ide

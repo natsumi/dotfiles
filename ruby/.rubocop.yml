@@ -1,9 +1,4 @@
-require:
-  - rubocop-performance
-  - rubocop-rails
-Rails:
-  Enabled: true
-Metrics/MethodLength:
-  Max: 30
-Style/Documentation:
-  Enabled: false
+require: standard
+
+inherit_gem:
+  standard: config/base.yml
