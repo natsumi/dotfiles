@@ -8,10 +8,9 @@
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR asdf
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR alacritty
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR bat
-stow -v -R --target=$HOME --dir=$DOTFILE_DIR ctags
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR elixir
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR eslint
-stow -v -R --target=$HOME --dir=$DOTFILE_DIR gtags
+stow -v -R --target=$HOME --dir=$DOTFILE_DIR helix
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR jetbrains
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR kitty
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR neovim

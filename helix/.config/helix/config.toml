@@ -1,0 +1,5 @@
+[keys.normal]
+C = ["collapse_selection", "extend_to_line_end", "change_selection"]
+D = ["extend_to_line_end", "delete_selection"]
+G = "goto_file_end"
+Z = { Z = ":wq", Q = ":q!" }                                         # save and quit, quit without saving
