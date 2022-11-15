@@ -4,3 +4,8 @@ config = { solargraph = { diagnostics = true, formatting = false } }
 # formatter = { command = "bundle", args = ["exec", "rubocop", "--stdin", "foo.rb", "-a", "--stderr", "--fail-level", "fatal"] }
 formatter = { command = "standardrb", args = ["--stdin", "foo.rb", "--fix", "--stderr"] }
 auto-format = true
+
+[[language]]
+name = "python"
+formatter = { command = "black", args = ["--quiet", "-"] }
+auto-format = true

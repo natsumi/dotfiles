@@ -4,4 +4,6 @@ pygments
 pylint
 pynvim
 pyright
+python-lsp-black
+python-lsp-server
 yt-dlp
