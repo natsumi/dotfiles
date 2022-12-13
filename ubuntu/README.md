@@ -65,7 +65,7 @@ sudo ufw default allow outgoing
 sudo ufw default deny incoming
 
 # App specific rules
-sudo ufw disable openssh
+sudo ufw deny openssh
 sudo ufw allow 2222
 sudo ufw allow http
 sudo ufw allow https
