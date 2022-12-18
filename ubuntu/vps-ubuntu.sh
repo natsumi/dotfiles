@@ -8,7 +8,8 @@ sudo apt install -y \
   automake autoconf libreadline-dev \
   libncurses-dev libssl-dev libyaml-dev \
   libxslt-dev libffi-dev libtool unixodbc-dev \
-  build-essential openssl libssl-dev
+  build-essential openssl libssl-dev \
+  zlib1g-dev
 
 # Utils
 sudo apt install -y \
