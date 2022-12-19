@@ -21,16 +21,16 @@ brew 'jemalloc'
 brew 'zlib'
 
 # Development Tools
-brew 'git'
-brew 'tig' # git log
-brew 'sqlite'
-brew 'diff-so-fancy' # git diff
-brew 'git-delta' # git diff
-brew 'scmpuff' # git management
-brew 'the_silver_searcher' # search
-brew 'ripgrep' # search
-brew 'jq' # json
 brew 'awk'
+brew 'diff-so-fancy' # git diff
+brew 'git'
+brew 'git-delta' # git diff
+brew 'jq' # json
+brew 'ripgrep' # search
+brew 'scmpuff' # git management
+brew 'sqlite'
+brew 'the_silver_searcher' # search
+brew 'tig' # git log
 
 # Formatters
 brew 'shfmt'
@@ -67,6 +67,8 @@ brew 'aria2'
 brew 'stow'
 # find replacement
 brew 'fd'
+# screenshot utility
+brew 'flameshot'
 
 # Desktop Managers
 brew 'koekeishiya/formulae/skhd'
