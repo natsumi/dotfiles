@@ -1,5 +1,22 @@
+theme = "catppuccin_macchiato"
+
+[editor]
+bufferline = "always"
+color-modes = true
+cursorline = true
+# cursorcolumn = true
+rulers = [100, 120]
+[editor.file-picker]
+hidden = false
+[editor.statusline]
+right = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "file-type"]
+[editor.indent-guides]
+render = true
+character = "┆" # Some characters that work well: "▏", "┆", "┊", "⸽"
+skip-levels = 0
+
 [keys.normal]
 C = ["collapse_selection", "extend_to_line_end", "change_selection"]
 D = ["extend_to_line_end", "delete_selection"]
 G = "goto_file_end"
-Z = { Z = ":wq", Q = ":q!" }                                         # save and quit, quit without saving
+Z = { Z = ":wq", Q = ":q!" } # save and quit, quit without saving
