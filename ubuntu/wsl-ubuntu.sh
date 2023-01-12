@@ -1,5 +1,10 @@
 DOTFILES_DIR=$HOME/dev/dotfiles
 umask 022
+
+# for neovim
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:neovim-ppa/stable
+
 sudo apt update
 sudo apt upgrade
 
