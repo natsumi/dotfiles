@@ -4,6 +4,7 @@ umask 022
 # for neovim
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:neovim-ppa/stable
+sudo add-apt-repository ppa:wslutilities/wslu
 
 sudo apt update
 sudo apt upgrade
@@ -25,7 +26,7 @@ sudo apt install -y \
   htop jq fd-find fzf stow \
   tig tmux ripgrep tree \
   wget unzip curl vim neovim \
-  zsh
+  zsh wslu
 
 echo 'Installing asdf'
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
