@@ -3,7 +3,7 @@ umask 022
 
 # for neovim
 sudo apt-get install software-properties-common
-sudo add-apt-repository ppa:neovim-ppa/stable
+sudo add-apt-repository ppa:neovim-ppa/unstable
 sudo add-apt-repository ppa:wslutilities/wslu
 
 sudo apt update
