@@ -26,7 +26,7 @@ sudo apt install -y \
   htop jq fd-find fzf stow \
   tig tmux ripgrep tree \
   wget unzip curl vim neovim \
-  zsh wslu
+  zsh wslu ffmpeg
 
 echo 'Installing asdf'
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0

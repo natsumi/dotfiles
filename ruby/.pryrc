@@ -12,9 +12,9 @@ if defined?(::Bundler)
 end
 
 # Pry-rails sometimes doesn't load pry-doc, explicitly load it
-if defined?(Rails::Railtie)
-  require 'pry-doc'
-end
+# if defined?(Rails::Railtie)
+require 'pry-doc'
+# end
 
 # Use fzf for history search
 # it is required to
