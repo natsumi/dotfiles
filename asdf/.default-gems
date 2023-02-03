@@ -15,6 +15,7 @@ rb-readline
 rcodetools
 rubocop
 ruby_parser
+ruby-lsp
 rufo
 solargraph
 solargraph-rails
