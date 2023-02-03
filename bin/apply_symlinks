@@ -21,6 +21,6 @@ stow -v -R --target=$HOME --dir=$DOTFILE_DIR silver_searcher
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR tig
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR tmux
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR vim
-stow -v -R --target=$HOME --dir=$DOTFILE_DIR youtube-dl
+stow -v -R --target=$HOME --dir=$DOTFILE_DIR yt-dlp
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR yabai
 stow -v -R --target=$HOME --dir=$DOTFILE_DIR zsh
