@@ -19,6 +19,7 @@ require 'pry-doc'
 # Use fzf for history search
 # it is required to
 # gem install rb-readline
+require 'readline'
 require 'rb-readline'
 if defined?(RbReadline)
   def RbReadline.rl_reverse_search_history(sign, key)
