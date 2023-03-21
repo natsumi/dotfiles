@@ -33,6 +33,7 @@ brew 'the_silver_searcher' # search
 brew 'tig' # git log
 
 # Formatters
+brew 'lua-language-server'
 brew 'shfmt'
 brew 'stylua'
 
