@@ -6,4 +6,5 @@ pynvim
 pyright
 python-lsp-black
 python-lsp-server
+streamlink
 yt-dlp

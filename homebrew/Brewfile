@@ -49,8 +49,6 @@ brew 'ffmpeg'
 brew 'rtmpdump'
 # du replacement
 brew 'ncdu'
-# twitch livestreamer
-brew 'streamlink'
 
 brew 'tree'
 # tree replacement
@@ -68,7 +66,7 @@ brew 'stow'
 # find replacement
 brew 'fd'
 # screenshot utility
-brew 'flameshot'
+cask 'flameshot'
 
 # Desktop Managers
 brew 'koekeishiya/formulae/skhd'
