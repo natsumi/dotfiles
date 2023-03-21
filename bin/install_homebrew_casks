@@ -7,7 +7,7 @@ brew install --cask alfred
 brew install --cask forklift
 brew install --cask google-chrome
 brew install --cask homebrew/cask-versions/firefox-developer-edition
-brew install --cask sensiblesidebuttons
+brew install --cask sanesidebuttons
 
 # Development
 brew install --cask kitty
