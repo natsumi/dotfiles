@@ -1,5 +1,4 @@
 yarn
-create-react-app
 
 bash-language-server
 dockerfile-language-server-nodejs
@@ -9,14 +8,14 @@ typescript-language-server
 vscode-langservers-extracted
 yaml-language-server
 
-typescript
 prettier
+standard
+typescript
 
 tern
 js-beautify
 eslint
 babel-eslint
-eslint-plugin-react
 
 stylelint
 stylelint-scss
