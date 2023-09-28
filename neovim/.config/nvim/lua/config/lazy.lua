@@ -15,6 +15,14 @@ require("lazy").setup({
     -- import any extras modules here
     -- { import = "lazyvim.plugins.extras.lang.typescript" },
     -- { import = "lazyvim.plugins.extras.lang.json" },
+    {
+      import = "lazyvim.plugins.extras.coding.copilot",
+      opts = {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      },
+    },
+    { import = "lazyvim.plugins.extras.coding.copilot-cmp" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
