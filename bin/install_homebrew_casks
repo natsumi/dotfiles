@@ -4,6 +4,7 @@
 
 # Producitvity applications
 brew install --cask alfred
+brew install --cask betterdisplay
 brew install --cask forklift
 brew install --cask google-chrome
 brew install --cask homebrew/cask-versions/firefox-developer-edition
