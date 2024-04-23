@@ -12,7 +12,6 @@ brew install --cask sanesidebuttons
 
 # Development
 brew install --cask kitty
-brew install --cask ngrok
 brew install --cask slack
 brew install --cask sublime-merge
 brew install --cask tableplus
