@@ -27,6 +27,7 @@ brew 'fx' # json tui
 brew 'git'
 brew 'git-delta' # git diff
 brew 'jq' # json
+brew 'overmind' # process launcher
 brew 'ripgrep' # search
 brew 'scmpuff' # git management
 brew 'sqlite'
@@ -68,7 +69,7 @@ brew 'stow'
 # find replacement
 brew 'fd'
 # screenshot utility
-cask 'flameshot'
+cask 'shottr'
 
 # Desktop Managers
 brew 'koekeishiya/formulae/skhd'
@@ -97,7 +98,6 @@ cask 'font-sauce-code-pro-nerd-font'
 cask 'font-victor-mono-nerd-font'
 cask 'font-blex-mono-nerd-font'
 cask 'font-fantasque-sans-mono-nerd-font'
-
 
 # Programming Fonts
 cask 'font-input'
