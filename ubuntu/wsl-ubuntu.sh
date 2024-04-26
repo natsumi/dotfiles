@@ -26,17 +26,17 @@ sudo apt install -y \
 	htop jq fd-find fzf stow \
 	tig tmux ripgrep tree \
 	wget unzip curl vim neovim \
-	zsh wslu ffmpeg
+	zsh wslu ffmpeg bat
 
 echo 'Installing asdf'
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 
-echo 'Installing bat'
+# echo 'Installing bat'
 curl -sL https://api.github.com/repos/sharkdp/bat/releases/latest | jq -r '.assets[].browser_download_url' | grep amd | tail -n 1 | xargs wget
 ls *.deb | sudo xargs dpkg -i
 
 echo 'Installing diff-so-fancy'
-wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
+curl -sL https://api.github.com/repos/so-fancy/diff-so-fancy/releases/latest | jq -r '.assets[].browser_download_url'  | xargs wget
 chmod +x diff-so-fancy
 sudo mv diff-so-fancy /usr/local/bin
 
@@ -48,9 +48,6 @@ sudo mv scmpuff /usr/local/bin
 # Clone dotfiles dir
 mkdir ~/dev
 git clone https://github.com/natsumi/dotfiles.git $DOTFILES_DIR
-
-# Install NVCHAD
-git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
 
 # apply symlinks
 bash $DOTFILES_DIR/bin/apply_symlinks
