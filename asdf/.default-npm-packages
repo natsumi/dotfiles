@@ -15,7 +15,6 @@ typescript
 tern
 js-beautify
 eslint
-babel-eslint
 
 stylelint
 stylelint-scss
