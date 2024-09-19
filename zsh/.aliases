@@ -6,8 +6,8 @@ alias e="$EDITOR"
 alias v="$VISUAL"
 
 # Custom binary aliases
-if [ -x "$(command -v exa)" ]; then
-  alias ls="exa --group-directories-first -F"
+if [ -x "$(command -v eza)" ]; then
+  alias ls="eza --group-directories-first -F"
   alias ll="ls -algh"
 fi
 

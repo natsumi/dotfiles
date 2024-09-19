@@ -61,7 +61,7 @@ brew 'bat'
 # Fuzzy search
 brew 'fzf'
 # ls replacement
-brew 'exa'
+brew 'eza'
 # multiple concurrent downloads
 brew 'aria2'
 # symlink management
