@@ -1,4 +1,4 @@
-# VPS Ubuntu 20.04
+# VPS Ubuntu 24.04
 
 ## Add User
 
@@ -8,6 +8,13 @@ usermod -aG sudo <username>
 ```
 
 ## Copy over SSH Keys to new user
+
+```
+ssh-copy-id -i ~/.ssh/id_ed25519.pub <username>@<your_server_ip>
+```
+
+
+If copying from an existing server
 
 ```
 rsync --archive --chown=<username>:<username> ~/.ssh /home/<username>
@@ -48,8 +55,9 @@ Port 2222
 
 # Only listen on IPv4
 AddressFamily inet
-
 ```
+
+`sudo service ssh restart`
 
 ## Firewall
 
@@ -70,19 +78,12 @@ sudo ufw allow 2222
 sudo ufw allow http
 sudo ufw allow https
 
-# 3000 TCP for initial Captain Installation (can be blocked once Captain is attached to a domain)
-sudo ufw allow 3000/tcp
-# 7946 TCP/UDP for Container Network Discovery
-sudo ufw allow 7946/tcp
-sudo ufw allow 7946/udp
-# 4789 TCP/UDP for Container Overlay Network
-sudo ufw allow 4789/tcp
-sudo ufw allow 4789/udp
-# 2377 TCP/UDP for Docker swarm API
-sudo ufw allow 2377/tcp
-sudo ufw allow 2377/udp
-# 996 TCP for secure HTTPS connections specific to Docker Registry
-sudo ufw allow 996/tcp
+#To further protect from brut force attacks you can rate limit specific ports with:
+sudo ufw limit ssh
+
+#finaly to enable logging and adjusting the log level:
+sudo ufw logging on
+sudo ufw logging medium # levels are low, medium, high, full
 ```
 
 ```
@@ -101,8 +102,8 @@ port = ssh
 filter = sshd
 logpath = /var/log/auth.log
 maxretry = 3
-findtime = 300
-bantime = 3600
+findtime = 10m
+bantime = 10m
 ignoreip = 127.0.0.1
 ```
 
