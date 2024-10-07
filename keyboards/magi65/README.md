@@ -25,7 +25,7 @@
 | Component | Specification |
 |-----------|---------------|
 | Keycaps Material | PBT + Anti-Oil Coating |
-| Switch | Gold Red Switch |
+| Switch | Gold Red Switch (Kailh 1353) |
 
 ## Function & Connection
 | Feature | Specification |
