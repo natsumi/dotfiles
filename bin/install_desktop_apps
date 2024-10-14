@@ -1,28 +1,66 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
-# Installs applications for new systems
+# Define arrays for each category of applications
 
-# Producitvity applications
-brew install --cask alfred
-brew install --cask betterdisplay
-brew install --cask forklift
-brew install --cask google-chrome
-brew install --cask homebrew/cask-versions/firefox-developer-edition
-brew install --cask sanesidebuttons
+PRODUCTIVITY_APPS=(
+  "alfred"
+  "betterdisplay"
+  "forklift"
+  "google-chrome"
+  "homebrew/cask-versions/firefox-developer-edition"
+  "sanesidebuttons"
+)
 
-# Development
-brew install --cask kitty
-brew install --cask slack
-brew install --cask sublime-merge
-brew install --cask tableplus
-brew install --cask visual-studio-code
+DEVELOPMENT_APPS=(
+  "kitty"
+  "slack"
+  "sublime-merge"
+  "tableplus"
+  "visual-studio-code"
+)
 
-# Utilities
-brew install --cask mounty
-brew install --cask stats
-brew install --cask the-unarchiver
+UTILITY_APPS=(
+  "mounty"
+  "stats"
+  "the-unarchiver"
+)
 
-# Media Players
-brew install --cask spotify
-brew install --cask spotmenu
-brew install --cask vlc
+MEDIA_APPS=(
+  "spotify"
+  "spotmenu"
+  "vlc"
+)
+
+# Install applications using the defined arrays
+
+# Productivity applications
+echo "===================================="
+echo "Installing Productivity Applications"
+echo "===================================="
+for app in "${PRODUCTIVITY_APPS[@]}"; do
+  brew install --cask "$app"
+done
+
+# Development applications
+echo "===================================="
+echo "Installing Development Applications"
+echo "===================================="
+for app in "${DEVELOPMENT_APPS[@]}"; do
+  brew install --cask "$app"
+done
+
+# Utility applications
+echo "================================"
+echo "Installing Utility Applications"
+echo "================================"
+for app in "${UTILITY_APPS[@]}"; do
+  brew install --cask "$app"
+done
+
+# Media applications
+echo "=============================="
+echo "Installing Media Applications"
+echo "=============================="
+for app in "${MEDIA_APPS[@]}"; do
+  brew install --cask "$app"
+done
