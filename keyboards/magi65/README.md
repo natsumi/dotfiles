@@ -7,8 +7,12 @@
 - [Iqunix Magi65](https://iqunix.com/products/magi65)
 - [User Guide](https://iqunix.com/blogs/news/magi65)
 - [VIA Guide](https://iqunix.com/blogs/news/magi-65-via-guide)
+- [VIA Programming](https://usevia.app)
 
 # Layouts
+
+To restore layouts visit [VIA Programming](https://usevia.app) and use `Load Saved Layout`
+with file `magi65.layout.json`
 
 ## Layout 0
 ![Layout 0](layout0.png)
