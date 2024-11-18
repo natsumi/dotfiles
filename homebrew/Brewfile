@@ -45,6 +45,7 @@ brew 'ffmpeg'
 brew 'htop-osx'
 brew 'jordanbaird-ice' #bartender replacement
 brew 'ncdu'
+brew 'qlvideo' # video preview in finder
 brew 'reattach-to-user-namespace'
 brew 'rtmpdump'
 brew 'terminal-notifier'
