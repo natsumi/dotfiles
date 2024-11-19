@@ -22,7 +22,7 @@ apply_symlink() {
 packages=(
   asdf alacritty aerospace bat elixir eslint helix jetbrains
   kitty neovim prettier ripgrep ruby silver_searcher tig
-  tmux vim yt-dlp yabai zsh
+  tmux yt-dlp yabai zsh
 )
 
 # Apply symlinks for each package

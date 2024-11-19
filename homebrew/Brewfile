@@ -2,7 +2,6 @@ tap 'homebrew/bundle'
 tap 'neovim/neovim'
 tap 'mas-cli/tap'
 tap 'buo/cask-upgrade'
-tap 'homebrew/cask-fonts'
 
 # Build Tools
 brew 'autoconf'
@@ -43,9 +42,8 @@ brew 'stylua'
 # du replacement
 brew 'ffmpeg'
 brew 'htop-osx'
-brew 'jordanbaird-ice' #bartender replacement
+cask 'jordanbaird-ice' #bartender replacement
 brew 'ncdu'
-brew 'qlvideo' # video preview in finder
 brew 'reattach-to-user-namespace'
 brew 'rtmpdump'
 brew 'terminal-notifier'
@@ -72,6 +70,8 @@ brew 'stow'
 brew 'fd'
 # screenshot utility
 cask 'shottr'
+ # video preview in finder
+cask 'qlvideo'
 
 # Desktop Managers
 brew 'koekeishiya/formulae/skhd'
@@ -100,6 +100,3 @@ cask 'font-sauce-code-pro-nerd-font'
 cask 'font-victor-mono-nerd-font'
 cask 'font-blex-mono-nerd-font'
 cask 'font-fantasque-sans-mono-nerd-font'
-
-# Programming Fonts
-cask 'font-input'
