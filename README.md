@@ -187,3 +187,49 @@ defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
   Terminal multiplexer
 
 - tree
+
+# Desktop Applications
+
+These applications are installed via the `bin/install_desktop_apps` script.
+
+## Productivity Applications
+
+- [Alfred](https://www.alfredapp.com/) - Spotlight replacement with powerful workflows and snippets
+- [ForkLift](https://binarynights.com/) - Advanced dual pane file manager
+- [Google Chrome](https://www.google.com/chrome/) - Web browser from Google
+- [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/) - Firefox browser with developer tools
+- [Shottr](https://shottr.cc/) - Feature-rich screenshot and annotation tool
+
+## Development Applications
+
+- [Cursor](https://cursor.sh/) - AI-first code editor
+- [Kitty](https://sw.kovidgoyal.net/kitty/) - Fast, feature-rich, GPU-based terminal emulator
+- [Postman](https://www.postman.com/) - API development and testing platform
+- [Sublime Merge](https://www.sublimemerge.com/) - Git client from the makers of Sublime Text
+- [TablePlus](https://tableplus.com/) - Modern database management tool
+- [Visual Studio Code](https://code.visualstudio.com/) - Popular code editor with extensive plugin support
+
+## Media Applications
+
+- [Spotify](https://www.spotify.com/) - Music streaming service
+- [SpotMenu](https://github.com/kmikiy/SpotMenu) - Spotify and iTunes in your menu bar
+- [VLC](https://www.videolan.org/vlc/) - Free and open source cross-platform multimedia player
+
+## Social Applications
+
+- [Discord](https://discord.com/) - Voice, video, and text chat platform
+- [Google Chat](https://workspace.google.com/products/chat/) - Team messaging from Google
+- [Google Meet](https://meet.google.com/) - Video conferencing from Google
+- [Google Voice](https://voice.google.com/) - Voice calls and messaging service
+- [Slack](https://slack.com/) - Team communication and collaboration platform
+- [Telegram](https://telegram.org/) - Cloud-based messaging app
+
+## Utility Applications
+
+- [BetterDisplay](https://github.com/waydabber/BetterDisplay) - Advanced display management for MacOS
+- [LocalSend](https://localsend.org/) - Open source file sharing across devices
+- [Mounty](https://mounty.app/) - Re-mounts write-protected NTFS volumes in read-write mode
+- [SaneSideButtons](https://github.com/thealpa/SaneSideButtons) - Fix mouse side buttons for MacOS
+- [Stats](https://github.com/exelban/stats) - System monitor in your menu bar
+- [The Unarchiver](https://theunarchiver.com/) - Data compression and archive tool
+- [TRex](https://github.com/amebalabs/TRex) - Easy-to-use text extraction tool

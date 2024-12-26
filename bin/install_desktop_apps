@@ -4,31 +4,44 @@
 
 PRODUCTIVITY_APPS=(
   "alfred"
-  "betterdisplay"
   "forklift"
   "google-chrome"
   "homebrew/cask-versions/firefox-developer-edition"
-  "sanesidebuttons"
+  "shottr"
 )
 
 DEVELOPMENT_APPS=(
+  "cursor"
   "kitty"
-  "slack"
+  "postman"
   "sublime-merge"
   "tableplus"
   "visual-studio-code"
-)
-
-UTILITY_APPS=(
-  "mounty"
-  "stats"
-  "the-unarchiver"
 )
 
 MEDIA_APPS=(
   "spotify"
   "spotmenu"
   "vlc"
+)
+
+SOCIAL_APPS=(
+  "discord"
+  "google-chat"
+  "google-meet"
+  "google-voice"
+  "slack"
+  "telegram"
+)
+
+UTILITY_APPS=(
+  "betterdisplay"
+  "localsend"
+  "mounty"
+  "sanesidebuttons"
+  "stats"
+  "the-unarchiver"
+  "trex"
 )
 
 # Install applications using the defined arrays
@@ -38,6 +51,14 @@ echo "===================================="
 echo "Installing Productivity Applications"
 echo "===================================="
 for app in "${PRODUCTIVITY_APPS[@]}"; do
+  brew install --cask "$app"
+done
+
+# Social applications
+echo "================================"
+echo "Installing Social Applications"
+echo "================================"
+for app in "${SOCIAL_APPS[@]}"; do
   brew install --cask "$app"
 done
 
