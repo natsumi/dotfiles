@@ -30,7 +30,6 @@ brew 'overmind' # process launcher
 brew 'ripgrep' # search
 brew 'scmpuff' # git management
 brew 'sqlite'
-brew 'the_silver_searcher' # search
 brew 'tig' # git log
 
 # Formatters
@@ -39,11 +38,9 @@ brew 'shfmt'
 brew 'stylua'
 
 # Utitlies
-# du replacement
 brew 'ffmpeg'
 brew 'htop-osx'
-cask 'jordanbaird-ice' #bartender replacement
-brew 'ncdu'
+brew 'ncdu' # du replacement
 brew 'reattach-to-user-namespace'
 brew 'rtmpdump'
 brew 'terminal-notifier'
@@ -68,10 +65,6 @@ brew 'aria2'
 brew 'stow'
 # find replacement
 brew 'fd'
-# screenshot utility
-cask 'shottr'
- # video preview in finder
-cask 'qlvideo'
 
 # Desktop Managers
 brew 'koekeishiya/formulae/skhd'

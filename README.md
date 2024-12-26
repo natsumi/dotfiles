@@ -131,62 +131,6 @@ Enable key repeat
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 ```
 
-# Tools Included
-
-- awk
-- [bat](https://github.com/sharkdp/bat)
-
-  A better cat
-
-- [delta](https://github.com/dandavison/delta)
-
-  Better git diff
-
-- [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)
-
-  Better git diff
-
-- [exa](https://github.com/ogham/exa)
-
-  A modern ls
-
-- [fd](https://github.com/sharkdp/fd)
-
-  A better find
-
-- [fzf](https://github.com/junegunn/fzf)
-
-  CLI Fuzzy Finder
-
-- [jq](https://github.com/stedolan/jq)
-
-  JSON parsing
-
-- [ripgrep](https://github.com/BurntSushi/ripgrep)
-
-  Super fast search
-
-- [scm-puff](https://github.com/mroth/scmpuff)
-
-  Easier git file actions
-
-- [silver searcher](https://github.com/ggreer/the_silver_searcher)
-
-  Super fast search
-
-- stow
-
-  Symlink manager
-
-- [tig](https://github.com/jonas/tig)
-
-  Ncurses git logs
-
-- tmux
-
-  Terminal multiplexer
-
-- tree
 
 # Desktop Applications
 
@@ -218,9 +162,6 @@ These applications are installed via the `bin/install_desktop_apps` script.
 ## Social Applications
 
 - [Discord](https://discord.com/) - Voice, video, and text chat platform
-- [Google Chat](https://workspace.google.com/products/chat/) - Team messaging from Google
-- [Google Meet](https://meet.google.com/) - Video conferencing from Google
-- [Google Voice](https://voice.google.com/) - Voice calls and messaging service
 - [Slack](https://slack.com/) - Team communication and collaboration platform
 - [Telegram](https://telegram.org/) - Cloud-based messaging app
 
@@ -228,8 +169,50 @@ These applications are installed via the `bin/install_desktop_apps` script.
 
 - [BetterDisplay](https://github.com/waydabber/BetterDisplay) - Advanced display management for MacOS
 - [LocalSend](https://localsend.org/) - Open source file sharing across devices
+- [Ice](https://github.com/jordanbaird/Ice) - Menu bar application for managing menu bar items
 - [Mounty](https://mounty.app/) - Re-mounts write-protected NTFS volumes in read-write mode
 - [SaneSideButtons](https://github.com/thealpa/SaneSideButtons) - Fix mouse side buttons for MacOS
 - [Stats](https://github.com/exelban/stats) - System monitor in your menu bar
+- [QLVideo](https://github.com/Marginal/QLVideo) - QuickLook Finder plugin for video files
 - [The Unarchiver](https://theunarchiver.com/) - Data compression and archive tool
 - [TRex](https://github.com/amebalabs/TRex) - Easy-to-use text extraction tool
+
+# Tools Included
+
+These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
+
+## Development Tools
+- [awk](https://www.gnu.org/software/gawk/) - Pattern scanning and text processing language
+- [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy) - Better git diff output
+- [fx](https://github.com/antonmedv/fx) - Terminal JSON viewer and processor
+- [git](https://git-scm.com/) - Distributed version control system
+- [git-delta](https://github.com/dandavison/delta) - Syntax-highlighting pager for git
+- [jq](https://stedolan.github.io/jq/) - Lightweight command-line JSON processor
+- [overmind](https://github.com/DarthSim/overmind) - Process manager for Procfile-based applications
+- [ripgrep](https://github.com/BurntSushi/ripgrep) - Extremely fast text search tool
+- [scmpuff](https://github.com/mroth/scmpuff) - Numeric shortcuts for common git commands
+- [sqlite](https://www.sqlite.org/) - Self-contained, serverless SQL database engine
+- [tig](https://jonas.github.io/tig/) - Text-mode interface for Git
+
+## Utilities
+- [aria2](https://aria2.github.io/) - Lightweight multi-protocol download utility
+- [bat](https://github.com/sharkdp/bat) - Cat clone with syntax highlighting
+- [broot](https://github.com/Canop/broot) - Better way to navigate directories
+- [eza](https://github.com/eza-community/eza) - Modern replacement for ls
+- [fd](https://github.com/sharkdp/fd) - Simple, fast and user-friendly alternative to find
+- [ffmpeg](https://ffmpeg.org/) - Complete solution for recording, converting, and streaming audio/video
+- [fzf](https://github.com/junegunn/fzf) - Command-line fuzzy finder
+- [htop-osx](https://htop.dev/) - Interactive process viewer for Unix systems
+- [ncdu](https://dev.yorhel.nl/ncdu) - NCurses disk usage analyzer
+- [stow](https://www.gnu.org/software/stow/) - Symlink farm manager
+- [terminal-notifier](https://github.com/julienXX/terminal-notifier) - Send macOS notifications from the terminal
+- [tmate](https://tmate.io/) - Instant terminal sharing
+- [tmux-mem-cpu-load](https://github.com/thewtex/tmux-mem-cpu-load) - CPU, RAM memory, and load monitor for tmux
+- [tmux](https://github.com/tmux/tmux) - Terminal multiplexer
+- [tree](https://mama.indstate.edu/users/ice/tree/) - Directory listing in tree format
+- [wget](https://www.gnu.org/software/wget/) - Internet file retriever
+- [zsh](https://www.zsh.org/) - Extended Bourne shell with many improvements
+
+## Desktop Managers
+- [skhd](https://github.com/koekeishiya/skhd) - Simple hotkey daemon for macOS
+- [yabai](https://github.com/koekeishiya/yabai) - Tiling window manager for macOS

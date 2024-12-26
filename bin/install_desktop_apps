@@ -27,9 +27,6 @@ MEDIA_APPS=(
 
 SOCIAL_APPS=(
   "discord"
-  "google-chat"
-  "google-meet"
-  "google-voice"
   "slack"
   "telegram"
 )
@@ -37,9 +34,11 @@ SOCIAL_APPS=(
 UTILITY_APPS=(
   "betterdisplay"
   "localsend"
+  "jordanbaird-ice"
   "mounty"
   "sanesidebuttons"
   "stats"
+  "qlvideo"
   "the-unarchiver"
   "trex"
 )
