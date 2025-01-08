@@ -2,6 +2,31 @@
 
 ![Cover Image](images/rainy75.jpg)
 
+# Cheatsheet
+
+`Caplocks` is momentary switch to layer 2 `M(2)` and `Fn` is momentary switch to layer 1 `M(1)`.
+
+* `Capslock`+`<` to switch to the default layer (Layer 0).
+* `Capslock`+`>` to switch to the windows layer (Layer 3).
+* `Capslock`+`Fn` to switch to the factory layer (Layer 1).
+
+
+## Wired / Wireless connections
+
+* `Fn`+`TAB` - cycles through the different connection modes.
+
+When `ESC` is blinking, it is in wired mode.
+
+When `F4` is blinking, it is in 2.4GHZ mode.
+
+The switch to enable the battery is under the `Capslock` key. Turn this on.
+
+* `Fn`+`SPACE` to check battery level
+
+### 2.4GHZ
+* `Fn`+`TAB` to check connection status
+
+
 # Links
 
 - [Wobkey Rainy75](https://www.wobkey.com/products/rainy75)
