@@ -142,6 +142,7 @@ These applications are installed via the `bin/install_desktop_apps` script.
 - [ForkLift](https://binarynights.com/) - Advanced dual pane file manager
 - [Google Chrome](https://www.google.com/chrome/) - Web browser from Google
 - [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/) - Firefox browser with developer tools
+- [Itsycal](https://www.mowglii.com/itsycal/) - Simple menu bar calendar
 - [Shottr](https://shottr.cc/) - Feature-rich screenshot and annotation tool
 
 ## Development Applications
