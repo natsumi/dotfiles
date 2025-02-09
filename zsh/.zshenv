@@ -46,7 +46,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export KITTY_CONFIG_DIRECTORY="${HOME}/.config/kitty"
 
 # Bundle - Allow mulitple gems to be installed at once
-[[ -f /usr/local/bin/nrpoc ]] && export BUNDLE_JOBS=$(/usr/local/bin/nrpoc)
+[[ -f /usr/local/bin/nproc ]] && export BUNDLE_JOBS=$(/usr/local/bin/nproc)
+[[ -f /opt/homebrew/bin/nproc ]] && export BUNDLE_JOBS=$(/opt/homebrew/bin/nproc)
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
