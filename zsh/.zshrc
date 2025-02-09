@@ -90,7 +90,6 @@ if ! zplug check --verbose; then
     fi
 fi
 
-
 # Then, source plugins and add commands to $PATH
 zplug load
 
@@ -120,13 +119,11 @@ unalias gls #git log conflicts with dircolors gls
 [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 [[ -f /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
 
-[[ -f ~/.asdf/asdf.sh ]] && source ~/.asdf/asdf.sh
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 #
-# Dir colors
-# eval $(gdircolors ~/.dircolors)
+# Add asdf shims to PAT
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # SCMPuff
 eval "$(scmpuff init -s)"
