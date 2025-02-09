@@ -1,97 +1,14 @@
 A collection of dotfile configuration scripts
 
-## 1. Install Homebrew
-
-[Brew](http://brew.sh/)
-
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-## Git
+## Setup a new Mac
 
 ```bash
-brew install git
-sh bin/apply_git_settings
-```
-
-# Usage
-
-## Set hostname
-
-```bash
-sh bin/apply_basic_settings
-```
-
-## Apply System Defaults
-
-```bash
-sh bin/apply_default_settings
-```
-
-## Install Desktop Applications
-
-```bash
-sh bin/install_homebrew_casks
-```
-
-## Install Brew packages
-
-```bash
-brew bundle --file=homebrew/Brewfile
-```
-
-# Software Configuration
-
-## Apply Software Symlink
-
-```bash
-sh bin/apply_symlinks
-```
-
-## ZSH Setup
-
-### Set Default Shell
-
-```bash
-echo $(which zsh) | sudo tee -a /etc/shells
-chsh -s $(which zsh)
-```
-
-### Zplug
-
-[Zplug](https://github.com/zplug/zplug)
-
-```bash
-curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-```
-
-### Prezto
-
-[Prezto](https://github.com/sorin-ionescu/prezto.git)
-
-```bash
-git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-git clone --recursive --depth 1 https://github.com/belak/prezto-contrib  "${ZDOTDIR:-$HOME}/.zprezto/contrib"
+sh bin/bootstrap.sh
 ```
 
 ### Custom configurations
 
 edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
-
-## Programming Dev setup
-
-### [asdf](https://github.com/asdf-vm/asdf)
-
-```bash
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
-```
-
-Restart Shell
-
-```shell
-sh bin/install_dev_env
-```
 
 ### Alfred Integration
 
@@ -109,11 +26,12 @@ bat cache --build
 
 ## Tmux
 
-    mkdir -p ~/.tmux/plugins
+```bash
+mkdir -p ~/.tmux/plugins
+```
 
 ### Install Plugins
-
-run tmux ctrl-s shift-i
+run tmux  then press `ctrl-s shift-i`
 
 ## Yabai Window Manager
 
@@ -130,7 +48,6 @@ Enable key repeat
 ```bash
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 ```
-
 
 # Desktop Applications
 
