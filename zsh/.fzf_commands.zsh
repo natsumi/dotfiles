@@ -11,11 +11,11 @@ vmi() {
   local lang=${1}
 
   if [[ ! $lang ]]; then
-    lang=$(asdf plugin-list | fzf --tac)
+    lang=$(asdf plugin list | fzf --tac)
   fi
 
   if [[ $lang ]]; then
-    local versions=$(asdf list-all $lang |  fzf -m --tac)
+    local versions=$(asdf list all $lang |  fzf -m --tac)
     if [[ $versions ]]; then
       for version in $(echo $versions);
       do; asdf install $lang $version; done;
