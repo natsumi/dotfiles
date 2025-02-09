@@ -20,6 +20,7 @@ brew 'xz'
 brew 'zlib'
 
 # Development Tools
+brew 'asdf' # version manager
 brew 'awk'
 brew 'diff-so-fancy' # git diff
 brew 'fx' # json tui

@@ -5,43 +5,37 @@
 
 # EXECUTION
 printf "Adding plguins\n"
-stow -v -R --target=$HOME --dir=$DOTFILE_DIR asdf
-asdf plugin-add ruby
-asdf plugin-add nodejs
-asdf plugin-add python
-asdf plugin-add erlang
-asdf plugin-add elixir
-asdf plugin-add golang
-asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
+asdf plugin add ruby
+asdf plugin add nodejs
+asdf plugin add python
+asdf plugin add erlang
+asdf plugin add elixir
+asdf plugin add golang
+asdf plugin add rust https://github.com/asdf-community/asdf-rust.git
 
-asdf plugin-update --all
+# asdf plugin update --all
 
-RUBY_VER=3.1.2
-printf "Installing Ruby 3.1.2.\n"
+# Get latest Ruby version matching x.y.z format
+RUBY_VERSION=$(asdf list all ruby | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$" | sort -V | tail -n 1)
+# RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc"
 
-RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc" asdf install ruby 3.1.2
-asdf global ruby 3.1.2
+echo "Installing Ruby $RUBY_VERSION"
+asdf install ruby "$RUBY_VERSION"
+asdf set -u ruby "$RUBY_VERSION"
 
-printf "Installing Node 18.3.0\n"
+# NODEJS_LTS_VERSION=$(asdf nodejs resolve lts)
+# echo "Installing Node $NODEJS_LTS_VERSION\n"
+# asdf install nodejs "$NODEJS_LTS_VERSION"
+# asdf set -u nodejs "$NODEJS_LTS_VERSION"
 
-asdf install nodejs 18.3.0
-asdf global nodejs  18.3.0
+NODEJS_LTS_VERSION=22.13.1
+echo "Installing Node $NODEJS_LTS_VERSION"
+asdf install nodejs "$NODEJS_LTS_VERSION"
+asdf set -u nodejs "$NODEJS_LTS_VERSION"
 
-printf "Installing Python 3.9.13 and 2.7.18 \n"
-asdf install python 3.9.13
-asdf install python 2.7.18
-asdf global python 3.9.13 2.7.18
+PYTHON_VERSION=$(asdf list all python | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$" | sort -V | tail -n 1)
+echo "Installing Python $PYTHON_VERSION"
+asdf install python "$PYTHON_VERSION"
+asdf set -u python "$PYTHON_VERSION"
 
-printf "Installing Go 1.14\n"
-asdf install golang 1.14.1
-asdf global golang 1.14.1
-
-printf "Installing Elixir\n"
-
-asdf install erlang 22.3
-asdf global erlang 22.3
-
-asdf install elixir 1.9.4
-asdf global elixir 1.10.2
-
-printf "Restart your terminal"
+echo "Restart your terminal"
