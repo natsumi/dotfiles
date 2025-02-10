@@ -59,61 +59,63 @@ cleanup() {
 trap cleanup EXIT
 trap 'log_error "Error occurred on line $LINENO. Exiting..."; exit 1' ERR
 
+# Installation step functions
+# Since homebrew executs based on a curl file download, it doens't work well with run_step
+# define and execute it within its own function
+install_homebrew() {
+  if prompt_user "Install Homebrew?"; then
+    log_info "Running: Install Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    log_info "Completed: Install Homebrew"
+  else
+    log_info "Skipping: Install Homebrew"
+  fi
+}
+
+set_hostname() {
+  run_step "Change hostname / computer name" \
+    "${SCRIPT_DIR}/set_hostname.sh"
+}
+
+install_desktop_apps() {
+  run_step "Install Desktop Apps" \
+    "${SCRIPT_DIR}/install_desktop_apps.sh"
+}
+
+install_brew_packages() {
+  run_step "Install Brew packages" \
+    "brew bundle --file=homebrew/Brewfile"
+}
+
+configure_git() {
+  run_step "Configure git" \
+    "${SCRIPT_DIR}/set_git_config.sh"
+}
+
+install_zplug() {
+  run_step "Install Zplug" \
+    'curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh'
+}
+
+install_prezto() {
+  local prezto_dir="${ZDOTDIR:-$HOME}/.zprezto"
+  run_step "Install Prezto" \
+    "git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git \"${prezto_dir}\"" \
+    "git clone --recursive --depth 1 https://github.com/belak/prezto-contrib \"${prezto_dir}/contrib\""
+}
+
+apply_symlinks() {
+  run_step "Apply symlinks" \
+    "${SCRIPT_DIR}/apply_symlinks.sh"
+}
+
+install_dev_env() {
+  run_step "Install dev environment" \
+    "${SCRIPT_DIR}/install_dev_env.sh"
+}
+
 main() {
   log_info "Starting system bootstrap..."
-
-  # Define installation steps as functions for better variable expansion
-  install_homebrew() {
-    if prompt_user "Install Homebrew?"; then
-      log_info "Running: Install Homebrew..."
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      log_info "Completed: Install Homebrew"
-    else
-      log_info "Skipping: Install Homebrew"
-    fi
-  }
-
-  set_hostname() {
-    run_step "Change hostname / computer name" \
-      "${SCRIPT_DIR}/set_hostname.sh"
-  }
-
-  install_desktop_apps() {
-    run_step "Install Desktop Apps" \
-      "${SCRIPT_DIR}/install_desktop_apps.sh"
-  }
-
-  install_brew_packages() {
-    run_step "Install Brew packages" \
-      "brew bundle --file=homebrew/Brewfile"
-  }
-
-  configure_git() {
-    run_step "Configure git" \
-      "${SCRIPT_DIR}/set_git_config.sh"
-  }
-
-  install_zplug() {
-    run_step "Install Zplug" \
-      'curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh'
-  }
-
-  install_prezto() {
-    local prezto_dir="${ZDOTDIR:-$HOME}/.zprezto"
-    run_step "Install Prezto" \
-      "git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git \"${prezto_dir}\"" \
-      "git clone --recursive --depth 1 https://github.com/belak/prezto-contrib \"${prezto_dir}/contrib\""
-  }
-
-  apply_symlinks() {
-    run_step "Apply symlinks" \
-      "${SCRIPT_DIR}/apply_symlinks.sh"
-  }
-
-  install_dev_env() {
-    run_step "Install dev environment" \
-      "${SCRIPT_DIR}/install_dev_env.sh"
-  }
 
   # Execute installation steps
   install_homebrew
