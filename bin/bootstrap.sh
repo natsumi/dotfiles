@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 
+# =============================================================================
+# System Bootstrap Script
+# =============================================================================
+# This script automates the setup of a new macOS system by installing and
+# configuring essential software and development tools.
+#
+# Requirements:
+# - macOS operating system
+# - Administrative privileges
+#
+# Usage: ./bootstrap.sh
+# =============================================================================
+
 # Exit on error, undefined variables, and pipe failures
 set -euo pipefail
 
@@ -124,8 +137,23 @@ install_dev_env() {
     "${SCRIPT_DIR}/install_dev_env.sh"
 }
 
+# Helper function to check system requirements
+check_system_requirements() {
+  if [[ "$(uname)" != "Darwin" ]]; then
+    log_error "This script is designed for macOS only"
+    exit 1
+  }
+
+  if ! command -v curl &> /dev/null; then
+    log_error "curl is required but not installed"
+    exit 1
+  }
+}
+
 main() {
   log_info "Starting system bootstrap..."
+
+  check_system_requirements
 
   # Execute installation steps
   install_homebrew
