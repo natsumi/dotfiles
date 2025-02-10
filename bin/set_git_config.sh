@@ -3,7 +3,7 @@
 # DESCRIPTION
 # Applies GIT configuration
 
-read -p "What is your git user name? " git_name
+read -p "What is your full name used by Git? " git_name
 if [[ -z "$git_name" ]]; then
   printf "ERROR: Invalid Git user name.\n"
   exit 1

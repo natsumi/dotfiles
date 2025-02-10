@@ -93,15 +93,25 @@ configure_git() {
 }
 
 install_zplug() {
-  run_step "Install Zplug" \
-    'curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh'
+  if prompt_user "Install Zplug?"; then
+    log_info "Running: Install Zplug..."
+    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+    log_info "Completed: Install Zplug"
+  else
+    log_info "Skipping: Install Zplug"
+  fi
 }
 
 install_prezto() {
   local prezto_dir="${ZDOTDIR:-$HOME}/.zprezto"
-  run_step "Install Prezto" \
-    "git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git \"${prezto_dir}\"" \
-    "git clone --recursive --depth 1 https://github.com/belak/prezto-contrib \"${prezto_dir}/contrib\""
+  if prompt_user "Install Prezto?"; then
+    log_info "Running: Install Prezto..."
+    git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git "${prezto_dir}"
+    git clone --recursive --depth 1 https://github.com/belak/prezto-contrib "${prezto_dir}/contrib"
+    log_info "Completed: Install Prezto"
+  else
+    log_info "Skipping: Install Prezto"
+  fi
 }
 
 apply_symlinks() {
