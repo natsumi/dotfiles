@@ -20,7 +20,7 @@ prompt_user() {
   local message=$1
   local choice
 
-  read -r -p "${GREEN}$message [Y/n]:${NC} " choice
+  read -r -p "$(printf "${GREEN}%s [Y/n]:${NC} " "$message")" choice
   choice=${choice:-Y} # Default to Y if no input
   [[ $choice =~ ^[Yy]$ ]]
 }
