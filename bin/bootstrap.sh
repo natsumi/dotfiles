@@ -142,12 +142,12 @@ check_system_requirements() {
   if [[ "$(uname)" != "Darwin" ]]; then
     log_error "This script is designed for macOS only"
     exit 1
-  }
+  fi
 
-  if ! command -v curl &> /dev/null; then
+  if ! command -v curl &>/dev/null; then
     log_error "curl is required but not installed"
     exit 1
-  }
+  fi
 }
 
 main() {
