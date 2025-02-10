@@ -35,7 +35,8 @@ run_step() {
 
     local cmd
     for cmd in "$@"; do
-      log_info "Executing: $cmd"
+      # log_info "Executing: $cmd"
+      log_info "Executing:"
       if ! eval "$cmd"; then
         log_error "Failed to execute: $cmd"
         return 1
@@ -61,25 +62,64 @@ trap 'log_error "Error occurred on line $LINENO. Exiting..."; exit 1' ERR
 main() {
   log_info "Starting system bootstrap..."
 
-  # Define installation steps
-  local -ra INSTALL_STEPS=(
-    "Install Homebrew|bash -c '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'"
-    "Change hostname / computer name|${SCRIPT_DIR}/set_hostname.sh"
-    "Install Desktop Apps|${SCRIPT_DIR}/install_desktop_apps.sh"
-    "Install Brew packages|brew bundle --file=homebrew/Brewfile"
-    "Configure git|${SCRIPT_DIR}/set_git_config.sh"
-    "Install Zplug|curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh"
-    "Install Prezto|git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git \"${ZDOTDIR:-$HOME}/.zprezto\" && git clone --recursive --depth 1 https://github.com/belak/prezto-contrib \"${ZDOTDIR:-$HOME}/.zprezto/contrib\""
-    "Apply symlinks|${SCRIPT_DIR}/apply_symlinks.sh"
-    "Install dev environment|${SCRIPT_DIR}/install_dev_env.sh"
-  )
+  # Define installation steps as functions for better variable expansion
+  install_homebrew() {
+    run_step "Install Homebrew" \
+      "bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+  }
+
+  set_hostname() {
+    run_step "Change hostname / computer name" \
+      "${SCRIPT_DIR}/set_hostname.sh"
+  }
+
+  install_desktop_apps() {
+    run_step "Install Desktop Apps" \
+      "${SCRIPT_DIR}/install_desktop_apps.sh"
+  }
+
+  install_brew_packages() {
+    run_step "Install Brew packages" \
+      "brew bundle --file=homebrew/Brewfile"
+  }
+
+  configure_git() {
+    run_step "Configure git" \
+      "${SCRIPT_DIR}/set_git_config.sh"
+  }
+
+  install_zplug() {
+    run_step "Install Zplug" \
+      'curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh'
+  }
+
+  install_prezto() {
+    local prezto_dir="${ZDOTDIR:-$HOME}/.zprezto"
+    run_step "Install Prezto" \
+      "git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git \"${prezto_dir}\"" \
+      "git clone --recursive --depth 1 https://github.com/belak/prezto-contrib \"${prezto_dir}/contrib\""
+  }
+
+  apply_symlinks() {
+    run_step "Apply symlinks" \
+      "${SCRIPT_DIR}/apply_symlinks.sh"
+  }
+
+  install_dev_env() {
+    run_step "Install dev environment" \
+      "${SCRIPT_DIR}/install_dev_env.sh"
+  }
 
   # Execute installation steps
-  local step
-  for step in "${INSTALL_STEPS[@]}"; do
-    IFS='|' read -r description command <<<"$step"
-    run_step "$description" "$command"
-  done
+  install_homebrew
+  set_hostname
+  install_desktop_apps
+  install_brew_packages
+  configure_git
+  install_zplug
+  install_prezto
+  apply_symlinks
+  install_dev_env
 
   log_info "Bootstrap complete!"
 }
