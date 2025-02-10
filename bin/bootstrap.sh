@@ -64,8 +64,13 @@ main() {
 
   # Define installation steps as functions for better variable expansion
   install_homebrew() {
-    run_step "Install Homebrew" \
-      "bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+    if prompt_user "Install Homebrew?"; then
+      log_info "Running: Install Homebrew..."
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      log_info "Completed: Install Homebrew"
+    else
+      log_info "Skipping: Install Homebrew"
+    fi
   }
 
   set_hostname() {
