@@ -137,6 +137,27 @@ install_dev_env() {
     "${SCRIPT_DIR}/install_dev_env.sh"
 }
 
+# Generate SSH key for the user
+generate_ssh_key() {
+  if prompt_user "Generate SSH key?"; then
+    log_info "Running: Generate SSH key..."
+
+    # Prompt for email
+    read -r -p "Enter your email for SSH key: " email
+
+    # Generate SSH key with provided email
+    ssh-keygen -t ed25519 -C "$email"
+
+    # Start ssh-agent and add key
+    # eval "$(ssh-agent -s)"
+    # ssh-add ~/.ssh/id_ed25519
+
+    log_info "Completed: Generate SSH key"
+  else
+    log_info "Skipping: Generate SSH key"
+  fi
+}
+
 # Helper function to check system requirements
 check_system_requirements() {
   if [[ "$(uname)" != "Darwin" ]]; then
@@ -161,6 +182,7 @@ main() {
   install_desktop_apps
   install_brew_packages
   configure_git
+  generate_ssh_key
   install_zplug
   install_prezto
   apply_symlinks
