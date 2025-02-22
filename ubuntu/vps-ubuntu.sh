@@ -1,3 +1,5 @@
+#!/bin/bash
+
 DOTFILES_DIR=$HOME/dotfiles
 
 # for neovim
@@ -28,17 +30,17 @@ chmod +x diff-so-fancy
 sudo mv diff-so-fancy /usr/local/bin
 
 echo 'Installing scmpuff'
-curl -sL https://api.github.com/repos/mroth/scmpuff/releases/latest | jq -r '.assets[].browser_download_url' | grep linux | xargs -I % wget % -O - | tar xvz scmpuff
+curl -sL https://api.github.com/repos/mroth/scmpuff/releases/latest | jq -r '.assets[].browser_download_url' | grep linux_x64 | xargs -I % wget % -O - | tar xvz scmpuff
 chmod +x scmpuff
 sudo mv scmpuff /usr/local/bin
 
 # Clone dotfiles dir
-mkdir ~/dev
-git clone https://github.com/natsumi/dotfiles.git $DOTFILES_DIR
+mkdir -p "$DOTFILES_DIR"
+git clone https://github.com/natsumi/dotfiles.git "$DOTFILES_DIR"
 
 # apply symlinks
-bash $DOTFILES_DIR/bin/apply_symlinks
-bash $DOTFILES_DIR/bin/apply_git_settings
+bash "$DOTFILES_DIR"/bin/apply_symlinks
+# bash "$DOTFILES_DIR"/bin/apply_git_settings
 
 echo 'Installing Prezto'
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
