@@ -171,22 +171,76 @@ check_system_requirements() {
   fi
 }
 
+show_menu() {
+  clear
+  echo "==================================================="
+  echo "               System Bootstrap Menu                 "
+  echo "==================================================="
+  echo "1)  Install Homebrew"
+  echo "2)  Set Hostname"
+  echo "3)  Install Desktop Apps"
+  echo "4)  Install Brew Packages"
+  echo "5)  Configure Git"
+  echo "6)  Generate SSH Key"
+  echo "7)  Install Zplug"
+  echo "8)  Install Prezto"
+  echo "9)  Apply Symlinks"
+  echo "10) Install Dev Environment"
+  echo "---------------------------------------------------"
+  echo "A)  Run All Steps"
+  echo "Q)  Quit"
+  echo "==================================================="
+  echo -n "Please select an option: "
+}
+
 main() {
   log_info "Starting system bootstrap..."
 
   check_system_requirements
 
-  # Execute installation steps
-  install_homebrew
-  set_hostname
-  install_desktop_apps
-  install_brew_packages
-  configure_git
-  generate_ssh_key
-  install_zplug
-  install_prezto
-  apply_symlinks
-  install_dev_env
+  local choice
+  while true; do
+    show_menu
+    read -r choice
+
+    case $choice in
+    1) install_homebrew ;;
+    2) set_hostname ;;
+    3) install_desktop_apps ;;
+    4) install_brew_packages ;;
+    5) configure_git ;;
+    6) generate_ssh_key ;;
+    7) install_zplug ;;
+    8) install_prezto ;;
+    9) apply_symlinks ;;
+    10) install_dev_env ;;
+    [Aa])
+      install_homebrew
+      set_hostname
+      install_desktop_apps
+      install_brew_packages
+      configure_git
+      generate_ssh_key
+      install_zplug
+      install_prezto
+      apply_symlinks
+      install_dev_env
+      ;;
+    [Qq])
+      log_info "Exiting bootstrap script..."
+      break
+      ;;
+    *)
+      log_error "Invalid option. Please try again."
+      sleep 2
+      ;;
+    esac
+
+    if [[ $choice != [Qq] ]]; then
+      echo
+      read -n 1 -s -r -p "Press any key to continue..."
+    fi
+  done
 
   log_info "Bootstrap complete!"
 }
