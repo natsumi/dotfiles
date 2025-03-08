@@ -102,6 +102,7 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 ## Development Tools
 - [awk](https://www.gnu.org/software/gawk/) - Pattern scanning and text processing language
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy) - Better git diff output
+- [difftastic](https://github.com/Wilfred/difftastic) - Structural diff tool that understands syntax
 - [fx](https://github.com/antonmedv/fx) - Terminal JSON viewer and processor
 - [git](https://git-scm.com/) - Distributed version control system
 - [git-delta](https://github.com/dandavison/delta) - Syntax-highlighting pager for git
