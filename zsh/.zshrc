@@ -74,24 +74,24 @@ bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 ##############
 # ZPLUG SETTING
 ###################
-source ${ZPLUG_HOME}/init.zsh
+# source ${ZPLUG_HOME}/init.zsh
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug 'zdharma-continuum/fast-syntax-highlighting'
+# zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+# zplug 'zdharma-continuum/fast-syntax-highlighting'
 # Forgit options
 forgit_stash_show=gsf
 forgit_diff=gdf
 
 # Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
+# if ! zplug check --verbose; then
+#     printf "Install? [y/N]: "
+#     if read -q; then
+#         echo; zplug install
+#     fi
+# fi
 
 # Then, source plugins and add commands to $PATH
-zplug load
+# zplug load
 
 # Remove aliases
 unalias gls #git log conflicts with dircolors gls
@@ -111,9 +111,6 @@ unalias gls #git log conflicts with dircolors gls
 # ARM M1
 [[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 [[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]] && source /opt/homebrew/opt/fzf/shell/completion.zsh
-# x86 FZF
-[[ -f ~/usr/local/opt/fzf/shell/key-bindings.zsh ]] && source ~/usr/local/opt/fzf/shell/key-bindings.zsh ]]
-[[ -f ~/usr/local/opt/fzf/shell/completion.zsh ]] && source ~/usr/local/opt/fzf/shell/completion.zsh ]]
 
 # Linux / WSL FZF
 [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
@@ -126,4 +123,5 @@ unalias gls #git log conflicts with dircolors gls
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # SCMPuff
-eval "$(scmpuff init -s)"
+[[ -f /opt/homebrew/bin/scmpuff ]] && eval "$(scmpuff init -s)"
+[[ -f /usr/local/bin/scmpuff ]] && eval "$(scmpuff init -s)"
