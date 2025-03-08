@@ -11,7 +11,20 @@
 #              or zero if no command exited with a non-zero status.
 set -euo pipefail
 
-DOTFILE_DIR="${DOTFILE_DIR:-$HOME/dev/dotfiles}"
+# Set DOTFILE_DIR based on environment variable or existing paths
+if [ -n "${DOTFILE_DIR:-}" ]; then
+  # Use existing env var if set
+  DOTFILE_DIR="$DOTFILE_DIR"
+elif [ -d "$HOME/dev/dotfiles" ]; then
+  # Use dev/dotfiles if it exists
+  DOTFILE_DIR="$HOME/dev/dotfiles"
+elif [ -d "$HOME/dotfiles" ]; then
+  # Fall back to ~/dotfiles if it exists
+  DOTFILE_DIR="$HOME/dotfiles"
+else
+  echo "Error: Could not find dotfiles directory"
+  exit 1
+fi
 TARGET_DIR="$HOME"
 
 apply_symlink() {
