@@ -23,6 +23,7 @@ brew 'zlib'
 brew 'asdf' # version manager
 brew 'awk'
 brew 'diff-so-fancy' # git diff
+brew 'difftastic'
 brew 'fx' # json tui
 brew 'git'
 brew 'git-delta' # git diff
