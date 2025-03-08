@@ -32,7 +32,7 @@ required_commands=("curl" "unzip")
 check_required_commands "${required_commands[@]}"
 
 # Set install directory
-INSTALL_DIR="$HOME/dev/dotfiles"
+INSTALL_DIR="$HOME/dotfiles"
 TEMP_ZIP="/tmp/dotfiles.zip"
 
 # Remove existing zip if present
@@ -54,13 +54,13 @@ mv "/tmp/dotfiles-main/"* "$INSTALL_DIR"
 rm -f "$TEMP_ZIP"
 rm -rf "/tmp/dotfiles-main"
 
-cd "$INSTALL_DIR"
+cd "$INSTALL_DIR/ubuntu"
 
 # Make setup script executable
-# chmod +x setup.sh
+chmod +x vps-ubuntu.sh
 
 echo -e "\n${GREEN}✓ Download complete!${NC}"
 echo -e "${BLUE}Starting setup...${NC}\n"
 
 # Run setup script
-# ./setup.sh
+./vps-ubuntu.sh

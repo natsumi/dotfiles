@@ -1,15 +1,53 @@
 #!/bin/bash
+###############################################################################
+# ERROR Exit on error, undefined variables, and pipe failures
+###############################################################################
 
-DOTFILES_DIR=$HOME/dotfiles
+set -euo pipefail
 
-# for neovim
+# Exit handler - runs if script fails
+trap 'if [ $? -ne 0 ]; then
+  log_error "Setup failed"
+  exit $?
+fi' EXIT
+
+###############################################################################
+# Constants
+###############################################################################
+
+# Colors for better readability
+readonly GREEN='\033[0;32m'
+readonly NC='\033[0m' # No Color
+readonly RED='\033[0;31m'
+readonly BLUE='\033[0;34m'
+
+DOTFILES_DIR="$HOME/dotfiles"
+ZPREZTO_DIR="${ZDOTDIR:-$HOME}/.zprezto"
+ZPLUG_DIR="$HOME/.zplug"
+SYMLINKS_PATH="$DOTFILES_DIR/bin/apply_symlinks.sh"
+
+###############################################################################
+# Utility functions
+###############################################################################
+# Log levels
+log_info() { printf "${GREEN}%s${NC}\n" "$*" >&2; }
+log_error() { printf "${RED}%s${NC}\n" "$*" >&2; }
+
+###############################################################################
+# Main
+###############################################################################
+
+# For Neovim
+log_info "Installing Neovim"
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:neovim-ppa/unstable
 
+log_info "Updating packages"
 sudo apt update
 sudo apt upgrade
 
 # Build tools
+log_info "Installing build tools"
 sudo apt install -y \
   automake autoconf libreadline-dev \
   libncurses-dev libssl-dev libyaml-dev \
@@ -18,39 +56,31 @@ sudo apt install -y \
   zlib1g-dev
 
 # Utils
+log_info "Installing utils"
 sudo apt install -y \
   htop btop ncdu jq fd-find fzf stow \
   tig tmux \
   wget unzip curl neovim \
   zsh git fail2ban ripgrep bat
 
-echo 'Installing diff-so-fancy'
-wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
-chmod +x diff-so-fancy
-sudo mv diff-so-fancy /usr/local/bin
+log_info "Installing Prezto"
+if [ -d "$ZPREZTO_DIR" ]; then
+  log_info "Removing existing Prezto installation..."
+  rm -rf "$ZPREZTO_DIR"
+  rm -rf "$ZPLUG_DIR"
+fi
 
-echo 'Installing scmpuff'
-curl -sL https://api.github.com/repos/mroth/scmpuff/releases/latest | jq -r '.assets[].browser_download_url' | grep linux_x64 | xargs -I % wget % -O - | tar xvz scmpuff
-chmod +x scmpuff
-sudo mv scmpuff /usr/local/bin
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "$ZPREZTO_DIR"
+git clone --recursive https://github.com/belak/prezto-contrib "$ZPREZTO_DIR/contrib"
 
-# Clone dotfiles dir
-mkdir -p "$DOTFILES_DIR"
-git clone https://github.com/natsumi/dotfiles.git "$DOTFILES_DIR"
-
-# apply symlinks
-bash "$DOTFILES_DIR"/bin/apply_symlinks
-# bash "$DOTFILES_DIR"/bin/apply_git_settings
-
-echo 'Installing Prezto'
-git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-git clone --recursive https://github.com/belak/prezto-contrib "${ZDOTDIR:-$HOME}/.zprezto/contrib"
-
-echo 'Installing Zplug'
+log_info "Installing Zplug"
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 
-# set default shell
-echo 'Setting default shell'
+log_info "Applying symlinks"
+. "$SYMLINKS_PATH"
+
+log_info "Setting default shell"
 chsh -s $(which zsh)
 
-echo 'Restart Terminal'
+log_info "Setup complete"
+log_info "Restart Terminal"
