@@ -45,7 +45,8 @@ if [ -d "$INSTALL_DIR" ]; then
 fi
 
 echo -e "${BLUE}Downloading dotfiles...${NC}"
-curl -L "https://github.com/natsumi/dotfiles/archive/refs/heads/main.zip" -o "$TEMP_ZIP"
+# curl -L "https://github.com/natsumi/dotfiles/archive/refs/heads/main.zip" -o "$TEMP_ZIP"
+curl -L "https://codeload.github.com/natsumi/dotfiles/zip/refs/heads/ubuntu-script" -o "$TEMP_ZIP"
 
 echo -e "${BLUE}Extracting files...${NC}"
 mkdir -p "$INSTALL_DIR"
