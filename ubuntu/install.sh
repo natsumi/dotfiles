@@ -36,6 +36,7 @@ INSTALL_DIR="$HOME/dotfiles"
 TEMP_ZIP="/tmp/dotfiles.zip"
 
 # Remove existing zip if present
+rm -f /tmp/dotfiles*
 rm -f "$TEMP_ZIP"
 
 # Check if directory already exists
