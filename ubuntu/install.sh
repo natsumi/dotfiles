@@ -51,9 +51,9 @@ curl -L "https://codeload.github.com/natsumi/dotfiles/zip/refs/heads/ubuntu-scri
 echo -e "${BLUE}Extracting files...${NC}"
 mkdir -p "$INSTALL_DIR"
 unzip -q "$TEMP_ZIP" -d "/tmp"
-mv "/tmp/dotfiles-main/"* "$INSTALL_DIR"
+mv "/tmp/dotfiles-ubuntu-script/"* "$INSTALL_DIR"
 rm -f "$TEMP_ZIP"
-rm -rf "/tmp/dotfiles-main"
+rm -rf "/tmp/dotfiles*"
 
 cd "$INSTALL_DIR/ubuntu"
 
