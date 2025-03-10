@@ -1,5 +1,7 @@
 # VPS Ubuntu 24.04
 
+`curl -L https://raw.githubusercontent.com/natsumi/dotfiles/refs/heads/ubuntu-script/ubuntu/install.sh | bash`
+
 ## Add User
 
 ```

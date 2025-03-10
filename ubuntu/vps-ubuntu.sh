@@ -46,7 +46,7 @@ log_info "Installing Neovim"
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:neovim-ppa/unstable
 
-sudo apt upgrade
+sudo apt upgrade -y
 
 # Build tools
 log_info "Installing build tools"
@@ -81,8 +81,8 @@ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/instal
 log_info "Applying symlinks"
 . "$SYMLINKS_PATH"
 
-log_info "Setting default shell"
-chsh -s $(which zsh)
+# log_info "Setting default shell"
+# chsh -s $(which zsh) $(whoami)
 
 log_info "Install Docker"
 # Add Docker's official GPG key:
@@ -162,8 +162,9 @@ sudo sed -i 's/#LoginGraceTime 2m/LoginGraceTime 1m/' /etc/ssh/sshd_config
 # sudo ufw enable
 
 log_info "Setting up automatic security updates"
-sudo apt install -y unattended-upgrades
-sudo dpkg-reconfigure -plow unattended-upgrades
+# TODO: see if I can do this without a prompt
+# sudo apt install -y unattended-upgrades
+# sudo dpkg-reconfigure -plow unattended-upgrades
 
 # Disable IPv6 if not needed
 echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
