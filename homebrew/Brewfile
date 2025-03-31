@@ -1,6 +1,5 @@
 tap 'homebrew/bundle'
 tap 'neovim/neovim'
-tap 'mas-cli/tap'
 tap 'buo/cask-upgrade'
 
 # Build Tools
@@ -42,6 +41,7 @@ brew 'stylua'
 # Utitlies
 brew 'ffmpeg'
 brew 'htop-osx'
+brew 'mas'
 brew 'ncdu' # du replacement
 brew 'reattach-to-user-namespace'
 brew 'rtmpdump'

@@ -116,12 +116,16 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 ## Utilities
 - [aria2](https://aria2.github.io/) - Lightweight multi-protocol download utility
 - [bat](https://github.com/sharkdp/bat) - Cat clone with syntax highlighting
+- [brew-cask-upgrade](https://github.com/buo/brew-cask-upgrade) - Command line tool for upgrading outdated Homebrew Casks
+
 - [broot](https://github.com/Canop/broot) - Better way to navigate directories
 - [eza](https://github.com/eza-community/eza) - Modern replacement for ls
 - [fd](https://github.com/sharkdp/fd) - Simple, fast and user-friendly alternative to find
 - [ffmpeg](https://ffmpeg.org/) - Complete solution for recording, converting, and streaming audio/video
 - [fzf](https://github.com/junegunn/fzf) - Command-line fuzzy finder
 - [htop-osx](https://htop.dev/) - Interactive process viewer for Unix systems
+- [mas](https://github.com/mas-cli/mas) - Mac App Store command line interface
+
 - [ncdu](https://dev.yorhel.nl/ncdu) - NCurses disk usage analyzer
 - [stow](https://www.gnu.org/software/stow/) - Symlink farm manager
 - [terminal-notifier](https://github.com/julienXX/terminal-notifier) - Send macOS notifications from the terminal
