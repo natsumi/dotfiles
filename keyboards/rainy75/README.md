@@ -35,12 +35,20 @@ The switch to enable the battery is under the `Capslock` key. Turn this on.
 - [Support Page Chinese](http://www.woblab.cn/col.jsp?id=109)
 - [VIA Programming](https://usevia.app)
 
-# How to Program`
+# How to Program
 
-To restore layouts visit [VIA Programming](https://usevia.app) and use `Load Saved Layout`
-with file `rain75_custom_layout.json`
 
-To start with a fresh layout load the default json files.
+Place KB into wired mode:
+
+* Turn KB off using switch under `Capslock` key
+* Use `Fn+Tab` to put KB in wired mode.  `Esc` key should be clinking
+
+Visit [VIA Programming](https://usevia.app).  Load the default defintions
+`default-layout-rgb-2.4g-rainy75-2.4g.json`
+
+** This seems broken **
+To restore custom defintion  use `Load Saved Layout`
+with file `rainy75_custom_layout.json`
 
 # Layouts
 
