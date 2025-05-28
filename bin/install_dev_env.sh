@@ -11,6 +11,7 @@ asdf plugin add python
 asdf plugin add erlang
 asdf plugin add elixir
 asdf plugin add golang
+asdf plugin add lua https://github.com/Stratus3D/asdf-lua.git
 asdf plugin add rust https://github.com/asdf-community/asdf-rust.git
 
 # asdf plugin update --all
@@ -32,6 +33,11 @@ NODEJS_LTS_VERSION=22.13.1
 echo "Installing Node $NODEJS_LTS_VERSION"
 asdf install nodejs "$NODEJS_LTS_VERSION"
 asdf set -u nodejs "$NODEJS_LTS_VERSION"
+
+LUA_VERSION=5.1
+echo "Installing Lua $LUA_VERSION"
+asdf install lua "$LUA_VERSION"
+asdf set -u lua "$LUA_VERSION"
 
 PYTHON_VERSION=$(asdf list all python | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$" | sort -V | tail -n 1)
 echo "Installing Python $PYTHON_VERSION"
