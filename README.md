@@ -107,6 +107,7 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 - [git](https://git-scm.com/) - Distributed version control system
 - [git-delta](https://github.com/dandavison/delta) - Syntax-highlighting pager for git
 - [jq](https://stedolan.github.io/jq/) - Lightweight command-line JSON processor
+- [mise](https://github.com/jdx/mise) - Development environment manager
 - [overmind](https://github.com/DarthSim/overmind) - Process manager for Procfile-based applications
 - [ripgrep](https://github.com/BurntSushi/ripgrep) - Extremely fast text search tool
 - [scmpuff](https://github.com/mroth/scmpuff) - Numeric shortcuts for common git commands
