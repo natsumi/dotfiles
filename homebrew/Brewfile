@@ -19,7 +19,6 @@ brew 'xz'
 brew 'zlib'
 
 # Development Tools
-brew 'asdf' # version manager
 brew 'awk'
 brew 'diff-so-fancy' # git diff
 brew 'difftastic'
@@ -27,6 +26,7 @@ brew 'fx' # json tui
 brew 'git'
 brew 'git-delta' # git diff
 brew 'jq' # json
+brew 'mise' # version manager
 brew 'overmind' # process launcher
 brew 'ripgrep' # search
 brew 'scmpuff' # git management

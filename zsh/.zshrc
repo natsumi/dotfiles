@@ -47,7 +47,7 @@ setopt beep nomatch notify
 bindkey -v
 
 # load our own completion functions
-fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fpath)
+fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions /opt/homebrew/share/zsh/site-functions $fpath)
 
 ###################
 # TERMINAL SETTINGS
@@ -119,11 +119,11 @@ unalias gls #git log conflicts with dircolors gls
 [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 [[ -f /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
 
+# Mise
+[[ -f /opt/homebrew/bin/mise ]] && eval "$(mise activate zsh)"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 #
-# Add asdf shims to PAT
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
 # SCMPuff
 eval "$(scmpuff init -s)"
