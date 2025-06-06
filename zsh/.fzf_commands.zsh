@@ -7,9 +7,9 @@
 # fco - checkout git branch/tag
 fco() {
   local branches branch
-  branches=$(git --no-pager branch) &&
+  branches=$(git --no-pager branch -a | grep -v "dependabot") &&
     branch=$(echo "$branches" | fzf +m) &&
-    git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+    git checkout $(echo "$branch" | sed 's/^..//' | awk '{print $1}' | sed 's#^remotes/[^/]*/##')
 }
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
