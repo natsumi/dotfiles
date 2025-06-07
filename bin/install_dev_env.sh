@@ -5,8 +5,6 @@
 
 # EXECUTION
 
-# RUBY_CONFIGURE_OPTS=--"with-readline-dir="$(brew --prefix readline)" --with-jemalloc"
-
 languages=(
   # "elixir"
   # "erlang"

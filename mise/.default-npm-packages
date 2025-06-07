@@ -1,6 +1,7 @@
 yarn
 
 bash-language-server
+ast-grep
 dockerfile-language-server-nodejs
 @fsouza/prettierd
 @tailwindcss/language-server
