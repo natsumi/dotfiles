@@ -28,15 +28,15 @@ sudo apt install -y \
 	wget unzip curl vim neovim \
 	zsh wslu ffmpeg bat
 
-echo 'Installing asdf'
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
+echo 'Installing mise'
+curl https://mise.run | sh
 
 # echo 'Installing bat'
 curl -sL https://api.github.com/repos/sharkdp/bat/releases/latest | jq -r '.assets[].browser_download_url' | grep amd | tail -n 1 | xargs wget
 ls *.deb | sudo xargs dpkg -i
 
 echo 'Installing diff-so-fancy'
-curl -sL https://api.github.com/repos/so-fancy/diff-so-fancy/releases/latest | jq -r '.assets[].browser_download_url'  | xargs wget
+curl -sL https://api.github.com/repos/so-fancy/diff-so-fancy/releases/latest | jq -r '.assets[].browser_download_url' | xargs wget
 chmod +x diff-so-fancy
 sudo mv diff-so-fancy /usr/local/bin
 
