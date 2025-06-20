@@ -90,7 +90,6 @@ DEFAULT_SSH_PORT=2222
 DEFAULT_USERNAME=""
 DEFAULT_HOSTNAME=""
 SECURITY_LEVEL="enhanced"
-ENABLE_MONITORING="yes"
 
 # Logging function
 log() {
@@ -197,11 +196,6 @@ interactive_config() {
     read -p "Enter SSH port (default: $DEFAULT_SSH_PORT): " ssh_port
     DEFAULT_SSH_PORT="${ssh_port:-$DEFAULT_SSH_PORT}"
 
-    # Optional features
-    echo
-    read -p "Enable system monitoring tools? [Y/n]: " monitoring_choice
-    [[ "$monitoring_choice" =~ ^[Nn]$ ]] && ENABLE_MONITORING="no"
-
     # Display configuration summary
     echo
     info "=== Configuration Summary ==="
@@ -282,6 +276,7 @@ install_base_packages() {
         bat
 
         # System monitoring
+        btop
         htop
         ncdu
         iotop
@@ -300,14 +295,6 @@ install_base_packages() {
         mtr
         whois
     )
-
-    # Add monitoring tools if enabled
-    if [[ "$ENABLE_MONITORING" == "yes" ]]; then
-        # btop might not be available in all repos
-        if apt-cache show btop &>/dev/null; then
-            packages+=(btop)
-        fi
-    fi
 
     # Install packages with error handling
     if ! apt-get install -y "${packages[@]}" >>"$LOG_FILE" 2>&1; then
@@ -734,41 +721,6 @@ setup_monitoring() {
     fi
 }
 
-# Setup dotfiles
-setup_dotfiles() {
-    local target_user="${DEFAULT_USERNAME:-root}"
-    local target_home="/home/$target_user"
-    [[ "$target_user" == "root" ]] && target_home="/root"
-
-    info "Setting up dotfiles for user: $target_user"
-
-    # Clone dotfiles
-    if [[ ! -d "$target_home/dotfiles" ]]; then
-        sudo -u "$target_user" git clone https://github.com/natsumi/dotfiles.git "$target_home/dotfiles" >>"$LOG_FILE" 2>&1
-    fi
-
-    # Apply symlinks
-    sudo -u "$target_user" bash "$target_home/dotfiles/bin/apply_symlinks" >>"$LOG_FILE" 2>&1
-
-    # Install Prezto
-    if [[ ! -d "$target_home/.zprezto" ]]; then
-        sudo -u "$target_user" git clone --recursive https://github.com/sorin-ionescu/prezto.git "$target_home/.zprezto" >>"$LOG_FILE" 2>&1
-        sudo -u "$target_user" git clone --recursive https://github.com/belak/prezto-contrib "$target_home/.zprezto/contrib" >>"$LOG_FILE" 2>&1
-    fi
-
-    # Install Zplug
-    if [[ ! -d "$target_home/.zplug" ]]; then
-        export ZPLUG_HOME="$target_home/.zplug"
-        git clone https://github.com/zplug/zplug "$ZPLUG_HOME" >>"$LOG_FILE" 2>&1
-        chown -R "$target_user:$target_user" "$ZPLUG_HOME"
-    fi
-
-    # Change shell to zsh
-    chsh -s $(which zsh) "$target_user" >>"$LOG_FILE" 2>&1
-
-    success "Dotfiles configured"
-}
-
 # Security audit
 perform_security_audit() {
     info "Performing security audit..."
@@ -900,9 +852,6 @@ main() {
 
     # Optional features
     setup_monitoring
-
-    # Development environment
-    setup_dotfiles
 
     # Final steps
     perform_security_audit
