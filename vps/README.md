@@ -15,7 +15,6 @@ A comprehensive, security-focused setup script for Ubuntu 24.04 VPS servers with
 - **SSH Hardening**: Custom port, key-only authentication, disable root login
 - **Firewall**: UFW with strict rules and rate limiting
 - **Intrusion Prevention**: Fail2ban + SSHGuard dual protection
-- **Geo-blocking**: Optional country-based traffic filtering (US-only by default)
 - **Automatic Updates**: Unattended security patches
 - **Security Audit**: Post-installation security check
 
@@ -30,7 +29,6 @@ A comprehensive, security-focused setup script for Ubuntu 24.04 VPS servers with
 - **Swap File**: Automatic creation based on available RAM
 - **Monitoring**: Optional btop and Netdata installation
 - **Performance**: Optimized sysctl settings
-- **Docker**: Optional Docker CE installation
 
 ### 🎯 User Experience
 - **Interactive Setup**: Guided configuration with sensible defaults
@@ -71,36 +69,20 @@ During installation, you'll be prompted for:
 1. **Admin Username** - Create a non-root sudo user (optional)
 2. **Hostname** - Set server hostname
 3. **SSH Port** - Custom SSH port (default: 2222)
-4. **Security Level**:
-   - Basic: Essential security only
-   - Enhanced: Recommended security (default)
-   - Paranoid: Maximum security with strict rules
-5. **Optional Features**:
-   - Docker installation
-   - System monitoring tools
-   - Geo-blocking configuration
+4. **System Monitoring** - Enable additional monitoring tools (default: yes)
 
-## Security Levels Explained
+The script automatically uses **Enhanced** security settings with optimal security configurations.
 
-### Basic
-- SSH hardening (custom port, key-only auth)
-- UFW firewall with essential rules
-- Fail2ban for SSH protection
-- Automatic security updates
+## Security Features
 
-### Enhanced (Recommended)
-- All Basic features, plus:
-- SSHGuard for additional brute-force protection
-- Rate limiting on SSH connections
-- Extended fail2ban jails
-- Geo-blocking option
+The script automatically configures **Enhanced** security settings that include:
 
-### Paranoid
-- All Enhanced features, plus:
-- SSH login banner
-- Stricter connection limits
-- Additional audit logging
-- More aggressive ban policies
+- **SSH Hardening**: Custom port, key-only authentication, disabled root login
+- **UFW Firewall**: Strict rules with rate limiting for SSH connections
+- **Fail2ban**: SSH protection with automatic IP banning
+- **SSHGuard**: Additional brute-force protection layer
+- **Automatic Updates**: Unattended security patches
+- **Extended Fail2ban Jails**: Protection against various attack types
 
 ## Post-Installation
 
@@ -174,12 +156,6 @@ sudo systemctl restart sshguard
 sudo fail2ban-client set sshd addignoreip YOUR_IP_ADDRESS
 ```
 
-#### Adjust Geo-blocking
-```bash
-# Edit and run the geo-block script
-sudo nano /usr/local/bin/geo-block.sh
-sudo /usr/local/bin/geo-block.sh "US,CA,UK"
-```
 
 ### Adding Custom Software
 
