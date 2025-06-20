@@ -1,9 +1,20 @@
 #!/bin/bash
 
-set -euo pipefail
+# Start with basic error handling
+set -u
+
+# Enable full strict mode after initialization
+enable_strict_mode() {
+    set -euo pipefail
+}
 
 # Enable debug mode if DEBUG environment variable is set
-[[ "${DEBUG:-}" == "1" ]] && set -x
+if [[ "${DEBUG:-}" == "1" ]]; then
+    set -x
+    # Also log all commands to the log file
+    export PS4='+ $(date "+%Y-%m-%d %H:%M:%S") ${BASH_SOURCE}:${LINENO}: '
+    exec 2>&1
+fi
 
 # VPS Ubuntu 24.04 Setup Script
 # Enhanced with security hardening, interactive configuration, and best practices
@@ -53,10 +64,25 @@ DOTFILES_DIR="$HOME/dotfiles"
 BACKUP_DIR="/root/server-setup-backup-$(date +%Y%m%d-%H%M%S)"
 
 # Ensure log file can be created
-touch "$LOG_FILE" 2>/dev/null || {
+if ! touch "$LOG_FILE" 2>/dev/null; then
     LOG_DIR="/tmp"
     LOG_FILE="$LOG_DIR/vps-setup-$(date +%Y%m%d-%H%M%S).log"
-    warning "Cannot write to current directory, using /tmp for logs"
+    # Note: Can't use warning() here as it might not be defined yet
+    echo -e "\033[1;33m⚠ Cannot write to current directory, using /tmp for logs\033[0m"
+fi
+
+# Set up logging to capture all output
+setup_logging() {
+    # Create a file descriptor for logging
+    exec 3>&1 4>&2
+    # Redirect stdout and stderr to tee, which writes to both log and screen
+    exec 1> >(tee -a "$LOG_FILE")
+    exec 2> >(tee -a "$LOG_FILE" >&2)
+    
+    # Log script start
+    echo "=== VPS Setup Script Started at $(date) ==="
+    echo "=== Log file: $LOG_FILE ==="
+    echo
 }
 
 # Default values
@@ -71,7 +97,10 @@ ALLOWED_COUNTRIES="US"
 
 # Logging function
 log() {
-    echo -e "${2:-}$1${NC}" | tee -a "$LOG_FILE"
+    local message="${2:-}$1${NC}"
+    echo -e "$message"
+    # Try to append to log file, but don't fail if we can't
+    echo -e "$message" >> "$LOG_FILE" 2>/dev/null || true
 }
 
 # Error handling
@@ -93,6 +122,25 @@ warning() {
 # Info message
 info() {
     log "ℹ $1" "$BLUE"
+}
+
+# Run command with detailed logging
+run_cmd() {
+    local cmd="$1"
+    local description="${2:-Running command}"
+    
+    echo ">>> $description"
+    echo ">>> Command: $cmd"
+    
+    if eval "$cmd"; then
+        echo ">>> Success: $description"
+        return 0
+    else
+        local exit_code=$?
+        echo ">>> FAILED: $description (exit code: $exit_code)"
+        echo ">>> Failed command: $cmd"
+        return $exit_code
+    fi
 }
 
 # Check if running as root
@@ -125,7 +173,11 @@ check_internet() {
 
 # Create backup directory
 create_backup() {
-    mkdir -p "$BACKUP_DIR"
+    if ! mkdir -p "$BACKUP_DIR" 2>/dev/null; then
+        warning "Could not create backup directory: $BACKUP_DIR"
+        BACKUP_DIR="/tmp/server-setup-backup-$(date +%Y%m%d-%H%M%S)"
+        mkdir -p "$BACKUP_DIR" || error_exit "Failed to create backup directory"
+    fi
     info "Backup directory created: $BACKUP_DIR"
 }
 
@@ -971,6 +1023,9 @@ main() {
     echo "========================================"
     echo
     
+    # Set up comprehensive logging first
+    setup_logging
+    
     # Pre-flight checks
     check_root
     check_ubuntu_version
@@ -979,6 +1034,9 @@ main() {
     
     # Interactive configuration
     interactive_config
+    
+    # Enable strict mode after initialization
+    enable_strict_mode
     
     # System setup
     configure_timezone

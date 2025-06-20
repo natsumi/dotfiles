@@ -207,7 +207,14 @@ If you're locked out:
 3. Re-run the script - it's designed to be idempotent
 4. Run with debug mode for more details:
    ```bash
+   # Show all commands being executed
    DEBUG=1 sudo bash /path/to/setup.sh
+   
+   # Or run without strict error checking to see exactly where it fails
+   sudo bash -c 'set +e; bash /path/to/setup.sh'
+   
+   # Check the last few lines of the log
+   tail -50 ./vps-setup-*.log
    ```
 
 ### High Memory Usage
