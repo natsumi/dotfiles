@@ -2,8 +2,40 @@
 
 set -euo pipefail
 
+# Enable debug mode if DEBUG environment variable is set
+[[ "${DEBUG:-}" == "1" ]] && set -x
+
 # VPS Ubuntu 24.04 Setup Script
 # Enhanced with security hardening, interactive configuration, and best practices
+
+# Error handler
+handle_error() {
+    local line_no=$1
+    local bash_lineno=$2
+    local last_command=$3
+    local code=$4
+    
+    echo
+    echo -e "\033[0;31mERROR: The script failed at line $line_no (bash line $bash_lineno)\033[0m"
+    echo -e "\033[0;31mCommand: $last_command\033[0m"
+    echo -e "\033[0;31mExit Code: $code\033[0m"
+    echo
+    echo "Check the log file for more details: $LOG_FILE"
+    echo
+    
+    # If in the middle of installation, provide recovery instructions
+    if [[ -f "$LOG_FILE" ]]; then
+        echo "To debug, you can:"
+        echo "1. Check the last 50 lines of the log: tail -50 $LOG_FILE"
+        echo "2. Re-run with debug mode: DEBUG=1 bash $0"
+        echo "3. Your original configs are backed up in: $BACKUP_DIR"
+    fi
+    
+    exit $code
+}
+
+# Set up error handling
+trap 'handle_error ${LINENO} ${BASH_LINENO} "$BASH_COMMAND" $?' ERR
 
 # Color definitions for output
 readonly RED='\033[0;31m'
@@ -14,9 +46,14 @@ readonly NC='\033[0m' # No Color
 
 # Configuration variables
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOG_FILE="/var/log/vps-setup-$(date +%Y%m%d-%H%M%S).log"
+LOG_DIR="/var/log"
+LOG_FILE="$LOG_DIR/vps-setup-$(date +%Y%m%d-%H%M%S).log"
 DOTFILES_DIR="$HOME/dotfiles"
 BACKUP_DIR="/root/server-setup-backup-$(date +%Y%m%d-%H%M%S)"
+
+# Ensure log directory exists
+mkdir -p "$LOG_DIR" 2>/dev/null || true
+touch "$LOG_FILE" 2>/dev/null || LOG_FILE="/tmp/vps-setup-$(date +%Y%m%d-%H%M%S).log"
 
 # Default values
 DEFAULT_SSH_PORT=2222
@@ -158,10 +195,17 @@ interactive_config() {
 # Update system
 update_system() {
     info "Updating system packages..."
-    apt-get update -y >> "$LOG_FILE" 2>&1
-    apt-get upgrade -y >> "$LOG_FILE" 2>&1
-    apt-get dist-upgrade -y >> "$LOG_FILE" 2>&1
-    apt-get autoremove -y >> "$LOG_FILE" 2>&1
+    
+    # Update package lists
+    if ! apt-get update -y >> "$LOG_FILE" 2>&1; then
+        error_exit "Failed to update package lists. Check internet connection and repository settings."
+    fi
+    
+    # Upgrade packages with error handling
+    apt-get upgrade -y >> "$LOG_FILE" 2>&1 || warning "Some packages failed to upgrade"
+    apt-get dist-upgrade -y >> "$LOG_FILE" 2>&1 || warning "Some packages failed to dist-upgrade"
+    apt-get autoremove -y >> "$LOG_FILE" 2>&1 || true
+    
     success "System updated"
 }
 
@@ -235,10 +279,22 @@ install_base_packages() {
     
     # Add monitoring tools if enabled
     if [[ "$ENABLE_MONITORING" == "yes" ]]; then
-        packages+=(btop)
+        # btop might not be available in all repos
+        if apt-cache show btop &>/dev/null; then
+            packages+=(btop)
+        fi
     fi
     
-    apt-get install -y "${packages[@]}" >> "$LOG_FILE" 2>&1
+    # Install packages with error handling
+    if ! apt-get install -y "${packages[@]}" >> "$LOG_FILE" 2>&1; then
+        warning "Some packages failed to install. Check $LOG_FILE for details."
+        # Try to install packages one by one to identify failures
+        for pkg in "${packages[@]}"; do
+            if ! dpkg -l "$pkg" &>/dev/null; then
+                apt-get install -y "$pkg" >> "$LOG_FILE" 2>&1 || warning "Failed to install: $pkg"
+            fi
+        done
+    fi
     success "Base packages installed"
 }
 

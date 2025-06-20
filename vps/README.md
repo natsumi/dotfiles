@@ -205,6 +205,10 @@ If you're locked out:
 1. Check the log file: `/var/log/vps-setup-*.log`
 2. Original configs are backed up in `/root/server-setup-backup-*/`
 3. Re-run the script - it's designed to be idempotent
+4. Run with debug mode for more details:
+   ```bash
+   DEBUG=1 sudo bash /path/to/setup.sh
+   ```
 
 ### High Memory Usage
 
