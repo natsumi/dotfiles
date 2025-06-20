@@ -3,12 +3,13 @@
 ###############################
 # GENERAL SPACE SETTINGS
 ###############################
-yabai -m config layout bsp
-yabai -m config top_padding 20
-yabai -m config bottom_padding 20
-yabai -m config left_padding 20
-yabai -m config right_padding 20
-yabai -m config window_gap 20
+yabai -m config \
+  layout bsp \
+  top_padding 20 \
+  bottom_padding 20 \
+  left_padding 20 \
+  right_padding 20 \
+  window_gap 20
 
 # Override default layout for space 2 only
 # yabai -m config --space 2 layout float
@@ -129,6 +130,7 @@ yabai -m rule --add app="zoom.us" manage=off
 yabai -m rule --add title="IDE and Plugin Updates" manage=off
 yabai -m rule --add title="Preferences$" manage=off
 yabai -m rule --add title="Settings$" manage=off
+yabai -m rule --add app="System Settings$" manage=off
 yabai -m rule --add title="^Picture-in-Picture$" manage=off
 
 # Float any non-resizable window

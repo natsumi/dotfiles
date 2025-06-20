@@ -20,8 +20,8 @@ apply_symlink() {
 
 # List of packages to symlink
 packages=(
-  mise alacritty aerospace bat elixir eslint helix jetbrains
-  kitty neovim prettier ripgrep ruby silver_searcher tig
+  alacritty aerospace bat claude elixir eslint helix jetbrains
+  kitty mise neovim prettier ripgrep ruby silver_searcher tig
   tmux yt-dlp yabai zsh
 )
 
