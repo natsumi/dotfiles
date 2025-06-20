@@ -203,7 +203,6 @@ interactive_config() {
     echo "Hostname: $DEFAULT_HOSTNAME"
     echo "SSH Port: $DEFAULT_SSH_PORT"
     echo "Security Level: $SECURITY_LEVEL"
-    echo "Monitoring: $ENABLE_MONITORING"
     echo
 
     read -p "Proceed with this configuration? [Y/n]: " proceed
@@ -698,29 +697,6 @@ create_swap() {
     success "Swap file created: ${swap_size}MB"
 }
 
-# Setup monitoring
-setup_monitoring() {
-    if [[ "$ENABLE_MONITORING" != "yes" ]]; then
-        info "Skipping monitoring setup"
-        return
-    fi
-
-    info "Setting up monitoring..."
-
-    # Install netdata (optional)
-    read -p "Install Netdata for real-time monitoring? [y/N]: " install_netdata
-    if [[ "$install_netdata" =~ ^[Yy]$ ]]; then
-        wget -O /tmp/netdata-kickstart.sh https://my-netdata.io/kickstart.sh >>"$LOG_FILE" 2>&1
-        sh /tmp/netdata-kickstart.sh --dont-wait >>"$LOG_FILE" 2>&1
-
-        # Configure netdata to bind only to localhost
-        sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
-        systemctl restart netdata >>"$LOG_FILE" 2>&1
-
-        success "Netdata installed (accessible via SSH tunnel on port 19999)"
-    fi
-}
-
 # Security audit
 perform_security_audit() {
     info "Performing security audit..."
@@ -781,7 +757,6 @@ Security Features:
 - Automatic Updates: Enabled for security patches
 
 Optional Features:
-- Monitoring: $ENABLE_MONITORING
 - Swap: Configured
 
 Important Notes:
@@ -849,9 +824,6 @@ main() {
 
     # System optimization
     create_swap
-
-    # Optional features
-    setup_monitoring
 
     # Final steps
     perform_security_audit
