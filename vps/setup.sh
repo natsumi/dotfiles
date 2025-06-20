@@ -858,6 +858,7 @@ main() {
     generate_summary
 
     echo
+    echo "========================================"
     success "VPS setup completed successfully!"
     echo
     warning "IMPORTANT: Test SSH on port $DEFAULT_SSH_PORT before closing this session!"
@@ -866,6 +867,7 @@ main() {
     echo
     warning "RECOMMENDED: Reboot the server to ensure all changes take effect"
     info "To reboot now, run: sudo reboot"
+    echo "========================================"
     echo
 }
 
