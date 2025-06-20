@@ -202,7 +202,6 @@ interactive_config() {
     read -p "Enable system monitoring tools? [Y/n]: " monitoring_choice
     [[ "$monitoring_choice" =~ ^[Nn]$ ]] && ENABLE_MONITORING="no"
 
-
     # Display configuration summary
     echo
     info "=== Configuration Summary ==="
@@ -386,11 +385,14 @@ configure_timezone() {
     local current_tz=$(timedatectl show -p Timezone --value)
 
     echo "Current timezone: $current_tz"
-    read -p "Enter timezone (e.g., America/New_York) or press Enter to keep current: " new_tz
+    read -p "Enter timezone (default: America/Los_Angeles) or press Enter for default: " new_tz
+    new_tz="${new_tz:-America/Los_Angeles}"
 
-    if [[ -n "$new_tz" ]]; then
+    if [[ "$new_tz" != "$current_tz" ]]; then
         timedatectl set-timezone "$new_tz" >>"$LOG_FILE" 2>&1
         success "Timezone set to: $new_tz"
+    else
+        success "Timezone unchanged: $current_tz"
     fi
 }
 
@@ -462,10 +464,8 @@ KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-grou
 Subsystem sftp /usr/lib/openssh/sftp-server
 EOF
 
-
     # Test SSH configuration
     if sshd -t; then
-        systemctl restart sshd
         success "SSH configured on port $DEFAULT_SSH_PORT"
         warning "Remember to update your SSH connection to use port $DEFAULT_SSH_PORT"
     else
@@ -682,7 +682,6 @@ EOF
     success "Automatic updates configured"
 }
 
-
 # Create swap file
 create_swap() {
     info "Checking swap configuration..."
@@ -711,7 +710,6 @@ create_swap() {
 
     success "Swap file created: ${swap_size}MB"
 }
-
 
 # Setup monitoring
 setup_monitoring() {
@@ -916,6 +914,9 @@ main() {
     warning "IMPORTANT: Test SSH on port $DEFAULT_SSH_PORT before closing this session!"
     echo
     info "Review the setup summary above and in: /root/vps-setup-summary.txt"
+    echo
+    warning "RECOMMENDED: Reboot the server to ensure all changes take effect"
+    info "To reboot now, run: sudo reboot"
     echo
 }
 
