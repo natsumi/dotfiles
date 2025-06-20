@@ -5,7 +5,7 @@ A comprehensive, security-focused setup script for Ubuntu 24.04 VPS servers with
 ## Quick Start
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/hetzner-vps/vps/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh)"
 
 ```
 
@@ -185,10 +185,10 @@ If you're locked out:
    ```bash
    # Show all commands being executed
    DEBUG=1 sudo bash /path/to/setup.sh
-   
+
    # Or run without strict error checking to see exactly where it fails
    sudo bash -c 'set +e; bash /path/to/setup.sh'
-   
+
    # Check the last few lines of the log
    tail -50 ./vps-setup-*.log
    ```

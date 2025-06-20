@@ -15,8 +15,7 @@ readonly NC='\033[0m'
 
 # Configuration
 readonly REPO_URL="https://github.com/natsumi/dotfiles"
-# readonly REPO_BRANCH="main"
-readonly REPO_BRANCH="hetzner-vps"
+readonly REPO_BRANCH="main"
 readonly SETUP_SCRIPT="vps/setup.sh"
 readonly TEMP_DIR="/tmp/vps-setup-$$"
 
