@@ -127,7 +127,7 @@ During installation, you'll be prompted for:
 
 ### File Locations
 
-- **Setup Log**: `/var/log/vps-setup-TIMESTAMP.log`
+- **Setup Log**: `./vps-setup-TIMESTAMP.log` (in current directory, or `/tmp/` if not writable)
 - **Configuration Backup**: `/root/server-setup-backup-TIMESTAMP/`
 - **Setup Summary**: `/root/vps-setup-summary.txt`
 - **Dotfiles**: `~/dotfiles/`
@@ -202,7 +202,7 @@ If you're locked out:
 
 ### Script Fails During Installation
 
-1. Check the log file: `/var/log/vps-setup-*.log`
+1. Check the log file: `./vps-setup-*.log` (in the directory where you ran the script)
 2. Original configs are backed up in `/root/server-setup-backup-*/`
 3. Re-run the script - it's designed to be idempotent
 4. Run with debug mode for more details:

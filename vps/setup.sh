@@ -46,14 +46,18 @@ readonly NC='\033[0m' # No Color
 
 # Configuration variables
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOG_DIR="/var/log"
+EXECUTION_DIR="$(pwd)"
+LOG_DIR="$EXECUTION_DIR"
 LOG_FILE="$LOG_DIR/vps-setup-$(date +%Y%m%d-%H%M%S).log"
 DOTFILES_DIR="$HOME/dotfiles"
 BACKUP_DIR="/root/server-setup-backup-$(date +%Y%m%d-%H%M%S)"
 
-# Ensure log directory exists
-mkdir -p "$LOG_DIR" 2>/dev/null || true
-touch "$LOG_FILE" 2>/dev/null || LOG_FILE="/tmp/vps-setup-$(date +%Y%m%d-%H%M%S).log"
+# Ensure log file can be created
+touch "$LOG_FILE" 2>/dev/null || {
+    LOG_DIR="/tmp"
+    LOG_FILE="$LOG_DIR/vps-setup-$(date +%Y%m%d-%H%M%S).log"
+    warning "Cannot write to current directory, using /tmp for logs"
+}
 
 # Default values
 DEFAULT_SSH_PORT=2222
