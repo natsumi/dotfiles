@@ -89,7 +89,6 @@ setup_logging() {
 DEFAULT_SSH_PORT=2222
 DEFAULT_USERNAME=""
 DEFAULT_HOSTNAME=""
-SECURITY_LEVEL="enhanced"
 
 # Logging function
 log() {
@@ -202,7 +201,6 @@ interactive_config() {
     echo "Username: ${DEFAULT_USERNAME:-[no new user]}"
     echo "Hostname: $DEFAULT_HOSTNAME"
     echo "SSH Port: $DEFAULT_SSH_PORT"
-    echo "Security Level: $SECURITY_LEVEL"
     echo
 
     read -p "Proceed with this configuration? [Y/n]: " proceed
@@ -321,6 +319,15 @@ install_neovim() {
 create_user() {
     if [[ -z "$DEFAULT_USERNAME" ]]; then
         info "Skipping user creation"
+        return
+    fi
+
+    # Check if user already exists
+    if id "$DEFAULT_USERNAME" &>/dev/null; then
+        warning "User '$DEFAULT_USERNAME' already exists, skipping user creation"
+        info "Ensuring user is in sudo group..."
+        usermod -aG sudo "$DEFAULT_USERNAME" >>"$LOG_FILE" 2>&1
+        success "User '$DEFAULT_USERNAME' added to sudo group"
         return
     fi
 
@@ -744,7 +751,6 @@ Generated: $(date)
 System Information:
 - Hostname: $DEFAULT_HOSTNAME
 - Ubuntu Version: 24.04 LTS
-- Security Level: $SECURITY_LEVEL
 
 User Configuration:
 - Admin User: ${DEFAULT_USERNAME:-root}
