@@ -462,25 +462,6 @@ KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-grou
 Subsystem sftp /usr/lib/openssh/sftp-server
 EOF
 
-    # Additional paranoid settings
-    if [[ "$SECURITY_LEVEL" == "paranoid" ]]; then
-        cat >>/etc/ssh/sshd_config <<EOF
-
-# Paranoid mode additions
-MaxStartups 2:30:5
-PermitUserEnvironment no
-Banner /etc/issue.net
-EOF
-
-        # Create banner
-        cat >/etc/issue.net <<EOF
-***************************************************************************
-                            AUTHORIZED ACCESS ONLY
-Unauthorized access to this system is forbidden and will be prosecuted
-by law. By accessing this system, you consent to monitoring and recording.
-***************************************************************************
-EOF
-    fi
 
     # Test SSH configuration
     if sshd -t; then
@@ -510,11 +491,8 @@ configure_firewall() {
     ufw allow 80/tcp comment 'HTTP' >>"$LOG_FILE" 2>&1
     ufw allow 443/tcp comment 'HTTPS' >>"$LOG_FILE" 2>&1
 
-    # Additional rules based on security level
-    if [[ "$SECURITY_LEVEL" != "basic" ]]; then
-        # Rate limiting for SSH
-        ufw limit "$DEFAULT_SSH_PORT/tcp" >>"$LOG_FILE" 2>&1
-    fi
+    # Rate limiting for SSH
+    ufw limit "$DEFAULT_SSH_PORT/tcp" >>"$LOG_FILE" 2>&1
 
     # Enable UFW
     echo "y" | ufw enable >>"$LOG_FILE" 2>&1
@@ -561,9 +539,8 @@ findtime = 60
 bantime = 600
 EOF
 
-    # Enhanced/Paranoid additions
-    if [[ "$SECURITY_LEVEL" != "basic" ]]; then
-        cat >>/etc/fail2ban/jail.local <<EOF
+    # Enhanced additions
+    cat >>/etc/fail2ban/jail.local <<EOF
 
 [recidive]
 enabled = true
@@ -601,7 +578,6 @@ filter = nginx-noproxy
 logpath = /var/log/nginx/access.log
 maxretry = 2
 EOF
-    fi
 
     # Start and enable fail2ban
     systemctl enable fail2ban >>"$LOG_FILE" 2>&1
