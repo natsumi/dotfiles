@@ -131,7 +131,7 @@ show_warning() {
 # Cleanup function
 cleanup() {
     if [[ -d "$TEMP_DIR" ]]; then
-        rm -rf "$TEMP_DIR"
+        # rm -rf "$TEMP_DIR"
     fi
 }
 
