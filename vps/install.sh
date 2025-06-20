@@ -2,7 +2,7 @@
 
 # VPS Setup Installer
 # This script downloads and runs the main VPS setup script
-# Usage: curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh | bash
+# Usage: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh)"
 
 set -euo pipefail
 
@@ -15,7 +15,8 @@ readonly NC='\033[0m'
 
 # Configuration
 readonly REPO_URL="https://github.com/natsumi/dotfiles"
-readonly REPO_BRANCH="main"
+# readonly REPO_BRANCH="main"
+readonly REPO_BRANCH="hetzner-vps"
 readonly SETUP_SCRIPT="vps/setup.sh"
 readonly TEMP_DIR="/tmp/vps-setup-$$"
 
@@ -49,7 +50,7 @@ check_os() {
     if [[ ! -f /etc/os-release ]]; then
         error_exit "Cannot determine OS version"
     fi
-    
+
     source /etc/os-release
     if [[ "$ID" != "ubuntu" ]] || [[ "$VERSION_ID" != "24.04" ]]; then
         error_exit "This installer is designed for Ubuntu 24.04 only (detected: $ID $VERSION_ID)"
@@ -58,7 +59,7 @@ check_os() {
 
 # Check internet connectivity
 check_internet() {
-    if ! ping -c 1 -q google.com &> /dev/null; then
+    if ! ping -c 1 -q google.com &>/dev/null; then
         error_exit "No internet connection available"
     fi
 }
@@ -67,13 +68,13 @@ check_internet() {
 check_dependencies() {
     local deps=(git curl wget)
     local missing=()
-    
+
     for cmd in "${deps[@]}"; do
-        if ! command -v "$cmd" &> /dev/null; then
+        if ! command -v "$cmd" &>/dev/null; then
             missing+=("$cmd")
         fi
     done
-    
+
     if [[ ${#missing[@]} -gt 0 ]]; then
         info "Installing missing dependencies: ${missing[*]}"
         apt-get update -qq
@@ -84,26 +85,26 @@ check_dependencies() {
 # Download setup files
 download_setup() {
     info "Downloading setup files..."
-    
+
     # Create temporary directory
     mkdir -p "$TEMP_DIR"
     cd "$TEMP_DIR"
-    
+
     # Clone repository (sparse checkout for efficiency)
-    git clone --depth 1 --branch "$REPO_BRANCH" --sparse "$REPO_URL" . &> /dev/null || \
+    git clone --depth 1 --branch "$REPO_BRANCH" --sparse "$REPO_URL" . &>/dev/null ||
         error_exit "Failed to download setup files"
-    
-    git sparse-checkout init --cone &> /dev/null
-    git sparse-checkout set vps &> /dev/null
-    
+
+    git sparse-checkout init --cone &>/dev/null
+    git sparse-checkout set vps &>/dev/null
+
     # Verify main script exists
     if [[ ! -f "$SETUP_SCRIPT" ]]; then
         error_exit "Setup script not found: $SETUP_SCRIPT"
     fi
-    
+
     # Make executable
     chmod +x "$SETUP_SCRIPT"
-    
+
     success "Setup files downloaded"
 }
 
@@ -144,22 +145,22 @@ main() {
     echo "   VPS Ubuntu 24.04 Setup Installer     "
     echo "========================================"
     echo
-    
+
     # Checks
     check_root
     check_os
     check_internet
     check_dependencies
-    
+
     # Show warning and get confirmation
     show_warning
-    
+
     # Download and run setup
     download_setup
-    
+
     info "Starting VPS setup..."
     echo
-    
+
     # Run the main setup script
     cd "$TEMP_DIR"
     bash "$SETUP_SCRIPT"
