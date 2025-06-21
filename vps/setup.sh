@@ -485,7 +485,7 @@ configure_firewall() {
     ufw allow 443/tcp comment 'HTTPS' >>"$LOG_FILE" 2>&1
 
     # Rate limiting for SSH
-    ufw limit "$DEFAULT_SSH_PORT/tcp" >>"$LOG_FILE" 2>&1
+    ufw allow "$DEFAULT_SSH_PORT/tcp" >>"$LOG_FILE" 2>&1
 
     # Enable UFW
     echo "y" | ufw enable >>"$LOG_FILE" 2>&1
