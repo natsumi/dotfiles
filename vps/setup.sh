@@ -416,7 +416,7 @@ LogLevel INFO
 
 # Authentication
 LoginGraceTime 30
-PermitRootLogin no
+PermitRootLogin prohibit-password
 StrictModes yes
 MaxAuthTries 3
 MaxSessions 3
@@ -445,7 +445,7 @@ ClientAliveCountMax 2
 UseDNS no
 
 # Restrict users and groups
-AllowUsers ${DEFAULT_USERNAME:-root}
+AllowUsers root ${DEFAULT_USERNAME:-}
 AllowGroups sudo ssh
 
 # Crypto settings (strong only)
@@ -768,7 +768,7 @@ Optional Features:
 Important Notes:
 1. SSH is now on port $DEFAULT_SSH_PORT (not 22)
 2. Password authentication is disabled - use SSH keys only
-3. Root login is disabled
+3. Root login is allowed with SSH keys only (no password)
 4. Firewall is active - only SSH, HTTP, and HTTPS are allowed
 
 Next Steps:
