@@ -195,12 +195,17 @@ interactive_config() {
     read -p "Enter SSH port (default: $DEFAULT_SSH_PORT): " ssh_port
     DEFAULT_SSH_PORT="${ssh_port:-$DEFAULT_SSH_PORT}"
 
+    # Docker installation
+    read -p "Install Docker? [y/N]: " install_docker_response
+    INSTALL_DOCKER="$install_docker_response"
+
     # Display configuration summary
     echo
     info "=== Configuration Summary ==="
     echo "Username: ${DEFAULT_USERNAME:-[no new user]}"
     echo "Hostname: $DEFAULT_HOSTNAME"
     echo "SSH Port: $DEFAULT_SSH_PORT"
+    echo "Install Docker: ${INSTALL_DOCKER:-N}"
     echo
 
     read -p "Proceed with this configuration? [Y/n]: " proceed
@@ -313,6 +318,63 @@ install_neovim() {
     apt-get update -y >>"$LOG_FILE" 2>&1
     apt-get install -y neovim >>"$LOG_FILE" 2>&1
     success "Neovim installed"
+}
+
+# Install Docker
+install_docker_engine() {
+    info "Installing Docker..."
+
+    # Install prerequisites
+    apt-get install -y \
+        ca-certificates \
+        curl \
+        gnupg \
+        lsb-release >>"$LOG_FILE" 2>&1
+
+    # Add Docker's official GPG key
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg >>"$LOG_FILE" 2>&1
+    chmod a+r /etc/apt/keyrings/docker.asc
+
+    # Set up the repository
+    echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >>"$LOG_FILE" 2>&1
+
+    # Install Docker Engine
+    apt-get update -y >>"$LOG_FILE" 2>&1
+    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin >>"$LOG_FILE" 2>&1
+
+    # Enable and start Docker
+    systemctl enable docker >>"$LOG_FILE" 2>&1
+    systemctl start docker >>"$LOG_FILE" 2>&1
+
+    # Add user to docker group if a user was created
+    if [[ -n "$DEFAULT_USERNAME" ]]; then
+        usermod -aG docker "$DEFAULT_USERNAME" >>"$LOG_FILE" 2>&1
+        info "Added $DEFAULT_USERNAME to docker group"
+    fi
+
+    # Configure Docker to start on boot
+    systemctl enable docker.service >>"$LOG_FILE" 2>&1
+    systemctl enable containerd.service >>"$LOG_FILE" 2>&1
+
+    # Optional: Configure Docker daemon for better security
+    cat >/etc/docker/daemon.json <<EOF
+{
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "10m",
+        "max-file": "3"
+    },
+    "storage-driver": "overlay2",
+    "live-restore": true,
+    "userland-proxy": false
+}
+EOF
+
+    systemctl restart docker >>"$LOG_FILE" 2>&1
+    success "Docker configuration applied"
 }
 
 # Create new user
@@ -764,6 +826,7 @@ Security Features:
 
 Optional Features:
 - Swap: Configured
+- Docker: ${DOCKER_INSTALLED:-Not installed}
 
 Important Notes:
 1. SSH is now on port $DEFAULT_SSH_PORT (not 22)
@@ -819,6 +882,15 @@ main() {
     # Package installation
     install_base_packages
     install_neovim
+
+    # Docker installation (optional)
+    if [[ "$INSTALL_DOCKER" =~ ^[Yy]$ ]]; then
+        install_docker_engine
+        DOCKER_INSTALLED="Installed"
+    else
+        info "Skipping Docker installation"
+        DOCKER_INSTALLED="Not installed"
+    fi
 
     # User and security setup
     create_user
