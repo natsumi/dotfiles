@@ -56,12 +56,10 @@ readonly BLUE='\033[0;34m'
 readonly NC='\033[0m' # No Color
 
 # Configuration variables
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 EXECUTION_DIR="$(pwd)"
 LOG_DIR="$EXECUTION_DIR"
-LOG_FILE="$LOG_DIR/vps-setup-$(date +%Y%m%d-%H%M%S).log"
-DOTFILES_DIR="$HOME/dotfiles"
-BACKUP_DIR="/root/server-setup-backup-$(date +%Y%m%d-%H%M%S)"
+LOG_FILE="$LOG_DIR/vps-setup/$(date +%Y%m%d-%H%M%S).log"
+BACKUP_DIR="$EXECUTION_DIR/vps-setup/backup/$(date +%Y%m%d-%H%M%S)"
 
 # Ensure log file can be created
 if ! touch "$LOG_FILE" 2>/dev/null; then
@@ -86,7 +84,7 @@ setup_logging() {
 }
 
 # Default values
-DEFAULT_SSH_PORT=2222
+DEFAULT_SSH_PORT=22
 DEFAULT_USERNAME=""
 DEFAULT_HOSTNAME=""
 
@@ -214,7 +212,36 @@ interactive_config() {
 
 # Update system
 update_system() {
-    info "Updating system packages..."
+    info "Configuring package mirror and updating system..."
+
+    # Backup original sources file
+    if [[ -f /etc/apt/sources.list.d/ubuntu.sources ]]; then
+        cp /etc/apt/sources.list.d/ubuntu.sources "$BACKUP_DIR/ubuntu.sources.backup"
+        info "Backed up original ubuntu.sources"
+    fi
+
+    # Configure Pilot Fiber mirror for Ubuntu 24.04
+    cat >/etc/apt/sources.list.d/ubuntu.sources <<EOF
+Types: deb
+URIs: https://mirror.pilotfiber.com/ubuntu/
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb
+URIs: https://mirror.pilotfiber.com/ubuntu/
+Suites: noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb-src
+URIs: https://mirror.pilotfiber.com/ubuntu/
+Suites: noble noble-updates noble-backports noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+EOF
+
+    success "Configured Pilot Fiber mirror"
 
     # Update package lists
     if ! apt-get update -y >>"$LOG_FILE" 2>&1; then
@@ -289,6 +316,7 @@ install_base_packages() {
         zsh
         stow
         tig
+        tree
 
         # Network tools
         net-tools
@@ -324,13 +352,6 @@ install_neovim() {
 install_docker_engine() {
     info "Installing Docker..."
 
-    # Install prerequisites
-    apt-get install -y \
-        ca-certificates \
-        curl \
-        gnupg \
-        lsb-release >>"$LOG_FILE" 2>&1
-
     # Add Docker's official GPG key
     install -m 0755 -d /etc/apt/keyrings
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
@@ -338,8 +359,9 @@ install_docker_engine() {
 
     # Set up the repository
     echo \
-        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-        $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >>"$LOG_FILE" 2>&1
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+        $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" |
+        sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
     # Install Docker Engine
     apt-get update -y >>"$LOG_FILE" 2>&1
