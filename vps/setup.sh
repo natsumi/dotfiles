@@ -510,7 +510,7 @@ PubkeyAuthentication yes
 AuthorizedKeysFile .ssh/authorized_keys
 
 # Password authentication (disabled for security)
-PasswordAuthentication no
+PasswordAuthentication yes
 PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 
@@ -905,6 +905,9 @@ main() {
     install_base_packages
     install_neovim
 
+    # User and security setup
+    create_user
+    configure_ssh
     # Docker installation (optional)
     if [[ "$INSTALL_DOCKER" =~ ^[Yy]$ ]]; then
         install_docker_engine
@@ -913,10 +916,6 @@ main() {
         info "Skipping Docker installation"
         DOCKER_INSTALLED="Not installed"
     fi
-
-    # User and security setup
-    create_user
-    configure_ssh
     configure_firewall
     configure_fail2ban
     configure_sshguard
