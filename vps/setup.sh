@@ -250,7 +250,6 @@ EOF
 
     # Upgrade packages with error handling
     apt-get upgrade -y >>"$LOG_FILE" 2>&1 || warning "Some packages failed to upgrade"
-    apt-get dist-upgrade -y >>"$LOG_FILE" 2>&1 || warning "Some packages failed to dist-upgrade"
     apt-get autoremove -y >>"$LOG_FILE" 2>&1 || true
 
     success "System updated"
@@ -397,6 +396,38 @@ EOF
 
     systemctl restart docker >>"$LOG_FILE" 2>&1
     success "Docker configuration applied"
+}
+
+# Install Lazydocker
+install_lazydocker() {
+    info "Installing Lazydocker..."
+
+    # Use the official install script
+    if curl -fsSL https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash >>"$LOG_FILE" 2>&1; then
+        # Move from user's local bin to system-wide location
+        if [[ -f "$HOME/.local/bin/lazydocker" ]]; then
+            mv "$HOME/.local/bin/lazydocker" /usr/local/bin/ >>"$LOG_FILE" 2>&1
+            chmod +x /usr/local/bin/lazydocker >>"$LOG_FILE" 2>&1
+
+            # Verify installation
+            if command -v lazydocker &>/dev/null; then
+                local version=$(lazydocker --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' || echo "unknown")
+                success "Lazydocker installed successfully"
+                LAZYDOCKER_INSTALLED="Installed (v${version})"
+            else
+                warning "Lazydocker moved but not found in PATH"
+                LAZYDOCKER_INSTALLED="Installation attempted"
+            fi
+        else
+            warning "Lazydocker binary not found at expected location"
+            LAZYDOCKER_INSTALLED="Installation failed"
+            return 1
+        fi
+    else
+        warning "Failed to run Lazydocker install script"
+        LAZYDOCKER_INSTALLED="Failed to install"
+        return 1
+    fi
 }
 
 # Create new user
@@ -849,6 +880,7 @@ Security Features:
 Optional Features:
 - Swap: Configured
 - Docker: ${DOCKER_INSTALLED:-Not installed}
+- Lazydocker: ${LAZYDOCKER_INSTALLED:-Not installed}
 
 Important Notes:
 1. SSH is now on port $DEFAULT_SSH_PORT (not 22)
@@ -912,9 +944,12 @@ main() {
     if [[ "$INSTALL_DOCKER" =~ ^[Yy]$ ]]; then
         install_docker_engine
         DOCKER_INSTALLED="Installed"
+        # Install Lazydocker after Docker
+        install_lazydocker
     else
         info "Skipping Docker installation"
         DOCKER_INSTALLED="Not installed"
+        LAZYDOCKER_INSTALLED="Not installed (requires Docker)"
     fi
     configure_firewall
     configure_fail2ban
