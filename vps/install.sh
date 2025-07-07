@@ -114,7 +114,7 @@ show_warning() {
     echo "  • Install and configure various system packages"
     echo "  • Modify SSH configuration (custom port)"
     echo "  • Enable firewall with strict rules"
-    echo "  • Configure security tools (fail2ban, sshguard)"
+    echo "  • Configure security tools (fail2ban, sshguard, CrowdSec)"
     echo "  • Potentially create a new admin user"
     echo "  • Apply various security hardening measures"
     echo
@@ -128,14 +128,14 @@ show_warning() {
 }
 
 # Cleanup function
-# cleanup() {
-#     if [[ -d "$TEMP_DIR" ]]; then
-#         rm -rf "$TEMP_DIR"
-#     fi
-# }
+cleanup() {
+    if [[ -d "$TEMP_DIR" ]]; then
+        rm -rf "$TEMP_DIR"
+    fi
+}
 
 # Set trap for cleanup
-# trap cleanup EXIT
+trap cleanup EXIT
 
 # Main execution
 main() {
