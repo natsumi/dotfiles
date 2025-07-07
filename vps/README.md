@@ -15,6 +15,7 @@ A comprehensive, security-focused setup script for Ubuntu 24.04 VPS servers with
 - **SSH Hardening**: Custom port, key-only authentication, disable root login
 - **Firewall**: UFW with strict rules and rate limiting
 - **Intrusion Prevention**: Fail2ban + SSHGuard dual protection
+- **CrowdSec**: Optional modern security engine with crowd-sourced threat intelligence
 - **Automatic Updates**: Unattended security patches
 - **Security Audit**: Post-installation security check
 
@@ -69,7 +70,8 @@ During installation, you'll be prompted for:
 1. **Admin Username** - Create a non-root sudo user (optional)
 2. **Hostname** - Set server hostname
 3. **SSH Port** - Custom SSH port (default: 2222)
-4. **System Monitoring** - Enable additional monitoring tools (default: yes)
+4. **Docker** - Install Docker and Docker Compose (optional)
+5. **CrowdSec** - Install modern threat detection and response system (optional)
 
 The script automatically uses **Enhanced** security settings with optimal security configurations.
 
@@ -81,6 +83,7 @@ The script automatically configures **Enhanced** security settings that include:
 - **UFW Firewall**: Strict rules with rate limiting for SSH connections
 - **Fail2ban**: SSH protection with automatic IP banning
 - **SSHGuard**: Additional brute-force protection layer
+- **CrowdSec**: Modern collaborative security engine with crowd-sourced threat intelligence
 - **Automatic Updates**: Unattended security patches
 - **Extended Fail2ban Jails**: Protection against various attack types
 
@@ -127,8 +130,42 @@ sudo fail2ban-client status sshd
 # Check SSHGuard status
 sudo systemctl status sshguard
 
+# Check CrowdSec status (if installed)
+sudo systemctl status crowdsec
+sudo cscli metrics
+sudo cscli decisions list
+
 # View blocked IPs
 sudo iptables -L -n -v
+```
+
+### CrowdSec Management (if installed)
+
+```bash
+# Check CrowdSec status and metrics
+sudo systemctl status crowdsec
+sudo cscli metrics
+
+# View active decisions (blocked IPs)
+sudo cscli decisions list
+
+# Check installed collections and scenarios
+sudo cscli collections list
+sudo cscli scenarios list
+
+# View CrowdSec alerts
+sudo cscli alerts list
+
+# Manually ban/unban an IP
+sudo cscli decisions add --ip 1.2.3.4 --duration 24h --reason "Manual ban"
+sudo cscli decisions delete --ip 1.2.3.4
+
+# Update CrowdSec hub components
+sudo cscli hub update
+sudo cscli hub upgrade
+
+# View logs
+sudo journalctl -u crowdsec -f
 ```
 
 ## Customization
@@ -228,34 +265,3 @@ If you're locked out:
    - Don't run services as root
    - Use sudo instead of root login
    - Limit user permissions
-
-## Contributing
-
-Feel free to submit issues and enhancement requests!
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Ubuntu security guides and best practices
-- Fail2ban and SSHGuard communities
-- The broader open-source security community
-
-## Support
-
-For issues specific to this script:
-- Open an issue on GitHub
-- Check existing issues for solutions
-
-For general Ubuntu/VPS help:
-- [Ubuntu Forums](https://ubuntuforums.org/)
-- [Ask Ubuntu](https://askubuntu.com/)
-- Your VPS provider's documentation
