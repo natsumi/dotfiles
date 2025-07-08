@@ -1,0 +1,63 @@
+[DEFAULT]
+# Ban time and retry settings
+bantime = 3600
+findtime = 600
+maxretry = 3
+destemail = root@localhost
+sendername = Fail2Ban
+action = %(action_mwl)s
+
+# Backend
+backend = systemd
+
+[sshd]
+enabled = true
+port = {{SSH_PORT}}
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 3600
+
+[sshd-ddos]
+enabled = true
+port = {{SSH_PORT}}
+filter = sshd-ddos
+logpath = /var/log/auth.log
+maxretry = 10
+findtime = 60
+bantime = 600
+
+[recidive]
+enabled = true
+filter = recidive
+logpath = /var/log/fail2ban.log
+action = %(action_mwl)s
+bantime = 86400
+findtime = 86400
+maxretry = 2
+
+# Traefik configurations
+[traefik-auth]
+enabled = true
+port = http,https
+filter = traefik-auth
+logpath = /var/log/traefik/access.log
+maxretry = 5
+bantime = 3600
+
+[traefik-ratelimit]
+enabled = true
+port = http,https
+filter = traefik-ratelimit
+logpath = /var/log/traefik/access.log
+maxretry = 100
+findtime = 60
+bantime = 600
+
+[traefik-badbots]
+enabled = true
+port = http,https
+filter = traefik-badbots
+logpath = /var/log/traefik/access.log
+maxretry = 2
+bantime = 86400
