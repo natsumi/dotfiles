@@ -6,7 +6,6 @@ A comprehensive, security-focused setup script for Ubuntu 24.04 VPS servers with
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh)"
-
 ```
 
 ## Features
@@ -228,34 +227,3 @@ If you're locked out:
    - Don't run services as root
    - Use sudo instead of root login
    - Limit user permissions
-
-## Contributing
-
-Feel free to submit issues and enhancement requests!
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Ubuntu security guides and best practices
-- Fail2ban and SSHGuard communities
-- The broader open-source security community
-
-## Support
-
-For issues specific to this script:
-- Open an issue on GitHub
-- Check existing issues for solutions
-
-For general Ubuntu/VPS help:
-- [Ubuntu Forums](https://ubuntuforums.org/)
-- [Ask Ubuntu](https://askubuntu.com/)
-- Your VPS provider's documentation
