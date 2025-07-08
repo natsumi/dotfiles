@@ -1,0 +1,15 @@
+{
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(bin/rails:*)",
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(just:*)",
+      "Bash(yarn build)",
+      "Bash(yarn list:*)"
+    ]
+  }
+}
