@@ -233,10 +233,10 @@ update_system() {
     fi
 
     # Configure Pilot Fiber mirror for Ubuntu 24.04
-    if [[ -f "$CONFIG_DIR/ubuntu.sources" ]]; then
-        cp "$CONFIG_DIR/ubuntu.sources" /etc/apt/sources.list.d/ubuntu.sources
+    if [[ -f "$CONFIG_DIR/apt/ubuntu.sources" ]]; then
+        cp "$CONFIG_DIR/apt/ubuntu.sources" /etc/apt/sources.list.d/ubuntu.sources
     else
-        error_exit "Ubuntu sources configuration file not found: $CONFIG_DIR/ubuntu.sources"
+        error_exit "Ubuntu sources configuration file not found: $CONFIG_DIR/apt/ubuntu.sources"
     fi
 
     success "Configured Pilot Fiber mirror"
@@ -379,10 +379,10 @@ install_docker_engine() {
     systemctl enable containerd.service >>"$LOG_FILE" 2>&1
 
     # Optional: Configure Docker daemon for better security
-    if [[ -f "$CONFIG_DIR/docker-daemon.json" ]]; then
-        cp "$CONFIG_DIR/docker-daemon.json" /etc/docker/daemon.json
+    if [[ -f "$CONFIG_DIR/docker/daemon.json" ]]; then
+        cp "$CONFIG_DIR/docker/daemon.json" /etc/docker/daemon.json
     else
-        warning "Docker daemon configuration file not found: $CONFIG_DIR/docker-daemon.json"
+        warning "Docker daemon configuration file not found: $CONFIG_DIR/docker/daemon.json"
     fi
 
     systemctl restart docker >>"$LOG_FILE" 2>&1
@@ -503,13 +503,13 @@ configure_ssh() {
     cp /etc/ssh/sshd_config "$BACKUP_DIR/sshd_config.backup"
 
     # Create new sshd_config from template
-    if [[ -f "$CONFIG_DIR/sshd_config.template" ]]; then
+    if [[ -f "$CONFIG_DIR/ssh/sshd_config.template" ]]; then
         # Replace placeholders in template
         sed -e "s/{{SSH_PORT}}/$DEFAULT_SSH_PORT/g" \
             -e "s/{{USERNAME}}/${DEFAULT_USERNAME:-}/g" \
-            "$CONFIG_DIR/sshd_config.template" > /etc/ssh/sshd_config
+            "$CONFIG_DIR/ssh/sshd_config.template" > /etc/ssh/sshd_config
     else
-        error_exit "SSH configuration template not found: $CONFIG_DIR/sshd_config.template"
+        error_exit "SSH configuration template not found: $CONFIG_DIR/ssh/sshd_config.template"
     fi
 
     # Test SSH configuration
@@ -556,24 +556,24 @@ configure_fail2ban() {
     cp /etc/fail2ban/jail.conf "$BACKUP_DIR/jail.conf.backup" 2>/dev/null || true
 
     # Create jail.local from template
-    if [[ -f "$CONFIG_DIR/jail.local.template" ]]; then
+    if [[ -f "$CONFIG_DIR/fail2ban/jail.local.template" ]]; then
         # Replace placeholders in template
         sed -e "s/{{SSH_PORT}}/$DEFAULT_SSH_PORT/g" \
-            "$CONFIG_DIR/jail.local.template" > /etc/fail2ban/jail.local
+            "$CONFIG_DIR/fail2ban/jail.local.template" > /etc/fail2ban/jail.local
     else
-        error_exit "Fail2ban configuration template not found: $CONFIG_DIR/jail.local.template"
+        error_exit "Fail2ban configuration template not found: $CONFIG_DIR/fail2ban/jail.local.template"
     fi
 
     # Copy Traefik filter files
-    if [[ -d "$CONFIG_DIR/fail2ban-filters" ]]; then
-        for filter in "$CONFIG_DIR/fail2ban-filters"/*.conf; do
+    if [[ -d "$CONFIG_DIR/fail2ban/filters" ]]; then
+        for filter in "$CONFIG_DIR/fail2ban/filters"/*.conf; do
             if [[ -f "$filter" ]]; then
                 cp "$filter" /etc/fail2ban/filter.d/
                 info "Copied filter: $(basename "$filter")"
             fi
         done
     else
-        warning "Fail2ban filter directory not found: $CONFIG_DIR/fail2ban-filters"
+        warning "Fail2ban filter directory not found: $CONFIG_DIR/fail2ban/filters"
     fi
 
     # Start and enable fail2ban
@@ -588,17 +588,17 @@ configure_sshguard() {
     info "Configuring SSHGuard..."
 
     # Create SSHGuard configuration from template
-    if [[ -f "$CONFIG_DIR/sshguard.conf.template" ]]; then
-        cp "$CONFIG_DIR/sshguard.conf.template" /etc/sshguard/sshguard.conf
+    if [[ -f "$CONFIG_DIR/sshguard/sshguard.conf.template" ]]; then
+        cp "$CONFIG_DIR/sshguard/sshguard.conf.template" /etc/sshguard/sshguard.conf
     else
-        error_exit "SSHGuard configuration template not found: $CONFIG_DIR/sshguard.conf.template"
+        error_exit "SSHGuard configuration template not found: $CONFIG_DIR/sshguard/sshguard.conf.template"
     fi
 
     # Create whitelist from template
-    if [[ -f "$CONFIG_DIR/sshguard-whitelist.template" ]]; then
-        cp "$CONFIG_DIR/sshguard-whitelist.template" /etc/sshguard/whitelist
+    if [[ -f "$CONFIG_DIR/sshguard/whitelist.template" ]]; then
+        cp "$CONFIG_DIR/sshguard/whitelist.template" /etc/sshguard/whitelist
     else
-        warning "SSHGuard whitelist template not found: $CONFIG_DIR/sshguard-whitelist.template"
+        warning "SSHGuard whitelist template not found: $CONFIG_DIR/sshguard/whitelist.template"
         # Create basic whitelist
         cat >/etc/sshguard/whitelist <<EOF
 # SSHGuard whitelist
@@ -636,17 +636,17 @@ configure_auto_updates() {
     info "Configuring automatic security updates..."
 
     # Configure unattended-upgrades
-    if [[ -f "$CONFIG_DIR/50unattended-upgrades" ]]; then
-        cp "$CONFIG_DIR/50unattended-upgrades" /etc/apt/apt.conf.d/50unattended-upgrades
+    if [[ -f "$CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades" ]]; then
+        cp "$CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades" /etc/apt/apt.conf.d/50unattended-upgrades
     else
-        error_exit "Unattended upgrades configuration not found: $CONFIG_DIR/50unattended-upgrades"
+        error_exit "Unattended upgrades configuration not found: $CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades"
     fi
 
     # Enable automatic updates
-    if [[ -f "$CONFIG_DIR/20auto-upgrades" ]]; then
-        cp "$CONFIG_DIR/20auto-upgrades" /etc/apt/apt.conf.d/20auto-upgrades
+    if [[ -f "$CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades" ]]; then
+        cp "$CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades" /etc/apt/apt.conf.d/20auto-upgrades
     else
-        error_exit "Auto upgrades configuration not found: $CONFIG_DIR/20auto-upgrades"
+        error_exit "Auto upgrades configuration not found: $CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades"
     fi
 
     systemctl enable unattended-upgrades >>"$LOG_FILE" 2>&1
