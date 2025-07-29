@@ -23,6 +23,35 @@ with file `magi65.layout.json`
 ## Layout 2
 ![Layout 2](layout2.png)
 
+# Commands & Instructions
+
+## Activation and Connectivity
+| Action | Command | Notes |
+| --- | --- | --- |
+| Initial Activation | Plug in USB or long-press `FN` + `ESC` for 5s | Enters 2.4GHz pairing mode |
+| Bluetooth Pairing | Short-press `FN` + `Q`, then long-press both for 5s | Indicator flashes blue. Select "[IQUNIX MG65 BT1]" on your device. Pair more devices with `FN` + `W`/`E` |
+| 2.4GHz Pairing | Short-press `FN` + `R` and plug in receiver | To re-pair, short-press `FN` + `R`, then long-press both for 5s |
+| Switch Devices | `FN` + `Q`/`W`/`E`/`R`/`T` | Switch between paired devices |
+| Power On/Off | Long-press `FN` + `ESC` for 5s | |
+
+## Customization and Functionality
+| Action | Command | Notes |
+| --- | --- | --- |
+| Lighting Strip (Pro) | `FN` + `{` to toggle, `FN` + `}` to change color | |
+| Type `~` | `Fn` + `Left Shift` + `\|` | |
+| Type ` | `Fn` + `\|` | |
+| Screenshot (Windows) | `Shift` + `Win` + `S` | |
+| Screenshot (Mac) | `Command` + `Shift` + `3` or `Command` + `Shift` + `4` | |
+| F-row Access (Mac) | `FN` + `M` to switch between multimedia and function keys | Default is multimedia |
+| F-row Access (Win) | `FN` + `M` to enable function layer, then `FN` + `[number]` | Media functions not available in Windows mode |
+| Switch OS Mode | Long-press `FN` + `TAB` for 5s | Default is macOS |
+| Check Battery | `FN` + `B` | Indicator below Caps Lock flashes to show percentage |
+
+## Troubleshooting
+| Issue | Solution |
+| --- | --- |
+| VIA Key Mapping Issues | Set system keyboard layout to QWERTY (US), then reconnect keyboard and reopen VIA |
+
 
 
 # Specs
