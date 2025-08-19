@@ -1,5 +1,6 @@
 *.lock.json
 
+.vscode
 neovim/.config/nvim/plugin
 
 # Created by https://www.gitignore.io/api/emacs,osx
