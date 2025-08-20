@@ -1,255 +1,138 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# =============================================================================
-# System Bootstrap Script
-# =============================================================================
-# This script automates the setup of a new macOS system by installing and
-# configuring essential software and development tools.
-#
-# Requirements:
-# - macOS operating system
-# - Administrative privileges
-#
-# Usage: ./bootstrap.sh
-# =============================================================================
+# New Mac setup
+# Usage: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
 
-###############################################################################
-# Setup script level options
-###############################################################################
-
-# Exit on error, undefined variables, and pipe failures
 set -euo pipefail
 
-# Script directory for relative paths
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Colors for better readability
-readonly GREEN='\033[0;32m'
-readonly NC='\033[0m' # No Color
+# Color definitions
 readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m'
 
-# Log levels
-log_info() { printf "${GREEN}%s${NC}\n" "$*" >&2; }
-log_error() { printf "${RED}%s${NC}\n" "$*" >&2; }
+# Configuration
+readonly REPO_URL="https://github.com/natsumi/dotfiles"
+readonly REPO_BRANCH="main"
+readonly DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dev/dotfiles}"
 
-# Helper function to prompt user for yes/no
-prompt_user() {
-  local message=$1
-  local choice
-
-  read -r -p "$(printf "${GREEN}%s [Y/n]:${NC} " "$message")" choice
-  choice=${choice:-Y} # Default to Y if no input
-  [[ $choice =~ ^[Yy]$ ]]
+# Functions
+error_exit() {
+    echo -e "${RED}ERROR: $1${NC}" >&2
+    exit 1
 }
 
-# Helper function to run a step if user agrees
-run_step() {
-  local step_name=$1
-  shift # Remove first argument, leaving remaining args as commands
-
-  if prompt_user "Do you want to $step_name?"; then
-    log_info "Running: $step_name..."
-
-    local cmd
-    for cmd in "$@"; do
-      # log_info "Executing: $cmd"
-      log_info "Executing:"
-      if ! eval "$cmd"; then
-        log_error "Failed to execute: $cmd"
-        return 1
-      fi
-    done
-
-    log_info "Completed: $step_name"
-  else
-    log_info "Skipping: $step_name"
-  fi
+info() {
+    echo -e "${BLUE}ℹ $1${NC}"
 }
 
-# Cleanup function
-cleanup() {
-  # Add cleanup tasks here if needed
-  log_info "Cleaning up..."
+success() {
+    echo -e "${GREEN}✓ $1${NC}"
 }
 
-# Trap errors and interrupts
-trap cleanup EXIT
-trap 'log_error "Error occurred on line $LINENO. Exiting..."; exit 1' ERR
+warning() {
+    echo -e "${YELLOW}⚠ $1${NC}"
+}
 
-# Installation step functions
-# Since homebrew executs based on a curl file download, it doens't work well with run_step
-# define and execute it within its own function
+verify_macos() {
+    if [[ "$OSTYPE" != "darwin"* ]]; then
+        error_exit "This script is designed for macOS only. Current OS: $OSTYPE"
+    fi
+    success "Verified running on macOS"
+}
+
+setup_dotfiles_dir() {
+    info "Setting up dotfiles directory: $DOTFILES_DIR"
+
+    if [[ -d "$DOTFILES_DIR" ]]; then
+        warning "Directory $DOTFILES_DIR already exists"
+        return 0
+    fi
+
+    mkdir -p "$(dirname "$DOTFILES_DIR")" || error_exit "Failed to create parent directory"
+    success "Created dotfiles directory structure"
+}
+
+download_repository() {
+    info "Downloading dotfiles repository..."
+
+    if [[ -d "$DOTFILES_DIR" ]] && [[ -n "$(ls -A "$DOTFILES_DIR" 2>/dev/null)" ]]; then
+        warning "Directory $DOTFILES_DIR already exists and is not empty"
+        info "Skipping download to avoid overwriting existing files"
+        return 0
+    fi
+
+    info "Downloading repository as archive..."
+    local temp_file="/tmp/dotfiles.tar.gz"
+    curl -fsSL "$REPO_URL/archive/refs/heads/$REPO_BRANCH.tar.gz" -o "$temp_file" || error_exit "Failed to download repository"
+
+    mkdir -p "$DOTFILES_DIR" || error_exit "Failed to create dotfiles directory"
+    tar -xzf "$temp_file" -C "$DOTFILES_DIR" --strip-components=1 || error_exit "Failed to extract repository"
+    rm -f "$temp_file"
+    success "Downloaded and extracted dotfiles repository"
+}
+
 install_homebrew() {
-  if prompt_user "Install Homebrew?"; then
-    log_info "Running: Install Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    log_info "Completed: Install Homebrew"
-  else
-    log_info "Skipping: Install Homebrew"
-  fi
+    if command -v brew &> /dev/null; then
+        success "Homebrew is already installed"
+        return 0
+    fi
+
+    info "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || error_exit "Failed to install Homebrew"
+
+    # Add Homebrew to PATH for current session
+    if [[ -f "/opt/homebrew/bin/brew" ]]; then
+        export PATH="/opt/homebrew/bin:$PATH"
+    elif [[ -f "/usr/local/bin/brew" ]]; then
+        export PATH="/usr/local/bin:$PATH"
+    fi
+
+    success "Homebrew installed successfully"
 }
 
-set_hostname() {
-  run_step "Change hostname / computer name" \
-    "${SCRIPT_DIR}/set_hostname.sh"
+install_mise() {
+    if command -v mise &> /dev/null; then
+        success "mise is already installed"
+        return 0
+    fi
+
+    info "Installing mise..."
+    brew install mise || error_exit "Failed to install mise"
+
+    # Initialize mise for current session
+    eval "$(mise activate bash)"
+
+    success "mise installed successfully"
 }
 
-install_desktop_apps() {
-  run_step "Install Desktop Apps" \
-    "${SCRIPT_DIR}/install_desktop_apps.sh"
-}
+install_ruby() {
+    info "Installing latest Ruby via mise..."
 
-install_brew_packages() {
-  run_step "Install Brew packages" \
-    "brew bundle --file=homebrew/Brewfile"
-}
+    info "Installing Ruby...."
+    mise install ruby@latest || error_exit "Failed to install Ruby"
+    mise use -g ruby@latest || error_exit "Failed to set global Ruby version"
 
-configure_git() {
-  run_step "Configure git" \
-    "${SCRIPT_DIR}/set_git_config.sh"
-}
-
-install_zplug() {
-  if prompt_user "Install Zplug?"; then
-    log_info "Running: Install Zplug..."
-    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-    log_info "Completed: Install Zplug"
-  else
-    log_info "Skipping: Install Zplug"
-  fi
-}
-
-install_prezto() {
-  local prezto_dir="${ZDOTDIR:-$HOME}/.zprezto"
-  if prompt_user "Install Prezto?"; then
-    log_info "Running: Install Prezto..."
-    git clone --recursive --depth 1 https://github.com/sorin-ionescu/prezto.git "${prezto_dir}"
-    git clone --recursive --depth 1 https://github.com/belak/prezto-contrib "${prezto_dir}/contrib"
-    log_info "Completed: Install Prezto"
-  else
-    log_info "Skipping: Install Prezto"
-  fi
-}
-
-apply_symlinks() {
-  run_step "Apply symlinks" \
-    "${SCRIPT_DIR}/apply_symlinks.sh"
-}
-
-install_dev_env() {
-  run_step "Install dev environment" \
-    "${SCRIPT_DIR}/install_dev_env.sh"
-}
-
-# Generate SSH key for the user
-generate_ssh_key() {
-  if prompt_user "Generate SSH key?"; then
-    log_info "Running: Generate SSH key..."
-
-    # Prompt for email
-    read -r -p "Enter your email for SSH key: " email
-
-    # Generate SSH key with provided email
-    ssh-keygen -t ed25519 -C "$email"
-
-    # Start ssh-agent and add key
-    # eval "$(ssh-agent -s)"
-    # ssh-add ~/.ssh/id_ed25519
-
-    log_info "Completed: Generate SSH key"
-  else
-    log_info "Skipping: Generate SSH key"
-  fi
-}
-
-# Helper function to check system requirements
-check_system_requirements() {
-  if [[ "$(uname)" != "Darwin" ]]; then
-    log_error "This script is designed for macOS only"
-    exit 1
-  fi
-
-  if ! command -v curl &>/dev/null; then
-    log_error "curl is required but not installed"
-    exit 1
-  fi
-}
-
-show_menu() {
-  clear
-  echo "==================================================="
-  echo "               System Bootstrap Menu                 "
-  echo "==================================================="
-  echo "1)  Install Homebrew"
-  echo "2)  Set Hostname"
-  echo "3)  Install Desktop Apps"
-  echo "4)  Install Brew Packages"
-  echo "5)  Configure Git"
-  echo "6)  Generate SSH Key"
-  echo "7)  Install Zplug"
-  echo "8)  Install Prezto"
-  echo "9)  Apply Symlinks"
-  echo "10) Install Dev Environment"
-  echo "---------------------------------------------------"
-  echo "A)  Run All Steps"
-  echo "Q)  Quit"
-  echo "==================================================="
-  echo -n "Please select an option: "
+    success "Ruby installed and set as global version"
 }
 
 main() {
-  log_info "Starting system bootstrap..."
+    info "Starting macOS bootstrap process..."
 
-  check_system_requirements
+    verify_macos
+    setup_dotfiles_dir
+    download_repository
+    install_homebrew
+    install_mise
+    install_ruby
 
-  local choice
-  while true; do
-    show_menu
-    read -r choice
-
-    case $choice in
-    1) install_homebrew ;;
-    2) set_hostname ;;
-    3) install_desktop_apps ;;
-    4) install_brew_packages ;;
-    5) configure_git ;;
-    6) generate_ssh_key ;;
-    7) install_zplug ;;
-    8) install_prezto ;;
-    9) apply_symlinks ;;
-    10) install_dev_env ;;
-    [Aa])
-      install_homebrew
-      set_hostname
-      install_desktop_apps
-      install_brew_packages
-      configure_git
-      generate_ssh_key
-      install_zplug
-      install_prezto
-      apply_symlinks
-      install_dev_env
-      ;;
-    [Qq])
-      log_info "Exiting bootstrap script..."
-      break
-      ;;
-    *)
-      log_error "Invalid option. Please try again."
-      sleep 2
-      ;;
-    esac
-
-    if [[ $choice != [Qq] ]]; then
-      echo
-      read -n 1 -s -r -p "Press any key to continue..."
-    fi
-  done
-
-  log_info "Bootstrap complete!"
+    success "Bootstrap completed successfully!"
+    info "Next steps:"
+    info "  1. Source your shell configuration: source ~/.zshrc"
+    info "  2. Run the setup script: cd $DOTFILES_DIR && ./bin/apply_symlinks.sh"
+    info "  3. Install desktop applications: ./bin/install_desktop_apps.sh"
 }
 
-# Only execute if script is run directly (not sourced)
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  main "$@"
-fi
+# Run main function
+main "$@"
