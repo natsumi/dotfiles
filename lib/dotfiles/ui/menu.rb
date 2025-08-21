@@ -7,7 +7,7 @@ module Dotfiles
     class Menu
       KEYS = {
         up: "\e[A",
-        down: "\e[B", 
+        down: "\e[B",
         enter: "\r",
         space: " ",
         escape: "\e",
@@ -41,7 +41,7 @@ module Dotfiles
           show
           input = get_input
           action = handle_input(input)
-          
+
           case action
           when :quit
             break
@@ -52,7 +52,7 @@ module Dotfiles
             return execute_selected_steps
           end
         end
-        
+
         nil
       end
 
@@ -67,7 +67,7 @@ module Dotfiles
       def select_step(index)
         return unless valid_index?(index)
         step = @steps[index]
-        
+
         if @selected_steps.include?(step)
           @selected_steps.delete(step)
         else
@@ -85,7 +85,7 @@ module Dotfiles
 
       def execute_selected_steps
         return [] if @selected_steps.empty?
-        
+
         selected_array = @selected_steps.to_a
         @selected_steps.clear
         selected_array
@@ -125,7 +125,7 @@ module Dotfiles
 
       def display_steps
         puts @formatter.section("Available Steps (#{@steps.length})")
-        
+
         if @steps.empty?
           puts @formatter.warning("No steps available")
           return
@@ -134,20 +134,20 @@ module Dotfiles
         @steps.each_with_index do |step, index|
           is_current = index == @current_index
           is_selected = @selected_steps.include?(step)
-          
+
           cursor = is_current ? ">" : " "
           checkbox = is_selected ? "✓" : " "
           status_icon = @formatter.status_icon(step.status)
-          
-          line = sprintf("%s [%s] %s %s - %s", 
+
+          line = sprintf("%s [%s] %s %s - %s",
             cursor, checkbox, status_icon, step.name, step.description)
-          
+
           if is_current
             puts @formatter.highlight(line)
           else
             puts line
           end
-          
+
           # Show dependencies if any
           if step.dependencies.any?
             dep_text = "    Dependencies: #{step.dependencies.join(', ')}"
@@ -172,7 +172,16 @@ module Dotfiles
       end
 
       def get_input
-        $stdin.getch
+        char = $stdin.getch
+
+        # Handle escape sequences (arrow keys, etc.)
+        if char == "\e"
+          # Read the next two characters to complete the sequence
+          char += $stdin.getch  # Should be '['
+          char += $stdin.getch  # Should be 'A', 'B', 'C', or 'D'
+        end
+
+        char
       end
 
       def handle_input(input)
@@ -201,13 +210,13 @@ module Dotfiles
             select_step(index)
           end
         end
-        
+
         nil
       end
 
       def move_cursor(direction)
         return if @steps.empty?
-        
+
         new_index = @current_index + direction
         @current_index = new_index.clamp(0, @steps.length - 1)
       end

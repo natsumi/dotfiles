@@ -39,11 +39,11 @@ module Dotfiles
 
       def perform_step
         start_time = Time.now
-        
+
         begin
           stdout, stderr, status = Open3.capture3(@command, timeout: @timeout)
           duration = Time.now - start_time
-          
+
           if status.success?
             if @expected_output && !stdout.include?(@expected_output)
               return Core::StepResult.failure(
@@ -51,19 +51,19 @@ module Dotfiles
                 output: stdout,
                 step_name: @name,
                 duration: duration,
-                context: { 
+                context: {
                   command: @command,
                   stderr: stderr,
                   exit_code: status.exitstatus
                 }
               )
             end
-            
+
             Core::StepResult.success(
               output: stdout,
               step_name: @name,
               duration: duration,
-              context: { 
+              context: {
                 command: @command,
                 exit_code: status.exitstatus
               }
@@ -74,21 +74,21 @@ module Dotfiles
               output: stdout,
               step_name: @name,
               duration: duration,
-              context: { 
+              context: {
                 command: @command,
                 stderr: stderr,
                 exit_code: status.exitstatus
               }
             )
           end
-          
+
         rescue Timeout::Error
           duration = Time.now - start_time
           Core::StepResult.failure(
             error: "Command timed out after #{@timeout} seconds",
             step_name: @name,
             duration: duration,
-            context: { 
+            context: {
               command: @command,
               timeout: @timeout
             }
@@ -133,14 +133,14 @@ module Dotfiles
       def initialize(package_name:, install_command: nil, check_command: nil)
         @package_name = package_name
         @check_command = check_command || "which #{package_name}"
-        
+
         install_cmd = install_command || "brew install #{package_name}"
-        
+
         super(
           command: install_cmd,
           optional: true
         )
-        
+
         @name = "install_#{package_name}"
         @description = "Install package: #{package_name}"
       end
