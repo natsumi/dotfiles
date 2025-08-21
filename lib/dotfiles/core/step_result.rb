@@ -5,7 +5,7 @@ module Dotfiles
     class StepResult
       attr_reader :success, :output, :error, :step_name, :duration, :skipped, :context
 
-      def initialize(success:, output: '', error: nil, step_name: nil, duration: 0, skipped: false, context: {})
+      def initialize(success:, output: "", error: nil, step_name: nil, duration: 0, skipped: false, context: {})
         @success = success
         @output = output
         @error = error
@@ -32,7 +32,7 @@ module Dotfiles
       end
 
       def error_message
-        @error || ''
+        @error || ""
       end
 
       def formatted_duration
@@ -55,7 +55,7 @@ module Dotfiles
         }
       end
 
-      def self.success(output: '', step_name: nil, duration: 0, context: {})
+      def self.success(output: "", step_name: nil, duration: 0, context: {})
         new(
           success: true,
           output: output,
@@ -65,7 +65,7 @@ module Dotfiles
         )
       end
 
-      def self.failure(error:, output: '', step_name: nil, duration: 0, context: {})
+      def self.failure(error:, output: "", step_name: nil, duration: 0, context: {})
         new(
           success: false,
           output: output,
@@ -79,7 +79,7 @@ module Dotfiles
       def self.skipped(step_name: nil, context: {})
         new(
           success: true,
-          output: 'Step skipped',
+          output: "Step skipped",
           step_name: step_name,
           skipped: true,
           context: context

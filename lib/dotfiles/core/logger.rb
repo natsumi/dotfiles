@@ -82,11 +82,11 @@ module Dotfiles
 
       def progress(current, total, description: nil)
         return unless should_log?(:info)
-        
+
         percentage = (current.to_f / total * 100).round(1)
         progress_bar = build_progress_bar(current, total)
         desc_text = description ? " #{description}" : ""
-        
+
         message = "[#{current}/#{total}] #{progress_bar} #{percentage}%#{desc_text}"
         log_raw(message)
       end
@@ -125,10 +125,10 @@ module Dotfiles
       def format_message(level, message, context: {}, color: :white, icon: nil)
         timestamp = Time.now.strftime("%H:%M:%S")
         level_text = level.to_s.upcase.ljust(5)
-        icon_text = @use_color && icon ? "#{ICONS[icon]} " : ""
-        
+        icon_text = (@use_color && icon) ? "#{ICONS[icon]} " : ""
+
         formatted = "[#{timestamp}] #{level_text} #{icon_text}#{message}"
-        
+
         if context.any?
           context_text = context.map { |k, v| "#{k}=#{v}" }.join(" ")
           formatted += " (#{context_text})"
@@ -152,7 +152,7 @@ module Dotfiles
       def build_progress_bar(current, total, width: 20)
         completed = (current.to_f / total * width).round
         remaining = width - completed
-        
+
         bar = "█" * completed + "░" * remaining
         @use_color ? colorize(bar, :cyan) : bar
       end

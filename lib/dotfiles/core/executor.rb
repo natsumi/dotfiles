@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'step'
-require_relative 'step_result'
+require_relative "step"
+require_relative "step_result"
 
 module Dotfiles
   module Core
@@ -24,24 +24,24 @@ module Dotfiles
       def execute_all
         ordered_steps = resolve_dependencies
         total_steps = ordered_steps.length
-        
+
         ordered_steps.each_with_index do |step, index|
           puts "[#{index + 1}/#{total_steps}] Executing: #{step.name}"
-          
+
           result = if @dry_run
             dry_run_step(step)
           else
             step.execute
           end
-          
+
           @results << result
-          
+
           if result.failure? && !step_is_optional?(step)
             puts "Critical step failed: #{step.name}"
             break
           end
         end
-        
+
         execution_summary
       end
 
@@ -50,14 +50,14 @@ module Dotfiles
         return nil unless step
 
         dependencies = resolve_step_dependencies(step)
-        
+
         dependencies.each do |dep_step|
           next if dep_step.completed?
-          
+
           puts "Executing dependency: #{dep_step.name}"
           result = @dry_run ? dry_run_step(dep_step) : dep_step.execute
           @results << result
-          
+
           if result.failure?
             puts "Dependency failed: #{dep_step.name}"
             return result
@@ -112,7 +112,7 @@ module Dotfiles
 
       def visit_step(step, visited, temp_visited, ordered)
         return if visited.include?(step)
-        
+
         if temp_visited.include?(step)
           raise "Circular dependency detected involving step: #{step.name}"
         end
@@ -155,7 +155,7 @@ module Dotfiles
           success: true,
           output: "[DRY RUN] Would execute: #{step.description}",
           step_name: step.name,
-          context: { dry_run: true }
+          context: {dry_run: true}
         )
       end
     end

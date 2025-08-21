@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps
     class ExampleStep < Core::Step
       def initialize(command:, expected_output: nil, optional: false, timeout: 30)
         super(
-          name: "example_#{command.gsub(/\s+/, '_')}",
+          name: "example_#{command.gsub(/\s+/, "_")}",
           description: "Execute command: #{command}"
         )
         @command = command
@@ -81,7 +81,6 @@ module Dotfiles
               }
             )
           end
-
         rescue Timeout::Error
           duration = Time.now - start_time
           Core::StepResult.failure(
@@ -107,7 +106,7 @@ module Dotfiles
       private
 
       def marker_file_path
-        File.join(ENV['HOME'], '.dotfiles_markers', "#{@name}.completed")
+        File.join(ENV["HOME"], ".dotfiles_markers", "#{@name}.completed")
       end
     end
 

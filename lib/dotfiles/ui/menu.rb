@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'io/console'
+require "io/console"
 
 module Dotfiles
   module UI
@@ -28,7 +28,7 @@ module Dotfiles
       end
 
       def show
-        system('clear')
+        system("clear")
         display_header
         display_help if @show_help
         display_steps
@@ -150,7 +150,7 @@ module Dotfiles
 
           # Show dependencies if any
           if step.dependencies.any?
-            dep_text = "    Dependencies: #{step.dependencies.join(', ')}"
+            dep_text = "    Dependencies: #{step.dependencies.join(", ")}"
             puts @formatter.muted(dep_text)
           end
         end

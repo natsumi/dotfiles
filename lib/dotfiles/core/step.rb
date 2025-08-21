@@ -24,16 +24,16 @@ module Dotfiles
           pre_execute
           result = perform_step
           post_execute(result)
-          
+
           @status = result.success? ? :completed : :failed
           @end_time = Time.now
           result
-        rescue StandardError => e
+        rescue => e
           @status = :failed
           @end_time = Time.now
           StepResult.new(
             success: false,
-            output: '',
+            output: "",
             error: e.message,
             step_name: @name,
             duration: execution_duration

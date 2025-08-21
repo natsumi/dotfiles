@@ -19,10 +19,10 @@ module Dotfiles
         @current = current
         @step_times << Time.now - @last_update unless @current == 0
         @last_update = Time.now
-        
+
         # Only update display if enough time has passed or forced
         return unless force || should_update?
-        
+
         display_progress(description)
       end
 
@@ -38,35 +38,34 @@ module Dotfiles
 
       def display_progress(description = nil, final: false)
         percentage = (@current.to_f / @total * 100).round(1)
-        
+
         # Build progress bar
         filled = (@current.to_f / @total * @width).round
         bar = "█" * filled + "░" * (@width - filled)
-        
+
         # Calculate timing
         elapsed = Time.now - @start_time
         eta = calculate_eta(elapsed)
-        
+
         # Format progress line
         progress_line = sprintf("[%s] %d/%d (%s%%) %s %s",
           @formatter.colorize(bar, :cyan),
           @current,
-          @total, 
+          @total,
           percentage,
           format_time(elapsed),
-          eta ? "ETA: #{format_time(eta)}" : ""
-        )
-        
+          eta ? "ETA: #{format_time(eta)}" : "")
+
         # Clear line and print progress
         print "\r\033[K#{progress_line}"
-        
+
         # Add description on new line if provided
         if description
           puts
           puts @formatter.info("#{description}")
           print progress_line unless final
         end
-        
+
         $stdout.flush
       end
 
@@ -99,19 +98,19 @@ module Dotfiles
       def summary(results)
         puts
         puts @formatter.section("Execution Summary")
-        
+
         total = results.length
         successful = results.count(&:success?)
         failed = results.count(&:failure?)
         skipped = results.count(&:skipped?)
         total_duration = results.sum(&:duration)
-        
+
         puts sprintf("  Total steps: %s", @formatter.highlight(total.to_s))
         puts sprintf("  Successful:  %s", @formatter.success(successful.to_s))
-        puts sprintf("  Failed:      %s", failed > 0 ? @formatter.error(failed.to_s) : @formatter.muted("0"))
-        puts sprintf("  Skipped:     %s", skipped > 0 ? @formatter.warning(skipped.to_s) : @formatter.muted("0"))
+        puts sprintf("  Failed:      %s", (failed > 0) ? @formatter.error(failed.to_s) : @formatter.muted("0"))
+        puts sprintf("  Skipped:     %s", (skipped > 0) ? @formatter.warning(skipped.to_s) : @formatter.muted("0"))
         puts sprintf("  Duration:    %s", @formatter.info(format_duration(total_duration)))
-        
+
         if failed > 0
           puts
           puts @formatter.error("Failed Steps:")
@@ -119,7 +118,7 @@ module Dotfiles
             puts @formatter.error("  ✗ #{result.step_name}: #{result.error_message}")
           end
         end
-        
+
         if skipped > 0
           puts
           puts @formatter.warning("Skipped Steps:")
@@ -127,7 +126,7 @@ module Dotfiles
             puts @formatter.warning("  ⊝ #{result.step_name}")
           end
         end
-        
+
         puts
       end
 
@@ -140,7 +139,7 @@ module Dotfiles
 
       def calculate_eta(elapsed)
         return nil if @current == 0 || @step_times.empty?
-        
+
         avg_step_time = @step_times.sum.to_f / @step_times.length
         remaining_steps = @total - @current
         remaining_steps * avg_step_time
@@ -148,7 +147,7 @@ module Dotfiles
 
       def format_time(seconds)
         return "0s" if seconds <= 0
-        
+
         if seconds < 60
           "#{seconds.round}s"
         elsif seconds < 3600

@@ -7,8 +7,8 @@ module Dotfiles
         log_level: :info,
         use_color: true,
         dry_run: false,
-        dotfiles_dir: '~/dev/dotfiles',
-        target_dir: '~'
+        dotfiles_dir: "~/dev/dotfiles",
+        target_dir: "~"
       }.freeze
 
       def initialize

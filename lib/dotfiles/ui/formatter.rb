@@ -63,14 +63,14 @@ module Dotfiles
       # Basic color methods
       def colorize(text, color, style: nil)
         return text.to_s unless @use_color
-        
+
         codes = []
         codes << COLORS[color] if color && COLORS[color]
         codes << STYLES[style] if style && STYLES[style]
-        
+
         return text.to_s if codes.empty?
-        
-        "\033[#{codes.join(';')}m#{text}\033[0m"
+
+        "\033[#{codes.join(";")}m#{text}\033[0m"
       end
 
       # Status-based formatting
@@ -146,25 +146,25 @@ module Dotfiles
 
       # Tables and lists
       def table_header(columns, widths = nil)
-        if widths
-          formatted = columns.map.with_index { |col, i| col.ljust(widths[i] || 20) }.join(" | ")
+        formatted = if widths
+          columns.map.with_index { |col, i| col.ljust(widths[i] || 20) }.join(" | ")
         else
-          formatted = columns.join(" | ")
+          columns.join(" | ")
         end
-        
+
         header_line = colorize(formatted, :cyan, style: :bold)
         separator = colorize("-" * formatted.length, :cyan)
-        
+
         "#{header_line}\n#{separator}"
       end
 
       def table_row(columns, widths = nil, status: nil)
-        if widths
-          formatted = columns.map.with_index { |col, i| col.to_s.ljust(widths[i] || 20) }.join(" | ")
+        formatted = if widths
+          columns.map.with_index { |col, i| col.to_s.ljust(widths[i] || 20) }.join(" | ")
         else
-          formatted = columns.join(" | ")
+          columns.join(" | ")
         end
-        
+
         if status && STATUS_COLORS[status]
           colorize(formatted, STATUS_COLORS[status])
         else
@@ -181,10 +181,10 @@ module Dotfiles
 
       def progress_bar(current, total, width: 30, char: "█", bg_char: "░")
         return "" if total <= 0
-        
+
         filled = (current.to_f / total * width).round
         empty = width - filled
-        
+
         bar = char * filled + bg_char * empty
         colorize(bar, :cyan)
       end
@@ -192,13 +192,13 @@ module Dotfiles
       # Error formatting with suggestions
       def error_with_suggestion(error_msg, suggestion = nil)
         lines = [error(error_msg)]
-        
+
         if suggestion
           lines << ""
           lines << colorize("💡 Suggestion:", :yellow, style: :bold)
           lines << colorize("   #{suggestion}", :yellow)
         end
-        
+
         lines.join("\n")
       end
 
@@ -246,12 +246,12 @@ module Dotfiles
       def box(content, title: nil, width: 60)
         lines = content.split("\n")
         max_width = [lines.map(&:length).max || 0, title&.length || 0, width - 4].max
-        
+
         top = "┌─" + (title ? "[ #{title} ]".ljust(max_width, "─") : "─" * max_width) + "─┐"
         bottom = "└─" + "─" * max_width + "─┘"
-        
+
         body = lines.map { |line| "│ #{line.ljust(max_width)} │" }
-        
+
         ([top] + body + [bottom]).join("\n")
       end
     end
