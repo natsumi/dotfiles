@@ -21,6 +21,10 @@ categories:
       - install_zplug
       - install_prezto
 
+  - name: 'Configuration'
+    steps:
+      - configure_git
+
   # - name: "Configuration Files"
   #   steps:
   #     - setup_symlinks
