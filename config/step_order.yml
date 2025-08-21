@@ -4,16 +4,22 @@ categories:
   #     - check_operating_system
   #     - verify_current_user
 
-  # - name: "Package Management"
-  #   steps:
-  #     - install_homebrew
-  #     - install_git
-  #     - install_ruby
-  #     - install_node
+  - name: "Package Management"
+    steps:
+      - install_homebrew_packages
 
   - name: 'Desktop Applications'
     steps:
       - install_desktop_apps
+
+  - name: 'Fonts'
+    steps:
+      - install_fonts
+
+  - name: 'Shell Tools'
+    steps:
+      - install_zplug
+      - install_prezto
 
   # - name: "Configuration Files"
   #   steps:

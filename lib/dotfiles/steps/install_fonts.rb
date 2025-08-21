@@ -6,93 +6,78 @@ require 'open3'
 
 module Dotfiles
   module Steps
-    class InstallDesktopApps < Core::Step
-      name "install_desktop_apps"
-      description "Install desktop applications via Homebrew casks"
+    class InstallFonts < Core::Step
+      name "install_fonts"
+      description "Install fonts via Homebrew casks"
 
       private
 
       def perform_step
         start_time = Time.now
-        apps = apps_to_install
+        fonts = fonts_to_install
 
-        installed_apps = {}
-        failed_apps = {}
-        skipped_apps = {}
+        installed_fonts = {}
+        failed_fonts = {}
+        skipped_fonts = {}
 
-        apps.each do |category, app_list|
-          puts "  Installing #{category} applications..."
+        fonts.each do |category, font_list|
+          puts "  Installing #{category} fonts..."
 
-          installed_apps[category] = []
-          failed_apps[category] = []
-          skipped_apps[category] = []
+          installed_fonts[category] = []
+          failed_fonts[category] = []
+          skipped_fonts[category] = []
 
-          app_list.each do |app|
-            if app_installed?(app)
-              skipped_apps[category] << app
+          font_list.each do |font|
+            if font_installed?(font)
+              skipped_fonts[category] << font
               next
             end
 
-            puts "    Installing #{app}..."
-            stdout, stderr, status = Open3.capture3("brew install --cask #{app}")
+            puts "    Installing #{font}..."
+            stdout, stderr, status = Open3.capture3("brew install --cask #{font}")
 
             if status.success?
-              installed_apps[category] << app
+              installed_fonts[category] << font
             else
-              failed_apps[category] << { app: app, error: stderr.strip }
-              puts "      ✗ Failed to install #{app}: #{stderr.lines.first&.strip}"
+              failed_fonts[category] << { font: font, error: stderr.strip }
+              puts "      ✗ Failed to install #{font}: #{stderr.lines.first&.strip}"
             end
           end
         end
 
         duration = Time.now - start_time
-        build_result(installed_apps, failed_apps, skipped_apps, duration)
+        build_result(installed_fonts, failed_fonts, skipped_fonts, duration)
       end
 
-      def apps_to_install
+      def fonts_to_install
         {
-          "Productivity" => %w[
-            alfred
-            forklift
-            google-chrome
-            homebrew/cask-versions/firefox-developer-edition
-            itsycal
-            shottr
+          "Powerline Fonts" => %w[
+            font-consolas-for-powerline
+            font-menlo-for-powerline
+            font-cascadia-mono-pl
           ],
-          "Development" => %w[
-            cursor
-            kitty
-            postman
-            sublime-merge
-            tableplus
-            visual-studio-code
-          ],
-          "Media" => %w[
-            spotify
-            spotmenu
-            vlc
-          ],
-          "Social" => %w[
-            discord
-            slack
-            telegram
-          ],
-          "Utilities" => %w[
-            betterdisplay
-            localsend
-            jordanbaird-ice
-            mounty
-            sanesidebuttons
-            stats
-            qlvideo
-            the-unarchiver
-            trex
+          "Nerd Fonts" => %w[
+            font-anonymice-nerd-font
+            font-dejavu-sans-mono-nerd-font
+            font-droid-sans-mono-nerd-font
+            font-fira-code-nerd-font
+            font-fira-mono-nerd-font
+            font-go-mono-nerd-font
+            font-iosevka-nerd-font
+            font-jetbrains-mono-nerd-font
+            font-liberation-nerd-font
+            font-meslo-lg-nerd-font
+            font-roboto-mono-nerd-font
+            font-sauce-code-pro-nerd-font
+            font-victor-mono-nerd-font
+            font-blex-mono-nerd-font
+            font-fantasque-sans-mono-nerd-font
           ]
         }
       end
 
-      def app_installed?(app)
-        stdout, _, status = Open3.capture3("brew list --cask #{app}")
+      def font_installed?(font)
+        stdout, _, status = Open3.capture3("brew list --cask #{font}")
         status.success? && !stdout.strip.empty?
       rescue
         false
@@ -133,18 +118,18 @@ module Dotfiles
         output_lines = []
 
         if total_installed > 0
-          output_lines << "Successfully installed #{total_installed} applications:"
-          installed.each do |category, apps|
-            next if apps.empty?
-            output_lines << "  #{category}: #{apps.join(', ')}"
+          output_lines << "Successfully installed #{total_installed} fonts:"
+          installed.each do |category, fonts|
+            next if fonts.empty?
+            output_lines << "  #{category}: #{fonts.join(', ')}"
           end
         end
 
         if total_skipped > 0
-          output_lines << "\nSkipped #{total_skipped} already installed applications:"
-          skipped.each do |category, apps|
-            next if apps.empty?
-            output_lines << "  #{category}: #{apps.join(', ')}"
+          output_lines << "\nSkipped #{total_skipped} already installed fonts:"
+          skipped.each do |category, fonts|
+            next if fonts.empty?
+            output_lines << "  #{category}: #{fonts.join(', ')}"
           end
         end
 
@@ -152,14 +137,14 @@ module Dotfiles
       end
 
       def build_error_output(failed, total_failed)
-        output_lines = ["Failed to install #{total_failed} applications:"]
+        output_lines = ["Failed to install #{total_failed} fonts:"]
 
         failed.each do |category, failures|
           next if failures.empty?
           output_lines << "  #{category}:"
           failures.each do |failure|
             error_msg = failure[:error].lines.first&.strip || "Unknown error"
-            output_lines << "    #{failure[:app]}: #{error_msg}"
+            output_lines << "    #{failure[:font]}: #{error_msg}"
           end
         end
 
@@ -177,7 +162,7 @@ module Dotfiles
         output_parts << "Failed: #{total_failed}" if total_failed > 0
         output_parts << "Skipped: #{total_skipped}" if total_skipped > 0
 
-        "Application installation summary - #{output_parts.join(', ')}"
+        "Font installation summary - #{output_parts.join(', ')}"
       end
     end
   end
