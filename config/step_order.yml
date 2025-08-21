@@ -1,28 +1,28 @@
 categories:
-  - name: "System Checks"
-    steps:
-      - check_operating_system
-      - verify_current_user
-      
-  - name: "Package Management"
-    steps:
-      - install_homebrew
-      - install_git
-      - install_ruby
-      - install_node
-      
-  - name: "Desktop Applications"
+  # - name: "System Checks"
+  #   steps:
+  #     - check_operating_system
+  #     - verify_current_user
+
+  # - name: "Package Management"
+  #   steps:
+  #     - install_homebrew
+  #     - install_git
+  #     - install_ruby
+  #     - install_node
+
+  - name: 'Desktop Applications'
     steps:
       - install_desktop_apps
-      
-  - name: "Configuration Files"
-    steps:
-      - setup_symlinks
-      - configure_git
-      
-  - name: "Demonstrations"
-    steps:
-      - show_current_date
-      - hello_world_demo
-      - slow_operation_demo
-      - error_handling_demo
+
+  # - name: "Configuration Files"
+  #   steps:
+  #     - setup_symlinks
+  #     - configure_git
+
+  # - name: "Demonstrations"
+  #   steps:
+  #     - show_current_date
+  #     - hello_world_demo
+  #     - slow_operation_demo
+  #     - error_handling_demo

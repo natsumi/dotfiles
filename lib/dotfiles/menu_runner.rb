@@ -48,16 +48,16 @@ module Dotfiles
 
     def list_available_steps
       puts @formatter.header("Available Steps")
-      
+
       available = Core::StepLoader.available_steps
-      
+
       if available.empty?
         puts @formatter.warning("No steps found in lib/dotfiles/steps/")
         return
       end
 
       available.each_with_index do |step_info, index|
-        puts sprintf("  %2d. %-30s - %s", 
+        puts sprintf("  %2d. %-30s - %s",
           index + 1, step_info[:name], step_info[:description])
       end
       puts
