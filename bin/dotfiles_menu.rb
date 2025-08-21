@@ -8,95 +8,6 @@ lib_path = Pathname.new(__FILE__).dirname.parent.join('lib')
 $LOAD_PATH.unshift(lib_path.to_s)
 
 require 'dotfiles/menu_runner'
-require 'dotfiles/steps/example_step'
-
-def create_sample_steps
-  steps = []
-  
-  # System check steps
-  steps << Dotfiles::Steps::SystemCheckStep.new(
-    check_command: "uname -s",
-    description: "Check operating system type"
-  )
-  
-  steps << Dotfiles::Steps::SystemCheckStep.new(
-    check_command: "whoami",
-    description: "Verify current user"
-  )
-  
-  # File system steps
-  steps << Dotfiles::Steps::ExampleStep.new(
-    command: "ls -la ~/.zshrc",
-    name: "check_zshrc",
-    description: "Check if .zshrc exists",
-    optional: true
-  )
-  
-  steps << Dotfiles::Steps::ExampleStep.new(
-    command: "ls -la ~/.gitconfig",
-    name: "check_gitconfig", 
-    description: "Check if .gitconfig exists",
-    optional: true
-  )
-  
-  # Package checks
-  steps << Dotfiles::Steps::PackageInstallStep.new(
-    package_name: "git",
-    check_command: "git --version"
-  )
-  
-  steps << Dotfiles::Steps::PackageInstallStep.new(
-    package_name: "ruby",
-    check_command: "ruby --version"
-  )
-  
-  steps << Dotfiles::Steps::PackageInstallStep.new(
-    package_name: "node",
-    check_command: "node --version"
-  )
-  
-  # Demonstration steps
-  steps << Dotfiles::Steps::ExampleStep.new(
-    command: "date",
-    name: "show_date",
-    description: "Display current date",
-    expected_output: "2025"
-  )
-  
-  steps << Dotfiles::Steps::ExampleStep.new(
-    command: "echo 'Hello from Dotfiles Ruby Framework!'",
-    name: "hello_world",
-    description: "Display greeting message",
-    expected_output: "Hello from Dotfiles Ruby Framework!"
-  )
-  
-  # Slow step for progress demonstration
-  steps << Dotfiles::Steps::ExampleStep.new(
-    command: "sleep 3 && echo 'Slow operation completed'",
-    name: "slow_demo",
-    description: "Demonstrate slow operation with progress",
-    expected_output: "Slow operation completed"
-  )
-  
-  # Step with dependency
-  steps << Dotfiles::Steps::ExampleStep.new(
-    command: "git status 2>/dev/null || echo 'Not a git repository'",
-    name: "git_status",
-    description: "Check git repository status",
-    optional: true,
-    dependencies: ["install_git"]
-  )
-  
-  # Failing step for error handling demonstration
-  steps << Dotfiles::Steps::ExampleStep.new(
-    command: "exit 1",
-    name: "demo_failure",
-    description: "Demonstrate error handling",
-    optional: true
-  )
-  
-  steps
-end
 
 def show_help
   puts <<~HELP
@@ -107,7 +18,8 @@ def show_help
     
     COMMANDS:
       menu          Show interactive menu (default)
-      list          List all available steps
+      list          List loaded steps with status
+      available     List all available steps in lib/steps/
       status        Show step status summary
       all           Execute all steps
       resume        Resume interrupted session
@@ -152,9 +64,15 @@ def main
   # Initialize menu runner
   runner = Dotfiles::MenuRunner.new
   
-  # Add sample steps
-  steps = create_sample_steps
-  runner.add_steps(steps)
+  # Load steps from configuration
+  begin
+    step_count = runner.load_steps_from_config
+    puts runner.formatter.success("Loaded #{step_count} steps from configuration")
+  rescue => e
+    puts runner.formatter.error("Failed to load steps: #{e.message}")
+    puts runner.formatter.info("Use 'available' command to see all available steps")
+    puts
+  end
   
   # Parse command
   command = ARGV.find { |arg| !arg.start_with?('--') } || 'menu'
@@ -169,6 +87,9 @@ def main
     
   when 'list'
     runner.list_steps
+    
+  when 'available'
+    runner.list_available_steps
     
   when 'status'
     runner.show_status

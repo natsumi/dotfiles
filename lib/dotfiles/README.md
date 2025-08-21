@@ -224,44 +224,143 @@ runner.resume_session
 
 ## Writing Custom Steps
 
-### Basic Command Step
+Steps are now defined as self-contained classes using a declarative DSL. Each step should be placed in `lib/dotfiles/steps/` and will be automatically discovered.
+
+### Step Architecture
+
+Steps use class-level methods to declare their properties and implement their logic in `perform_step`:
 
 ```ruby
-class InstallPackageStep < Core::Step
-  def initialize(package_name)
-    super(
-      name: "install_#{package_name}",
-      description: "Install #{package_name} via Homebrew"
-    )
-    @package_name = package_name
+# lib/dotfiles/steps/install_package.rb
+module Dotfiles
+  module Steps
+    class InstallPackage < Core::Step
+      name "install_package"
+      description "Install a package via Homebrew"
+      depends_on InstallHomebrew
+
+      private
+
+      def should_skip?
+        # Check if already installed
+        system("brew list #{package_name} > /dev/null 2>&1")
+      end
+
+      def perform_step
+        stdout, stderr, status = Open3.capture3("brew install #{package_name}")
+
+        if status.success?
+          Core::StepResult.success(
+            output: stdout,
+            step_name: @name
+          )
+        else
+          Core::StepResult.failure(
+            error: "Installation failed: #{stderr}",
+            output: stdout,
+            step_name: @name
+          )
+        end
+      end
+
+      def package_name
+        "git" # Override in subclasses or make configurable
+      end
+    end
   end
+end
+```
 
-  private
+### Step Auto-Discovery
 
-  def should_skip?
-    # Check if already installed
-    _, _, status = Open3.capture3("brew list #{@package_name}")
-    status.success?
-  end
+Steps are automatically discovered and loaded. The system:
 
-  def perform_step
-    start_time = Time.now
-    stdout, stderr, status = Open3.capture3("brew install #{@package_name}")
-    duration = Time.now - start_time
+1. **Loads all step files** from `lib/dotfiles/steps/*.rb`
+2. **Finds all Step subclasses** using `Step.subclasses`
+3. **Orders steps** based on `config/step_order.yml`
+4. **Validates dependencies** and reports missing implementations
 
-    if status.success?
-      Core::StepResult.success(
-        output: stdout,
-        step_name: @name,
-        duration: duration
-      )
-    else
-      Core::StepResult.failure(
-        error: "Installation failed: #{stderr}",
-        output: stdout,
-        step_name: @name,
-        duration: duration
-      )
+### Step Ordering Configuration
+
+Create `config/step_order.yml` to define categories and execution order:
+
+```yaml
+categories:
+  - name: "System Setup"
+    steps:
+      - install_homebrew
+      - install_git
+      
+  - name: "Applications"
+    steps:
+      - install_desktop_apps
+      
+  - name: "Configuration"
+    steps:
+      - setup_symlinks
+```
+
+### Complex Step Example
+
+```ruby
+# lib/dotfiles/steps/install_desktop_apps.rb
+module Dotfiles
+  module Steps
+    class InstallDesktopApps < Core::Step
+      name "install_desktop_apps"
+      description "Install desktop applications via Homebrew"
+      depends_on InstallHomebrew
+
+      private
+
+      def should_skip?
+        apps_to_install.all? { |app| app_installed?(app) }
+      end
+
+      def perform_step
+        installed_apps = []
+        failed_apps = []
+
+        apps_to_install.each do |app|
+          next if app_installed?(app)
+
+          stdout, stderr, status = Open3.capture3("brew install --cask #{app}")
+
+          if status.success?
+            installed_apps << app
+          else
+            failed_apps << { app: app, error: stderr.strip }
+          end
+        end
+
+        if failed_apps.empty?
+          Core::StepResult.success(
+            output: "Installed #{installed_apps.length} applications",
+            step_name: @name,
+            context: { installed: installed_apps }
+          )
+        else
+          Core::StepResult.failure(
+            error: "Failed to install #{failed_apps.length} applications",
+            step_name: @name,
+            context: { installed: installed_apps, failed: failed_apps }
+          )
+        end
+      end
+
+      def apps_to_install
+        %w[
+          alfred
+          visual-studio-code
+          kitty
+          google-chrome
+          discord
+        ]
+      end
+
+      def app_installed?(app)
+        system("brew list --cask #{app} > /dev/null 2>&1")
+      end
     end
   end
 end
@@ -434,26 +533,74 @@ class ConfigureGitStep < Core::Step
 end
 ```
 
-## Example Usage
+## Usage
+
+### Running the Menu System
+
+```bash
+# Interactive menu with auto-loaded steps
+bin/dotfiles_menu.rb
+
+# List all loaded steps
+bin/dotfiles_menu.rb list
+
+# List all available step implementations
+bin/dotfiles_menu.rb available
+
+# Execute all steps
+bin/dotfiles_menu.rb all
+
+# Execute specific steps
+bin/dotfiles_menu.rb steps install_homebrew install_desktop_apps
+```
+
+### Programmatic Usage
 
 ```ruby
 #!/usr/bin/env ruby
 
 require_relative 'lib/dotfiles/menu_runner'
 
-# Create steps
-steps = [
-  InstallPackageStep.new("git"),
-  InstallPackageStep.new("node"),
-  CreateSymlinkStep.new("~/.dotfiles/zsh/.zshrc", "~/.zshrc"),
-  ConfigureGitStep.new,
-  SetupDevelopmentStep.new
-]
+runner = Dotfiles::MenuRunner.new
+
+# Auto-load steps from config
+runner.load_steps_from_config
 
 # Run interactively
-runner = MenuRunner.new
-runner.add_steps(steps)
 runner.run_interactive
+
+# Or run specific functionality
+runner.run_all
+runner.list_available_steps
+```
+
+### Creating New Steps
+
+1. **Create the step file**: `lib/dotfiles/steps/my_new_step.rb`
+2. **Add to config**: Include step name in `config/step_order.yml`
+3. **Steps are auto-discovered** - no manual registration needed
+
+```ruby
+# lib/dotfiles/steps/my_new_step.rb
+module Dotfiles
+  module Steps
+    class MyNewStep < Core::Step
+      name "my_new_step"
+      description "Does something useful"
+      depends_on SomeOtherStep
+
+      private
+
+      def perform_step
+        # Your implementation here
+        Core::StepResult.success(
+          output: "Step completed",
+          step_name: @name
+        )
+      end
+    end
+  end
+end
 ```
 
 ## Best Practices

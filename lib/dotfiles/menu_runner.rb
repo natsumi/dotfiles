@@ -3,6 +3,7 @@
 require_relative "core/executor"
 require_relative "core/logger"
 require_relative "core/config"
+require_relative "core/step_loader"
 require_relative "ui/menu"
 require_relative "ui/progress"
 require_relative "ui/formatter"
@@ -29,6 +30,37 @@ module Dotfiles
 
     def add_steps(steps)
       steps.each { |step| add_step(step) }
+    end
+
+    def load_steps_from_config(config_path = nil)
+      begin
+        steps = Core::StepLoader.load_ordered_steps(config_path)
+        add_steps(steps)
+        steps.length
+      rescue Core::StepLoader::MissingStepError => e
+        puts @formatter.error("Missing step implementation: #{e.message}")
+        raise
+      rescue Core::StepLoader::InvalidConfigError => e
+        puts @formatter.error("Invalid step configuration: #{e.message}")
+        raise
+      end
+    end
+
+    def list_available_steps
+      puts @formatter.header("Available Steps")
+      
+      available = Core::StepLoader.available_steps
+      
+      if available.empty?
+        puts @formatter.warning("No steps found in lib/dotfiles/steps/")
+        return
+      end
+
+      available.each_with_index do |step_info, index|
+        puts sprintf("  %2d. %-30s - %s", 
+          index + 1, step_info[:name], step_info[:description])
+      end
+      puts
     end
 
     def run_interactive

@@ -5,13 +5,58 @@ module Dotfiles
     class Step
       attr_reader :name, :description, :status, :dependencies, :start_time, :end_time
 
-      def initialize(name:, description:, dependencies: [])
-        @name = name
-        @description = description
-        @dependencies = dependencies
-        @status = :pending
-        @start_time = nil
-        @end_time = nil
+      class << self
+        attr_accessor :step_name, :step_description, :step_dependencies
+
+        def name(value)
+          @step_name = value
+        end
+
+        def description(value)
+          @step_description = value
+        end
+
+        def depends_on(*deps)
+          @step_dependencies = deps
+        end
+
+        def create_instance
+          instance = new
+          instance.instance_variable_set(:@name, @step_name || default_step_name)
+          instance.instance_variable_set(:@description, @step_description || "Execute #{@step_name || default_step_name}")
+          instance.instance_variable_set(:@dependencies, resolve_dependencies(@step_dependencies || []))
+          instance.instance_variable_set(:@status, :pending)
+          instance.instance_variable_set(:@start_time, nil)
+          instance.instance_variable_set(:@end_time, nil)
+          instance
+        end
+
+        def execute
+          create_instance.execute
+        end
+
+        private
+
+        def default_step_name
+          name.split('::').last.gsub(/([A-Z])/, '_\1').downcase.gsub(/^_/, '')
+        end
+
+        def resolve_dependencies(deps)
+          deps.map do |dep|
+            case dep
+            when Class
+              dep.step_name || dep.send(:default_step_name)
+            when Symbol, String
+              dep.to_s
+            else
+              dep.to_s
+            end
+          end
+        end
+      end
+
+      def initialize
+        # Instance variables set by create_instance
       end
 
       def execute
