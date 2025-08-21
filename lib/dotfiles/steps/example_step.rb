@@ -7,10 +7,14 @@ require "open3"
 module Dotfiles
   module Steps
     class ExampleStep < Core::Step
-      def initialize(command:, expected_output: nil, optional: false, timeout: 30)
+      def initialize(command:, name: nil, description: nil, expected_output: nil, optional: false, timeout: 30, dependencies: [])
+        step_name = name || "example_#{command.gsub(/\s+/, "_")}"
+        step_description = description || "Execute command: #{command}"
+        
         super(
-          name: "example_#{command.gsub(/\s+/, "_")}",
-          description: "Execute command: #{command}"
+          name: step_name,
+          description: step_description,
+          dependencies: dependencies
         )
         @command = command
         @expected_output = expected_output
@@ -112,12 +116,16 @@ module Dotfiles
 
     # Convenience subclasses for common step types
     class SystemCheckStep < ExampleStep
-      def initialize(check_command:, description: nil)
+      def initialize(check_command:, name: nil, description: nil)
+        step_name = name || "check_#{check_command.gsub(/\s+/, "_")}"
+        step_description = description || "System check: #{check_command}"
+        
         super(
           command: check_command,
+          name: step_name,
+          description: step_description,
           optional: false
         )
-        @description = description || "System check: #{check_command}"
       end
 
       private
@@ -137,11 +145,10 @@ module Dotfiles
 
         super(
           command: install_cmd,
+          name: "install_#{package_name}",
+          description: "Install package: #{package_name}",
           optional: true
         )
-
-        @name = "install_#{package_name}"
-        @description = "Install package: #{package_name}"
       end
 
       private

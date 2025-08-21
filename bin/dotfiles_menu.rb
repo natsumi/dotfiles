@@ -27,13 +27,17 @@ def create_sample_steps
   # File system steps
   steps << Dotfiles::Steps::ExampleStep.new(
     command: "ls -la ~/.zshrc",
+    name: "check_zshrc",
+    description: "Check if .zshrc exists",
     optional: true
-  ).tap { |s| s.instance_variable_set(:@name, "check_zshrc") }
+  )
   
   steps << Dotfiles::Steps::ExampleStep.new(
-    command: "ls -la ~/.gitconfig", 
+    command: "ls -la ~/.gitconfig",
+    name: "check_gitconfig", 
+    description: "Check if .gitconfig exists",
     optional: true
-  ).tap { |s| s.instance_variable_set(:@name, "check_gitconfig") }
+  )
   
   # Package checks
   steps << Dotfiles::Steps::PackageInstallStep.new(
@@ -54,38 +58,42 @@ def create_sample_steps
   # Demonstration steps
   steps << Dotfiles::Steps::ExampleStep.new(
     command: "date",
+    name: "show_date",
+    description: "Display current date",
     expected_output: "2025"
-  ).tap { |s| s.instance_variable_set(:@name, "show_date") }
+  )
   
   steps << Dotfiles::Steps::ExampleStep.new(
     command: "echo 'Hello from Dotfiles Ruby Framework!'",
+    name: "hello_world",
+    description: "Display greeting message",
     expected_output: "Hello from Dotfiles Ruby Framework!"
-  ).tap { |s| s.instance_variable_set(:@name, "hello_world") }
+  )
   
   # Slow step for progress demonstration
   steps << Dotfiles::Steps::ExampleStep.new(
     command: "sleep 3 && echo 'Slow operation completed'",
+    name: "slow_demo",
+    description: "Demonstrate slow operation with progress",
     expected_output: "Slow operation completed"
-  ).tap { |s| s.instance_variable_set(:@name, "slow_demo") }
+  )
   
   # Step with dependency
-  dependent_step = Dotfiles::Steps::ExampleStep.new(
+  steps << Dotfiles::Steps::ExampleStep.new(
     command: "git status 2>/dev/null || echo 'Not a git repository'",
-    optional: true
+    name: "git_status",
+    description: "Check git repository status",
+    optional: true,
+    dependencies: ["install_git"]
   )
-  dependent_step.instance_variable_set(:@name, "git_status")
-  dependent_step.instance_variable_set(:@description, "Check git repository status")
-  dependent_step.instance_variable_set(:@dependencies, ["install_git"])
-  steps << dependent_step
   
   # Failing step for error handling demonstration
   steps << Dotfiles::Steps::ExampleStep.new(
     command: "exit 1",
+    name: "demo_failure",
+    description: "Demonstrate error handling",
     optional: true
-  ).tap do |s| 
-    s.instance_variable_set(:@name, "demo_failure")
-    s.instance_variable_set(:@description, "Demonstrate error handling")
-  end
+  )
   
   steps
 end
