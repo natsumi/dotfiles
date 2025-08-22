@@ -14,7 +14,7 @@ readonly NC='\033[0m'
 
 # Configuration
 readonly REPO_URL="https://github.com/natsumi/dotfiles"
-readonly REPO_BRANCH="main"
+readonly REPO_BRANCH="${REPO_BRANCH:-main}"
 readonly DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dev/dotfiles}"
 
 # Functions
