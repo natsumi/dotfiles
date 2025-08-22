@@ -82,12 +82,9 @@ install_homebrew() {
     info "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || error_exit "Failed to install Homebrew"
 
-    # Add Homebrew to PATH for current session
-    if [[ -f "/opt/homebrew/bin/brew" ]]; then
-        export PATH="/opt/homebrew/bin:$PATH"
-    elif [[ -f "/usr/local/bin/brew" ]]; then
-        export PATH="/usr/local/bin:$PATH"
-    fi
+    # Add Homebrew to PATH
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 
     success "Homebrew installed successfully"
 }
@@ -116,6 +113,9 @@ install_ruby() {
     info "Installing Ruby...."
     mise install ruby@latest || error_exit "Failed to install Ruby"
     mise use -g ruby@latest || error_exit "Failed to set global Ruby version"
+
+    # Add mise to PATH for current session
+    eval "$(mise activate bash)"
 
     success "Ruby installed and set as global version"
 }
