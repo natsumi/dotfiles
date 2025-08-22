@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps
@@ -20,7 +20,7 @@ module Dotfiles
         start_time = Time.now
 
         puts "  Installing Zplug..."
-        stdout, stderr, status = Open3.capture3(zplug_install_command)
+        _, stderr, status = Open3.capture3(zplug_install_command)
 
         duration = Time.now - start_time
 
@@ -53,7 +53,7 @@ module Dotfiles
       end
 
       def zplug_path
-        "#{ENV['HOME']}/.zplug"
+        "#{ENV["HOME"]}/.zplug"
       end
 
       def zplug_install_command

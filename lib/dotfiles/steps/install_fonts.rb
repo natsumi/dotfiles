@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps
@@ -34,12 +34,12 @@ module Dotfiles
             end
 
             puts "    Installing #{font}..."
-            stdout, stderr, status = Open3.capture3("brew install --cask #{font}")
+            _, stderr, status = Open3.capture3("brew install --cask #{font}")
 
             if status.success?
               installed_fonts[category] << font
             else
-              failed_fonts[category] << { font: font, error: stderr.strip }
+              failed_fonts[category] << {font: font, error: stderr.strip}
               puts "      ✗ Failed to install #{font}: #{stderr.lines.first&.strip}"
             end
           end
@@ -52,14 +52,16 @@ module Dotfiles
       def fonts_to_install
         {
           "Powerline Fonts" => %w[
+            font-cascadia-mono-pl
             font-consolas-for-powerline
             font-menlo-for-powerline
-            font-cascadia-mono-pl
           ],
           "Nerd Fonts" => %w[
             font-anonymice-nerd-font
+            font-blex-mono-nerd-font
             font-dejavu-sans-mono-nerd-font
             font-droid-sans-mono-nerd-font
+            font-fantasque-sans-mono-nerd-font
             font-fira-code-nerd-font
             font-fira-mono-nerd-font
             font-go-mono-nerd-font
@@ -70,8 +72,6 @@ module Dotfiles
             font-roboto-mono-nerd-font
             font-sauce-code-pro-nerd-font
             font-victor-mono-nerd-font
-            font-blex-mono-nerd-font
-            font-fantasque-sans-mono-nerd-font
           ]
         }
       end
@@ -121,7 +121,7 @@ module Dotfiles
           output_lines << "Successfully installed #{total_installed} fonts:"
           installed.each do |category, fonts|
             next if fonts.empty?
-            output_lines << "  #{category}: #{fonts.join(', ')}"
+            output_lines << "  #{category}: #{fonts.join(", ")}"
           end
         end
 
@@ -129,7 +129,7 @@ module Dotfiles
           output_lines << "\nSkipped #{total_skipped} already installed fonts:"
           skipped.each do |category, fonts|
             next if fonts.empty?
-            output_lines << "  #{category}: #{fonts.join(', ')}"
+            output_lines << "  #{category}: #{fonts.join(", ")}"
           end
         end
 
@@ -162,7 +162,7 @@ module Dotfiles
         output_parts << "Failed: #{total_failed}" if total_failed > 0
         output_parts << "Skipped: #{total_skipped}" if total_skipped > 0
 
-        "Font installation summary - #{output_parts.join(', ')}"
+        "Font installation summary - #{output_parts.join(", ")}"
       end
     end
   end

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps
@@ -25,13 +25,13 @@ module Dotfiles
         packages_to_symlink.each do |package|
           puts "  Symlinking #{package}..."
 
-          stdout, stderr, status = Open3.capture3(stow_command(package))
+          _, stderr, status = Open3.capture3(stow_command(package))
 
           if status.success?
             successful_packages << package
             puts "    ✓ Successfully symlinked #{package}"
           else
-            failed_packages << { package: package, error: stderr.strip }
+            failed_packages << {package: package, error: stderr.strip}
             puts "    ✗ Failed to symlink #{package}: #{stderr.lines.first&.strip}"
           end
         end
@@ -56,11 +56,11 @@ module Dotfiles
       end
 
       def dotfile_dir
-        ENV['DOTFILE_DIR'] || "#{ENV['HOME']}/dev/dotfiles"
+        ENV["DOTFILE_DIR"] || "#{ENV["HOME"]}/dev/dotfiles"
       end
 
       def target_dir
-        ENV['HOME']
+        ENV["HOME"]
       end
 
       def stow_command(package)
@@ -102,7 +102,7 @@ module Dotfiles
       def build_success_output(successful, total_successful)
         output_lines = []
         output_lines << "Successfully symlinked #{total_successful} packages:"
-        output_lines << "  Packages: #{successful.join(', ')}"
+        output_lines << "  Packages: #{successful.join(", ")}"
         output_lines << "\nDotfiles symlinked from #{dotfile_dir} to #{target_dir}"
         output_lines.join("\n")
       end
@@ -123,7 +123,7 @@ module Dotfiles
         output_parts << "Symlinked: #{successful.size}" if successful.size > 0
         output_parts << "Failed: #{failed.size}" if failed.size > 0
 
-        "Symlink creation summary - #{output_parts.join(', ')}"
+        "Symlink creation summary - #{output_parts.join(", ")}"
       end
     end
   end

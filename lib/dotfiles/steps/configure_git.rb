@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps

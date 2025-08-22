@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps
@@ -34,12 +34,12 @@ module Dotfiles
             end
 
             puts "    Installing #{package}..."
-            stdout, stderr, status = Open3.capture3("brew install #{package}")
+            _, stderr, status = Open3.capture3("brew install #{package}")
 
             if status.success?
               installed_packages[category] << package
             else
-              failed_packages[category] << { package: package, error: stderr.strip }
+              failed_packages[category] << {package: package, error: stderr.strip}
               puts "      ✗ Failed to install #{package}: #{stderr.lines.first&.strip}"
             end
           end
@@ -161,7 +161,7 @@ module Dotfiles
           output_lines << "Successfully installed #{total_installed} packages:"
           installed.each do |category, packages|
             next if packages.empty?
-            output_lines << "  #{category}: #{packages.join(', ')}"
+            output_lines << "  #{category}: #{packages.join(", ")}"
           end
         end
 
@@ -169,7 +169,7 @@ module Dotfiles
           output_lines << "\nSkipped #{total_skipped} already installed packages:"
           skipped.each do |category, packages|
             next if packages.empty?
-            output_lines << "  #{category}: #{packages.join(', ')}"
+            output_lines << "  #{category}: #{packages.join(", ")}"
           end
         end
 
@@ -202,7 +202,7 @@ module Dotfiles
         output_parts << "Failed: #{total_failed}" if total_failed > 0
         output_parts << "Skipped: #{total_skipped}" if total_skipped > 0
 
-        "Package installation summary - #{output_parts.join(', ')}"
+        "Package installation summary - #{output_parts.join(", ")}"
       end
     end
   end

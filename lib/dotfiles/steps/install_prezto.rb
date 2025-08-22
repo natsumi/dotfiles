@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps
@@ -22,7 +22,7 @@ module Dotfiles
         puts "  Installing Prezto framework..."
 
         # Install main Prezto repository
-        stdout, stderr, status = Open3.capture3(prezto_install_command)
+        _, stderr, status = Open3.capture3(prezto_install_command)
         unless status.success?
           duration = Time.now - start_time
           return Core::StepResult.failure(
@@ -40,7 +40,7 @@ module Dotfiles
         puts "  Installing Prezto contrib modules..."
 
         # Install Prezto contrib repository
-        stdout, stderr, status = Open3.capture3(prezto_contrib_install_command)
+        _, stderr, status = Open3.capture3(prezto_contrib_install_command)
         duration = Time.now - start_time
 
         if status.success?
@@ -74,7 +74,7 @@ module Dotfiles
       end
 
       def prezto_dir
-        zdotdir = ENV['ZDOTDIR'] || ENV['HOME']
+        zdotdir = ENV["ZDOTDIR"] || ENV["HOME"]
         "#{zdotdir}/.zprezto"
       end
 

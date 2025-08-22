@@ -38,7 +38,7 @@ module Dotfiles
         private
 
         def default_step_name
-          self.name.split('::').last.gsub(/([A-Z])/, '_\1').downcase.gsub(/^_/, '')
+          name.split("::").last.gsub(/([A-Z])/, '_\1').downcase.gsub(/^_/, "")
         end
 
         def resolve_dependencies(deps)

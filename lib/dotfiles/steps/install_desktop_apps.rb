@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps
@@ -34,12 +34,12 @@ module Dotfiles
             end
 
             puts "    Installing #{app}..."
-            stdout, stderr, status = Open3.capture3("brew install --cask #{app}")
+            _, stderr, status = Open3.capture3("brew install --cask #{app}")
 
             if status.success?
               installed_apps[category] << app
             else
-              failed_apps[category] << { app: app, error: stderr.strip }
+              failed_apps[category] << {app: app, error: stderr.strip}
               puts "      ✗ Failed to install #{app}: #{stderr.lines.first&.strip}"
             end
           end
@@ -136,7 +136,7 @@ module Dotfiles
           output_lines << "Successfully installed #{total_installed} applications:"
           installed.each do |category, apps|
             next if apps.empty?
-            output_lines << "  #{category}: #{apps.join(', ')}"
+            output_lines << "  #{category}: #{apps.join(", ")}"
           end
         end
 
@@ -144,7 +144,7 @@ module Dotfiles
           output_lines << "\nSkipped #{total_skipped} already installed applications:"
           skipped.each do |category, apps|
             next if apps.empty?
-            output_lines << "  #{category}: #{apps.join(', ')}"
+            output_lines << "  #{category}: #{apps.join(", ")}"
           end
         end
 
@@ -177,7 +177,7 @@ module Dotfiles
         output_parts << "Failed: #{total_failed}" if total_failed > 0
         output_parts << "Skipped: #{total_skipped}" if total_skipped > 0
 
-        "Application installation summary - #{output_parts.join(', ')}"
+        "Application installation summary - #{output_parts.join(", ")}"
       end
     end
   end

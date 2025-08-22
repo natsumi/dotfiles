@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../core/step'
-require_relative '../core/step_result'
-require 'open3'
+require_relative "../core/step"
+require_relative "../core/step_result"
+require "open3"
 
 module Dotfiles
   module Steps
@@ -31,13 +31,13 @@ module Dotfiles
           end
 
           puts "  Installing #{language}..."
-          stdout, stderr, status = Open3.capture3("mise use --global #{language}")
+          _, stderr, status = Open3.capture3("mise use --global #{language}")
 
           if status.success?
             installed_languages << language
             puts "    ✓ Successfully installed #{language}"
           else
-            failed_languages << { language: language, error: stderr.strip }
+            failed_languages << {language: language, error: stderr.strip}
             puts "    ✗ Failed to install #{language}: #{stderr.lines.first&.strip}"
           end
         end
@@ -51,7 +51,7 @@ module Dotfiles
       end
 
       def mise_not_available?
-        stdout, _, status = Open3.capture3("which mise")
+        stdout, _, status = Open3.capture3("command -v mise")
         !status.success? || stdout.strip.empty?
       rescue
         true
@@ -63,7 +63,13 @@ module Dotfiles
 
       def language_installed?(language)
         stdout, _, status = Open3.capture3("mise list #{language}")
-        status.success? && !stdout.strip.empty?
+        return false unless status.success?
+
+        # If stdout contains "missing", the language is not installed
+        return false if stdout.downcase.include?("missing")
+
+        # If stdout is empty or only whitespace, no versions are installed
+        !stdout.strip.empty?
       rescue
         false
       end
@@ -104,12 +110,12 @@ module Dotfiles
 
         if total_installed > 0
           output_lines << "Successfully installed #{total_installed} development environments:"
-          output_lines << "  Languages: #{installed.join(', ')}"
+          output_lines << "  Languages: #{installed.join(", ")}"
         end
 
         if total_skipped > 0
           output_lines << "\nSkipped #{total_skipped} already installed languages:"
-          output_lines << "  Languages: #{skipped.join(', ')}"
+          output_lines << "  Languages: #{skipped.join(", ")}"
         end
 
         output_lines << "\nRestart your terminal to use the new environments."
@@ -134,7 +140,7 @@ module Dotfiles
         output_parts << "Failed: #{failed.size}" if failed.size > 0
         output_parts << "Skipped: #{skipped.size}" if skipped.size > 0
 
-        "Development environment installation summary - #{output_parts.join(', ')}"
+        "Development environment installation summary - #{output_parts.join(", ")}"
       end
     end
   end

@@ -33,17 +33,15 @@ module Dotfiles
     end
 
     def load_steps_from_config(config_path = nil)
-      begin
-        steps = Core::StepLoader.load_ordered_steps(config_path)
-        add_steps(steps)
-        steps.length
-      rescue Core::StepLoader::MissingStepError => e
-        puts @formatter.error("Missing step implementation: #{e.message}")
-        raise
-      rescue Core::StepLoader::InvalidConfigError => e
-        puts @formatter.error("Invalid step configuration: #{e.message}")
-        raise
-      end
+      steps = Core::StepLoader.load_ordered_steps(config_path)
+      add_steps(steps)
+      steps.length
+    rescue Core::StepLoader::MissingStepError => e
+      puts @formatter.error("Missing step implementation: #{e.message}")
+      raise
+    rescue Core::StepLoader::InvalidConfigError => e
+      puts @formatter.error("Invalid step configuration: #{e.message}")
+      raise
     end
 
     def list_available_steps
