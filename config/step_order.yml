@@ -25,6 +25,14 @@ categories:
     steps:
       - configure_git
 
+  - name: 'Development Environment'
+    steps:
+      - install_dev_env
+
+  - name: 'Configuration Files'
+    steps:
+      - symlink_dotfiles
+
   # - name: "Configuration Files"
   #   steps:
   #     - setup_symlinks
