@@ -132,9 +132,7 @@ main() {
 
     success "Bootstrap completed successfully!"
     info "Next steps:"
-    info "  1. Source your shell configuration: source ~/.zshrc"
-    info "  2. Run the setup script: cd $DOTFILES_DIR && ./bin/apply_symlinks.sh"
-    info "  3. Install desktop applications: ./bin/install_desktop_apps.sh"
+    info "ruby $DOTFILES_DIR/bin/dotfiles_menu.rb"
 }
 
 # Run main function
