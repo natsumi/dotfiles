@@ -1,10 +1,5 @@
 categories:
-  # - name: "System Checks"
-  #   steps:
-  #     - check_operating_system
-  #     - verify_current_user
-
-  - name: "Package Management"
+  - name: 'Package Management'
     steps:
       - install_homebrew_packages
 
@@ -21,10 +16,6 @@ categories:
       - install_zplug
       - install_prezto
 
-  - name: 'Configuration'
-    steps:
-      - configure_git
-
   - name: 'Development Environment'
     steps:
       - install_dev_env
@@ -33,14 +24,6 @@ categories:
     steps:
       - symlink_dotfiles
 
-  # - name: "Configuration Files"
-  #   steps:
-  #     - setup_symlinks
-  #     - configure_git
-
-  # - name: "Demonstrations"
-  #   steps:
-  #     - show_current_date
-  #     - hello_world_demo
-  #     - slow_operation_demo
-  #     - error_handling_demo
+  - name: 'Configuration'
+    steps:
+      - configure_git

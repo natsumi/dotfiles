@@ -38,7 +38,7 @@ module Dotfiles
         private
 
         def default_step_name
-          name.split('::').last.gsub(/([A-Z])/, '_\1').downcase.gsub(/^_/, '')
+          self.name.split('::').last.gsub(/([A-Z])/, '_\1').downcase.gsub(/^_/, '')
         end
 
         def resolve_dependencies(deps)
@@ -76,10 +76,9 @@ module Dotfiles
         rescue => e
           @status = :failed
           @end_time = Time.now
-          StepResult.new(
-            success: false,
-            output: "",
+          StepResult.failure(
             error: e.message,
+            output: "",
             step_name: @name,
             duration: execution_duration
           )
@@ -129,12 +128,12 @@ module Dotfiles
 
       def skip_result
         @status = :skipped
-        StepResult.new(
-          success: true,
-          output: "Step skipped",
-          step_name: @name,
-          skipped: true
-        )
+        StepResult.skipped(step_name: @name)
+      end
+
+      def skip_step(message = "Step skipped")
+        @status = :skipped
+        StepResult.skipped(step_name: @name)
       end
     end
   end
