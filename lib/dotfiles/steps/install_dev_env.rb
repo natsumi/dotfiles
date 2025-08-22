@@ -31,7 +31,7 @@ module Dotfiles
           end
 
           puts "  Installing #{language}..."
-          _, stderr, status = Open3.capture3("mise use --global #{language}")
+          _, stderr, status = Open3.capture3("mise use -g #{language}")
 
           if status.success?
             installed_languages << language

@@ -120,20 +120,6 @@ install_ruby() {
     success "Ruby installed and set as global version"
 }
 
-# Check Ruby version
-check_ruby_version() {
-    if command -v ruby &> /dev/null; then
-        local ruby_version=$(ruby -e "puts RUBY_VERSION")
-        local major=$(echo $ruby_version | cut -d. -f1)
-        local minor=$(echo $ruby_version | cut -d. -f2)
-
-        if [ "$major" -gt 3 ] || ([ "$major" -eq 3 ] && [ "$minor" -ge 4 ]); then
-            return 0
-        fi
-    fi
-    return 1
-}
-
 main() {
     info "Starting macOS bootstrap process..."
 
