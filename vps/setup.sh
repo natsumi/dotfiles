@@ -209,6 +209,10 @@ interactive_config() {
     read -p "Install Docker? [y/N]: " install_docker_response
     INSTALL_DOCKER="$install_docker_response"
 
+    # CrowdSec installation
+    read -p "Install CrowdSec (modern threat detection and response)? [y/N]: " install_crowdsec_response
+    INSTALL_CROWDSEC="$install_crowdsec_response"
+
     # Display configuration summary
     echo
     info "=== Configuration Summary ==="
@@ -216,6 +220,7 @@ interactive_config() {
     echo "Hostname: $DEFAULT_HOSTNAME"
     echo "SSH Port: $DEFAULT_SSH_PORT"
     echo "Install Docker: ${INSTALL_DOCKER:-N}"
+    echo "Install CrowdSec: ${INSTALL_CROWDSEC:-N}"
     echo
 
     read -p "Proceed with this configuration? [Y/n]: " proceed
@@ -631,6 +636,78 @@ EOF
     success "SSHGuard configured"
 }
 
+# Configure CrowdSec
+configure_crowdsec() {
+    info "Installing and configuring CrowdSec..."
+    
+    # Install CrowdSec using official installer
+    curl -s https://install.crowdsec.net | sh >>"$LOG_FILE" 2>&1
+    
+    # Check which firewall backend to use
+    info "Detecting firewall backend..."
+    local bouncer_package=""
+    
+    # Check if nftables is in use
+    if command -v nft &>/dev/null && nft list tables &>/dev/null; then
+        info "Detected nftables"
+        bouncer_package="crowdsec-firewall-bouncer-nftables"
+    else
+        # Default to iptables
+        info "Using iptables (default)"
+        bouncer_package="crowdsec-firewall-bouncer-iptables"
+    fi
+    
+    # Install the appropriate firewall bouncer
+    info "Installing $bouncer_package..."
+    apt-get update -y >>"$LOG_FILE" 2>&1
+    apt-get install -y "$bouncer_package" >>"$LOG_FILE" 2>&1
+    
+    # Install collections for common scenarios
+    cscli collections install crowdsecurity/linux >>"$LOG_FILE" 2>&1
+    cscli collections install crowdsecurity/sshd >>"$LOG_FILE" 2>&1
+    
+    # Configure custom SSH port for CrowdSec
+    if [[ "$DEFAULT_SSH_PORT" != "22" ]]; then
+        # Update acquis.yaml to monitor SSH on custom port
+        mkdir -p /etc/crowdsec/acquis.d >>"$LOG_FILE" 2>&1
+        cat >/etc/crowdsec/acquis.d/sshd.yaml <<EOF
+---
+source: file
+filenames:
+  - /var/log/auth.log
+labels:
+  type: syslog
+  service: ssh
+  port: $DEFAULT_SSH_PORT
+---
+EOF
+        info "CrowdSec configured for SSH port $DEFAULT_SSH_PORT"
+    fi
+    
+    # Enable and start CrowdSec
+    systemctl enable crowdsec >>"$LOG_FILE" 2>&1
+    systemctl restart crowdsec >>"$LOG_FILE" 2>&1
+    
+    # Configure local API whitelist
+    if [[ -n "${SSH_CLIENT:-}" ]]; then
+        local user_ip=$(echo "$SSH_CLIENT" | awk '{print $1}')
+        # Whitelist current IP to prevent lockout
+        cscli decisions add --ip "$user_ip" --duration 0s --type ban >>"$LOG_FILE" 2>&1
+        cscli decisions delete --ip "$user_ip" >>"$LOG_FILE" 2>&1
+        info "Ensured your current IP ($user_ip) is not blocked by CrowdSec"
+    fi
+    
+    # Display CrowdSec status
+    local cs_status=$(systemctl is-active crowdsec 2>/dev/null || echo "inactive")
+    if [[ "$cs_status" == "active" ]]; then
+        success "CrowdSec installed and running with $bouncer_package"
+        info "You can check CrowdSec metrics with: cscli metrics"
+        info "View decisions with: cscli decisions list"
+    else
+        warning "CrowdSec installed but not running properly"
+    fi
+}
+
 # Configure automatic updates
 configure_auto_updates() {
     info "Configuring automatic security updates..."
@@ -739,6 +816,7 @@ Security Features:
 - Firewall: UFW (enabled)
 - Fail2ban: Configured for SSH protection
 - SSHGuard: Additional brute-force protection
+- CrowdSec: ${CROWDSEC_INSTALLED:-Not installed}
 - Automatic Updates: Enabled for security patches
 
 Optional Features:
@@ -819,6 +897,16 @@ main() {
     configure_firewall
     configure_fail2ban
     configure_sshguard
+    
+    # CrowdSec installation (optional)
+    if [[ "$INSTALL_CROWDSEC" =~ ^[Yy]$ ]]; then
+        configure_crowdsec
+        CROWDSEC_INSTALLED="Installed"
+    else
+        info "Skipping CrowdSec installation"
+        CROWDSEC_INSTALLED="Not installed"
+    fi
+    
     configure_auto_updates
 
     # System optimization
