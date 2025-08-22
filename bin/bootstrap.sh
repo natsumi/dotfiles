@@ -110,6 +110,9 @@ install_mise() {
 install_ruby() {
     info "Installing latest Ruby via mise..."
 
+    info "Installing buil libraries...."
+    brew install jemalloc libffi libtool libxslt libyaml openssl readline unixodbc xz zlib
+
     info "Installing Ruby...."
     mise install ruby@latest || error_exit "Failed to install Ruby"
     mise use -g ruby@latest || error_exit "Failed to set global Ruby version"
