@@ -26,4 +26,6 @@ categories:
 
   - name: 'Configuration'
     steps:
+      - configure_vscode
+      - configure_bat
       - configure_git

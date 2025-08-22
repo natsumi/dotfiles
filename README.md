@@ -1,27 +1,9 @@
-A collection of dotfile configuration scripts
+My very opinated configuration and setup scripts for new and existing Macs.
 
 ## Setup a new Mac
 
 ```bash
-sh bin/bootstrap.sh
-```
-
-### Custom configurations
-
-edit `~/.zshenv` and set your own `$DEV_DIR` and `$DOTFILE_DIR`
-
-### Alfred Integration
-
-```shell
-ln -s $(which node) /usr/local/bin/node
-```
-
-## Bat
-
-To pickup the Nord theme.
-
-```shell
-bat cache --build
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
 ```
 
 ## Tmux
@@ -38,16 +20,6 @@ run tmux  then press `ctrl-s shift-i`
 [Yabai Window Manager](https://github.com/koekeishiya/yabai)
 
 [Simple Keyboard Hot Keys](https://github.com/koekeishiya/skhd)
-
-# Post Install Settings
-
-### Visual Studio Code
-
-Enable key repeat
-
-```bash
-defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
-```
 
 # Desktop Applications
 

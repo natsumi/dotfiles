@@ -135,8 +135,8 @@ main() {
     info "ruby $DOTFILES_DIR/bin/dotfiles_menu.rb"
 
 
-    cd $DOTFILES_DIR
-    ruby bin/dotfiles_menu.rb
+    cd "$DOTFILES_DIR"
+    ruby bin/setup_system.rb
 }
 
 # Run main function
