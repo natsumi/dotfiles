@@ -1,9 +1,0 @@
-.DS_Store
-log
-tags
-tmp
-vendor
-.git/
-bower_components/
-node_modules/
-.asdf/

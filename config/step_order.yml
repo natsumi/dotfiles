@@ -1,0 +1,31 @@
+categories:
+  - name: 'Package Management'
+    steps:
+      - install_homebrew_packages
+
+  - name: 'Desktop Applications'
+    steps:
+      - install_desktop_apps
+
+  - name: 'Fonts'
+    steps:
+      - install_fonts
+
+  - name: 'Shell Tools'
+    steps:
+      - install_zplug
+      - install_prezto
+
+  - name: 'Configuration Files'
+    steps:
+      - symlink_dotfiles
+
+  - name: 'Development Environment'
+    steps:
+      - install_dev_env
+
+  - name: 'Configuration'
+    steps:
+      - configure_vscode
+      - configure_bat
+      - configure_git
