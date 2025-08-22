@@ -16,13 +16,13 @@ categories:
       - install_zplug
       - install_prezto
 
-  - name: 'Development Environment'
-    steps:
-      - install_dev_env
-
   - name: 'Configuration Files'
     steps:
       - symlink_dotfiles
+
+  - name: 'Development Environment'
+    steps:
+      - install_dev_env
 
   - name: 'Configuration'
     steps:
