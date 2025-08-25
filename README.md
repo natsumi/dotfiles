@@ -6,15 +6,6 @@ My very opinated configuration and setup scripts for new and existing Macs.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
 ```
 
-## Tmux
-
-```bash
-mkdir -p ~/.tmux/plugins
-```
-
-### Install Plugins
-run tmux  then press `ctrl-s shift-i`
-
 ## Yabai Window Manager
 
 [Yabai Window Manager](https://github.com/koekeishiya/yabai)
