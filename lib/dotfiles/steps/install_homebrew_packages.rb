@@ -91,6 +91,7 @@ module Dotfiles
             aria2
             bat
             broot
+            croc
             eza
             fd
             ffmpeg
