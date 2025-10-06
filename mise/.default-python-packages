@@ -1,5 +1,4 @@
 flake8
-magic-wormhole
 powerline-status
 pygments
 pylint
