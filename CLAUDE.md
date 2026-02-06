@@ -68,11 +68,11 @@ This is a modular dotfiles repository using GNU Stow for symlink management acro
 1. Each application config lives in its own directory
 2. `bin/apply_symlinks.sh` manages 25 package configurations
 3. Symlinks created via: `stow -v -R --target="$HOME" --dir="$DOTFILE_DIR" "$package"`
-4. Packages: alacritty, aerospace, bat, claude, elixir, eslint, helix, jetbrains, kitty, mise, neovim, prettier, ripgrep, ruby, silver_searcher, tig, tmux, yt-dlp, yabai, zsh
+4. Packages: alacritty, aerospace, bat, claude, elixir, eslint, ghostty, helix, jetbrains, kitty, mise, neovim, prettier, ripgrep, ruby, silver_searcher, tig, tmux, yt-dlp, yabai, zsh
 
 ### Development Tools Stack
 - **Editors**: Neovim (primary), Helix, VS Code, Cursor
-- **Terminals**: Kitty, Alacritty with tmux multiplexing
+- **Terminals**: Ghostty (primary), Kitty, Alacritty with tmux multiplexing
 - **Shell**: Zsh with Prezto framework and Powerlevel10k theme
 - **Version Control**: Git with diff-so-fancy, git-delta, tig, scmpuff
 - **Runtime Management**: mise (replaces asdf/rbenv/nvm)
