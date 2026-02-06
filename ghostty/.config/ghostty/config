@@ -28,10 +28,6 @@ macos-titlebar-style = native
 # Scrollback
 scrollback-limit = 5000
 
-# Bell
-audible-bell = false
-visual-bell = false
-
 # Clipboard
 clipboard-paste-protection = false
 
