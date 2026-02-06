@@ -28,6 +28,7 @@ These applications are installed via the `bin/install_desktop_apps` script.
 ## Development Applications
 
 - [Cursor](https://cursor.sh/) - AI-first code editor
+- [Ghostty](https://ghostty.org/) - Fast, feature-rich, GPU-based terminal emulator
 - [Kitty](https://sw.kovidgoyal.net/kitty/) - Fast, feature-rich, GPU-based terminal emulator
 - [Postman](https://www.postman.com/) - API development and testing platform
 - [Sublime Merge](https://www.sublimemerge.com/) - Git client from the makers of Sublime Text
