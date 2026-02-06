@@ -61,6 +61,7 @@ module Dotfiles
           ],
           "Development" => %w[
             cursor
+            ghostty
             kitty
             postman
             sublime-merge
