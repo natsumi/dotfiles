@@ -8,7 +8,7 @@ font-feature = ss08
 font-feature = ss09
 
 # Theme
-theme = Everforest Dark Hard
+theme = Catppuccin Macchiato
 
 # Cursor
 cursor-style = block
