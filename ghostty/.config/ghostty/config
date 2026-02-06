@@ -30,3 +30,5 @@ scrollback-limit = 5000
 
 # Clipboard
 clipboard-paste-protection = false
+
+link-url = true
