@@ -127,3 +127,5 @@ unalias gls #git log conflicts with dircolors gls
 #
 # SCMPuff
 eval "$(scmpuff init -s)"
+
+export PATH="$HOME/.local/bin:$PATH"
