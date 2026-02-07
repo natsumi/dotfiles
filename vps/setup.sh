@@ -92,6 +92,9 @@ setup_logging() {
 DEFAULT_SSH_PORT=22
 DEFAULT_USERNAME=""
 DEFAULT_HOSTNAME=""
+DEFAULT_TIMEZONE=""
+DEFAULT_PASSWORD=""
+DEFAULT_PUBKEY=""
 
 # Logging function
 log() {
@@ -166,7 +169,7 @@ create_backup() {
     info "Backup directory created: $BACKUP_DIR"
 }
 
-# Interactive configuration
+# Interactive configuration — collect ALL input upfront so the rest runs unattended
 interactive_config() {
     echo
     info "=== Interactive Configuration ==="
@@ -176,6 +179,22 @@ interactive_config() {
     read -p "Enter username for sudo access (leave empty to skip user creation): " username
     DEFAULT_USERNAME="$username"
 
+    # Password (only if creating a user)
+    if [[ -n "$DEFAULT_USERNAME" ]]; then
+        while true; do
+            read -s -p "Password for $DEFAULT_USERNAME: " password
+            echo
+            read -s -p "Confirm password: " password_confirm
+            echo
+            if [[ "$password" == "$password_confirm" ]]; then
+                DEFAULT_PASSWORD="$password"
+                break
+            else
+                warning "Passwords do not match. Try again."
+            fi
+        done
+    fi
+
     # Hostname
     current_hostname=$(hostname)
     read -p "Enter hostname (current: $current_hostname): " hostname
@@ -184,6 +203,19 @@ interactive_config() {
     # SSH Port
     read -p "Enter SSH port (default: $DEFAULT_SSH_PORT): " ssh_port
     DEFAULT_SSH_PORT="${ssh_port:-$DEFAULT_SSH_PORT}"
+
+    # Timezone
+    current_tz=$(timedatectl show -p Timezone --value 2>/dev/null || echo "UTC")
+    read -p "Enter timezone (current: $current_tz, default: America/Los_Angeles): " tz
+    DEFAULT_TIMEZONE="${tz:-America/Los_Angeles}"
+
+    # SSH key — check if root already has keys, prompt if not
+    if [[ ! -s /root/.ssh/authorized_keys ]]; then
+        warning "No SSH keys found for root"
+        echo "Paste your public key (from ~/.ssh/id_ed25519.pub on your local machine):"
+        read -r pubkey
+        DEFAULT_PUBKEY="$pubkey"
+    fi
 
     # Docker installation
     read -p "Install Docker? [y/N]: " install_docker_response
@@ -195,6 +227,8 @@ interactive_config() {
     echo "Username: ${DEFAULT_USERNAME:-[no new user]}"
     echo "Hostname: $DEFAULT_HOSTNAME"
     echo "SSH Port: $DEFAULT_SSH_PORT"
+    echo "Timezone: $DEFAULT_TIMEZONE"
+    echo "SSH Key: ${DEFAULT_PUBKEY:+will be added}${DEFAULT_PUBKEY:-already present}"
     echo "Install Docker: ${INSTALL_DOCKER:-N}"
     echo
 
@@ -437,22 +471,41 @@ create_user() {
         success "SSH keys copied to new user"
     fi
 
-    # Set password
-    info "Please set password for $DEFAULT_USERNAME"
-    while true; do
-        read -s -p "Password: " password
-        echo
-        read -s -p "Confirm password: " password_confirm
-        echo
-        if [[ "$password" == "$password_confirm" ]]; then
-            echo "$DEFAULT_USERNAME:$password" | chpasswd
-            break
-        else
-            warning "Passwords do not match. Try again."
-        fi
-    done
+    # Set password (collected during interactive_config)
+    if [[ -n "$DEFAULT_PASSWORD" ]]; then
+        echo "$DEFAULT_USERNAME:$DEFAULT_PASSWORD" | chpasswd
+        success "Password set for $DEFAULT_USERNAME"
+    fi
 
     success "User created: $DEFAULT_USERNAME"
+}
+
+# Ensure SSH keys exist before hardening (prevents lockout)
+# Installs the pubkey collected during interactive_config if needed
+ensure_ssh_keys() {
+    info "Checking SSH keys..."
+
+    # Install collected pubkey to root if needed
+    if [[ -n "${DEFAULT_PUBKEY:-}" ]] && [[ ! -s /root/.ssh/authorized_keys ]]; then
+        mkdir -p /root/.ssh
+        echo "$DEFAULT_PUBKEY" >> /root/.ssh/authorized_keys
+        chmod 700 /root/.ssh
+        chmod 600 /root/.ssh/authorized_keys
+        success "SSH key added to /root/.ssh/authorized_keys"
+    fi
+
+    # Verify keys exist for all users that need SSH access
+    local homes=("/root")
+    [[ -n "${DEFAULT_USERNAME:-}" ]] && homes+=("/home/$DEFAULT_USERNAME")
+
+    for home_dir in "${homes[@]}"; do
+        local auth_file="$home_dir/.ssh/authorized_keys"
+        if [[ -s "$auth_file" ]]; then
+            success "SSH keys found in $auth_file"
+        else
+            error_exit "No SSH keys for $home_dir — refusing to disable password auth (would lock you out)"
+        fi
+    done
 }
 
 # Configure hostname
@@ -472,18 +525,14 @@ configure_hostname() {
     fi
 }
 
-# Configure timezone
+# Configure timezone (value collected during interactive_config)
 configure_timezone() {
     info "Configuring timezone..."
     local current_tz=$(timedatectl show -p Timezone --value)
 
-    echo "Current timezone: $current_tz"
-    read -p "Enter timezone (default: America/Los_Angeles) or press Enter for default: " new_tz
-    new_tz="${new_tz:-America/Los_Angeles}"
-
-    if [[ "$new_tz" != "$current_tz" ]]; then
-        timedatectl set-timezone "$new_tz" >>"$LOG_FILE" 2>&1
-        success "Timezone set to: $new_tz"
+    if [[ "$DEFAULT_TIMEZONE" != "$current_tz" ]]; then
+        timedatectl set-timezone "$DEFAULT_TIMEZONE" >>"$LOG_FILE" 2>&1
+        success "Timezone set to: $DEFAULT_TIMEZONE"
     else
         success "Timezone unchanged: $current_tz"
     fi
@@ -825,6 +874,7 @@ main() {
 
     # User and security setup
     create_user
+    ensure_ssh_keys
     configure_ssh
     # Docker installation (optional)
     if [[ "$INSTALL_DOCKER" =~ ^[Yy]$ ]]; then
