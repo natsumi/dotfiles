@@ -498,28 +498,63 @@ configure_timezone() {
 
 # Configure SSH
 configure_ssh() {
-    info "Configuring SSH..."
+    info "Configuring SSH hardening via drop-in config..."
 
-    # Backup original sshd_config
-    cp /etc/ssh/sshd_config "$BACKUP_DIR/sshd_config.backup"
+    local sshd_config="/etc/ssh/sshd_config"
+    local hardening_conf="/etc/ssh/sshd_config.d/99-hardening.conf"
 
-    # Create new sshd_config from template
-    if [[ -f "$CONFIG_DIR/ssh/sshd_config.template" ]]; then
-        # Replace placeholders in template
-        sed -e "s/{{SSH_PORT}}/$DEFAULT_SSH_PORT/g" \
-            -e "s/{{USERNAME}}/${DEFAULT_USERNAME:-}/g" \
-            "$CONFIG_DIR/ssh/sshd_config.template" > /etc/ssh/sshd_config
-    else
-        error_exit "SSH configuration template not found: $CONFIG_DIR/ssh/sshd_config.template"
+    # Backup originals
+    cp "$sshd_config" "$BACKUP_DIR/sshd_config.backup"
+    cp -r /etc/ssh/sshd_config.d/ "$BACKUP_DIR/sshd_config.d.backup/" 2>/dev/null || true
+
+    # Disable cloud-init SSH config if present (often sets PasswordAuthentication yes)
+    if [[ -f /etc/ssh/sshd_config.d/50-cloud-init.conf ]]; then
+        mv /etc/ssh/sshd_config.d/50-cloud-init.conf \
+           /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled
+        info "Disabled cloud-init SSH config (backed up)"
     fi
 
-    # Test SSH configuration and restart
+    # Build AllowUsers
+    local allow_users="root"
+    if [[ -n "${DEFAULT_USERNAME:-}" ]]; then
+        allow_users="root ${DEFAULT_USERNAME}"
+    fi
+
+    # Write hardening drop-in (overrides system defaults)
+    cat > "$hardening_conf" <<EOF
+# SSH Hardening - managed by VPS setup script
+Port ${DEFAULT_SSH_PORT}
+PasswordAuthentication no
+PermitRootLogin prohibit-password
+LoginGraceTime 30
+MaxAuthTries 3
+MaxSessions 3
+X11Forwarding no
+PrintMotd no
+GSSAPIAuthentication no
+KbdInteractiveAuthentication no
+AllowUsers ${allow_users}
+AllowGroups sudo ssh
+ClientAliveInterval 300
+ClientAliveCountMax 2
+Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+EOF
+
+    # Validate and restart
     if sshd -t; then
         systemctl restart sshd >>"$LOG_FILE" 2>&1
-        success "SSH configured and restarted on port $DEFAULT_SSH_PORT"
+        success "SSH hardened via drop-in config on port $DEFAULT_SSH_PORT"
         warning "Remember to update your SSH connection to use port $DEFAULT_SSH_PORT"
     else
-        error_exit "SSH configuration error - check $LOG_FILE"
+        # Restore on failure
+        rm -f "$hardening_conf"
+        if [[ -f /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled ]]; then
+            mv /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled \
+               /etc/ssh/sshd_config.d/50-cloud-init.conf
+        fi
+        error_exit "SSH configuration validation failed - hardening removed. Check $LOG_FILE"
     fi
 }
 
