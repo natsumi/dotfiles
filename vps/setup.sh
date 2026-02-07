@@ -97,8 +97,6 @@ DEFAULT_HOSTNAME=""
 log() {
     local message="${2:-}$1${NC}"
     echo -e "$message"
-    # Try to append to log file, but don't fail if we can't
-    echo -e "$message" >>"$LOG_FILE" 2>/dev/null || true
 }
 
 # Error handling
@@ -120,26 +118,6 @@ warning() {
 # Info message
 info() {
     log "ℹ $1" "$BLUE"
-}
-
-# Run command with detailed logging
-run_cmd() {
-    local cmd="$1"
-    local description="${2:-Running command}"
-
-    echo ">>> $description"
-    echo ">>> Command: $cmd"
-
-    local exit_code
-    if eval "$cmd"; then
-        echo ">>> Success: $description"
-        return 0
-    else
-        exit_code=$?
-        echo ">>> FAILED: $description (exit code: $exit_code)"
-        echo ">>> Failed command: $cmd"
-        return $exit_code
-    fi
 }
 
 # Check if running as root
@@ -461,7 +439,18 @@ create_user() {
 
     # Set password
     info "Please set password for $DEFAULT_USERNAME"
-    passwd "$DEFAULT_USERNAME"
+    while true; do
+        read -s -p "Password: " password
+        echo
+        read -s -p "Confirm password: " password_confirm
+        echo
+        if [[ "$password" == "$password_confirm" ]]; then
+            echo "$DEFAULT_USERNAME:$password" | chpasswd
+            break
+        else
+            warning "Passwords do not match. Try again."
+        fi
+    done
 
     success "User created: $DEFAULT_USERNAME"
 }
@@ -534,7 +523,6 @@ PrintMotd no
 GSSAPIAuthentication no
 KbdInteractiveAuthentication no
 AllowUsers ${allow_users}
-AllowGroups sudo ssh
 ClientAliveInterval 300
 ClientAliveCountMax 2
 Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
