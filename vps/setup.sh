@@ -418,8 +418,8 @@ create_user() {
 
     info "Creating user: $DEFAULT_USERNAME"
 
-    # Create user with home directory
-    useradd -m -s /bin/bash "$DEFAULT_USERNAME" >>"$LOG_FILE" 2>&1
+    # Create user with home directory and zsh shell
+    useradd -m -s /usr/bin/zsh "$DEFAULT_USERNAME" >>"$LOG_FILE" 2>&1
 
     # Add to sudo group
     usermod -aG sudo "$DEFAULT_USERNAME" >>"$LOG_FILE" 2>&1
@@ -461,8 +461,12 @@ configure_hostname() {
         info "Setting hostname to: $DEFAULT_HOSTNAME"
         hostnamectl set-hostname "$DEFAULT_HOSTNAME"
 
-        # Update /etc/hosts
-        sed -i "s/127.0.1.1.*/127.0.1.1\t$DEFAULT_HOSTNAME/" /etc/hosts
+        # Update /etc/hosts (add line if missing)
+        if grep -q '127.0.1.1' /etc/hosts; then
+            sed -i "s/127.0.1.1.*/127.0.1.1\t$DEFAULT_HOSTNAME/" /etc/hosts
+        else
+            echo -e "127.0.1.1\t$DEFAULT_HOSTNAME" >>/etc/hosts
+        fi
 
         success "Hostname configured"
     fi
@@ -654,13 +658,37 @@ create_swap() {
         echo "/swapfile none swap sw 0 0" >>/etc/fstab
     fi
 
-    # Optimize swappiness (idempotent)
-    if ! grep -q 'vm.swappiness' /etc/sysctl.conf; then
-        echo "vm.swappiness=10" >>/etc/sysctl.conf
-    fi
-    sysctl -p >>"$LOG_FILE" 2>&1
-
     success "Swap file created: ${swap_size}MB"
+}
+
+# Configure kernel and network security via sysctl
+configure_sysctl_hardening() {
+    info "Configuring kernel and network hardening via sysctl drop-in..."
+
+    cat > /etc/sysctl.d/99-vps-hardening.conf <<'SYSEOF'
+# VPS hardening - managed by VPS setup script
+
+# Swap
+vm.swappiness = 10
+
+# Network security
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv4.tcp_syncookies = 1
+net.ipv6.conf.all.accept_redirects = 0
+net.ipv6.conf.default.accept_redirects = 0
+SYSEOF
+
+    sysctl --system >>"$LOG_FILE" 2>&1
+
+    success "Kernel and network hardening applied"
 }
 
 # Security audit
@@ -674,12 +702,25 @@ perform_security_audit() {
         fi
     done
 
-    # Check SSH key strength
-    while IFS= read -r key; do
-        if [[ "$key" =~ ssh-rsa ]] && [[ $(echo "$key" | awk '{print $2}' | base64 -d | wc -c) -lt 256 ]]; then
-            warning "Weak RSA key found in authorized_keys"
-        fi
-    done <"${target_home:-/root}/.ssh/authorized_keys" 2>/dev/null || true
+    # Check SSH key strength for root and admin user
+    local homes=("/root")
+    if [[ -n "${DEFAULT_USERNAME:-}" ]]; then
+        homes+=("/home/$DEFAULT_USERNAME")
+    fi
+
+    for home_dir in "${homes[@]}"; do
+        local auth_file="$home_dir/.ssh/authorized_keys"
+        [[ -f "$auth_file" ]] || continue
+        while IFS= read -r key; do
+            if [[ "$key" =~ ssh-rsa ]]; then
+                local bits
+                bits=$(echo "$key" | ssh-keygen -l -f /dev/stdin 2>/dev/null | awk '{print $1}') || continue
+                if [[ "$bits" -lt 2048 ]]; then
+                    warning "Weak RSA key ($bits bits) found in $auth_file"
+                fi
+            fi
+        done <"$auth_file"
+    done
 
     # Check for running unnecessary services
     local unnecessary_services=(
@@ -719,6 +760,7 @@ Security Features:
 - Firewall: UFW (enabled)
 - Fail2ban: Configured for SSH and Traefik protection
 - Automatic Updates: Enabled for security patches
+- Kernel Hardening: sysctl network security (enabled)
 
 Optional Features:
 - Swap: Configured
@@ -801,6 +843,7 @@ main() {
 
     # System optimization
     create_swap
+    configure_sysctl_hardening
 
     # Final steps
     perform_security_audit
