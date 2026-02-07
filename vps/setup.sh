@@ -62,13 +62,13 @@ readonly NC='\033[0m' # No Color
 # Configuration variables
 EXECUTION_DIR="$(pwd)"
 LOG_DIR="$EXECUTION_DIR"
-LOG_FILE="$LOG_DIR/vps-setup/$(date +%Y%m%d-%H%M%S).log"
+LOG_FILE="$LOG_DIR/vps_setup.log"
 BACKUP_DIR="$EXECUTION_DIR/vps-setup/backup/$(date +%Y%m%d-%H%M%S)"
 
-# Ensure log file can be created
+# Ensure log file can be created (overwrite previous log)
 if ! touch "$LOG_FILE" 2>/dev/null; then
     LOG_DIR="/tmp"
-    LOG_FILE="$LOG_DIR/vps-setup-$(date +%Y%m%d-%H%M%S).log"
+    LOG_FILE="$LOG_DIR/vps_setup.log"
     # Note: Can't use warning() here as it might not be defined yet
     echo -e "\033[1;33m⚠ Cannot write to current directory, using /tmp for logs\033[0m"
 fi
@@ -78,8 +78,9 @@ setup_logging() {
     # Create a file descriptor for logging
     exec 3>&1 4>&2
     # Redirect stdout and stderr to tee, which writes to both log and screen
-    exec 1> >(tee -a "$LOG_FILE")
-    exec 2> >(tee -a "$LOG_FILE" >&2)
+    # Overwrite previous log file on each run
+    exec 1> >(tee "$LOG_FILE")
+    exec 2> >(tee "$LOG_FILE" >&2)
 
     # Log script start
     echo "=== VPS Setup Script Started at $(date) ==="
@@ -129,11 +130,12 @@ run_cmd() {
     echo ">>> $description"
     echo ">>> Command: $cmd"
 
+    local exit_code
     if eval "$cmd"; then
         echo ">>> Success: $description"
         return 0
     else
-        local exit_code=$?
+        exit_code=$?
         echo ">>> FAILED: $description (exit code: $exit_code)"
         echo ">>> Failed command: $cmd"
         return $exit_code
@@ -284,7 +286,6 @@ install_base_packages() {
         # Security tools
         ufw
         fail2ban
-        sshguard
         unattended-upgrades
         apt-listchanges
 
@@ -328,7 +329,7 @@ install_base_packages() {
         warning "Some packages failed to install. Check $LOG_FILE for details."
         # Try to install packages one by one to identify failures
         for pkg in "${packages[@]}"; do
-            if ! dpkg -l "$pkg" &>/dev/null; then
+            if ! dpkg -s "$pkg" &>/dev/null; then
                 apt-get install -y "$pkg" >>"$LOG_FILE" 2>&1 || warning "Failed to install: $pkg"
             fi
         done
@@ -512,9 +513,10 @@ configure_ssh() {
         error_exit "SSH configuration template not found: $CONFIG_DIR/ssh/sshd_config.template"
     fi
 
-    # Test SSH configuration
+    # Test SSH configuration and restart
     if sshd -t; then
-        success "SSH configured on port $DEFAULT_SSH_PORT"
+        systemctl restart sshd >>"$LOG_FILE" 2>&1
+        success "SSH configured and restarted on port $DEFAULT_SSH_PORT"
         warning "Remember to update your SSH connection to use port $DEFAULT_SSH_PORT"
     else
         error_exit "SSH configuration error - check $LOG_FILE"
@@ -538,9 +540,6 @@ configure_firewall() {
     # Allow HTTP/HTTPS
     ufw allow 80/tcp comment 'HTTP' >>"$LOG_FILE" 2>&1
     ufw allow 443/tcp comment 'HTTPS' >>"$LOG_FILE" 2>&1
-
-    # Rate limiting for SSH
-    ufw allow "$DEFAULT_SSH_PORT/tcp" >>"$LOG_FILE" 2>&1
 
     # Enable UFW
     echo "y" | ufw enable >>"$LOG_FILE" 2>&1
@@ -581,54 +580,6 @@ configure_fail2ban() {
     systemctl restart fail2ban >>"$LOG_FILE" 2>&1
 
     success "Fail2ban configured"
-}
-
-# Configure SSHGuard
-configure_sshguard() {
-    info "Configuring SSHGuard..."
-
-    # Create SSHGuard configuration from template
-    if [[ -f "$CONFIG_DIR/sshguard/sshguard.conf.template" ]]; then
-        cp "$CONFIG_DIR/sshguard/sshguard.conf.template" /etc/sshguard/sshguard.conf
-    else
-        error_exit "SSHGuard configuration template not found: $CONFIG_DIR/sshguard/sshguard.conf.template"
-    fi
-
-    # Create whitelist from template
-    if [[ -f "$CONFIG_DIR/sshguard/whitelist.template" ]]; then
-        cp "$CONFIG_DIR/sshguard/whitelist.template" /etc/sshguard/whitelist
-    else
-        warning "SSHGuard whitelist template not found: $CONFIG_DIR/sshguard/whitelist.template"
-        # Create basic whitelist
-        cat >/etc/sshguard/whitelist <<EOF
-# SSHGuard whitelist
-# Add trusted IP addresses here
-127.0.0.0/8
-::1/128
-EOF
-    fi
-
-    # Add user's current IP to whitelist if available
-    if [[ -n "${SSH_CLIENT:-}" ]]; then
-        local user_ip=$(echo "$SSH_CLIENT" | awk '{print $1}')
-        # Replace placeholder if exists, otherwise append
-        if grep -q "{{USER_IP}}" /etc/sshguard/whitelist; then
-            sed -i "s/{{USER_IP}}/$user_ip/g" /etc/sshguard/whitelist
-        else
-            echo "# Current user IP" >>/etc/sshguard/whitelist
-            echo "$user_ip" >>/etc/sshguard/whitelist
-        fi
-        info "Added your current IP ($user_ip) to SSHGuard whitelist"
-    else
-        # Remove placeholder if no user IP available
-        sed -i '/{{USER_IP}}/d' /etc/sshguard/whitelist
-    fi
-
-    # Enable and start SSHGuard
-    systemctl enable sshguard >>"$LOG_FILE" 2>&1
-    systemctl restart sshguard >>"$LOG_FILE" 2>&1
-
-    success "SSHGuard configured"
 }
 
 # Configure automatic updates
@@ -673,11 +624,15 @@ create_swap() {
     mkswap /swapfile >>"$LOG_FILE" 2>&1
     swapon /swapfile >>"$LOG_FILE" 2>&1
 
-    # Make permanent
-    echo "/swapfile none swap sw 0 0" >>/etc/fstab
+    # Make permanent (idempotent)
+    if ! grep -q '/swapfile' /etc/fstab; then
+        echo "/swapfile none swap sw 0 0" >>/etc/fstab
+    fi
 
-    # Optimize swappiness
-    echo "vm.swappiness=10" >>/etc/sysctl.conf
+    # Optimize swappiness (idempotent)
+    if ! grep -q 'vm.swappiness' /etc/sysctl.conf; then
+        echo "vm.swappiness=10" >>/etc/sysctl.conf
+    fi
     sysctl -p >>"$LOG_FILE" 2>&1
 
     success "Swap file created: ${swap_size}MB"
@@ -737,8 +692,7 @@ User Configuration:
 
 Security Features:
 - Firewall: UFW (enabled)
-- Fail2ban: Configured for SSH protection
-- SSHGuard: Additional brute-force protection
+- Fail2ban: Configured for SSH and Traefik protection
 - Automatic Updates: Enabled for security patches
 
 Optional Features:
@@ -818,7 +772,6 @@ main() {
     fi
     configure_firewall
     configure_fail2ban
-    configure_sshguard
     configure_auto_updates
 
     # System optimization

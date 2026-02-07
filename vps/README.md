@@ -13,20 +13,19 @@ A comprehensive, security-focused setup script for Ubuntu 24.04 VPS servers with
 ### 🔒 Security Hardening
 - **SSH Hardening**: Custom port, key-only authentication, disable root login
 - **Firewall**: UFW with strict rules and rate limiting
-- **Intrusion Prevention**: Fail2ban + SSHGuard dual protection
+- **Intrusion Prevention**: Fail2ban with SSH and Traefik jails
 - **Automatic Updates**: Unattended security patches
 - **Security Audit**: Post-installation security check
 
 ### 🛠️ Development Environment
-- **Shell**: Zsh with Prezto and Zplug
+- **Shell**: Zsh
 - **Editor**: Neovim (latest unstable)
-- **Tools**: ripgrep, fd, fzf, bat, tig, tmux, htop, and more
-- **Version Control**: Git with diff-so-fancy and scmpuff
-- **Dotfiles**: Automatic setup from this repository
+- **Tools**: ripgrep, fd, fzf, bat, tig, tmux, btop, htop, and more
+- **Version Control**: Git
 
 ### 📊 System Optimization
 - **Swap File**: Automatic creation based on available RAM
-- **Monitoring**: Optional btop and Netdata installation
+- **Monitoring**: btop, htop, iotop, nethogs
 - **Performance**: Optimized sysctl settings
 
 ### 🎯 User Experience
@@ -67,8 +66,8 @@ During installation, you'll be prompted for:
 
 1. **Admin Username** - Create a non-root sudo user (optional)
 2. **Hostname** - Set server hostname
-3. **SSH Port** - Custom SSH port (default: 2222)
-4. **System Monitoring** - Enable additional monitoring tools (default: yes)
+3. **SSH Port** - Custom SSH port (default: 22)
+4. **Docker** - Optional Docker installation
 
 The script automatically uses **Enhanced** security settings with optimal security configurations.
 
@@ -78,10 +77,8 @@ The script automatically configures **Enhanced** security settings that include:
 
 - **SSH Hardening**: Custom port, key-only authentication, disabled root login
 - **UFW Firewall**: Strict rules with rate limiting for SSH connections
-- **Fail2ban**: SSH protection with automatic IP banning
-- **SSHGuard**: Additional brute-force protection layer
+- **Fail2ban**: SSH and Traefik protection with automatic IP banning
 - **Automatic Updates**: Unattended security patches
-- **Extended Fail2ban Jails**: Protection against various attack types
 
 ## Post-Installation
 
@@ -108,7 +105,7 @@ The script automatically configures **Enhanced** security settings that include:
 
 ### File Locations
 
-- **Setup Log**: `./vps-setup-TIMESTAMP.log` (in current directory, or `/tmp/` if not writable)
+- **Setup Log**: `./vps_setup.log` (in current directory, or `/tmp/` if not writable)
 - **Configuration Backup**: `/root/server-setup-backup-TIMESTAMP/`
 - **Setup Summary**: `/root/vps-setup-summary.txt`
 - **Dotfiles**: `~/dotfiles/`
@@ -122,9 +119,6 @@ sudo ufw status verbose
 # Check fail2ban status
 sudo fail2ban-client status
 sudo fail2ban-client status sshd
-
-# Check SSHGuard status
-sudo systemctl status sshguard
 
 # View blocked IPs
 sudo iptables -L -n -v
@@ -147,10 +141,6 @@ sudo systemctl restart sshd
 
 #### Whitelist IP Addresses
 ```bash
-# For SSHGuard
-echo "YOUR_IP_ADDRESS" | sudo tee -a /etc/sshguard/whitelist
-sudo systemctl restart sshguard
-
 # For Fail2ban
 sudo fail2ban-client set sshd addignoreip YOUR_IP_ADDRESS
 ```
@@ -172,12 +162,11 @@ If you're locked out:
 
 1. Use your VPS provider's console access
 2. Check fail2ban: `fail2ban-client set sshd unbanip YOUR_IP`
-3. Check SSHGuard: `iptables -D sshguard -s YOUR_IP -j DROP`
-4. Review `/var/log/auth.log` for issues
+3. Review `/var/log/auth.log` for issues
 
 ### Script Fails During Installation
 
-1. Check the log file: `./vps-setup-*.log` (in the directory where you ran the script)
+1. Check the log file: `./vps_setup.log` (in the directory where you ran the script)
 2. Original configs are backed up in `/root/server-setup-backup-*/`
 3. Re-run the script - it's designed to be idempotent
 4. Run with debug mode for more details:
@@ -189,7 +178,7 @@ If you're locked out:
    sudo bash -c 'set +e; bash /path/to/setup.sh'
 
    # Check the last few lines of the log
-   tail -50 ./vps-setup-*.log
+   tail -50 ./vps_setup.log
    ```
 
 ### High Memory Usage

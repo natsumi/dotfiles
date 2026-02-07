@@ -19,11 +19,8 @@ configs/
 │       ├── traefik-auth.conf   # Filter for 401/403 auth failures
 │       ├── traefik-badbots.conf # Filter for bad bots and scanners
 │       └── traefik-ratelimit.conf # Filter for 429 rate limit responses
-├── ssh/                         # SSH server configurations
-│   └── sshd_config.template    # SSH daemon configuration (with placeholders)
-└── sshguard/                    # SSHGuard brute-force protection
-    ├── sshguard.conf.template  # Main configuration
-    └── whitelist.template      # IP whitelist (with placeholders)
+└── ssh/                         # SSH server configurations
+    └── sshd_config.template    # SSH daemon configuration (with placeholders)
 ```
 
 ## Service Configurations
@@ -55,17 +52,11 @@ configs/
     - `{{SSH_PORT}}` - Custom SSH port
     - `{{USERNAME}}` - Username for SSH access
 
-### SSHGuard (`sshguard/`)
-- **sshguard.conf.template**: Configuration for additional brute-force protection
-- **whitelist.template**: IP whitelist configuration
-  - Placeholder: `{{USER_IP}}` - Current user's IP address
-
 ## Template Processing
 
 Files with `.template` extension contain placeholders that are replaced during setup:
 - `{{SSH_PORT}}` - Replaced with the configured SSH port
 - `{{USERNAME}}` - Replaced with the created username (if any)
-- `{{USER_IP}}` - Replaced with the current SSH client's IP address
 
 The setup script uses `sed` to process these templates and generate the final configuration files.
 
