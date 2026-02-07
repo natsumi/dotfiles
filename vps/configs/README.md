@@ -7,10 +7,7 @@ This directory contains configuration templates and files used by the VPS setup 
 ```
 configs/
 ├── apt/                         # APT package manager configurations
-│   ├── ubuntu.sources          # APT sources for Ubuntu 24.04
-│   └── unattended-upgrades/    # Automatic security updates
-│       ├── 20auto-upgrades     # APT periodic update configuration
-│       └── 50unattended-upgrades # Unattended upgrades configuration
+│   └── ubuntu.sources          # APT sources for Ubuntu 24.04
 ├── docker/                      # Docker configurations
 │   └── daemon.json             # Docker daemon settings
 └── fail2ban/                    # Fail2ban intrusion prevention
@@ -25,9 +22,8 @@ configs/
 
 ### APT (`apt/`)
 - **ubuntu.sources**: Configures APT to use Pilot Fiber mirror for better performance
-- **unattended-upgrades/**: Automatic security updates configuration
-  - `50unattended-upgrades`: Defines which updates to install automatically
-  - `20auto-upgrades`: Enables periodic package list updates and upgrades
+
+Automatic security updates (unattended-upgrades) are configured via a drop-in at `/etc/apt/apt.conf.d/99-vps-upgrades`, written inline by the setup script. System defaults in `50unattended-upgrades` and `20auto-upgrades` remain untouched.
 
 ### Docker (`docker/`)
 - **daemon.json**: Docker daemon configuration with:

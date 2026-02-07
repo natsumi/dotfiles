@@ -619,21 +619,23 @@ configure_fail2ban() {
 
 # Configure automatic updates
 configure_auto_updates() {
-    info "Configuring automatic security updates..."
+    info "Configuring automatic security updates via drop-in..."
 
-    # Configure unattended-upgrades
-    if [[ -f "$CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades" ]]; then
-        cp "$CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades" /etc/apt/apt.conf.d/50unattended-upgrades
-    else
-        error_exit "Unattended upgrades configuration not found: $CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades"
-    fi
-
-    # Enable automatic updates
-    if [[ -f "$CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades" ]]; then
-        cp "$CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades" /etc/apt/apt.conf.d/20auto-upgrades
-    else
-        error_exit "Auto upgrades configuration not found: $CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades"
-    fi
+    # Write overrides to drop-in (system defaults in 50unattended-upgrades and
+    # 20auto-upgrades remain untouched)
+    cat > /etc/apt/apt.conf.d/99-vps-upgrades <<'APTEOF'
+// VPS auto-update overrides - managed by VPS setup script
+Unattended-Upgrade::Allowed-Origins {
+    "${distro_id}:${distro_codename}";
+    "${distro_id}:${distro_codename}-security";
+    "${distro_id}ESMApps:${distro_codename}-apps-security";
+    "${distro_id}ESM:${distro_codename}-infra-security";
+};
+Unattended-Upgrade::Automatic-Reboot "false";
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APTEOF
 
     systemctl enable unattended-upgrades >>"$LOG_FILE" 2>&1
 
