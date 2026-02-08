@@ -60,17 +60,16 @@ readonly BLUE='\033[0;34m'
 readonly NC='\033[0m' # No Color
 
 # Configuration variables
-EXECUTION_DIR="$(pwd)"
-LOG_DIR="$EXECUTION_DIR"
+LOG_DIR="${HOME:-/root}"
 LOG_FILE="$LOG_DIR/vps_setup.log"
-BACKUP_DIR="$EXECUTION_DIR/vps-setup/backup/$(date +%Y%m%d-%H%M%S)"
+BACKUP_DIR="$LOG_DIR/vps-setup/backup/$(date +%Y%m%d-%H%M%S)"
 
 # Ensure log file can be created (overwrite previous log)
 if ! touch "$LOG_FILE" 2>/dev/null; then
     LOG_DIR="/tmp"
     LOG_FILE="$LOG_DIR/vps_setup.log"
     # Note: Can't use warning() here as it might not be defined yet
-    echo -e "\033[1;33m⚠ Cannot write to current directory, using /tmp for logs\033[0m"
+    echo -e "\033[1;33m⚠ Cannot write to $LOG_DIR, using /tmp for logs\033[0m"
 fi
 
 # Set up logging to capture all output
@@ -346,15 +345,18 @@ install_base_packages() {
         whois
     )
 
-    # Install packages with error handling
-    if ! apt-get install -y "${packages[@]}" >>"$LOG_FILE" 2>&1; then
-        warning "Some packages failed to install. Check $LOG_FILE for details."
-        # Try to install packages one by one to identify failures
-        for pkg in "${packages[@]}"; do
-            if ! dpkg -s "$pkg" &>/dev/null; then
-                apt-get install -y "$pkg" >>"$LOG_FILE" 2>&1 || warning "Failed to install: $pkg"
-            fi
-        done
+    # Install packages — filter out unavailable ones first, then bulk install
+    local available=()
+    for pkg in "${packages[@]}"; do
+        if apt-cache show "$pkg" &>/dev/null; then
+            available+=("$pkg")
+        else
+            warning "Package not available: $pkg (skipping)"
+        fi
+    done
+
+    if ! apt-get install -y "${available[@]}" >>"$LOG_FILE" 2>&1; then
+        warning "Bulk install failed. Check $LOG_FILE for details."
     fi
     success "Base packages installed"
 }
