@@ -8,14 +8,6 @@ enable_strict_mode() {
     set -euo pipefail
 }
 
-# Enable debug mode if DEBUG environment variable is set
-if [[ "${DEBUG:-}" == "1" ]]; then
-    set -x
-    # Also log all commands to the log file
-    export PS4='+ $(date "+%Y-%m-%d %H:%M:%S") ${BASH_SOURCE}:${LINENO}: '
-    exec 2>&1
-fi
-
 # VPS Ubuntu 24.04 Setup Script
 # Enhanced with security hardening, interactive configuration, and best practices
 
@@ -42,7 +34,7 @@ handle_error() {
     if [[ -f "$LOG_FILE" ]]; then
         echo "To debug, you can:"
         echo "1. Check the last 50 lines of the log: tail -50 $LOG_FILE"
-        echo "2. Re-run with debug mode: DEBUG=1 bash $0"
+        echo "2. The log contains full command traces for debugging"
         echo "3. Your original configs are backed up in: $BACKUP_DIR"
     fi
 
@@ -60,17 +52,16 @@ readonly BLUE='\033[0;34m'
 readonly NC='\033[0m' # No Color
 
 # Configuration variables
-EXECUTION_DIR="$(pwd)"
-LOG_DIR="$EXECUTION_DIR"
-LOG_FILE="$LOG_DIR/vps-setup/$(date +%Y%m%d-%H%M%S).log"
-BACKUP_DIR="$EXECUTION_DIR/vps-setup/backup/$(date +%Y%m%d-%H%M%S)"
+LOG_DIR="${HOME:-/root}"
+LOG_FILE="$LOG_DIR/vps_setup.log"
+BACKUP_DIR="$LOG_DIR/vps-setup/backup/$(date +%Y%m%d-%H%M%S)"
 
-# Ensure log file can be created
+# Ensure log file can be created (overwrite previous log)
 if ! touch "$LOG_FILE" 2>/dev/null; then
     LOG_DIR="/tmp"
-    LOG_FILE="$LOG_DIR/vps-setup-$(date +%Y%m%d-%H%M%S).log"
+    LOG_FILE="$LOG_DIR/vps_setup.log"
     # Note: Can't use warning() here as it might not be defined yet
-    echo -e "\033[1;33m⚠ Cannot write to current directory, using /tmp for logs\033[0m"
+    echo -e "\033[1;33m⚠ Cannot write to $LOG_DIR, using /tmp for logs\033[0m"
 fi
 
 # Set up logging to capture all output
@@ -78,8 +69,16 @@ setup_logging() {
     # Create a file descriptor for logging
     exec 3>&1 4>&2
     # Redirect stdout and stderr to tee, which writes to both log and screen
-    exec 1> >(tee -a "$LOG_FILE")
+    # Overwrite previous log file on each run
+    exec 1> >(tee "$LOG_FILE")
     exec 2> >(tee -a "$LOG_FILE" >&2)
+
+    # Enable command tracing to log file only (not screen)
+    # Use high fd to avoid conflicts with process substitutions above
+    exec 9>>"$LOG_FILE"
+    BASH_XTRACEFD=9
+    PS4='+ ${BASH_SOURCE}:${LINENO}: '
+    set -x
 
     # Log script start
     echo "=== VPS Setup Script Started at $(date) ==="
@@ -91,13 +90,14 @@ setup_logging() {
 DEFAULT_SSH_PORT=22
 DEFAULT_USERNAME=""
 DEFAULT_HOSTNAME=""
+DEFAULT_TIMEZONE=""
+DEFAULT_PASSWORD=""
+DEFAULT_PUBKEY=""
 
 # Logging function
 log() {
     local message="${2:-}$1${NC}"
     echo -e "$message"
-    # Try to append to log file, but don't fail if we can't
-    echo -e "$message" >>"$LOG_FILE" 2>/dev/null || true
 }
 
 # Error handling
@@ -119,25 +119,6 @@ warning() {
 # Info message
 info() {
     log "ℹ $1" "$BLUE"
-}
-
-# Run command with detailed logging
-run_cmd() {
-    local cmd="$1"
-    local description="${2:-Running command}"
-
-    echo ">>> $description"
-    echo ">>> Command: $cmd"
-
-    if eval "$cmd"; then
-        echo ">>> Success: $description"
-        return 0
-    else
-        local exit_code=$?
-        echo ">>> FAILED: $description (exit code: $exit_code)"
-        echo ">>> Failed command: $cmd"
-        return $exit_code
-    fi
 }
 
 # Check if running as root
@@ -170,7 +151,7 @@ check_ubuntu_version() {
 
 # Check internet connectivity
 check_internet() {
-    if ! ping -c 1 -q google.com &>/dev/null; then
+    if ! curl -fsS --max-time 5 https://google.com >/dev/null 2>&1; then
         error_exit "No internet connection available"
     fi
     success "Internet connection verified"
@@ -186,7 +167,7 @@ create_backup() {
     info "Backup directory created: $BACKUP_DIR"
 }
 
-# Interactive configuration
+# Interactive configuration — collect ALL input upfront so the rest runs unattended
 interactive_config() {
     echo
     info "=== Interactive Configuration ==="
@@ -196,6 +177,22 @@ interactive_config() {
     read -p "Enter username for sudo access (leave empty to skip user creation): " username
     DEFAULT_USERNAME="$username"
 
+    # Password (only if creating a user)
+    if [[ -n "$DEFAULT_USERNAME" ]]; then
+        while true; do
+            read -s -p "Password for $DEFAULT_USERNAME: " password
+            echo
+            read -s -p "Confirm password: " password_confirm
+            echo
+            if [[ "$password" == "$password_confirm" ]]; then
+                DEFAULT_PASSWORD="$password"
+                break
+            else
+                warning "Passwords do not match. Try again."
+            fi
+        done
+    fi
+
     # Hostname
     current_hostname=$(hostname)
     read -p "Enter hostname (current: $current_hostname): " hostname
@@ -204,6 +201,29 @@ interactive_config() {
     # SSH Port
     read -p "Enter SSH port (default: $DEFAULT_SSH_PORT): " ssh_port
     DEFAULT_SSH_PORT="${ssh_port:-$DEFAULT_SSH_PORT}"
+    if ! [[ "$DEFAULT_SSH_PORT" =~ ^[0-9]+$ ]] || (( DEFAULT_SSH_PORT < 1 || DEFAULT_SSH_PORT > 65535 )); then
+        error_exit "Invalid SSH port: $DEFAULT_SSH_PORT (must be 1-65535)"
+    fi
+
+    # Timezone
+    current_tz=$(timedatectl show -p Timezone --value 2>/dev/null || echo "UTC")
+    read -p "Enter timezone (current: $current_tz, default: America/Los_Angeles): " tz
+    DEFAULT_TIMEZONE="${tz:-America/Los_Angeles}"
+
+    # SSH key — check if root already has keys, prompt if not
+    if [[ ! -s /root/.ssh/authorized_keys ]]; then
+        warning "No SSH keys found for root"
+        while true; do
+            echo "Paste your public key (from ~/.ssh/id_ed25519.pub on your local machine):"
+            read -r pubkey
+            if echo "$pubkey" | ssh-keygen -l -f - >/dev/null 2>&1; then
+                DEFAULT_PUBKEY="$pubkey"
+                break
+            else
+                warning "Invalid SSH public key. Try again."
+            fi
+        done
+    fi
 
     # Docker installation
     read -p "Install Docker? [y/N]: " install_docker_response
@@ -215,6 +235,8 @@ interactive_config() {
     echo "Username: ${DEFAULT_USERNAME:-[no new user]}"
     echo "Hostname: $DEFAULT_HOSTNAME"
     echo "SSH Port: $DEFAULT_SSH_PORT"
+    echo "Timezone: $DEFAULT_TIMEZONE"
+    echo "SSH Key: ${DEFAULT_PUBKEY:+will be added}${DEFAULT_PUBKEY:-already present}"
     echo "Install Docker: ${INSTALL_DOCKER:-N}"
     echo
 
@@ -242,13 +264,13 @@ update_system() {
     success "Configured Pilot Fiber mirror"
 
     # Update package lists
-    if ! apt-get update -y >>"$LOG_FILE" 2>&1; then
+    if ! apt-get update -y -q; then
         error_exit "Failed to update package lists. Check internet connection and repository settings."
     fi
 
     # Upgrade packages with error handling
-    apt-get upgrade -y >>"$LOG_FILE" 2>&1 || warning "Some packages failed to upgrade"
-    apt-get autoremove -y >>"$LOG_FILE" 2>&1 || true
+    apt-get upgrade -y -q || warning "Some packages failed to upgrade"
+    apt-get autoremove -y -q >>"$LOG_FILE" 2>&1 || true
 
     success "System updated"
 }
@@ -284,7 +306,6 @@ install_base_packages() {
         # Security tools
         ufw
         fail2ban
-        sshguard
         unattended-upgrades
         apt-listchanges
 
@@ -323,15 +344,18 @@ install_base_packages() {
         whois
     )
 
-    # Install packages with error handling
-    if ! apt-get install -y "${packages[@]}" >>"$LOG_FILE" 2>&1; then
+    # Install packages — filter out unavailable ones first, then bulk install
+    local available=()
+    for pkg in "${packages[@]}"; do
+        if apt-cache show "$pkg" &>/dev/null; then
+            available+=("$pkg")
+        else
+            warning "Package not available: $pkg (skipping)"
+        fi
+    done
+
+    if ! apt-get install -y -q "${available[@]}"; then
         warning "Some packages failed to install. Check $LOG_FILE for details."
-        # Try to install packages one by one to identify failures
-        for pkg in "${packages[@]}"; do
-            if ! dpkg -l "$pkg" &>/dev/null; then
-                apt-get install -y "$pkg" >>"$LOG_FILE" 2>&1 || warning "Failed to install: $pkg"
-            fi
-        done
     fi
     success "Base packages installed"
 }
@@ -340,8 +364,8 @@ install_base_packages() {
 install_neovim() {
     info "Installing Neovim..."
     add-apt-repository -y ppa:neovim-ppa/unstable >>"$LOG_FILE" 2>&1
-    apt-get update -y >>"$LOG_FILE" 2>&1
-    apt-get install -y neovim >>"$LOG_FILE" 2>&1
+    apt-get update -y -q >>"$LOG_FILE" 2>&1
+    apt-get install -y -q neovim
     success "Neovim installed"
 }
 
@@ -358,11 +382,11 @@ install_docker_engine() {
     echo \
         "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
         $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" |
-        sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+        tee /etc/apt/sources.list.d/docker.list >/dev/null
 
     # Install Docker Engine
-    apt-get update -y >>"$LOG_FILE" 2>&1
-    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin >>"$LOG_FILE" 2>&1
+    apt-get update -y -q >>"$LOG_FILE" 2>&1
+    apt-get install -y -q docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
     # Enable and start Docker
     systemctl enable docker >>"$LOG_FILE" 2>&1
@@ -439,8 +463,8 @@ create_user() {
 
     info "Creating user: $DEFAULT_USERNAME"
 
-    # Create user with home directory
-    useradd -m -s /bin/bash "$DEFAULT_USERNAME" >>"$LOG_FILE" 2>&1
+    # Create user with home directory and zsh shell
+    useradd -m -s /usr/bin/zsh "$DEFAULT_USERNAME" >>"$LOG_FILE" 2>&1
 
     # Add to sudo group
     usermod -aG sudo "$DEFAULT_USERNAME" >>"$LOG_FILE" 2>&1
@@ -458,11 +482,56 @@ create_user() {
         success "SSH keys copied to new user"
     fi
 
-    # Set password
-    info "Please set password for $DEFAULT_USERNAME"
-    passwd "$DEFAULT_USERNAME"
+    # Set password (collected during interactive_config)
+    if [[ -n "$DEFAULT_PASSWORD" ]]; then
+        # Suppress trace to avoid leaking password in log
+        { set +x; } 2>/dev/null
+        echo "$DEFAULT_USERNAME:$DEFAULT_PASSWORD" | chpasswd
+        set -x
+        success "Password set for $DEFAULT_USERNAME"
+    fi
 
     success "User created: $DEFAULT_USERNAME"
+}
+
+# Ensure SSH keys exist before hardening (prevents lockout)
+# Installs the pubkey collected during interactive_config if needed
+ensure_ssh_keys() {
+    info "Checking SSH keys..."
+
+    # Build list of homes that need keys
+    local homes=("/root")
+    if [[ -n "${DEFAULT_USERNAME:-}" ]]; then
+        homes+=("/home/$DEFAULT_USERNAME")
+    fi
+
+    # Install collected pubkey to all users that need SSH access
+    if [[ -n "${DEFAULT_PUBKEY:-}" ]]; then
+        for home_dir in "${homes[@]}"; do
+            local auth_file="$home_dir/.ssh/authorized_keys"
+            if [[ ! -s "$auth_file" ]]; then
+                mkdir -p "$home_dir/.ssh"
+                echo "$DEFAULT_PUBKEY" >> "$auth_file"
+                chmod 700 "$home_dir/.ssh"
+                chmod 600 "$auth_file"
+                # Fix ownership for non-root users
+                if [[ "$home_dir" != "/root" ]]; then
+                    chown -R "$DEFAULT_USERNAME:$DEFAULT_USERNAME" "$home_dir/.ssh"
+                fi
+                success "SSH key added to $auth_file"
+            fi
+        done
+    fi
+
+    # Final safety check — refuse to proceed without keys
+    for home_dir in "${homes[@]}"; do
+        local auth_file="$home_dir/.ssh/authorized_keys"
+        if [[ -s "$auth_file" ]]; then
+            success "SSH keys found in $auth_file"
+        else
+            error_exit "No SSH keys for $home_dir — refusing to disable password auth (would lock you out)"
+        fi
+    done
 }
 
 # Configure hostname
@@ -471,25 +540,25 @@ configure_hostname() {
         info "Setting hostname to: $DEFAULT_HOSTNAME"
         hostnamectl set-hostname "$DEFAULT_HOSTNAME"
 
-        # Update /etc/hosts
-        sed -i "s/127.0.1.1.*/127.0.1.1\t$DEFAULT_HOSTNAME/" /etc/hosts
+        # Update /etc/hosts (add line if missing)
+        if grep -q '127.0.1.1' /etc/hosts; then
+            sed -i "s/127.0.1.1.*/127.0.1.1\t$DEFAULT_HOSTNAME/" /etc/hosts
+        else
+            echo -e "127.0.1.1\t$DEFAULT_HOSTNAME" >>/etc/hosts
+        fi
 
         success "Hostname configured"
     fi
 }
 
-# Configure timezone
+# Configure timezone (value collected during interactive_config)
 configure_timezone() {
     info "Configuring timezone..."
     local current_tz=$(timedatectl show -p Timezone --value)
 
-    echo "Current timezone: $current_tz"
-    read -p "Enter timezone (default: America/Los_Angeles) or press Enter for default: " new_tz
-    new_tz="${new_tz:-America/Los_Angeles}"
-
-    if [[ "$new_tz" != "$current_tz" ]]; then
-        timedatectl set-timezone "$new_tz" >>"$LOG_FILE" 2>&1
-        success "Timezone set to: $new_tz"
+    if [[ "$DEFAULT_TIMEZONE" != "$current_tz" ]]; then
+        timedatectl set-timezone "$DEFAULT_TIMEZONE" >>"$LOG_FILE" 2>&1
+        success "Timezone set to: $DEFAULT_TIMEZONE"
     else
         success "Timezone unchanged: $current_tz"
     fi
@@ -497,27 +566,62 @@ configure_timezone() {
 
 # Configure SSH
 configure_ssh() {
-    info "Configuring SSH..."
+    info "Configuring SSH hardening via drop-in config..."
 
-    # Backup original sshd_config
-    cp /etc/ssh/sshd_config "$BACKUP_DIR/sshd_config.backup"
+    local sshd_config="/etc/ssh/sshd_config"
+    local hardening_conf="/etc/ssh/sshd_config.d/99-hardening.conf"
 
-    # Create new sshd_config from template
-    if [[ -f "$CONFIG_DIR/ssh/sshd_config.template" ]]; then
-        # Replace placeholders in template
-        sed -e "s/{{SSH_PORT}}/$DEFAULT_SSH_PORT/g" \
-            -e "s/{{USERNAME}}/${DEFAULT_USERNAME:-}/g" \
-            "$CONFIG_DIR/ssh/sshd_config.template" > /etc/ssh/sshd_config
-    else
-        error_exit "SSH configuration template not found: $CONFIG_DIR/ssh/sshd_config.template"
+    # Backup originals
+    cp "$sshd_config" "$BACKUP_DIR/sshd_config.backup"
+    cp -r /etc/ssh/sshd_config.d/ "$BACKUP_DIR/sshd_config.d.backup/" 2>/dev/null || true
+
+    # Disable cloud-init SSH config if present (often sets PasswordAuthentication yes)
+    if [[ -f /etc/ssh/sshd_config.d/50-cloud-init.conf ]]; then
+        mv /etc/ssh/sshd_config.d/50-cloud-init.conf \
+           /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled
+        info "Disabled cloud-init SSH config (backed up)"
     fi
 
-    # Test SSH configuration
+    # Build AllowUsers
+    local allow_users="root"
+    if [[ -n "${DEFAULT_USERNAME:-}" ]]; then
+        allow_users="root ${DEFAULT_USERNAME}"
+    fi
+
+    # Write hardening drop-in (overrides system defaults)
+    cat > "$hardening_conf" <<EOF
+# SSH Hardening - managed by VPS setup script
+Port ${DEFAULT_SSH_PORT}
+PasswordAuthentication no
+PermitRootLogin prohibit-password
+LoginGraceTime 30
+MaxAuthTries 3
+MaxSessions 3
+X11Forwarding no
+PrintMotd no
+GSSAPIAuthentication no
+KbdInteractiveAuthentication no
+AllowUsers ${allow_users}
+ClientAliveInterval 300
+ClientAliveCountMax 2
+Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+EOF
+
+    # Validate and restart
     if sshd -t; then
-        success "SSH configured on port $DEFAULT_SSH_PORT"
+        systemctl restart ssh >>"$LOG_FILE" 2>&1
+        success "SSH hardened via drop-in config on port $DEFAULT_SSH_PORT"
         warning "Remember to update your SSH connection to use port $DEFAULT_SSH_PORT"
     else
-        error_exit "SSH configuration error - check $LOG_FILE"
+        # Restore on failure
+        rm -f "$hardening_conf"
+        if [[ -f /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled ]]; then
+            mv /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled \
+               /etc/ssh/sshd_config.d/50-cloud-init.conf
+        fi
+        error_exit "SSH configuration validation failed - hardening removed. Check $LOG_FILE"
     fi
 }
 
@@ -538,9 +642,6 @@ configure_firewall() {
     # Allow HTTP/HTTPS
     ufw allow 80/tcp comment 'HTTP' >>"$LOG_FILE" 2>&1
     ufw allow 443/tcp comment 'HTTPS' >>"$LOG_FILE" 2>&1
-
-    # Rate limiting for SSH
-    ufw allow "$DEFAULT_SSH_PORT/tcp" >>"$LOG_FILE" 2>&1
 
     # Enable UFW
     echo "y" | ufw enable >>"$LOG_FILE" 2>&1
@@ -583,71 +684,25 @@ configure_fail2ban() {
     success "Fail2ban configured"
 }
 
-# Configure SSHGuard
-configure_sshguard() {
-    info "Configuring SSHGuard..."
-
-    # Create SSHGuard configuration from template
-    if [[ -f "$CONFIG_DIR/sshguard/sshguard.conf.template" ]]; then
-        cp "$CONFIG_DIR/sshguard/sshguard.conf.template" /etc/sshguard/sshguard.conf
-    else
-        error_exit "SSHGuard configuration template not found: $CONFIG_DIR/sshguard/sshguard.conf.template"
-    fi
-
-    # Create whitelist from template
-    if [[ -f "$CONFIG_DIR/sshguard/whitelist.template" ]]; then
-        cp "$CONFIG_DIR/sshguard/whitelist.template" /etc/sshguard/whitelist
-    else
-        warning "SSHGuard whitelist template not found: $CONFIG_DIR/sshguard/whitelist.template"
-        # Create basic whitelist
-        cat >/etc/sshguard/whitelist <<EOF
-# SSHGuard whitelist
-# Add trusted IP addresses here
-127.0.0.0/8
-::1/128
-EOF
-    fi
-
-    # Add user's current IP to whitelist if available
-    if [[ -n "${SSH_CLIENT:-}" ]]; then
-        local user_ip=$(echo "$SSH_CLIENT" | awk '{print $1}')
-        # Replace placeholder if exists, otherwise append
-        if grep -q "{{USER_IP}}" /etc/sshguard/whitelist; then
-            sed -i "s/{{USER_IP}}/$user_ip/g" /etc/sshguard/whitelist
-        else
-            echo "# Current user IP" >>/etc/sshguard/whitelist
-            echo "$user_ip" >>/etc/sshguard/whitelist
-        fi
-        info "Added your current IP ($user_ip) to SSHGuard whitelist"
-    else
-        # Remove placeholder if no user IP available
-        sed -i '/{{USER_IP}}/d' /etc/sshguard/whitelist
-    fi
-
-    # Enable and start SSHGuard
-    systemctl enable sshguard >>"$LOG_FILE" 2>&1
-    systemctl restart sshguard >>"$LOG_FILE" 2>&1
-
-    success "SSHGuard configured"
-}
-
 # Configure automatic updates
 configure_auto_updates() {
-    info "Configuring automatic security updates..."
+    info "Configuring automatic security updates via drop-in..."
 
-    # Configure unattended-upgrades
-    if [[ -f "$CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades" ]]; then
-        cp "$CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades" /etc/apt/apt.conf.d/50unattended-upgrades
-    else
-        error_exit "Unattended upgrades configuration not found: $CONFIG_DIR/apt/unattended-upgrades/50unattended-upgrades"
-    fi
-
-    # Enable automatic updates
-    if [[ -f "$CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades" ]]; then
-        cp "$CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades" /etc/apt/apt.conf.d/20auto-upgrades
-    else
-        error_exit "Auto upgrades configuration not found: $CONFIG_DIR/apt/unattended-upgrades/20auto-upgrades"
-    fi
+    # Write overrides to drop-in (system defaults in 50unattended-upgrades and
+    # 20auto-upgrades remain untouched)
+    cat > /etc/apt/apt.conf.d/99-vps-upgrades <<'APTEOF'
+// VPS auto-update overrides - managed by VPS setup script
+Unattended-Upgrade::Allowed-Origins {
+    "${distro_id}:${distro_codename}";
+    "${distro_id}:${distro_codename}-security";
+    "${distro_id}ESMApps:${distro_codename}-apps-security";
+    "${distro_id}ESM:${distro_codename}-infra-security";
+};
+Unattended-Upgrade::Automatic-Reboot "false";
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APTEOF
 
     systemctl enable unattended-upgrades >>"$LOG_FILE" 2>&1
 
@@ -673,14 +728,42 @@ create_swap() {
     mkswap /swapfile >>"$LOG_FILE" 2>&1
     swapon /swapfile >>"$LOG_FILE" 2>&1
 
-    # Make permanent
-    echo "/swapfile none swap sw 0 0" >>/etc/fstab
-
-    # Optimize swappiness
-    echo "vm.swappiness=10" >>/etc/sysctl.conf
-    sysctl -p >>"$LOG_FILE" 2>&1
+    # Make permanent (idempotent)
+    if ! grep -q '/swapfile' /etc/fstab; then
+        echo "/swapfile none swap sw 0 0" >>/etc/fstab
+    fi
 
     success "Swap file created: ${swap_size}MB"
+}
+
+# Configure kernel and network security via sysctl
+configure_sysctl_hardening() {
+    info "Configuring kernel and network hardening via sysctl drop-in..."
+
+    cat > /etc/sysctl.d/99-vps-hardening.conf <<'SYSEOF'
+# VPS hardening - managed by VPS setup script
+
+# Swap
+vm.swappiness = 10
+
+# Network security
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv4.tcp_syncookies = 1
+net.ipv6.conf.all.accept_redirects = 0
+net.ipv6.conf.default.accept_redirects = 0
+SYSEOF
+
+    sysctl --system >>"$LOG_FILE" 2>&1
+
+    success "Kernel and network hardening applied"
 }
 
 # Security audit
@@ -694,12 +777,25 @@ perform_security_audit() {
         fi
     done
 
-    # Check SSH key strength
-    while IFS= read -r key; do
-        if [[ "$key" =~ ssh-rsa ]] && [[ $(echo "$key" | awk '{print $2}' | base64 -d | wc -c) -lt 256 ]]; then
-            warning "Weak RSA key found in authorized_keys"
-        fi
-    done <"${target_home:-/root}/.ssh/authorized_keys" 2>/dev/null || true
+    # Check SSH key strength for root and admin user
+    local homes=("/root")
+    if [[ -n "${DEFAULT_USERNAME:-}" ]]; then
+        homes+=("/home/$DEFAULT_USERNAME")
+    fi
+
+    for home_dir in "${homes[@]}"; do
+        local auth_file="$home_dir/.ssh/authorized_keys"
+        [[ -f "$auth_file" ]] || continue
+        while IFS= read -r key; do
+            if [[ "$key" =~ ssh-rsa ]]; then
+                local bits
+                bits=$(echo "$key" | ssh-keygen -l -f /dev/stdin 2>/dev/null | awk '{print $1}') || continue
+                if [[ "$bits" -lt 2048 ]]; then
+                    warning "Weak RSA key ($bits bits) found in $auth_file"
+                fi
+            fi
+        done <"$auth_file"
+    done
 
     # Check for running unnecessary services
     local unnecessary_services=(
@@ -737,9 +833,9 @@ User Configuration:
 
 Security Features:
 - Firewall: UFW (enabled)
-- Fail2ban: Configured for SSH protection
-- SSHGuard: Additional brute-force protection
+- Fail2ban: Configured for SSH and Traefik protection
 - Automatic Updates: Enabled for security patches
+- Kernel Hardening: sysctl network security (enabled)
 
 Optional Features:
 - Swap: Configured
@@ -804,6 +900,7 @@ main() {
 
     # User and security setup
     create_user
+    ensure_ssh_keys
     configure_ssh
     # Docker installation (optional)
     if [[ "$INSTALL_DOCKER" =~ ^[Yy]$ ]]; then
@@ -818,11 +915,11 @@ main() {
     fi
     configure_firewall
     configure_fail2ban
-    configure_sshguard
     configure_auto_updates
 
     # System optimization
     create_swap
+    configure_sysctl_hardening
 
     # Final steps
     perform_security_audit
