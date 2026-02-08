@@ -265,13 +265,13 @@ update_system() {
     success "Configured Pilot Fiber mirror"
 
     # Update package lists
-    if ! apt-get update -y >>"$LOG_FILE" 2>&1; then
+    if ! apt-get update -y -q; then
         error_exit "Failed to update package lists. Check internet connection and repository settings."
     fi
 
     # Upgrade packages with error handling
-    apt-get upgrade -y >>"$LOG_FILE" 2>&1 || warning "Some packages failed to upgrade"
-    apt-get autoremove -y >>"$LOG_FILE" 2>&1 || true
+    apt-get upgrade -y -q || warning "Some packages failed to upgrade"
+    apt-get autoremove -y -q >>"$LOG_FILE" 2>&1 || true
 
     success "System updated"
 }
@@ -355,8 +355,8 @@ install_base_packages() {
         fi
     done
 
-    if ! apt-get install -y "${available[@]}" >>"$LOG_FILE" 2>&1; then
-        warning "Bulk install failed. Check $LOG_FILE for details."
+    if ! apt-get install -y -q "${available[@]}"; then
+        warning "Some packages failed to install. Check $LOG_FILE for details."
     fi
     success "Base packages installed"
 }
@@ -365,8 +365,8 @@ install_base_packages() {
 install_neovim() {
     info "Installing Neovim..."
     add-apt-repository -y ppa:neovim-ppa/unstable >>"$LOG_FILE" 2>&1
-    apt-get update -y >>"$LOG_FILE" 2>&1
-    apt-get install -y neovim >>"$LOG_FILE" 2>&1
+    apt-get update -y -q >>"$LOG_FILE" 2>&1
+    apt-get install -y -q neovim
     success "Neovim installed"
 }
 
@@ -386,8 +386,8 @@ install_docker_engine() {
         tee /etc/apt/sources.list.d/docker.list >/dev/null
 
     # Install Docker Engine
-    apt-get update -y >>"$LOG_FILE" 2>&1
-    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin >>"$LOG_FILE" 2>&1
+    apt-get update -y -q >>"$LOG_FILE" 2>&1
+    apt-get install -y -q docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
     # Enable and start Docker
     systemctl enable docker >>"$LOG_FILE" 2>&1
