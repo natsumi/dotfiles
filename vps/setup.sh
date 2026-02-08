@@ -611,7 +611,7 @@ EOF
 
     # Validate and restart
     if sshd -t; then
-        systemctl restart sshd >>"$LOG_FILE" 2>&1
+        systemctl restart ssh >>"$LOG_FILE" 2>&1
         success "SSH hardened via drop-in config on port $DEFAULT_SSH_PORT"
         warning "Remember to update your SSH connection to use port $DEFAULT_SSH_PORT"
     else
