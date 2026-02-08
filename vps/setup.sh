@@ -8,14 +8,6 @@ enable_strict_mode() {
     set -euo pipefail
 }
 
-# Enable debug mode if DEBUG environment variable is set
-if [[ "${DEBUG:-}" == "1" ]]; then
-    set -x
-    # Also log all commands to the log file
-    export PS4='+ $(date "+%Y-%m-%d %H:%M:%S") ${BASH_SOURCE}:${LINENO}: '
-    exec 2>&1
-fi
-
 # VPS Ubuntu 24.04 Setup Script
 # Enhanced with security hardening, interactive configuration, and best practices
 
@@ -42,7 +34,7 @@ handle_error() {
     if [[ -f "$LOG_FILE" ]]; then
         echo "To debug, you can:"
         echo "1. Check the last 50 lines of the log: tail -50 $LOG_FILE"
-        echo "2. Re-run with debug mode: DEBUG=1 bash $0"
+        echo "2. The log contains full command traces for debugging"
         echo "3. Your original configs are backed up in: $BACKUP_DIR"
     fi
 
@@ -80,6 +72,12 @@ setup_logging() {
     # Overwrite previous log file on each run
     exec 1> >(tee "$LOG_FILE")
     exec 2> >(tee -a "$LOG_FILE" >&2)
+
+    # Enable command tracing to log file only (not screen)
+    exec 5>>"$LOG_FILE"
+    export BASH_XTRACEFD=5
+    export PS4='+ ${BASH_SOURCE}:${LINENO}: '
+    set -x
 
     # Log script start
     echo "=== VPS Setup Script Started at $(date) ==="
@@ -485,10 +483,10 @@ create_user() {
 
     # Set password (collected during interactive_config)
     if [[ -n "$DEFAULT_PASSWORD" ]]; then
-        # Suppress trace to avoid leaking password in debug mode
+        # Suppress trace to avoid leaking password in log
         { set +x; } 2>/dev/null
         echo "$DEFAULT_USERNAME:$DEFAULT_PASSWORD" | chpasswd
-        { [[ "${DEBUG:-}" == "1" ]] && set -x; } || true
+        set -x
         success "Password set for $DEFAULT_USERNAME"
     fi
 
