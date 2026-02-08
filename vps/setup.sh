@@ -80,7 +80,7 @@ setup_logging() {
     # Redirect stdout and stderr to tee, which writes to both log and screen
     # Overwrite previous log file on each run
     exec 1> >(tee "$LOG_FILE")
-    exec 2> >(tee "$LOG_FILE" >&2)
+    exec 2> >(tee -a "$LOG_FILE" >&2)
 
     # Log script start
     echo "=== VPS Setup Script Started at $(date) ==="
@@ -153,7 +153,7 @@ check_ubuntu_version() {
 
 # Check internet connectivity
 check_internet() {
-    if ! ping -c 1 -q google.com &>/dev/null; then
+    if ! curl -fsS --max-time 5 https://google.com >/dev/null 2>&1; then
         error_exit "No internet connection available"
     fi
     success "Internet connection verified"
@@ -203,6 +203,9 @@ interactive_config() {
     # SSH Port
     read -p "Enter SSH port (default: $DEFAULT_SSH_PORT): " ssh_port
     DEFAULT_SSH_PORT="${ssh_port:-$DEFAULT_SSH_PORT}"
+    if ! [[ "$DEFAULT_SSH_PORT" =~ ^[0-9]+$ ]] || (( DEFAULT_SSH_PORT < 1 || DEFAULT_SSH_PORT > 65535 )); then
+        error_exit "Invalid SSH port: $DEFAULT_SSH_PORT (must be 1-65535)"
+    fi
 
     # Timezone
     current_tz=$(timedatectl show -p Timezone --value 2>/dev/null || echo "UTC")
@@ -212,9 +215,16 @@ interactive_config() {
     # SSH key — check if root already has keys, prompt if not
     if [[ ! -s /root/.ssh/authorized_keys ]]; then
         warning "No SSH keys found for root"
-        echo "Paste your public key (from ~/.ssh/id_ed25519.pub on your local machine):"
-        read -r pubkey
-        DEFAULT_PUBKEY="$pubkey"
+        while true; do
+            echo "Paste your public key (from ~/.ssh/id_ed25519.pub on your local machine):"
+            read -r pubkey
+            if echo "$pubkey" | ssh-keygen -l -f - >/dev/null 2>&1; then
+                DEFAULT_PUBKEY="$pubkey"
+                break
+            else
+                warning "Invalid SSH public key. Try again."
+            fi
+        done
     fi
 
     # Docker installation
@@ -371,7 +381,7 @@ install_docker_engine() {
     echo \
         "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
         $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" |
-        sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+        tee /etc/apt/sources.list.d/docker.list >/dev/null
 
     # Install Docker Engine
     apt-get update -y >>"$LOG_FILE" 2>&1
@@ -473,7 +483,10 @@ create_user() {
 
     # Set password (collected during interactive_config)
     if [[ -n "$DEFAULT_PASSWORD" ]]; then
+        # Suppress trace to avoid leaking password in debug mode
+        { set +x; } 2>/dev/null
         echo "$DEFAULT_USERNAME:$DEFAULT_PASSWORD" | chpasswd
+        { [[ "${DEBUG:-}" == "1" ]] && set -x; } || true
         success "Password set for $DEFAULT_USERNAME"
     fi
 
@@ -485,19 +498,31 @@ create_user() {
 ensure_ssh_keys() {
     info "Checking SSH keys..."
 
-    # Install collected pubkey to root if needed
-    if [[ -n "${DEFAULT_PUBKEY:-}" ]] && [[ ! -s /root/.ssh/authorized_keys ]]; then
-        mkdir -p /root/.ssh
-        echo "$DEFAULT_PUBKEY" >> /root/.ssh/authorized_keys
-        chmod 700 /root/.ssh
-        chmod 600 /root/.ssh/authorized_keys
-        success "SSH key added to /root/.ssh/authorized_keys"
+    # Build list of homes that need keys
+    local homes=("/root")
+    if [[ -n "${DEFAULT_USERNAME:-}" ]]; then
+        homes+=("/home/$DEFAULT_USERNAME")
     fi
 
-    # Verify keys exist for all users that need SSH access
-    local homes=("/root")
-    [[ -n "${DEFAULT_USERNAME:-}" ]] && homes+=("/home/$DEFAULT_USERNAME")
+    # Install collected pubkey to all users that need SSH access
+    if [[ -n "${DEFAULT_PUBKEY:-}" ]]; then
+        for home_dir in "${homes[@]}"; do
+            local auth_file="$home_dir/.ssh/authorized_keys"
+            if [[ ! -s "$auth_file" ]]; then
+                mkdir -p "$home_dir/.ssh"
+                echo "$DEFAULT_PUBKEY" >> "$auth_file"
+                chmod 700 "$home_dir/.ssh"
+                chmod 600 "$auth_file"
+                # Fix ownership for non-root users
+                if [[ "$home_dir" != "/root" ]]; then
+                    chown -R "$DEFAULT_USERNAME:$DEFAULT_USERNAME" "$home_dir/.ssh"
+                fi
+                success "SSH key added to $auth_file"
+            fi
+        done
+    fi
 
+    # Final safety check — refuse to proceed without keys
     for home_dir in "${homes[@]}"; do
         local auth_file="$home_dir/.ssh/authorized_keys"
         if [[ -s "$auth_file" ]]; then
