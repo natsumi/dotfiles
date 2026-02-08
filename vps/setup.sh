@@ -74,9 +74,10 @@ setup_logging() {
     exec 2> >(tee -a "$LOG_FILE" >&2)
 
     # Enable command tracing to log file only (not screen)
-    exec 5>>"$LOG_FILE"
-    export BASH_XTRACEFD=5
-    export PS4='+ ${BASH_SOURCE}:${LINENO}: '
+    # Use high fd to avoid conflicts with process substitutions above
+    exec 9>>"$LOG_FILE"
+    BASH_XTRACEFD=9
+    PS4='+ ${BASH_SOURCE}:${LINENO}: '
     set -x
 
     # Log script start
