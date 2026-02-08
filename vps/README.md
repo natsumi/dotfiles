@@ -10,36 +10,38 @@ A comprehensive, security-focused setup script for Ubuntu 24.04 VPS servers with
 
 ## Features
 
-### 🔒 Security Hardening
-- **SSH Hardening**: Custom port, key-only authentication, disable root login
-- **Firewall**: UFW with strict rules and rate limiting
+### Security Hardening
+- **SSH Hardening**: Custom port, key-only authentication, root login with key only (via drop-in at `/etc/ssh/sshd_config.d/99-hardening.conf`)
+- **SSH Key Safety Gate**: Verifies authorized_keys exist before disabling password auth; prompts for public key if missing
+- **Firewall**: UFW with strict default-deny incoming rules
 - **Intrusion Prevention**: Fail2ban with SSH and Traefik jails
-- **Automatic Updates**: Unattended security patches
-- **Security Audit**: Post-installation security check
+- **Automatic Updates**: Unattended security patches (via drop-in at `/etc/apt/apt.conf.d/99-vps-upgrades`)
+- **Kernel Hardening**: sysctl network security settings (via drop-in at `/etc/sysctl.d/99-vps-hardening.conf`)
+- **Security Audit**: Post-installation check for weak keys, default users, unnecessary services
 
-### 🛠️ Development Environment
+### Development Environment
 - **Shell**: Zsh
 - **Editor**: Neovim (latest unstable)
 - **Tools**: ripgrep, fd, fzf, bat, tig, tmux, btop, htop, and more
 - **Version Control**: Git
 
-### 📊 System Optimization
+### System Optimization
 - **Swap File**: Automatic creation based on available RAM
 - **Monitoring**: btop, htop, iotop, nethogs
-- **Performance**: Optimized sysctl settings
+- **Performance**: Optimized sysctl settings (swappiness, network security)
 
-### 🎯 User Experience
-- **Interactive Setup**: Guided configuration with sensible defaults
-- **Logging**: Comprehensive setup logs for troubleshooting
+### User Experience
+- **Interactive Setup**: All prompts collected upfront, then the entire setup runs unattended
+- **Logging**: Full command traces always written to `~/vps_setup.log`
 - **Backup**: Automatic backup of original configurations
+- **Visible Progress**: Package installs show status lines on screen
 - **Summary Report**: Post-installation summary with important notes
 
 ## Prerequisites
 
 - Fresh Ubuntu 24.04 LTS installation
 - Root access to the server
-- SSH key authentication configured (recommended)
-- Basic understanding of Linux administration
+- SSH public key (script will prompt if not already on the server)
 
 ## Installation
 
@@ -62,23 +64,15 @@ sudo bash setup.sh
 
 ## Interactive Configuration
 
-During installation, you'll be prompted for:
+All prompts are collected upfront so the rest of the setup runs unattended:
 
 1. **Admin Username** - Create a non-root sudo user (optional)
-2. **Hostname** - Set server hostname
-3. **SSH Port** - Custom SSH port (default: 22)
-4. **Docker** - Optional Docker installation
-
-The script automatically uses **Enhanced** security settings with optimal security configurations.
-
-## Security Features
-
-The script automatically configures **Enhanced** security settings that include:
-
-- **SSH Hardening**: Custom port, key-only authentication, disabled root login
-- **UFW Firewall**: Strict rules with rate limiting for SSH connections
-- **Fail2ban**: SSH and Traefik protection with automatic IP banning
-- **Automatic Updates**: Unattended security patches
+2. **Password** - Password for the new user (if creating one)
+3. **Hostname** - Set server hostname
+4. **SSH Port** - Custom SSH port (default: 22, validated 1-65535)
+5. **Timezone** - Server timezone (default: America/Los_Angeles)
+6. **SSH Public Key** - Prompted only if root has no authorized_keys (validated with ssh-keygen)
+7. **Docker** - Optional Docker and Lazydocker installation
 
 ## Post-Installation
 
@@ -87,7 +81,7 @@ The script automatically configures **Enhanced** security settings that include:
 1. **Test SSH Connection**
    ```bash
    # From your local machine (not the server!)
-   ssh -p 2222 username@your-server-ip
+   ssh -p YOUR_PORT username@your-server-ip
    ```
 
 2. **Review Security Settings**
@@ -105,10 +99,9 @@ The script automatically configures **Enhanced** security settings that include:
 
 ### File Locations
 
-- **Setup Log**: `./vps_setup.log` (in current directory, or `/tmp/` if not writable)
-- **Configuration Backup**: `/root/server-setup-backup-TIMESTAMP/`
+- **Setup Log**: `~/vps_setup.log` (includes full command traces)
+- **Configuration Backup**: `~/vps-setup/backup/TIMESTAMP/`
 - **Setup Summary**: `/root/vps-setup-summary.txt`
-- **Dotfiles**: `~/dotfiles/`
 
 ### Service Management
 
@@ -130,13 +123,13 @@ sudo iptables -L -n -v
 
 #### Change SSH Port After Installation
 ```bash
-# Edit SSH config
-sudo nano /etc/ssh/sshd_config
+# Edit the hardening drop-in
+sudo nano /etc/ssh/sshd_config.d/99-hardening.conf
 # Update UFW rules
-sudo ufw delete allow 2222/tcp
+sudo ufw delete allow OLD_PORT/tcp
 sudo ufw allow NEW_PORT/tcp
 # Restart SSH
-sudo systemctl restart sshd
+sudo systemctl restart ssh
 ```
 
 #### Whitelist IP Addresses
@@ -144,7 +137,6 @@ sudo systemctl restart sshd
 # For Fail2ban
 sudo fail2ban-client set sshd addignoreip YOUR_IP_ADDRESS
 ```
-
 
 ### Adding Custom Software
 
@@ -166,19 +158,12 @@ If you're locked out:
 
 ### Script Fails During Installation
 
-1. Check the log file: `./vps_setup.log` (in the directory where you ran the script)
-2. Original configs are backed up in `/root/server-setup-backup-*/`
+1. Check the log file: `~/vps_setup.log` (includes full command traces for debugging)
+2. Original configs are backed up in `~/vps-setup/backup/*/`
 3. Re-run the script - it's designed to be idempotent
-4. Run with debug mode for more details:
+4. Check the last few lines of the log:
    ```bash
-   # Show all commands being executed
-   DEBUG=1 sudo bash /path/to/setup.sh
-
-   # Or run without strict error checking to see exactly where it fails
-   sudo bash -c 'set +e; bash /path/to/setup.sh'
-
-   # Check the last few lines of the log
-   tail -50 ./vps_setup.log
+   tail -50 ~/vps_setup.log
    ```
 
 ### High Memory Usage
