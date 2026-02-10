@@ -19,7 +19,7 @@ config.visual_bell = {
 config.color_scheme = "Catppuccin Macchiato"
 
 -- Cursor
-config.default_cursor_style = "SteadyBlock"
+config.default_cursor_style = "BlinkingBar"
 
 -- Mouse
 config.hide_mouse_cursor_when_typing = true
