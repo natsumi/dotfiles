@@ -1,0 +1,33 @@
+{
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(bin/rails:*)",
+      "Bash(bin/standardrb:*)",
+      "Bash(bundle:*)",
+      "Bash(curl:*)",
+      "Bash(fizzy:*)",
+      "Bash(gh pr:*)",
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(git log:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git rebase:*)",
+      "Bash(just:*)",
+      "Bash(ruby:*)",
+      "Bash(yarn:*)",
+      "mcp__context7__resolve-library-id",
+      "Skill(fizzy)",
+      "WebSearch"
+    ]
+  },
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true
+  }
+}
