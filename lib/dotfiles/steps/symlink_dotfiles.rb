@@ -42,7 +42,7 @@ module Dotfiles
 
       def packages_to_symlink
         %w[
-          aerospace bat claude elixir eslint ghostty helix jetbrains
+          aerospace bat claude ccstatusline elixir eslint ghostty helix jetbrains
           kitty mise neovim prettier ripgrep ruby tig
           tmux wezterm yt-dlp yabai zsh
         ]
