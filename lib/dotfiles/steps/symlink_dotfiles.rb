@@ -44,7 +44,7 @@ module Dotfiles
         %w[
           aerospace bat elixir eslint ghostty helix jetbrains
           kitty mise neovim prettier ripgrep ruby tig
-          tmux yt-dlp yabai zsh
+          tmux wezterm yt-dlp yabai zsh
         ]
       end
 

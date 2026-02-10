@@ -31,6 +31,7 @@ config.native_macos_fullscreen_mode = false
 config.scrollback_lines = 5000
 
 -- Keys
+-- Fix for Claude
 config.keys = {
 	{
 		key = "Enter",
