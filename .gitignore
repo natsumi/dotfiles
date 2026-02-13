@@ -3,6 +3,9 @@
 .vscode
 neovim/.config/nvim/plugin
 
+neovim/.config/nvim/lazy-lock.json
+neovim/.config/nvim/lazyvim.json
+
 # Created by https://www.gitignore.io/api/emacs,osx
 
 ### Emacs ###
