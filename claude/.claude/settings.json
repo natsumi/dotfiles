@@ -28,17 +28,6 @@
       "WebSearch"
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccstatusline@latest",
-    "padding": 0
-  },
-  "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
-  },
   "hooks": {
     "Stop": [
       {
@@ -79,5 +68,18 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "cctop@cctop": true,
+    "ruby-lsp@ruby-skills": true
   }
 }
