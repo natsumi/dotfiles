@@ -14,6 +14,7 @@
       "Bash(git add:*)",
       "Bash(git checkout:*)",
       "Bash(git commit:*)",
+      "Bash(git diff:*)",
       "Bash(git fetch:*)",
       "Bash(git log:*)",
       "Bash(git ls-tree:*)",
@@ -21,6 +22,7 @@
       "Bash(git push:*)",
       "Bash(git rebase:*)",
       "Bash(just:*)",
+      "Bash(mise x:*)",
       "Bash(ruby:*)",
       "Bash(yarn:*)",
       "mcp__context7__resolve-library-id",
@@ -29,6 +31,17 @@
     ]
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-main-branch.sh"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
@@ -80,6 +93,7 @@
     "code-review@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "cctop@cctop": true,
-    "ruby-lsp@ruby-skills": true
+    "ruby-lsp@ruby-skills": true,
+    "ruby-skills@ruby-skills": true
   }
 }
