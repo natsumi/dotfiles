@@ -129,7 +129,7 @@ main() {
     success "Bootstrap completed successfully!"
 
     cd "$DOTFILES_DIR" || error_exit "Failed to cd to $DOTFILES_DIR"
-    ruby bin/setup_system.rb
+    ruby setup/setup_system.rb
 }
 
 # Run main function
