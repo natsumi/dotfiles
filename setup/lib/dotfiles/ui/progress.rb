@@ -18,11 +18,14 @@ module Dotfiles
       def update(current, description: nil, force: false)
         @current = current
         @step_times << Time.now - @last_update unless @current == 0
-        @last_update = Time.now
 
         # Only update display if enough time has passed or forced
-        return unless force || should_update?
+        unless force || should_update?
+          @last_update = Time.now
+          return
+        end
 
+        @last_update = Time.now
         display_progress(description)
       end
 

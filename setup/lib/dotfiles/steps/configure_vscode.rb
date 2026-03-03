@@ -9,22 +9,18 @@ module Dotfiles
     class ConfigureVscode < Core::Step
       name "configure_vscode"
       description "Configure VS Code settings and key repeat"
+      depends_on "install_desktop_apps"
 
       private
 
       def perform_step
-        start_time = Time.now
-
         puts "  Enabling VS Code key repeat..."
         _, stderr, status = Open3.capture3(enable_keyrepeat_command)
-
-        duration = Time.now - start_time
 
         if status.success?
           Core::StepResult.success(
             output: "Successfully enabled VS Code key repeat",
             step_name: @name,
-            duration: duration,
             context: {
               setting: "ApplePressAndHoldEnabled",
               value: false,
@@ -34,13 +30,8 @@ module Dotfiles
         else
           Core::StepResult.failure(
             error: "Failed to configure VS Code: #{stderr.strip}",
-            output: "VS Code configuration failed",
             step_name: @name,
-            duration: duration,
-            context: {
-              command: enable_keyrepeat_command,
-              error_details: stderr.strip
-            }
+            context: {command: enable_keyrepeat_command, error_details: stderr.strip}
           )
         end
       end

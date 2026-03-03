@@ -9,6 +9,7 @@ module Dotfiles
     class ConfigureBat < Core::Step
       name "configure_bat"
       description "Refresh bat theme cache"
+      depends_on "install_homebrew_packages"
 
       private
 
@@ -17,33 +18,20 @@ module Dotfiles
       end
 
       def perform_step
-        start_time = Time.now
-
         puts "  Refreshing bat theme cache..."
         stdout, stderr, status = Open3.capture3(bat_cache_command)
-
-        duration = Time.now - start_time
 
         if status.success?
           Core::StepResult.success(
             output: "Successfully refreshed bat theme cache",
             step_name: @name,
-            duration: duration,
-            context: {
-              command: bat_cache_command,
-              output: stdout.strip
-            }
+            context: {command: bat_cache_command, output: stdout.strip}
           )
         else
           Core::StepResult.failure(
             error: "Failed to refresh bat cache: #{stderr.strip}",
-            output: "bat cache refresh failed",
             step_name: @name,
-            duration: duration,
-            context: {
-              command: bat_cache_command,
-              error_details: stderr.strip
-            }
+            context: {command: bat_cache_command, error_details: stderr.strip}
           )
         end
       end

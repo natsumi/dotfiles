@@ -3,7 +3,8 @@
 module Dotfiles
   module Core
     class StepResult
-      attr_reader :success, :output, :error, :step_name, :duration, :skipped, :context
+      attr_reader :success, :output, :error, :step_name, :skipped, :context
+      attr_accessor :duration
 
       def initialize(success:, output: "", error: nil, step_name: nil, duration: 0, skipped: false, context: {})
         @success = success

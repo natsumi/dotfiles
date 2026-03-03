@@ -9,6 +9,7 @@ module Dotfiles
     class ConfigureGit < Core::Step
       name "configure_git"
       description "Configure Git user information and settings"
+      depends_on "install_homebrew_packages"
 
       private
 
@@ -17,40 +18,32 @@ module Dotfiles
       end
 
       def perform_step
-        start_time = Time.now
+        git_name = prompt_for_input("What is your full name used by Git?")
+        return Core::StepResult.failure(error: "Git user name is required", step_name: @name) if git_name.nil?
 
-        # Get user information
-        git_name = prompt_for_git_name
-        git_email = prompt_for_git_email
+        git_email = prompt_for_input("What is your Git user email?")
+        return Core::StepResult.failure(error: "Git user email is required", step_name: @name) if git_email.nil?
 
         puts "  Setting Git user information..."
 
-        # Set user configuration
         name_result = execute_git_command("git config --global user.name \"#{git_name}\"")
         unless name_result[:success]
-          duration = Time.now - start_time
           return Core::StepResult.failure(
             error: "Failed to set Git user name: #{name_result[:error]}",
-            output: "Git configuration failed",
-            step_name: @name,
-            duration: duration
+            step_name: @name
           )
         end
 
         email_result = execute_git_command("git config --global user.email #{git_email}")
         unless email_result[:success]
-          duration = Time.now - start_time
           return Core::StepResult.failure(
             error: "Failed to set Git user email: #{email_result[:error]}",
-            output: "Git configuration failed",
-            step_name: @name,
-            duration: duration
+            step_name: @name
           )
         end
 
         puts "  Applying Git settings..."
 
-        # Apply additional Git settings
         git_settings.each do |setting, value|
           result = execute_git_command("git config --global #{setting} \"#{value}\"")
           unless result[:success]
@@ -58,11 +51,9 @@ module Dotfiles
           end
         end
 
-        duration = Time.now - start_time
         Core::StepResult.success(
           output: "Successfully configured Git with user: #{git_name} <#{git_email}>",
           step_name: @name,
-          duration: duration,
           context: {
             git_name: git_name,
             git_email: git_email,
@@ -79,28 +70,10 @@ module Dotfiles
           !name_result[:output].strip.empty? && !email_result[:output].strip.empty?
       end
 
-      def prompt_for_git_name
-        print "  What is your full name used by Git? "
-        name = $stdin.gets.chomp
-
-        if name.strip.empty?
-          puts "  ERROR: Invalid Git user name."
-          exit 1
-        end
-
-        name
-      end
-
-      def prompt_for_git_email
-        print "  What is your Git user email? "
-        email = $stdin.gets.chomp
-
-        if email.strip.empty?
-          puts "  ERROR: Invalid Git email."
-          exit 1
-        end
-
-        email
+      def prompt_for_input(prompt_text)
+        print "  #{prompt_text} "
+        value = $stdin.gets.chomp
+        value.strip.empty? ? nil : value
       end
 
       def git_settings
