@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative "core/executor"
-require_relative "core/logger"
 require_relative "core/config"
 require_relative "core/step_loader"
 require_relative "ui/menu"
@@ -12,12 +11,11 @@ require "fileutils"
 
 module Dotfiles
   class MenuRunner
-    attr_reader :config, :logger, :formatter, :executor, :session_file
+    attr_reader :config, :formatter, :executor, :session_file
 
     def initialize
       @config = Core::Config.new
       @formatter = UI::Formatter.new(use_color: @config.use_color?)
-      @logger = Core::Logger.new(level: @config.log_level, use_color: @config.use_color?)
       @executor = Core::Executor.new(dry_run: @config.dry_run?)
       @session_file = File.join(ENV["HOME"], ".dotfiles_session.json")
       @steps = []

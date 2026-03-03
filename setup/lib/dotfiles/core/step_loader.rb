@@ -12,7 +12,7 @@ module Dotfiles
       class << self
         def load_all_steps
           load_step_files
-          Core::Step.subclasses
+          ObjectSpace.each_object(Class).select { |klass| klass < Core::Step && klass.step_name }
         end
 
         def load_ordered_steps(config_path = nil)

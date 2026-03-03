@@ -72,6 +72,7 @@ module Dotfiles
 
           @status = result.success? ? :completed : :failed
           @end_time = Time.now
+          result.duration = execution_duration
           result
         rescue => e
           @status = :failed
@@ -127,11 +128,6 @@ module Dotfiles
       end
 
       def skip_result
-        @status = :skipped
-        StepResult.skipped(step_name: @name)
-      end
-
-      def skip_step(message = "Step skipped")
         @status = :skipped
         StepResult.skipped(step_name: @name)
       end

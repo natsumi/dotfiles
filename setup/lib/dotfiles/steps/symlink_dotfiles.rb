@@ -17,8 +17,6 @@ module Dotfiles
       end
 
       def perform_step
-        start_time = Time.now
-
         successful_packages = []
         failed_packages = []
 
@@ -36,8 +34,7 @@ module Dotfiles
           end
         end
 
-        duration = Time.now - start_time
-        build_result(successful_packages, failed_packages, duration)
+        build_result(successful_packages, failed_packages)
       end
 
       def packages_to_symlink
@@ -67,15 +64,11 @@ module Dotfiles
         "stow -v -R --target=\"#{target_dir}\" --dir=\"#{dotfile_dir}\" \"#{package}\""
       end
 
-      def build_result(successful, failed, duration)
-        total_successful = successful.size
-        total_failed = failed.size
-
-        if total_failed == 0
+      def build_result(successful, failed)
+        if failed.empty?
           Core::StepResult.success(
-            output: build_success_output(successful, total_successful),
+            output: success_summary(successful),
             step_name: @name,
-            duration: duration,
             context: {
               symlinked_packages: successful,
               total_packages: packages_to_symlink.size,
@@ -85,10 +78,9 @@ module Dotfiles
           )
         else
           Core::StepResult.failure(
-            error: build_error_output(failed, total_failed),
-            output: build_partial_output(successful, failed),
+            error: failure_summary(failed),
+            output: partial_summary(successful, failed),
             step_name: @name,
-            duration: duration,
             context: {
               symlinked_packages: successful,
               failed_packages: failed,
@@ -99,31 +91,28 @@ module Dotfiles
         end
       end
 
-      def build_success_output(successful, total_successful)
-        output_lines = []
-        output_lines << "Successfully symlinked #{total_successful} packages:"
-        output_lines << "  Packages: #{successful.join(", ")}"
-        output_lines << "\nDotfiles symlinked from #{dotfile_dir} to #{target_dir}"
-        output_lines.join("\n")
+      def success_summary(successful)
+        lines = []
+        lines << "Successfully symlinked #{successful.size} packages:"
+        lines << "  Packages: #{successful.join(", ")}"
+        lines << "\nDotfiles symlinked from #{dotfile_dir} to #{target_dir}"
+        lines.join("\n")
       end
 
-      def build_error_output(failed, total_failed)
-        output_lines = ["Failed to symlink #{total_failed} packages:"]
-
+      def failure_summary(failed)
+        lines = ["Failed to symlink #{failed.size} packages:"]
         failed.each do |failure|
           error_msg = failure[:error].lines.first&.strip || "Unknown error"
-          output_lines << "  #{failure[:package]}: #{error_msg}"
+          lines << "  #{failure[:package]}: #{error_msg}"
         end
-
-        output_lines.join("\n")
+        lines.join("\n")
       end
 
-      def build_partial_output(successful, failed)
-        output_parts = []
-        output_parts << "Symlinked: #{successful.size}" if successful.size > 0
-        output_parts << "Failed: #{failed.size}" if failed.size > 0
-
-        "Symlink creation summary - #{output_parts.join(", ")}"
+      def partial_summary(successful, failed)
+        parts = []
+        parts << "Symlinked: #{successful.size}" if successful.any?
+        parts << "Failed: #{failed.size}" if failed.any?
+        "Symlink creation summary - #{parts.join(", ")}"
       end
     end
   end

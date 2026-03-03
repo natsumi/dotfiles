@@ -17,33 +17,20 @@ module Dotfiles
       end
 
       def perform_step
-        start_time = Time.now
-
         puts "  Installing Zplug..."
         _, stderr, status = Open3.capture3(zplug_install_command)
-
-        duration = Time.now - start_time
 
         if status.success?
           Core::StepResult.success(
             output: "Successfully installed Zplug plugin manager",
             step_name: @name,
-            duration: duration,
-            context: {
-              status: :installed,
-              install_path: zplug_path
-            }
+            context: {install_path: zplug_path}
           )
         else
           Core::StepResult.failure(
             error: "Failed to install Zplug: #{stderr.strip}",
-            output: "Zplug installation failed",
             step_name: @name,
-            duration: duration,
-            context: {
-              status: :failed,
-              error_details: stderr.strip
-            }
+            context: {error_details: stderr.strip}
           )
         end
       end
