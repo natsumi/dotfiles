@@ -4,7 +4,7 @@
 require "pathname"
 
 # Add lib directory to load path
-lib_path = Pathname.new(__FILE__).dirname.parent.join("lib")
+lib_path = Pathname.new(__FILE__).dirname.join("lib")
 $LOAD_PATH.unshift(lib_path.to_s)
 
 require "dotfiles/menu_runner"
@@ -19,7 +19,7 @@ def show_help
     COMMANDS:
       menu          Show interactive menu (default)
       list          List loaded steps with status
-      available     List all available steps in lib/steps/
+      available     List all available steps
       status        Show step status summary
       all           Execute all steps
       resume        Resume interrupted session
