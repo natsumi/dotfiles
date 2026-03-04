@@ -21,12 +21,15 @@
       "Bash(git pull:*)",
       "Bash(git push:*)",
       "Bash(git rebase:*)",
+      "Bash(git worktree:*)",
       "Bash(just:*)",
       "Bash(mise x:*)",
+      "Bash(npx playwright-cli:*)",
       "Bash(ruby:*)",
       "Bash(yarn:*)",
       "mcp__context7__resolve-library-id",
       "Skill(fizzy)",
+      "Skill(playwright-cli)",
       "WebSearch"
     ]
   },
@@ -44,39 +47,126 @@
     ],
     "Stop": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -title 'Claude' -message 'Response complete' -sound Blow"
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10,
+            "async": true
           }
         ]
       }
     ],
     "Notification": [
       {
-        "matcher": "permission_prompt",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -title 'Claude' -message 'Waiting for permission' -sound Submarine"
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10,
+            "async": true
           }
         ]
       },
       {
-        "matcher": "idle_prompt",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -title 'Claude' -message 'Waiting for input' -sound Submarine"
+            "command": "~/.claude/hooks/peon-ping/scripts/hook-handle-use.sh",
+            "timeout": 5
           }
         ]
-      },
+      }
+    ],
+    "PermissionRequest": [
       {
-        "matcher": "elicitation_dialog",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -title 'Claude' -message 'Has a question for you' -sound Submarine"
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10,
+            "async": true
           }
         ]
       }
@@ -94,6 +184,8 @@
     "superpowers@claude-plugins-official": true,
     "cctop@cctop": true,
     "ruby-lsp@ruby-skills": true,
-    "ruby-skills@ruby-skills": true
-  }
+    "claude-code-wakatime@wakatime": true,
+    "context7@claude-plugins-official": true
+  },
+  "effortLevel": "high"
 }
