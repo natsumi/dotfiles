@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+# Toggle GlobalProtect VPN on/off for use with Alfred
+set -euo pipefail
+
+GP_AGENT_PLIST="/Library/LaunchAgents/com.paloaltonetworks.gp.pangpa.plist"
+GP_DAEMON_PLIST="/Library/LaunchAgents/com.paloaltonetworks.gp.pangps.plist"
+
+log() { echo "[vpn-toggle] $*"; }
+
+is_vpn_connected() {
+    # Check if any utun interface is UP with an IPv4 address (same approach as Hammerspoon config)
+    for iface in $(ifconfig 2>/dev/null | grep -o '^utun[0-9]*'); do
+        info=$(ifconfig "$iface" 2>/dev/null)
+        if echo "$info" | grep -q '<UP,' && echo "$info" | grep -q 'inet '; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+is_hammerspoon_running() {
+    pgrep -x "Hammerspoon" >/dev/null 2>&1
+}
+
+is_gp_service_loaded() {
+    local agent_label="${GP_AGENT_PLIST##*/}"
+    agent_label="${agent_label%.plist}"
+    local daemon_label="${GP_DAEMON_PLIST##*/}"
+    daemon_label="${daemon_label%.plist}"
+    launchctl list 2>/dev/null | grep -qE "$agent_label|$daemon_label"
+}
+
+start_vpn_services() {
+    log "Starting VPN services..."
+
+    if ! is_hammerspoon_running; then
+        log "Hammerspoon is not running — launching it"
+        open -a Hammerspoon
+        sleep 2
+    else
+        log "Hammerspoon is already running"
+    fi
+
+    if is_gp_service_loaded; then
+        log "GlobalProtect services are already loaded"
+    else
+        log "Loading GlobalProtect services..."
+        if ! launchctl load -w "$GP_AGENT_PLIST" 2>/dev/null; then
+            log "WARNING: Failed to load GP agent plist"
+        fi
+        if ! launchctl load -w "$GP_DAEMON_PLIST" 2>/dev/null; then
+            log "WARNING: Failed to load GP daemon plist"
+        fi
+    fi
+
+    log "VPN services started — connect via GlobalProtect app"
+}
+
+disconnect_vpn() {
+    log "Disconnecting from VPN..."
+
+    log "Unloading GlobalProtect services..."
+    if ! launchctl unload -w "$GP_AGENT_PLIST" 2>/dev/null; then
+        log "WARNING: Failed to unload GP agent plist"
+    fi
+    if ! launchctl unload -w "$GP_DAEMON_PLIST" 2>/dev/null; then
+        log "WARNING: Failed to unload GP daemon plist"
+    fi
+
+    if is_hammerspoon_running; then
+        log "Quitting Hammerspoon..."
+        osascript -e 'tell application "Hammerspoon" to quit' 2>/dev/null || true
+        sleep 1
+    else
+        log "Hammerspoon is not running"
+    fi
+
+    sleep 2
+
+    if is_vpn_connected; then
+        log "ERROR: Still connected to a VPN after disconnect attempt"
+        exit 1
+    else
+        log "VPN disconnected successfully"
+    fi
+}
+
+# Main logic
+case "${1:-}" in
+    on)
+        log "Forcing VPN services on"
+        start_vpn_services
+        ;;
+    off)
+        log "Forcing VPN services off"
+        disconnect_vpn
+        ;;
+    "")
+        if is_vpn_connected || is_gp_service_loaded; then
+            log "VPN is currently active — disconnecting"
+            disconnect_vpn
+        else
+            log "VPN is not active — starting services"
+            start_vpn_services
+        fi
+        ;;
+    *)
+        log "Usage: toggle-vpn [on|off]"
+        exit 1
+        ;;
+esac
