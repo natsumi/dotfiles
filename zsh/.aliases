@@ -7,7 +7,7 @@ alias v="$VISUAL"
 
 # Custom binary aliases
 if [ -x "$(command -v eza)" ]; then
-  alias ls="eza --group-directories-first -F"
+  alias ls="eza --group-directories-first --classify=auto --icons=auto"
   alias ll="ls -algh"
 fi
 
