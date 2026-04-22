@@ -19,10 +19,6 @@ export WORKON_HOME=$DEV_DIR
 export DOTFILE_DIR=$DEV_DIR/dotfiles
 # export GOTPATH=$DEV_DIR/go
 
-# setup gtags to use a ctag backend
-export GTAGSCONF=$HOME/.gtags.conf
-export GTAGSLABEL=pygments
-
 # Elixir IEX History
 export ERL_AFLAGS="-kernel shell_history enabled shell_history_file_bytes 20240000"
 
@@ -48,6 +44,10 @@ export KITTY_CONFIG_DIRECTORY="${HOME}/.config/kitty"
 # Bundle - Allow mulitple gems to be installed at once
 [[ -f /usr/local/bin/nproc ]] && export BUNDLE_JOBS=$(/usr/local/bin/nproc)
 [[ -f /opt/homebrew/bin/nproc ]] && export BUNDLE_JOBS=$(/opt/homebrew/bin/nproc)
+
+
+# Github CLI - opt out of telemetry
+export GH_TELEMETRY=false
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
