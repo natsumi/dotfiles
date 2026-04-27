@@ -8,8 +8,10 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(just:*)",
+      "Bash(mise run:*)",
       "Bash(yarn build)",
-      "Bash(yarn list:*)"
+      "Bash(yarn list:*)",
+      "Read(~/.claude/plugins/cache/claude-plugins-official/superpowers/**)"
     ]
   }
 }
