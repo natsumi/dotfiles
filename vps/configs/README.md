@@ -35,10 +35,13 @@ Automatic security updates (unattended-upgrades) are configured via a drop-in at
 ### Fail2ban (`fail2ban/`)
 - **jail.local.template**: Main jail configuration for SSH and Traefik services
   - Placeholder: `{{SSH_PORT}}` - Custom SSH port
+  - `backend = auto` so each jail's `logpath` is honored (a `systemd` backend would ignore them and miss Traefik/recidive logs)
+  - `action = %(action_)s` (plain ban, no email) — switch to `%(action_mwl)s` only after installing and configuring an MTA
+  - `[sshd]` uses `filter = sshd[mode=aggressive]` to catch pre-auth disconnect patterns the default mode misses (replaces the deprecated `[sshd-ddos]` jail, which no longer ships in fail2ban 1.x)
 - **filters/**: Custom Traefik-specific filters
   - `traefik-auth.conf`: Detects authentication failures (401/403)
   - `traefik-ratelimit.conf`: Detects rate limiting (429)
-  - `traefik-badbots.conf`: Detects malicious bots and vulnerability scanners
+  - `traefik-badbots.conf`: Detects offensive security tools (nikto, sqlmap, nmap, etc.) and known scanner paths (`/.git`, `/.env`, `/wp-admin`, ...). Legitimate search-engine crawlers (Googlebot, bingbot, etc.) are NOT in this list — banning them tanks SEO.
 
 ### SSH
 
