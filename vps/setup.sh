@@ -1,12 +1,8 @@
 #!/bin/bash
 
-# Start with basic error handling
-set -u
-
-# Enable full strict mode after initialization
-enable_strict_mode() {
-    set -euo pipefail
-}
+# Strict mode enabled up front so the ERR trap (set below) fires for any failure
+# during initialization — checks, logging setup, backup creation, etc.
+set -euo pipefail
 
 # VPS Ubuntu 24.04 Setup Script
 # Enhanced with security hardening, interactive configuration, and best practices
@@ -885,9 +881,6 @@ main() {
 
     # Interactive configuration
     interactive_config
-
-    # Enable strict mode after initialization
-    enable_strict_mode
 
     # System setup
     configure_timezone
