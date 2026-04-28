@@ -16,10 +16,9 @@ backend = auto
 [sshd]
 enabled = true
 port = {{SSH_PORT}}
-filter = sshd
-# Aggressive mode catches more pre-auth disconnect / scan patterns that the
-# default filter misses. Replaces the deprecated [sshd-ddos] jail.
-mode = aggressive
+# Aggressive filter mode catches more pre-auth disconnect / scan patterns that
+# the default filter misses. Replaces the deprecated [sshd-ddos] jail.
+filter = sshd[mode=aggressive]
 logpath = /var/log/auth.log
 maxretry = 3
 bantime = 3600
