@@ -28,10 +28,13 @@ module_run() {
     die "SSH key safety: no authorized_keys found. Refusing to disable password auth."
   fi
 
-  # ── Disable cloud-init drop-in if present ────────────────────────
+  # ── Disable cloud-init drop-in if present (track per-run so rollback
+  # only resurrects what THIS run disabled) ────────────────────────
+  local disabled_this_run=0
   if [[ -f /etc/ssh/sshd_config.d/50-cloud-init.conf ]]; then
     mv /etc/ssh/sshd_config.d/50-cloud-init.conf \
        /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled
+    disabled_this_run=1
     info "Disabled /etc/ssh/sshd_config.d/50-cloud-init.conf"
   fi
 
@@ -48,11 +51,12 @@ module_run() {
   # ── Validate, then restart (rollback on failure) ─────────────────
   if ! sshd -t 2>>"$LOG_FILE"; then
     rm -f "$drop_in"
-    if [[ -f /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled ]]; then
+    if (( disabled_this_run )); then
       mv /etc/ssh/sshd_config.d/50-cloud-init.conf.disabled \
          /etc/ssh/sshd_config.d/50-cloud-init.conf
+      die "sshd config validation failed — drop-in removed, cloud-init drop-in restored"
     fi
-    die "sshd config validation failed — drop-in removed, cloud-init drop-in restored"
+    die "sshd config validation failed — drop-in removed"
   fi
 
   run_step "Restarting ssh" systemctl restart ssh

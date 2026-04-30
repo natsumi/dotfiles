@@ -15,6 +15,7 @@
 #
 
 module_run() {
+  local filter
   install -d -m 755 /etc/fail2ban/jail.d /etc/fail2ban/filter.d
 
   SSH_PORT="$SSH_PORT" envsubst \
@@ -22,9 +23,9 @@ module_run() {
     >/etc/fail2ban/jail.d/vps.local
   success "Wrote /etc/fail2ban/jail.d/vps.local"
 
-  for f in "$MODULE_DIR"/filters/*.conf; do
-    cp "$f" /etc/fail2ban/filter.d/
-    info "Installed filter $(basename "$f")"
+  for filter in "$MODULE_DIR"/filters/*.conf; do
+    cp "$filter" /etc/fail2ban/filter.d/
+    info "Installed filter $(basename "$filter")"
   done
 
   run_step "Enabling fail2ban" systemctl enable fail2ban

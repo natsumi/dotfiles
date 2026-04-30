@@ -11,8 +11,6 @@
 #
 
 module_run() {
-  export DEBIAN_FRONTEND=noninteractive
-
   run_step "Updating package lists" apt-get update -y -q
   run_step "Upgrading installed packages" apt-get upgrade -y -q || \
     warn "Some packages failed to upgrade (continuing — see log for details)"

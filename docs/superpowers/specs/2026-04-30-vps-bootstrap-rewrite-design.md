@@ -71,7 +71,7 @@ vps/
     │   └── run.sh
     ├── fail2ban/
     │   ├── run.sh
-    │   ├── templates/sshd.local.tmpl
+    │   ├── templates/vps.local.tmpl
     │   └── filters/        # traefik filters carried over from existing setup
     ├── auto-updates/
     │   └── run.sh

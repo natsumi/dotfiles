@@ -18,7 +18,6 @@ module_run() {
   run_step "Allowing SSH ($SSH_PORT/tcp)" ufw allow "$SSH_PORT/tcp" comment 'SSH (vps-bootstrap)'
   run_step "Allowing HTTP (80/tcp)"  ufw allow 80/tcp  comment 'HTTP (vps-bootstrap)'
   run_step "Allowing HTTPS (443/tcp)" ufw allow 443/tcp comment 'HTTPS (vps-bootstrap)'
-  # `ufw enable` reads from stdin; pipe "y" to confirm.
-  run_step "Enabling UFW" bash -c 'echo y | ufw enable'
+  run_step "Enabling UFW" ufw --force enable
   success "Firewall enabled with SSH on $SSH_PORT, plus 80 and 443"
 }

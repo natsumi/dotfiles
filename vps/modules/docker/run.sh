@@ -22,8 +22,6 @@ module_run() {
     return 0
   fi
 
-  export DEBIAN_FRONTEND=noninteractive
-
   install -d -m 0755 /etc/apt/keyrings
   run_step "Fetching Docker GPG key" \
     bash -c 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc'

@@ -11,14 +11,14 @@
 #
 
 module_run() {
-  export DEBIAN_FRONTEND=noninteractive
-
   local list="$MODULE_DIR/packages.list"
+  local line pkg
+  local requested=() available=()
+
   if [[ ! -f "$list" ]]; then
     die "Package list not found: $list"
   fi
 
-  local requested=() available=()
   while IFS= read -r line; do
     line="${line%%#*}"
     line="${line//[[:space:]]/}"

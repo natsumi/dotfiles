@@ -12,6 +12,10 @@
 #
 
 module_run() {
+  local u home auth key bits svc
+  local homes=(/root)
+  local svcs=(telnet rsh-server rlogin vsftpd)
+
   # ── Default users ────────────────────────────────────────────────
   for u in pi ubuntu debian; do
     if id "$u" >/dev/null 2>&1; then
@@ -20,14 +24,12 @@ module_run() {
   done
 
   # ── Weak SSH keys (root + admin user) ────────────────────────────
-  local homes=(/root)
   [[ -n "$USERNAME" ]] && homes+=("/home/$USERNAME")
   for home in "${homes[@]}"; do
-    local auth="$home/.ssh/authorized_keys"
+    auth="$home/.ssh/authorized_keys"
     [[ -s "$auth" ]] || continue
     while IFS= read -r key; do
       [[ "$key" =~ ssh-rsa ]] || continue
-      local bits
       bits=$(printf "%s" "$key" | ssh-keygen -l -f - 2>/dev/null | awk '{print $1}') || continue
       if [[ "$bits" =~ ^[0-9]+$ ]] && (( bits < 2048 )); then
         warn "Weak RSA key ($bits bits) in $auth"
@@ -36,7 +38,6 @@ module_run() {
   done
 
   # ── Unnecessary services ─────────────────────────────────────────
-  local svcs=(telnet rsh-server rlogin vsftpd)
   for svc in "${svcs[@]}"; do
     if systemctl is-active --quiet "$svc" 2>/dev/null; then
       warn "Unnecessary service running: $svc"

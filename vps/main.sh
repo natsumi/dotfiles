@@ -4,6 +4,10 @@
 
 set -Eeuo pipefail
 
+# Apt is invoked by several modules; set this once so prompts (e.g. needrestart
+# kernel-restart questions, configurable-file conflicts) don't block the run.
+export DEBIAN_FRONTEND=noninteractive
+
 VPS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$VPS_DIR"
 

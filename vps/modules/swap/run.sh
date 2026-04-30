@@ -27,7 +27,13 @@ module_run() {
   fi
 
   info "Creating ${size_mb}MB swap (RAM: ${total_mb}MB)..."
-  run_step "Allocating /swapfile" fallocate -l "${size_mb}M" /swapfile
+  # fallocate fails on ZFS and some btrfs configs. Treat as best-effort:
+  # warn and skip rather than aborting the whole bootstrap.
+  if ! run_step "Allocating /swapfile" fallocate -l "${size_mb}M" /swapfile; then
+    warn "fallocate failed (zfs/btrfs?) — skipping swap"
+    rm -f /swapfile
+    return 0
+  fi
   chmod 600 /swapfile
   run_step "Formatting swap" mkswap /swapfile
   run_step "Activating swap" swapon /swapfile
