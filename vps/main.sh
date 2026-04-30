@@ -2,7 +2,7 @@
 # vps/main.sh — the runner.
 # Sources libs, parses flags, runs preflight, prompts, and the module loop.
 
-set -euo pipefail
+set -Eeuo pipefail
 
 VPS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$VPS_DIR"
@@ -44,13 +44,20 @@ Environment:
 EOF
 }
 
+_require_value() {
+  # Usage: _require_value <flag-name> <value-or-empty>
+  if [[ -z "${2:-}" ]]; then
+    error "$1 requires a value"; usage >&2; exit 2
+  fi
+}
+
 while (( $# > 0 )); do
   case "$1" in
-    --only)    ONLY="$2"; shift 2 ;;
-    --skip)    SKIP="$2"; shift 2 ;;
-    --verbose|-v) VERBOSE=1; shift ;;
+    --only)    _require_value "--only"   "${2:-}"; ONLY="$2"; shift 2 ;;
+    --skip)    _require_value "--skip"   "${2:-}"; SKIP="$2"; shift 2 ;;
+    --verbose|-v) export VERBOSE=1; shift ;;  # consumed by run_step in lib/ui.sh
     --list)    LIST_ONLY=1; shift ;;
-    --branch)  shift 2 ;;   # consumed by install.sh, ignored here
+    --branch)  _require_value "--branch" "${2:-}"; shift 2 ;;  # consumed by install.sh
     --help|-h) usage; exit 0 ;;
     *) error "Unknown flag: $1"; usage >&2; exit 2 ;;
   esac
@@ -70,7 +77,12 @@ setup_logging
 
 cleanup() {
   local rc=$?
-  [[ -d "$LOCKFILE" ]] && rmdir "$LOCKFILE" 2>/dev/null || true
+  [[ -d "${LOCKFILE:-}" ]] && rmdir "$LOCKFILE" 2>/dev/null || true
+  # install.sh exports VPS_BOOTSTRAP_TMP for the temp clone path before
+  # exec'ing us; clean it up on the way out (its own EXIT trap can't fire
+  # because exec replaced its bash process).
+  [[ -n "${VPS_BOOTSTRAP_TMP:-}" && -d "$VPS_BOOTSTRAP_TMP" ]] && \
+    rm -rf "$VPS_BOOTSTRAP_TMP" 2>/dev/null || true
   exit "$rc"
 }
 on_error() {

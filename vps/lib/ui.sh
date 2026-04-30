@@ -85,17 +85,23 @@ ask_password() {
 # Usage: run_step "Description" command arg1 arg2 ...
 # Returns the command's exit code.
 TAIL_LINES=5
-SPIN='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+# SPIN is an array of glyphs (not a string). Bash substring indexing on a
+# string counts bytes, not codepoints — Braille glyphs are 3 bytes each in
+# UTF-8, so string indexing prints garbage. An array indexes by glyph.
+SPIN=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
 
 run_step() {
   local desc="$1"; shift
-  local start=$SECONDS rc
+  local start=$SECONDS
+  local rc=0
 
-  # Non-TTY or VERBOSE: stream everything plainly.
+  # Non-TTY or VERBOSE: stream output via the runner's stdout. main.sh's
+  # setup_logging already tee-redirects fd 1/2 to LOG_FILE — running the
+  # command plainly is enough, an explicit `tee -a "$LOG_FILE"` here would
+  # write each line twice.
   if [[ ! -t 1 ]] || [[ "${VERBOSE:-0}" == "1" ]]; then
     printf "  ▸ %s\n" "$desc"
-    "$@" 2>&1 | tee -a "$LOG_FILE"
-    rc=${PIPESTATUS[0]}
+    "$@" || rc=$?
     local elapsed=$((SECONDS - start))
     if (( rc == 0 )); then
       printf "  %s✓%s %s (%ss)\n" "$C_GREEN" "$C_RESET" "$desc" "$elapsed"
@@ -123,7 +129,7 @@ run_step() {
     # Header: spinner, desc, elapsed.
     local elapsed=$((SECONDS - start))
     printf "\r\033[K  %s %s — %ss\n" \
-      "${SPIN:i++%10:1}" "$desc" "$elapsed"
+      "${SPIN[i++ % 10]}" "$desc" "$elapsed"
 
     # Tail box.
     local width=$((${COLUMNS:-80} - 6))
