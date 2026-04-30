@@ -42,42 +42,53 @@ section() {
 }
 
 # ── Prompt helpers ─────────────────────────────────────────────────
+# All prompts read from and write to /dev/tty directly, bypassing the
+# tee'd fd 1/fd 2 set up by setup_logging. Writing a prompt without a
+# trailing newline through tee would buffer it (tee block-buffers when
+# its input has no newline), leaving the user staring at an empty
+# screen. Reading from /dev/tty also makes prompts work under
+# `curl ... | sudo bash`, where main.sh's fd 0 is the curl pipe.
+
 # ask <prompt> [default] — prints the answer to stdout
 ask() {
   local prompt="$1" default="${2:-}" reply
   if [[ -n "$default" ]]; then
-    read -rp "$(printf "%s?%s %s [%s%s%s]: " \
-      "$C_CYAN" "$C_RESET" "$prompt" "$C_DIM" "$default" "$C_RESET")" reply
-    printf "%s\n" "${reply:-$default}"
+    printf "%s?%s %s [%s%s%s]: " \
+      "$C_CYAN" "$C_RESET" "$prompt" "$C_DIM" "$default" "$C_RESET" >/dev/tty
   else
-    read -rp "$(printf "%s?%s %s: " "$C_CYAN" "$C_RESET" "$prompt")" reply
-    printf "%s\n" "$reply"
+    printf "%s?%s %s: " "$C_CYAN" "$C_RESET" "$prompt" >/dev/tty
   fi
+  IFS= read -r reply </dev/tty
+  printf "%s\n" "${reply:-$default}"
 }
 
 # ask_yn <prompt> [default(Y|N)] — exit 0 if yes
 ask_yn() {
   local prompt="$1" default="${2:-N}" reply
-  read -rp "$(printf "%s?%s %s [y/N]: " "$C_CYAN" "$C_RESET" "$prompt")" reply
+  printf "%s?%s %s [y/N]: " "$C_CYAN" "$C_RESET" "$prompt" >/dev/tty
+  IFS= read -r reply </dev/tty
   reply="${reply:-$default}"
   [[ "$reply" =~ ^[Yy]$ ]]
 }
 
-# ask_password <prompt> — twice, hidden, must match. Echoes the password.
+# ask_password <prompt> — twice, hidden, must match. Echoes the password
+# on fd 1 (so the caller can capture it via "$()"); prompts on /dev/tty.
 # Caller is responsible for bracketing trace (set +x / set -x) when calling.
 ask_password() {
   local prompt="$1" pw1 pw2
   while true; do
-    read -rsp "$(printf "%s?%s %s: " "$C_CYAN" "$C_RESET" "$prompt")" pw1
-    printf "\n" >&2
-    read -rsp "$(printf "%s?%s confirm: " "$C_CYAN" "$C_RESET")" pw2
-    printf "\n" >&2
+    printf "%s?%s %s: " "$C_CYAN" "$C_RESET" "$prompt" >/dev/tty
+    IFS= read -rs pw1 </dev/tty
+    printf "\n" >/dev/tty
+    printf "%s?%s confirm: " "$C_CYAN" "$C_RESET" >/dev/tty
+    IFS= read -rs pw2 </dev/tty
+    printf "\n" >/dev/tty
     if [[ "$pw1" == "$pw2" && -n "$pw1" ]]; then
       printf "%s" "$pw1"
       return 0
     fi
     printf "%s⚠%s passwords do not match (or empty), try again\n" \
-      "$C_YELLOW" "$C_RESET" >&2
+      "$C_YELLOW" "$C_RESET" >/dev/tty
   done
 }
 

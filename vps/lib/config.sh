@@ -77,8 +77,7 @@ prompt_config() {
   if [[ ! -s /root/.ssh/authorized_keys ]]; then
     warn "Root has no authorized_keys — a public key is required"
     while true; do
-      printf "  Paste your SSH public key (e.g. from ~/.ssh/id_ed25519.pub): "
-      read -r SSH_PUBKEY
+      SSH_PUBKEY=$(ask "Paste your SSH public key (e.g. from ~/.ssh/id_ed25519.pub)")
       if _validate_pubkey "$SSH_PUBKEY"; then break; fi
       warn "Invalid public key — try again"
     done
