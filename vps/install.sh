@@ -102,5 +102,16 @@ success "Sources fetched; handing off to main.sh"
 echo
 
 # ── Hand off ───────────────────────────────────────────────────────
+# When invoked via `curl ... | sudo bash`, our stdin is the pipe (closed
+# the moment install.sh has been read), so any `read` in main.sh / lib/*
+# hits EOF immediately. Re-attach stdin to /dev/tty so the prompts work.
 cd "$VPS_BOOTSTRAP_TMP"
-exec ./vps/main.sh "${ARGS[@]}"
+
+if [[ -t 0 ]]; then
+  exec ./vps/main.sh "${ARGS[@]}"
+elif [[ -r /dev/tty ]]; then
+  exec ./vps/main.sh "${ARGS[@]}" </dev/tty
+else
+  die "No TTY available for interactive prompts. Run from an interactive shell, \
+or save install.sh locally and execute it directly (e.g. 'sudo bash ./install.sh')."
+fi
