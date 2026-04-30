@@ -80,3 +80,83 @@ ask_password() {
       "$C_YELLOW" "$C_RESET" >&2
   done
 }
+
+# ── run_step: long-running command UX ──────────────────────────────
+# Usage: run_step "Description" command arg1 arg2 ...
+# Returns the command's exit code.
+TAIL_LINES=5
+SPIN='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+
+run_step() {
+  local desc="$1"; shift
+  local start=$SECONDS rc
+
+  # Non-TTY or VERBOSE: stream everything plainly.
+  if [[ ! -t 1 ]] || [[ "${VERBOSE:-0}" == "1" ]]; then
+    printf "  ▸ %s\n" "$desc"
+    "$@" 2>&1 | tee -a "$LOG_FILE"
+    rc=${PIPESTATUS[0]}
+    local elapsed=$((SECONDS - start))
+    if (( rc == 0 )); then
+      printf "  %s✓%s %s (%ss)\n" "$C_GREEN" "$C_RESET" "$desc" "$elapsed"
+    else
+      printf "  %s✗%s %s (failed after %ss)\n" "$C_RED" "$C_RESET" "$desc" "$elapsed" >&2
+    fi
+    return "$rc"
+  fi
+
+  # Reserve a 6-line panel: 1 header + TAIL_LINES tail.
+  printf "  ⠋ %s — 0s\n" "$desc"
+  local _i
+  for ((_i = 0; _i < TAIL_LINES; _i++)); do
+    printf "  │\n"
+  done
+
+  # Run command in background, output to log only.
+  "$@" >>"$LOG_FILE" 2>&1 &
+  local pid=$! i=0
+
+  while kill -0 "$pid" 2>/dev/null; do
+    # Rewind to top of panel.
+    printf "\033[%dA" $((TAIL_LINES + 1))
+
+    # Header: spinner, desc, elapsed.
+    local elapsed=$((SECONDS - start))
+    printf "\r\033[K  %s %s — %ss\n" \
+      "${SPIN:i++%10:1}" "$desc" "$elapsed"
+
+    # Tail box.
+    local width=$((${COLUMNS:-80} - 6))
+    local lines=()
+    mapfile -t lines < <(
+      tail -n "$TAIL_LINES" "$LOG_FILE" 2>/dev/null \
+        | sed -e 's/\x1b\[[0-9;]*[a-zA-Z]//g' -e 's/\r//g' \
+        | cut -c1-"$width"
+    )
+    local j
+    for ((j = 0; j < TAIL_LINES; j++)); do
+      printf "\r\033[K  │ %s\n" "${lines[j]:-}"
+    done
+
+    sleep 0.2
+  done
+  wait "$pid"; rc=$?
+  local elapsed=$((SECONDS - start))
+
+  # Collapse 6-line panel into a single result line.
+  printf "\033[%dA" $((TAIL_LINES + 1))
+  local _k
+  for ((_k = 0; _k < TAIL_LINES + 1; _k++)); do
+    printf "\r\033[K\n"
+  done
+  printf "\033[%dA" $((TAIL_LINES + 1))
+
+  if (( rc == 0 )); then
+    printf "  %s✓%s %s (%ss)\n" "$C_GREEN" "$C_RESET" "$desc" "$elapsed"
+  else
+    printf "  %s✗%s %s (failed after %ss)\n" "$C_RED" "$C_RESET" "$desc" "$elapsed" >&2
+    printf "    ── last 20 lines of log ──\n" >&2
+    tail -20 "$LOG_FILE" 2>/dev/null | sed 's/^/    │ /' >&2
+  fi
+  return "$rc"
+}
