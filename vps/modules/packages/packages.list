@@ -1,0 +1,64 @@
+# vps/modules/packages/packages.list
+# One package per line. Lines beginning with # and blank lines are ignored.
+
+# ── Build tools ────────────────────────────────────────────────
+build-essential
+automake
+autoconf
+libreadline-dev
+libncurses-dev
+libssl-dev
+libyaml-dev
+libxslt-dev
+libffi-dev
+libtool
+unixodbc-dev
+openssl
+zlib1g-dev
+
+# ── System utilities ───────────────────────────────────────────
+software-properties-common
+apt-transport-https
+ca-certificates
+gnupg
+lsb-release
+
+# ── Security tools ─────────────────────────────────────────────
+ufw
+fail2ban
+unattended-upgrades
+apt-listchanges
+
+# ── Dev tools ──────────────────────────────────────────────────
+git
+curl
+wget
+unzip
+jq
+
+# ── Text processing ────────────────────────────────────────────
+ripgrep
+fd-find
+fzf
+bat
+
+# ── Monitoring ─────────────────────────────────────────────────
+btop
+htop
+ncdu
+iotop
+nethogs
+
+# ── Terminal tools ─────────────────────────────────────────────
+tmux
+zsh
+stow
+tig
+tree
+
+# ── Network tools ──────────────────────────────────────────────
+net-tools
+dnsutils
+traceroute
+mtr
+whois
