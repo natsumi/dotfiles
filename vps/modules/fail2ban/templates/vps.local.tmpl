@@ -1,59 +1,85 @@
 [DEFAULT]
-bantime = 3600
+# Defaults applied to every jail unless overridden. fail2ban reads
+# from the systemd journal (Ubuntu 24.04+ has full ssh+kernel logs in
+# the journal); per-jail `logpath` settings only matter for jails that
+# override `backend`.
+bantime  = 3600
 findtime = 600
 maxretry = 3
-destemail = root@localhost
-sendername = Fail2Ban
-action = %(action_mwl)s
-backend = systemd
+backend  = systemd
 
+# Default action is "ban only" (action_). action_mwl would also send
+# email with WHOIS info and log lines, but a fresh VPS has no MTA
+# configured and the action would error every time.
+action = %(action_)s
+
+
+# ── SSH ──────────────────────────────────────────────────────────────
+# Modern fail2ban no longer ships the separate `sshd-ddos` filter; the
+# `sshd` filter with `mode = aggressive` covers both regular auth
+# failures AND the burst/connection-flood patterns sshd-ddos used to
+# detect. mode=aggressive is a bit noisier on legitimate traffic; if
+# you see false positives, drop to mode=normal.
 [sshd]
-enabled = true
-port = ${SSH_PORT}
-filter = sshd
-logpath = /var/log/auth.log
+enabled  = true
+port     = ${SSH_PORT}
+filter   = sshd
+mode     = aggressive
 maxretry = 3
-bantime = 3600
+bantime  = 3600
 
-[sshd-ddos]
-enabled = true
-port = ${SSH_PORT}
-filter = sshd-ddos
-logpath = /var/log/auth.log
-maxretry = 10
-findtime = 60
-bantime = 600
 
+# ── Recidive: ban repeat offenders for longer ────────────────────────
+# Watches fail2ban's own journal for IPs that have already been banned
+# and bans them again for a much longer window. With bantime.increment
+# enabled, each subsequent re-offense doubles the previous bantime.
 [recidive]
-enabled = true
-filter = recidive
-logpath = /var/log/fail2ban.log
-action = %(action_mwl)s
-bantime = 86400
+enabled  = true
+filter   = recidive
+maxretry = 2
 findtime = 86400
-maxretry = 2
+bantime  = 604800
+bantime.increment = true
 
-[traefik-auth]
-enabled = true
-port = http,https
-filter = traefik-auth
-logpath = /var/log/traefik/access.log
-maxretry = 5
-bantime = 3600
 
-[traefik-ratelimit]
-enabled = true
-port = http,https
-filter = traefik-ratelimit
-logpath = /var/log/traefik/access.log
-maxretry = 100
-findtime = 60
-bantime = 600
-
-[traefik-badbots]
-enabled = true
-port = http,https
-filter = traefik-badbots
-logpath = /var/log/traefik/access.log
-maxretry = 2
-bantime = 86400
+# ── Traefik jails (DISABLED by default) ──────────────────────────────
+# These watch Traefik's access log for auth failures, rate-limit hits,
+# and known-bad bots. They're commented out because:
+#   1. They only make sense if you actually run Traefik on this host.
+#   2. If Traefik runs in a Docker container with the json-file log
+#      driver (the default our docker module installs), there's no
+#      /var/log/traefik/access.log to read.
+#
+# To enable, you need both:
+#   (a) Traefik writing access logs to /var/log/traefik/access.log
+#       (e.g. via a bind-mount, or by reconfiguring its logger)
+#   (b) Override backend = auto in the jail blocks below so fail2ban
+#       reads the file rather than the systemd journal.
+#
+# [traefik-auth]
+# enabled  = true
+# port     = http,https
+# filter   = traefik-auth
+# backend  = auto
+# logpath  = /var/log/traefik/access.log
+# maxretry = 5
+# bantime  = 3600
+#
+# [traefik-ratelimit]
+# enabled  = true
+# port     = http,https
+# filter   = traefik-ratelimit
+# backend  = auto
+# logpath  = /var/log/traefik/access.log
+# maxretry = 100
+# findtime = 60
+# bantime  = 600
+#
+# [traefik-badbots]
+# enabled  = true
+# port     = http,https
+# filter   = traefik-badbots
+# backend  = auto
+# logpath  = /var/log/traefik/access.log
+# maxretry = 2
+# bantime  = 86400
