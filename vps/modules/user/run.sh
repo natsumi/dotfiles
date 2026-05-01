@@ -58,6 +58,19 @@ module_run() {
   local user_home="/home/$USERNAME"
   local user_ssh="$user_home/.ssh"
   local user_keys="$user_ssh/authorized_keys"
+
+  # Ensure /home/$USERNAME itself is owned by the user with safe perms.
+  # 'useradd -m' does NOT chown a pre-existing home directory (e.g. one
+  # created earlier by cloud-init, or because root cd'd there before
+  # the script ran), and sshd's StrictModes will refuse pubkey auth if
+  # any directory in the chain isn't owned by root or the user, or is
+  # group/other-writable. 0750 satisfies StrictModes and matches the
+  # Ubuntu HOME_MODE default.
+  if [[ -d "$user_home" ]]; then
+    chown "$USERNAME:$USERNAME" "$user_home"
+    chmod 0750 "$user_home"
+  fi
+
   install -d -m 700 -o "$USERNAME" -g "$USERNAME" "$user_ssh"
 
   if [[ -s /root/.ssh/authorized_keys ]]; then

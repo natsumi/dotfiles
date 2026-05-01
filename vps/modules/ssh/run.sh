@@ -14,6 +14,7 @@
 # Files written/touched:
 #   - /etc/ssh/sshd_config.d/99-vps-hardening.conf (drop-in)
 #   - /etc/ssh/sshd_config.d/50-cloud-init.conf (renamed to .disabled if present)
+#   - /etc/issue.net (pre-login banner referenced by the drop-in)
 # Idempotent: yes — drop-in is overwritten each run.
 #
 
@@ -47,6 +48,16 @@ module_run() {
 
   SSH_PORT="$SSH_PORT" ALLOW_USERS="$allow_users" \
     envsubst <"$MODULE_DIR/files/99-hardening.conf" >"$drop_in"
+
+  # ── Write the pre-login banner referenced by the drop-in ─────────
+  # Short legal/contact notice. Empty file would be treated as no
+  # banner; this gives mass-scanners a clear "go away" page.
+  cat >/etc/issue.net <<'BANNER'
+**********************************************************************
+This system is for authorized use only. Activity may be monitored and
+recorded. Disconnect now if you are not an authorized user.
+**********************************************************************
+BANNER
 
   # ── Validate, then restart (rollback on failure) ─────────────────
   if ! sshd -t 2>>"$LOG_FILE"; then
