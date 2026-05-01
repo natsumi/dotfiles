@@ -46,8 +46,14 @@ die()     { printf "%s✗%s %s\n" "$C_RED"    "$C_RESET" "$*" >&2; exit 1; }
 # proxies its stdin to the script's pty. With `curl ... | sudo bash`,
 # sudo's stdin is the curl pipe — so user keystrokes never reach the
 # script and interactive prompts hang. Bail with actionable instructions.
-if [[ -n "${SUDO_USER:-}" ]] && [[ ! -t 0 ]]; then
-  warn "Detected sudo with non-terminal stdin (curl-pipe-bash via sudo)."
+#
+# We check the *parent process* (not $SUDO_USER), because that env var
+# persists across child shells too: e.g. `sudo -s` then running our
+# script later still leaves SUDO_USER set even though sudo isn't in the
+# active call chain.
+parent_comm=$(ps -o comm= -p "$PPID" 2>/dev/null | tr -d '[:space:]')
+if [[ "$parent_comm" == "sudo" ]] && [[ ! -t 0 ]]; then
+  warn "Detected 'curl ... | sudo bash' invocation."
   warn "Ubuntu's default sudo allocates a pty and proxies its stdin to it,"
   warn "but here sudo's stdin is the curl pipe — so your typing can't reach"
   warn "interactive prompts. Two ways to run this:"
