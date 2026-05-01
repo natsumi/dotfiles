@@ -112,11 +112,17 @@ run_step() {
   local start=$SECONDS
   local rc=0
 
-  # Non-TTY or VERBOSE: stream output via the runner's stdout. main.sh's
-  # setup_logging already tee-redirects fd 1/2 to LOG_FILE — running the
-  # command plainly is enough, an explicit `tee -a "$LOG_FILE"` here would
-  # write each line twice.
-  if [[ ! -t 1 ]] || [[ "${VERBOSE:-0}" == "1" ]]; then
+  # Detect a usable terminal via /dev/tty rather than `[[ -t 1 ]]`,
+  # because main.sh's setup_logging redirects fd 1 through tee so the
+  # fd-1 test always fails inside the runner.
+  local have_tty=0
+  if [[ -e /dev/tty ]] && [[ -w /dev/tty ]] && [[ "${VERBOSE:-0}" != "1" ]]; then
+    have_tty=1
+  fi
+
+  # ── Streaming branch: VERBOSE=1 or no /dev/tty ───────────────────
+  # Output streams via fd 1 (already tee'd to LOG_FILE by setup_logging).
+  if (( have_tty == 0 )); then
     printf "  ▸ %s\n" "$desc"
     "$@" || rc=$?
     local elapsed=$((SECONDS - start))
@@ -130,52 +136,64 @@ run_step() {
     return "$rc"
   fi
 
-  # Reserve a 6-line panel: 1 header + TAIL_LINES tail.
-  printf "  ⠋ %s — 0s\n" "$desc"
-  local _i
-  for ((_i = 0; _i < TAIL_LINES; _i++)); do
-    printf "  │\n"
-  done
+  # ── Panel branch ─────────────────────────────────────────────────
+  # The 6-line live panel (header + 5-line scrolling tail of LOG_FILE)
+  # is drawn directly on /dev/tty so cursor escapes don't get buffered
+  # by tee and don't end up scrubbed in the log file. The command's own
+  # output is written to LOG_FILE directly (NOT through fd 1) so the
+  # streaming text doesn't fight the panel for screen real estate.
 
-  # Run command in background, output to log only.
+  # Reserve the panel: 1 header line + TAIL_LINES tail lines.
+  {
+    printf "  ⠋ %s — 0s\n" "$desc"
+    local _i
+    for ((_i = 0; _i < TAIL_LINES; _i++)); do
+      printf "  │\n"
+    done
+  } >/dev/tty
+
   "$@" >>"$LOG_FILE" 2>&1 &
   local pid=$! i=0
 
   while kill -0 "$pid" 2>/dev/null; do
-    # Rewind to top of panel.
-    printf "\033[%dA" $((TAIL_LINES + 1))
+    {
+      # Rewind to top of panel.
+      printf "\033[%dA" $((TAIL_LINES + 1))
 
-    # Header: spinner, desc, elapsed.
-    local elapsed=$((SECONDS - start))
-    printf "\r\033[K  %s %s — %ss\n" \
-      "${SPIN[i++ % 10]}" "$desc" "$elapsed"
+      # Header.
+      local elapsed=$((SECONDS - start))
+      printf "\r\033[K  %s %s — %ss\n" \
+        "${SPIN[i++ % 10]}" "$desc" "$elapsed"
 
-    # Tail box.
-    local width=$((${COLUMNS:-80} - 6))
-    local lines=()
-    mapfile -t lines < <(
-      tail -n "$TAIL_LINES" "$LOG_FILE" 2>/dev/null \
-        | sed -e 's/\x1b\[[0-9;]*[a-zA-Z]//g' -e 's/\r//g' \
-        | cut -c1-"$width"
-    )
-    local j
-    for ((j = 0; j < TAIL_LINES; j++)); do
-      printf "\r\033[K  │ %s\n" "${lines[j]:-}"
-    done
-
+      # Tail box.
+      local width=$((${COLUMNS:-80} - 6))
+      local lines=()
+      mapfile -t lines < <(
+        tail -n "$TAIL_LINES" "$LOG_FILE" 2>/dev/null \
+          | sed -e 's/\x1b\[[0-9;]*[a-zA-Z]//g' -e 's/\r//g' \
+          | cut -c1-"$width"
+      )
+      local j
+      for ((j = 0; j < TAIL_LINES; j++)); do
+        printf "\r\033[K  │ %s\n" "${lines[j]:-}"
+      done
+    } >/dev/tty
     sleep 0.2
   done
   wait "$pid"; rc=$?
   local elapsed=$((SECONDS - start))
 
-  # Collapse 6-line panel into a single result line.
-  printf "\033[%dA" $((TAIL_LINES + 1))
-  local _k
-  for ((_k = 0; _k < TAIL_LINES + 1; _k++)); do
-    printf "\r\033[K\n"
-  done
-  printf "\033[%dA" $((TAIL_LINES + 1))
+  # Clear the 6-line panel (cursor back at the top of where it was).
+  {
+    printf "\033[%dA" $((TAIL_LINES + 1))
+    local _k
+    for ((_k = 0; _k < TAIL_LINES + 1; _k++)); do
+      printf "\r\033[K\n"
+    done
+    printf "\033[%dA" $((TAIL_LINES + 1))
+  } >/dev/tty
 
+  # Result line goes via fd 1/fd 2 so it lands in the log too.
   if (( rc == 0 )); then
     printf "  %s✓%s %s (%ss)\n" "$C_GREEN" "$C_RESET" "$desc" "$elapsed"
   else
