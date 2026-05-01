@@ -21,52 +21,59 @@ module_run() {
   local reboot_needed="no"
   [[ -f /var/run/reboot-required ]] && reboot_needed="yes"
 
-  # ── Build human-readable summary ─────────────────────────────────
-  {
-    printf "vps-bootstrap summary\n"
-    printf "=====================\n"
-    printf "date:           %s\n" "$(date -Is)"
-    printf "hostname:       %s\n" "$(hostname)"
-    printf "Ubuntu:         %s (%s)\n" "$UBUNTU_VERSION_ID" "$UBUNTU_CODENAME"
-    printf "admin user:     %s\n" "${USERNAME:-[none — root only]}"
-    printf "SSH port:       %s\n" "$SSH_PORT"
-    printf "timezone:       %s\n" "$TIMEZONE"
-    printf "Docker:         %s\n" "$INSTALL_DOCKER"
-    printf "reboot needed:  %s\n" "$reboot_needed"
-    printf "log file:       %s\n" "$LOG_FILE"
-    printf "\n"
-    printf "Modules executed (id : seconds)\n"
-    # %s form avoids printf parsing a leading '-' as an option flag.
-    printf "%s\n" "-------------------------------"
-    for entry in "${SELECTED[@]}"; do
-      local id="${entry%%|*}"
-      printf "  %-15s %s\n" "$id" "${STEP_TIMINGS[$id]:-?}"
-    done
-    printf "\n"
-    printf "Important next steps\n"
-    printf "%s\n" "--------------------"
-    printf "  1. Open a NEW terminal and verify SSH works on the new port:\n"
-    printf "       ssh -p %s %s@<host>\n" "$SSH_PORT" "${USERNAME:-root}"
-    printf "     Do NOT close this session until you've confirmed.\n"
-    if [[ "$reboot_needed" == "yes" ]]; then
-      printf "  2. Reboot when convenient: sudo reboot\n"
-    fi
-  } | tee "$summary" >/dev/null
+  # Per-module timing rows, built into a single string for the heredoc.
+  local timings="" entry id
+  for entry in "${SELECTED[@]}"; do
+    id="${entry%%|*}"
+    timings+=$(printf "  %-15s %s\n" "$id" "${STEP_TIMINGS[$id]:-?}")
+    timings+=$'\n'
+  done
 
-  # ── Stamp file ───────────────────────────────────────────────────
-  {
-    printf "date=%s\n" "$(date -Is)"
-    printf "hostname=%s\n" "$(hostname)"
-    printf "version=%s\n" "$UBUNTU_VERSION_ID"
-    printf "ssh_port=%s\n" "$SSH_PORT"
-    printf "user=%s\n" "${USERNAME:-}"
-  } >"$stamp"
+  local reboot_hint=""
+  if [[ "$reboot_needed" == "yes" ]]; then
+    reboot_hint=$'\n  2. Reboot when convenient: sudo reboot'
+  fi
+
+  # ── Write the human-readable summary ─────────────────────────────
+  cat >"$summary" <<EOF
+vps-bootstrap summary
+=====================
+date:           $(date -Is)
+hostname:       $(hostname)
+Ubuntu:         $UBUNTU_VERSION_ID ($UBUNTU_CODENAME)
+admin user:     ${USERNAME:-[none — root only]}
+SSH port:       $SSH_PORT
+timezone:       $TIMEZONE
+Docker:         $INSTALL_DOCKER
+reboot needed:  $reboot_needed
+log file:       $LOG_FILE
+
+Modules executed (id : seconds)
+-------------------------------
+${timings%$'\n'}
+
+Important next steps
+--------------------
+  1. Open a NEW terminal and verify SSH works on the new port:
+       ssh -p $SSH_PORT ${USERNAME:-root}@<host>
+     Do NOT close this session until you've confirmed.${reboot_hint}
+EOF
+
+  # ── Write the stamp file (key=value) ─────────────────────────────
+  cat >"$stamp" <<EOF
+date=$(date -Is)
+hostname=$(hostname)
+version=$UBUNTU_VERSION_ID
+ssh_port=$SSH_PORT
+user=${USERNAME:-}
+EOF
+
+  # Echo the summary to the terminal, then announce the artifacts.
+  printf "\n%s━━ Summary ━━%s\n" "$C_BOLD$C_CYAN" "$C_RESET"
+  cat "$summary"
+  printf "\n"
 
   success "Summary written: $summary"
   success "Stamp written:   $stamp"
   info "Log file:        $LOG_FILE"
-
-  # Echo summary to stdout colorized.
-  printf "\n%s━━ Summary ━━%s\n" "$C_BOLD$C_CYAN" "$C_RESET"
-  cat "$summary"
 }
