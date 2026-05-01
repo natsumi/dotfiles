@@ -36,14 +36,15 @@ module_run() {
     printf "log file:       %s\n" "$LOG_FILE"
     printf "\n"
     printf "Modules executed (id : seconds)\n"
-    printf "-------------------------------\n"
+    # %s form avoids printf parsing a leading '-' as an option flag.
+    printf "%s\n" "-------------------------------"
     for entry in "${SELECTED[@]}"; do
       local id="${entry%%|*}"
       printf "  %-15s %s\n" "$id" "${STEP_TIMINGS[$id]:-?}"
     done
     printf "\n"
     printf "Important next steps\n"
-    printf "--------------------\n"
+    printf "%s\n" "--------------------"
     printf "  1. Open a NEW terminal and verify SSH works on the new port:\n"
     printf "       ssh -p %s %s@<host>\n" "$SSH_PORT" "${USERNAME:-root}"
     printf "     Do NOT close this session until you've confirmed.\n"
