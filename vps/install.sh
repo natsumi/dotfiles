@@ -40,33 +40,13 @@ warn()    { printf "%s⚠%s %s\n" "$C_YELLOW" "$C_RESET" "$*" >&2; }
 die()     { printf "%s✗%s %s\n" "$C_RED"    "$C_RESET" "$*" >&2; exit 1; }
 
 # ── Prereqs ────────────────────────────────────────────────────────
+# Note: 'curl ... | sudo bash' breaks on Ubuntu 22.04+ because sudo's
+# default use_pty mode proxies its stdin to the script's pty, and here
+# sudo's stdin is the curl pipe — so prompts hang waiting for input that
+# can't get through. The README's quickstart shows the two viable
+# patterns (two-step download, or no-sudo when already root). We don't
+# try to detect the broken case here; the EUID check below is enough.
 (( EUID == 0 )) || die "Run as root (try: sudo bash)"
-
-# Detect curl-pipe-to-sudo: on Ubuntu 22.04+ sudo defaults to use_pty and
-# proxies its stdin to the script's pty. With `curl ... | sudo bash`,
-# sudo's stdin is the curl pipe — so user keystrokes never reach the
-# script and interactive prompts hang. Bail with actionable instructions.
-#
-# We check the *parent process* (not $SUDO_USER), because that env var
-# persists across child shells too: e.g. `sudo -s` then running our
-# script later still leaves SUDO_USER set even though sudo isn't in the
-# active call chain.
-parent_comm=$(ps -o comm= -p "$PPID" 2>/dev/null | tr -d '[:space:]')
-if [[ "$parent_comm" == "sudo" ]] && [[ ! -t 0 ]]; then
-  warn "Detected 'curl ... | sudo bash' invocation."
-  warn "Ubuntu's default sudo allocates a pty and proxies its stdin to it,"
-  warn "but here sudo's stdin is the curl pipe — so your typing can't reach"
-  warn "interactive prompts. Two ways to run this:"
-  warn ""
-  warn "  1) Two-step (recommended for non-root users):"
-  warn "       curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/${BRANCH}/vps/install.sh -o /tmp/install.sh"
-  warn "       sudo bash /tmp/install.sh"
-  warn ""
-  warn "  2) If you're already root, drop the sudo:"
-  warn "       curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/${BRANCH}/vps/install.sh | bash"
-  warn ""
-  die "Aborting; please re-run using one of the patterns above."
-fi
 
 if [[ ! -r /etc/os-release ]]; then
   die "Cannot read /etc/os-release — unsupported OS"
