@@ -4,18 +4,35 @@ Modular Ubuntu 24.04 / 26.04 server bootstrap. Hardens SSH, configures the firew
 
 ## Quickstart
 
+The bootstrap is interactive (prompts for username, hostname, timezone, etc.). On Ubuntu 22.04+, `sudo`'s default pty mode prevents user input from reaching the prompts when stdin is piped from `curl`, so the recommended pattern is **two-step**:
+
 ```bash
-# Production (main branch)
-curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh | sudo bash
+# 1) Download
+curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh -o /tmp/install.sh
 
-# Test from a feature branch (branch name in env var, no slashes)
-curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/feat_vps_rewrite/vps/install.sh \
-  | sudo BRANCH=feat_vps_rewrite bash
-
-# Same, with --branch arg form
-curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/feat_vps_rewrite/vps/install.sh \
-  | sudo bash -s -- --branch feat_vps_rewrite
+# 2) Run as root (or via sudo)
+sudo bash /tmp/install.sh
 ```
+
+If you're already root (the `#` prompt), the one-line curl-pipe form works because no sudo is involved:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh | bash
+```
+
+To test from a feature branch (use underscores; no slashes in branch names):
+
+```bash
+# Two-step from a branch
+curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/feat_vps_rewrite/vps/install.sh -o /tmp/install.sh
+sudo BRANCH=feat_vps_rewrite bash /tmp/install.sh
+
+# Or, if already root
+curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/feat_vps_rewrite/vps/install.sh \
+  | BRANCH=feat_vps_rewrite bash
+```
+
+The bootstrap detects `curl | sudo bash` and aborts with these instructions before reaching any prompts.
 
 ## What it does
 

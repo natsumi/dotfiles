@@ -42,6 +42,26 @@ die()     { printf "%s✗%s %s\n" "$C_RED"    "$C_RESET" "$*" >&2; exit 1; }
 # ── Prereqs ────────────────────────────────────────────────────────
 (( EUID == 0 )) || die "Run as root (try: sudo bash)"
 
+# Detect curl-pipe-to-sudo: on Ubuntu 22.04+ sudo defaults to use_pty and
+# proxies its stdin to the script's pty. With `curl ... | sudo bash`,
+# sudo's stdin is the curl pipe — so user keystrokes never reach the
+# script and interactive prompts hang. Bail with actionable instructions.
+if [[ -n "${SUDO_USER:-}" ]] && [[ ! -t 0 ]]; then
+  warn "Detected sudo with non-terminal stdin (curl-pipe-bash via sudo)."
+  warn "Ubuntu's default sudo allocates a pty and proxies its stdin to it,"
+  warn "but here sudo's stdin is the curl pipe — so your typing can't reach"
+  warn "interactive prompts. Two ways to run this:"
+  warn ""
+  warn "  1) Two-step (recommended for non-root users):"
+  warn "       curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/${BRANCH}/vps/install.sh -o /tmp/install.sh"
+  warn "       sudo bash /tmp/install.sh"
+  warn ""
+  warn "  2) If you're already root, drop the sudo:"
+  warn "       curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/${BRANCH}/vps/install.sh | bash"
+  warn ""
+  die "Aborting; please re-run using one of the patterns above."
+fi
+
 if [[ ! -r /etc/os-release ]]; then
   die "Cannot read /etc/os-release — unsupported OS"
 fi
