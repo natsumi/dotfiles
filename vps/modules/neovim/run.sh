@@ -1,11 +1,11 @@
 #
-# Neovim (latest unstable from PPA)
+# Neovim (stable PPA)
 #
 # What it does:
-#   - Adds the official ppa:neovim-ppa/unstable
+#   - Adds the official ppa:neovim-ppa/stable
 #   - Installs neovim from that PPA
 # Files written/touched:
-#   - /etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-*.list
+#   - /etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-*.list
 # Idempotent: yes (add-apt-repository is idempotent; apt-get install is idempotent)
 #
 

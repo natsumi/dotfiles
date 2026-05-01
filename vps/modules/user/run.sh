@@ -43,9 +43,8 @@ module_run() {
 
   # ── SSH key install ──────────────────────────────────────────────
   # Strategy: ensure root's authorized_keys is up to date first (append
-  # \$SSH_PUBKEY if prompt_config queued one), then copy root's file to
+  # $SSH_PUBKEY if prompt_config queued one), then copy root's file to
   # the new admin user. One write path, easier to reason about.
-  info "SSH key install (SSH_PUBKEY length: ${#SSH_PUBKEY})"
 
   install -d -m 700 /root/.ssh
   if [[ -n "${SSH_PUBKEY:-}" ]]; then
