@@ -112,6 +112,17 @@ run_step() {
   local start=$SECONDS
   local rc=0
 
+  # Suppress bash xtrace inside run_step. Otherwise our own panel-loop
+  # commands trace into BASH_XTRACEFD (= LOG_FILE), and the panel — which
+  # reads `tail -n 5 LOG_FILE` — picks up its own trace lines instead of
+  # the wrapped command's output. Restore at the end (and on every
+  # return path) so module code keeps its trace.
+  local _saved_xtrace=0
+  [[ $- == *x* ]] && _saved_xtrace=1
+  { set +x; } 2>/dev/null
+
+  _restore_xtrace() { (( _saved_xtrace )) && { set -x; } 2>/dev/null; return 0; }
+
   # Detect a usable terminal via /dev/tty rather than `[[ -t 1 ]]`,
   # because main.sh's setup_logging redirects fd 1 through tee so the
   # fd-1 test always fails inside the runner.
@@ -133,6 +144,7 @@ run_step() {
       printf "    command: %s\n" "$cmd_str" >&2
       printf "    log:     %s\n" "${LOG_FILE:-?}" >&2
     fi
+    _restore_xtrace
     return "$rc"
   fi
 
@@ -203,5 +215,6 @@ run_step() {
     printf "    ── last 20 lines of log ──\n" >&2
     tail -20 "$LOG_FILE" 2>/dev/null | sed 's/^/    │ /' >&2
   fi
+  _restore_xtrace
   return "$rc"
 }
