@@ -114,7 +114,3 @@ In the directory you invoked the bootstrap from (`install.sh` captures `$PWD` be
 - **A module failed** — The runner prints the last 20 lines of log inline. The full log is at `./vps-bootstrap-YYYYMMDD-HHMMSS.log`. Re-run with `--only <id>` after fixing.
 - **Re-run safety** — Modules are idempotent. Re-running the whole script on the same server is supported.
 - **Want to test changes from a branch** — `BRANCH=my_branch` (with underscores; the script expects no slashes).
-
-## Spec
-
-Design rationale lives in `docs/superpowers/specs/2026-04-30-vps-bootstrap-rewrite-design.md`.
