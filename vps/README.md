@@ -50,7 +50,7 @@ The bootstrap iterates an ordered manifest of modules. Each module is a self-con
 | `user` | Admin User & Sudo | Creates `$USERNAME` with zsh, adds to sudo, sets password, installs SSH key. |
 | `ssh` | SSH Hardening | Drop-in `/etc/ssh/sshd_config.d/99-vps-hardening.conf` (custom port, no password auth, modern crypto). Validates with `sshd -t`; rolls back on failure. |
 | `firewall` | UFW Firewall | Default-deny incoming; allows the SSH port plus 80/443. |
-| `fail2ban` | Fail2ban | Drop-in `/etc/fail2ban/jail.d/vps.local` plus traefik filters. |
+| `fail2ban` | Fail2ban | Drop-in `/etc/fail2ban/jail.d/vps.local` with `sshd` (aggressive mode) and `recidive` jails. |
 | `auto-updates` | Unattended Upgrades | Drop-in `/etc/apt/apt.conf.d/99-vps-upgrades` (security-only, no auto-reboot). |
 | `sysctl` | Kernel & Network Hardening | Drop-in `/etc/sysctl.d/99-vps-hardening.conf` (swappiness, rp_filter, syncookies, etc.). |
 | `swap` | Swap File | `/swapfile` sized by RAM (skipped if any swap already active). |
