@@ -7,12 +7,15 @@
 #   - Adds them to the sudo group
 #   - Sets the password from $PASSWORD (trace bracketed off so it doesn't leak)
 #   - Installs SSH key:
-#       * Copies /root/.ssh/authorized_keys to the new user (if root has any)
-#       * Or installs $SSH_PUBKEY if it was queued by prompt_config
+#       * If $SSH_PUBKEY is set, append it to /root/.ssh/authorized_keys
+#       * Then copy /root/.ssh/authorized_keys to the new user
 # Files written/touched:
 #   - /etc/passwd, /etc/shadow, /etc/group (via useradd/usermod/chpasswd)
-#   - /home/$USERNAME/.ssh/authorized_keys
-# Idempotent: yes — safe to re-run; password is reset, key is appended once.
+#   - /root/.ssh/authorized_keys (appended)
+#   - /home/$USERNAME/.ssh/authorized_keys (copied from root)
+# Idempotent: yes — safe to re-run; password is reset, root's key is
+# appended only if not already present, user's file is overwritten with
+# root's so it always reflects root's authorized_keys exactly.
 #
 
 module_run() {
@@ -38,36 +41,32 @@ module_run() {
     success "Password set for $USERNAME"
   fi
 
-  # ── SSH key for the new user ─────────────────────────────────────
-  local user_home="/home/$USERNAME"
-  local user_ssh="$user_home/.ssh"
-  local user_keys="$user_ssh/authorized_keys"
+  # ── SSH key install ──────────────────────────────────────────────
+  # Strategy: ensure root's authorized_keys is up to date first (append
+  # \$SSH_PUBKEY if prompt_config queued one), then copy root's file to
+  # the new admin user. One write path, easier to reason about.
+  info "SSH key install (SSH_PUBKEY length: ${#SSH_PUBKEY})"
 
-  install -d -m 700 -o "$USERNAME" -g "$USERNAME" "$user_ssh"
-
-  # Source 1: copy root's authorized_keys if present
-  if [[ -s /root/.ssh/authorized_keys ]] && [[ ! -s "$user_keys" ]]; then
-    cp /root/.ssh/authorized_keys "$user_keys"
-    chown "$USERNAME:$USERNAME" "$user_keys"
-    chmod 600 "$user_keys"
-    success "Copied root's authorized_keys to $USERNAME"
-  fi
-
-  # Source 2: install $SSH_PUBKEY if it was queued
+  install -d -m 700 /root/.ssh
   if [[ -n "${SSH_PUBKEY:-}" ]]; then
-    if ! grep -qF "$SSH_PUBKEY" "$user_keys" 2>/dev/null; then
-      printf "%s\n" "$SSH_PUBKEY" >>"$user_keys"
-      chown "$USERNAME:$USERNAME" "$user_keys"
-      chmod 600 "$user_keys"
-      success "Installed SSH key for $USERNAME"
-    fi
-    # Also install for root, in case prompt_config queued the key because
-    # /root/.ssh/authorized_keys was empty.
-    install -d -m 700 /root/.ssh
     if ! grep -qF "$SSH_PUBKEY" /root/.ssh/authorized_keys 2>/dev/null; then
       printf "%s\n" "$SSH_PUBKEY" >>/root/.ssh/authorized_keys
       chmod 600 /root/.ssh/authorized_keys
       success "Installed SSH key for root"
     fi
+  fi
+
+  local user_home="/home/$USERNAME"
+  local user_ssh="$user_home/.ssh"
+  local user_keys="$user_ssh/authorized_keys"
+  install -d -m 700 -o "$USERNAME" -g "$USERNAME" "$user_ssh"
+
+  if [[ -s /root/.ssh/authorized_keys ]]; then
+    cp /root/.ssh/authorized_keys "$user_keys"
+    chown "$USERNAME:$USERNAME" "$user_keys"
+    chmod 600 "$user_keys"
+    success "Installed SSH key for $USERNAME (copied from /root)"
+  else
+    warn "/root/.ssh/authorized_keys is empty — no key copied to $USERNAME"
   fi
 }
