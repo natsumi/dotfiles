@@ -155,6 +155,15 @@ run_step() {
   # output is written to LOG_FILE directly (NOT through fd 1) so the
   # streaming text doesn't fight the panel for screen real estate.
 
+  # Snapshot LOG_FILE size BEFORE we run the command. The panel will only
+  # show bytes appended after this offset, so leftovers from earlier
+  # modules / info messages / prior run_steps don't briefly flash before
+  # the new command starts producing output.
+  local start_bytes=0
+  if [[ -f "$LOG_FILE" ]]; then
+    start_bytes=$(wc -c <"$LOG_FILE")
+  fi
+
   # Reserve the panel: 1 header line + TAIL_LINES tail lines.
   {
     printf "  ⠋ %s — 0s\n" "$desc"
@@ -177,11 +186,12 @@ run_step() {
       printf "\r\033[K  %s %s — %ss\n" \
         "${SPIN[i++ % 10]}" "$desc" "$elapsed"
 
-      # Tail box.
+      # Tail box — only bytes from this command's output (post-snapshot).
       local width=$((${COLUMNS:-80} - 6))
       local lines=()
       mapfile -t lines < <(
-        tail -n "$TAIL_LINES" "$LOG_FILE" 2>/dev/null \
+        tail -c "+$((start_bytes + 1))" "$LOG_FILE" 2>/dev/null \
+          | tail -n "$TAIL_LINES" \
           | sed -e 's/\x1b\[[0-9;]*[a-zA-Z]//g' -e 's/\r//g' \
           | cut -c1-"$width"
       )
@@ -213,7 +223,9 @@ run_step() {
     printf "    command: %s\n" "$cmd_str" >&2
     printf "    log:     %s\n" "${LOG_FILE:-?}" >&2
     printf "    ── last 20 lines of log ──\n" >&2
-    tail -20 "$LOG_FILE" 2>/dev/null | sed 's/^/    │ /' >&2
+    # Only this command's output, not the whole log.
+    tail -c "+$((start_bytes + 1))" "$LOG_FILE" 2>/dev/null \
+      | tail -20 | sed 's/^/    │ /' >&2
   fi
   _restore_xtrace
   return "$rc"
