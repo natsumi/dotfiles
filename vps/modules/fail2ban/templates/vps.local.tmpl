@@ -1,0 +1,42 @@
+[DEFAULT]
+# Defaults applied to every jail unless overridden. fail2ban reads
+# from the systemd journal (Ubuntu 24.04+ has full ssh+kernel logs in
+# the journal); per-jail `logpath` settings only matter for jails that
+# override `backend`.
+bantime  = 3600
+findtime = 600
+maxretry = 3
+backend  = systemd
+
+# Default action is "ban only" (action_). action_mwl would also send
+# email with WHOIS info and log lines, but a fresh VPS has no MTA
+# configured and the action would error every time.
+action = %(action_)s
+
+
+# ── SSH ──────────────────────────────────────────────────────────────
+# Modern fail2ban no longer ships the separate `sshd-ddos` filter; the
+# `sshd` filter with `mode = aggressive` covers both regular auth
+# failures AND the burst/connection-flood patterns sshd-ddos used to
+# detect. mode=aggressive is a bit noisier on legitimate traffic; if
+# you see false positives, drop to mode=normal.
+[sshd]
+enabled  = true
+port     = ${SSH_PORT}
+filter   = sshd
+mode     = aggressive
+maxretry = 3
+bantime  = 3600
+
+
+# ── Recidive: ban repeat offenders for longer ────────────────────────
+# Watches fail2ban's own journal for IPs that have already been banned
+# and bans them again for a much longer window. With bantime.increment
+# enabled, each subsequent re-offense doubles the previous bantime.
+[recidive]
+enabled  = true
+filter   = recidive
+maxretry = 2
+findtime = 86400
+bantime  = 604800
+bantime.increment = true

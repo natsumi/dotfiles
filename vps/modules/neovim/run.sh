@@ -1,0 +1,16 @@
+#
+# Neovim (stable PPA)
+#
+# What it does:
+#   - Adds the official ppa:neovim-ppa/stable
+#   - Installs neovim from that PPA
+# Files written/touched:
+#   - /etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-*.list
+# Idempotent: yes (add-apt-repository is idempotent; apt-get install is idempotent)
+#
+
+module_run() {
+  run_step "Adding neovim PPA" add-apt-repository -y ppa:neovim-ppa/stable
+  run_step "Refreshing apt after PPA add" apt-get update -y -q
+  run_step "Installing neovim" apt-get install -y -q neovim
+}

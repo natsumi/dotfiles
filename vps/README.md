@@ -1,203 +1,130 @@
-# VPS Ubuntu 24.04 Setup Script
+# VPS Bootstrap
 
-A comprehensive, security-focused setup script for Ubuntu 24.04 VPS servers with interactive configuration, automated hardening, and development environment setup.
+Modular Ubuntu 24.04 / 26.04 server bootstrap. Hardens SSH, configures the firewall, installs base packages, optionally installs Docker, and writes a setup summary.
 
-## Quick Start
+## Quickstart
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh)"
-```
-
-## Features
-
-### Security Hardening
-- **SSH Hardening**: Custom port, key-only authentication, root login with key only (via drop-in at `/etc/ssh/sshd_config.d/99-hardening.conf`)
-- **SSH Key Safety Gate**: Verifies authorized_keys exist before disabling password auth; prompts for public key if missing
-- **Firewall**: UFW with strict default-deny incoming rules
-- **Intrusion Prevention**: Fail2ban with SSH and Traefik jails
-- **Automatic Updates**: Unattended security patches (via drop-in at `/etc/apt/apt.conf.d/99-vps-upgrades`)
-- **Kernel Hardening**: sysctl network security settings (via drop-in at `/etc/sysctl.d/99-vps-hardening.conf`)
-- **Security Audit**: Post-installation check for weak keys, default users, unnecessary services
-
-### Development Environment
-- **Shell**: Zsh
-- **Editor**: Neovim (latest unstable)
-- **Tools**: ripgrep, fd, fzf, bat, tig, tmux, btop, htop, and more
-- **Version Control**: Git
-
-### System Optimization
-- **Swap File**: Automatic creation based on available RAM
-- **Monitoring**: btop, htop, iotop, nethogs
-- **Performance**: Optimized sysctl settings (swappiness, network security)
-
-### User Experience
-- **Interactive Setup**: All prompts collected upfront, then the entire setup runs unattended
-- **Logging**: Full command traces always written to `~/vps_setup.log`
-- **Backup**: Automatic backup of original configurations
-- **Visible Progress**: Package installs show status lines on screen
-- **Summary Report**: Post-installation summary with important notes
-
-## Prerequisites
-
-- Fresh Ubuntu 24.04 LTS installation
-- Root access to the server
-- SSH public key (script will prompt if not already on the server)
-
-## Installation
-
-### Method 1: One-Line Install (Recommended)
+The bootstrap is interactive (prompts for username, hostname, timezone, etc.). On Ubuntu 22.04+, `sudo`'s default pty mode prevents user input from reaching the prompts when stdin is piped from `curl`, so the recommended pattern is **two-step**:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh | sudo bash
+# 1) Download
+curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh -o /tmp/install.sh
+
+# 2) Run as root (or via sudo)
+sudo bash /tmp/install.sh
 ```
 
-### Method 2: Manual Installation
+If you're already root (the `#` prompt), the one-line curl-pipe form works because no sudo is involved:
 
 ```bash
-# Clone the repository
-git clone https://github.com/natsumi/dotfiles.git
-cd dotfiles/vps
-
-# Run the setup script
-sudo bash setup.sh
+curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh | bash
 ```
 
-## Interactive Configuration
+To test from a feature branch (use underscores; no slashes in branch names):
 
-All prompts are collected upfront so the rest of the setup runs unattended:
+```bash
+# Two-step from a branch
+curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/feat_vps_rewrite/vps/install.sh -o /tmp/install.sh
+sudo BRANCH=feat_vps_rewrite bash /tmp/install.sh
 
-1. **Admin Username** - Create a non-root sudo user (optional)
-2. **Password** - Password for the new user (if creating one)
-3. **Hostname** - Set server hostname
-4. **SSH Port** - Custom SSH port (default: 22, validated 1-65535)
-5. **Timezone** - Server timezone (default: America/Los_Angeles)
-6. **SSH Public Key** - Prompted only if root has no authorized_keys (validated with ssh-keygen)
-7. **Docker** - Optional Docker and Lazydocker installation
+# Or, if already root
+curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/feat_vps_rewrite/vps/install.sh \
+  | BRANCH=feat_vps_rewrite bash
+```
 
-## Post-Installation
+The bootstrap detects `curl | sudo bash` and aborts with these instructions before reaching any prompts.
 
-### Important First Steps
+## What it does
 
-1. **Test SSH Connection**
+The bootstrap iterates an ordered manifest of modules. Each module is a self-contained folder under `modules/` that defines a single `module_run` function. Configuration goes into `/etc/<svc>.d/99-vps-*` drop-ins where the OS supports it; templates with `envsubst` where interpolation is needed; in-place edits only when there's no other choice (e.g. `/etc/hosts`).
+
+## Modules
+
+| ID | Display Name | What it does |
+|---|---|---|
+| `apt-mirror` | APT Mirror Configuration | **Disabled by default** (commented out in `manifest.sh`). Replaces `/etc/apt/sources.list.d/ubuntu.sources` with the Pilot Fiber mirror, codename-templated. |
+| `system` | System Settings | Hostname (`hostnamectl` + `/etc/hosts`) and timezone (`timedatectl`). |
+| `update` | System Update | `apt update` + `upgrade` + `autoremove`. |
+| `packages` | Base Packages | Installs everything in `modules/packages/packages.list`. |
+| `neovim` | Neovim | Adds `ppa:neovim-ppa/unstable`, installs neovim. |
+| `user` | Admin User & Sudo | Creates `$USERNAME` with zsh, adds to sudo, sets password, installs SSH key. |
+| `ssh` | SSH Hardening | Drop-in `/etc/ssh/sshd_config.d/99-vps-hardening.conf` (custom port, no password auth, modern crypto). Validates with `sshd -t`; rolls back on failure. |
+| `firewall` | UFW Firewall | Default-deny incoming; allows the SSH port only. Open other ports (HTTP/HTTPS/etc.) manually with `ufw allow` when deploying services. |
+| `fail2ban` | Fail2ban | Drop-in `/etc/fail2ban/jail.d/vps.local` with `sshd` (aggressive mode) and `recidive` jails. |
+| `auto-updates` | Unattended Upgrades | Drop-in `/etc/apt/apt.conf.d/99-vps-upgrades` (security-only, no auto-reboot). |
+| `sysctl` | Kernel & Network Hardening | Drop-in `/etc/sysctl.d/99-vps-hardening.conf` (swappiness, rp_filter, syncookies, etc.). |
+| `swap` | Swap File | `/swapfile` sized by RAM (skipped if any swap already active). |
+| `docker` | Docker Engine | Optional. Adds Docker's apt repo, installs engine + plugins, writes `/etc/docker/daemon.json`, adds the admin user to `docker` group. Installs Lazydocker. |
+| `audit` | Security Audit | Read-only checks for default users, weak SSH keys, unnecessary services. |
+| `summary` | Setup Summary | Writes `./vps-bootstrap-summary.txt` and `./vps-bootstrap.stamp`. |
+
+## Flags
+
+| Flag | Description |
+|---|---|
+| `--only ssh,firewall` | Run only listed modules (comma-separated ids) |
+| `--skip docker,neovim` | Run all modules except listed |
+| `--verbose`, `-v` | Stream all command output (no progress panel) |
+| `--list` | Print the manifest and exit |
+| `--branch <name>` | Bootstrap-only; equivalent to `BRANCH=<name>` |
+| `--help`, `-h` | Print usage |
+
+## Environment variables
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `BRANCH` | `main` | Branch to clone in `install.sh` |
+| `REPO` | `https://github.com/natsumi/dotfiles` | Repo URL in `install.sh` |
+| `NO_COLOR` | unset | Set to disable ANSI colors |
+| `VERBOSE` | `0` | Set to `1` for `--verbose` |
+| `DEBUG` | `0` | Set to `1` to enable `debug()` output |
+
+## Files produced
+
+In the directory you invoked the bootstrap from (`install.sh` captures `$PWD` before any `cd`, exports it as `INVOKED_FROM`, and the runner writes all output paths there):
+
+- `vps-bootstrap-YYYYMMDD-HHMMSS.log` — full log (ANSI-stripped, includes bash trace)
+- `vps-bootstrap-summary.txt` — readable summary printed at the end
+- `vps-bootstrap.stamp` — key=value record used by preflight's prior-run detection
+- `vps-bootstrap-backup/` — originals of any in-place-edited files
+
+## Adding a new module
+
+1. `mkdir vps/modules/<id>`
+2. Create `vps/modules/<id>/run.sh`:
    ```bash
-   # From your local machine (not the server!)
-   ssh -p YOUR_PORT username@your-server-ip
+   #
+   # <Display Name>
+   # What it does: …
+   # Files written/touched: …
+   # Idempotent: yes/no (notes)
+   #
+   module_run() {
+     # use info / success / warn / error / die
+     # use run_step "Description" cmd args... for long-running steps
+     # $MODULE_DIR points to this directory
+   }
    ```
-
-2. **Review Security Settings**
-   ```bash
-   # Check the setup summary
-   cat /root/vps-setup-summary.txt
-
-   # Monitor auth logs
-   tail -f /var/log/auth.log
-   ```
-
-3. **Configure Your Domain**
-   - Point your domain's A record to the server IP
-   - Consider setting up reverse DNS
-
-### File Locations
-
-- **Setup Log**: `~/vps_setup.log` (includes full command traces)
-- **Configuration Backup**: `~/vps-setup/backup/TIMESTAMP/`
-- **Setup Summary**: `/root/vps-setup-summary.txt`
-
-### Service Management
-
-```bash
-# Check firewall status
-sudo ufw status verbose
-
-# Check fail2ban status
-sudo fail2ban-client status
-sudo fail2ban-client status sshd
-
-# View blocked IPs
-sudo iptables -L -n -v
-```
-
-## Customization
-
-### Modifying Security Settings
-
-#### Change SSH Port After Installation
-```bash
-# Edit the hardening drop-in
-sudo nano /etc/ssh/sshd_config.d/99-hardening.conf
-# Update UFW rules
-sudo ufw delete allow OLD_PORT/tcp
-sudo ufw allow NEW_PORT/tcp
-# Restart SSH
-sudo systemctl restart ssh
-```
-
-#### Whitelist IP Addresses
-```bash
-# For Fail2ban
-sudo fail2ban-client set sshd addignoreip YOUR_IP_ADDRESS
-```
-
-### Adding Custom Software
-
-The script is modular. To add custom software:
-
-1. Edit `setup.sh`
-2. Add your packages to the `install_base_packages()` function
-3. Or create a new function and call it from `main()`
+3. Add an entry to `vps/manifest.sh`: `"<id>|<Display Name>"` at the right position.
+4. Add a row to the table above.
 
 ## Troubleshooting
 
-### Locked Out of SSH
+- **Locked out of SSH** — Use the VPS provider's console. The ssh module backs up the cloud-init drop-in to `…/50-cloud-init.conf.disabled`; restore it and `systemctl restart ssh` if needed. `ufw status` shows whether the new port is allowed.
+- **A module failed** — The runner prints the last 20 lines of log inline. The full log is at `./vps-bootstrap-YYYYMMDD-HHMMSS.log`. Re-run with `--only <id>` after fixing.
+- **Re-run safety** — Modules are idempotent. Re-running the whole script on the same server is supported.
+- **Want to test changes from a branch** — `BRANCH=my_branch` (with underscores; the script expects no slashes).
 
-If you're locked out:
+## Docker + UFW (important)
 
-1. Use your VPS provider's console access
-2. Check fail2ban: `fail2ban-client set sshd unbanip YOUR_IP`
-3. Review `/var/log/auth.log` for issues
+**Docker bypasses UFW by default.** When you publish a container port with `-p 80:80` (or via `ports:` in compose), Docker writes its own `iptables` rules into the `DOCKER` chain, which is matched *before* UFW's filter rules. The result is that published container ports are reachable from anywhere on the internet **regardless of what `ufw status` says**. This is a long-standing Docker design choice, not a bug; it has not changed on Ubuntu 26.04 or with recent Docker versions.
 
-### Script Fails During Installation
+This means: if you set `ufw deny 80`, then `docker run -p 80:80 nginx`, port 80 IS reachable from outside.
 
-1. Check the log file: `~/vps_setup.log` (includes full command traces for debugging)
-2. Original configs are backed up in `~/vps-setup/backup/*/`
-3. Re-run the script - it's designed to be idempotent
-4. Check the last few lines of the log:
-   ```bash
-   tail -50 ~/vps_setup.log
-   ```
+The three common ways people deal with this:
 
-### High Memory Usage
+1. **Bind containers to localhost and front them with a reverse proxy.** `-p 127.0.0.1:8080:8080` keeps the container off the internet; an nginx/traefik/caddy on the host (gated by UFW) proxies public traffic to it. This is the cleanest pattern and what most personal VPS setups end up doing.
+2. **Use the `ufw-docker` workaround** — community recipe that adds rules to `/etc/ufw/after.rules` filtering Docker traffic through `DOCKER-USER`. Lets UFW actually gate published container ports. See <https://github.com/chaifeng/ufw-docker>.
+3. **Set `"iptables": false` in `/etc/docker/daemon.json`** — tells Docker not to manage iptables at all. You then handle container networking entirely yourself. Heavy.
 
-- Check if swap is enabled: `free -h`
-- Adjust swappiness: `sysctl vm.swappiness=10`
-- Consider upgrading your VPS plan
-
-## Security Best Practices
-
-1. **Regular Updates**
-   ```bash
-   sudo apt update && sudo apt upgrade
-   ```
-
-2. **Monitor Logs**
-   ```bash
-   # Check for failed login attempts
-   grep "Failed password" /var/log/auth.log
-
-   # Check fail2ban activity
-   grep "Ban" /var/log/fail2ban.log
-   ```
-
-3. **Backup Your Data**
-   - Set up regular backups of important data
-   - Test restore procedures
-
-4. **Use Strong SSH Keys**
-   - Minimum 4096-bit RSA or Ed25519
-   - Use passphrase protection
-   - Rotate keys periodically
-
-5. **Principle of Least Privilege**
-   - Don't run services as root
-   - Use sudo instead of root login
-   - Limit user permissions
+The bootstrap doesn't enable any of these — it just leaves Docker at its default. Pick the pattern that fits your deployment.

@@ -1,169 +1,128 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# vps/install.sh — bootstrap entrypoint.
+# Designed for `curl ... | sudo bash` invocation.
+# Verifies prerequisites, sparse-clones the repo, and execs main.sh.
 
-# VPS Setup Installer
-# This script downloads and runs the main VPS setup script
-# Usage: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/vps/install.sh)"
+set -Eeuo pipefail
 
-set -euo pipefail
+# Capture the user's invocation cwd before we cd anywhere. Logs, summary
+# files, and backups will be written here so they don't end up in the
+# tmpdir (which the EXIT trap removes).
+export INVOKED_FROM="$PWD"
 
-# Color definitions
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[1;33m'
-readonly BLUE='\033[0;34m'
-readonly NC='\033[0m'
+REPO_DEFAULT="https://github.com/natsumi/dotfiles"
+BRANCH_DEFAULT="main"
 
-# Configuration
-readonly REPO_URL="https://github.com/natsumi/dotfiles"
-readonly REPO_BRANCH="main"
-readonly SETUP_SCRIPT="vps/setup.sh"
-readonly TEMP_DIR="/tmp/vps-setup-$$"
+REPO="${REPO:-$REPO_DEFAULT}"
+BRANCH="${BRANCH:-$BRANCH_DEFAULT}"
 
-# Functions
-error_exit() {
-    echo -e "${RED}ERROR: $1${NC}" >&2
-    exit 1
-}
+# ── Parse --branch from args (env var still wins if both set) ──────
+ARGS=()
+while (( $# > 0 )); do
+  case "$1" in
+    --branch)
+      if [[ -z "${2:-}" ]]; then
+        printf "✗ --branch requires a value\n" >&2; exit 2
+      fi
+      BRANCH="$2"; ARGS+=("--branch" "$2"); shift 2
+      ;;
+    *) ARGS+=("$1"); shift ;;
+  esac
+done
 
-info() {
-    echo -e "${BLUE}ℹ $1${NC}"
-}
+# ── Inline color setup (lib/ui.sh isn't available yet) ─────────────
+# This block intentionally mirrors the start of vps/lib/ui.sh. Keep names
+# (info/success/warn/die) identical so muscle memory is consistent.
+if [[ -t 1 ]] && [[ -z "${NO_COLOR:-}" ]]; then
+  C_RESET=$'\033[0m'; C_RED=$'\033[0;31m'; C_GREEN=$'\033[0;32m'
+  C_YELLOW=$'\033[1;33m'; C_BLUE=$'\033[0;34m'
+else
+  C_RESET=''; C_RED=''; C_GREEN=''; C_YELLOW=''; C_BLUE=''
+fi
+info()    { printf "%sℹ%s %s\n" "$C_BLUE"   "$C_RESET" "$*"; }
+success() { printf "%s✓%s %s\n" "$C_GREEN"  "$C_RESET" "$*"; }
+warn()    { printf "%s⚠%s %s\n" "$C_YELLOW" "$C_RESET" "$*" >&2; }
+die()     { printf "%s✗%s %s\n" "$C_RED"    "$C_RESET" "$*" >&2; exit 1; }
 
-success() {
-    echo -e "${GREEN}✓ $1${NC}"
-}
+# ── Prereqs ────────────────────────────────────────────────────────
+# Note: 'curl ... | sudo bash' breaks on Ubuntu 22.04+ because sudo's
+# default use_pty mode proxies its stdin to the script's pty, and here
+# sudo's stdin is the curl pipe — so prompts hang waiting for input that
+# can't get through. The README's quickstart shows the two viable
+# patterns (two-step download, or no-sudo when already root). We don't
+# try to detect the broken case here; the EUID check below is enough.
+(( EUID == 0 )) || die "Run as root (try: sudo bash)"
 
-warning() {
-    echo -e "${YELLOW}⚠ $1${NC}"
-}
+if [[ ! -r /etc/os-release ]]; then
+  die "Cannot read /etc/os-release — unsupported OS"
+fi
+# shellcheck source=/dev/null
+. /etc/os-release
+case "${ID:-}:${VERSION_ID:-}" in
+  ubuntu:24.04|ubuntu:26.04) ;;
+  *) die "Only Ubuntu 24.04 and 26.04 are supported (found ${ID:-?}:${VERSION_ID:-?})" ;;
+esac
 
-# Check if running as root
-check_root() {
-    if [[ $EUID -ne 0 ]]; then
-        error_exit "This installer must be run as root. Try: sudo bash"
-    fi
-}
+# ── Install minimal deps if missing (BEFORE the internet probe — the
+# probe uses curl, which itself might be missing on a barebones image) ─
+declare -a apt_pkgs=()
+for cmd in git curl envsubst; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    case "$cmd" in
+      envsubst) apt_pkgs+=("gettext-base") ;;
+      *)        apt_pkgs+=("$cmd") ;;
+    esac
+  fi
+done
+# ca-certificates isn't a binary, so command -v can't find it; check via dpkg.
+if ! dpkg -s ca-certificates >/dev/null 2>&1; then
+  apt_pkgs+=("ca-certificates")
+fi
+if (( ${#apt_pkgs[@]} > 0 )); then
+  info "Installing missing dependencies: ${apt_pkgs[*]}"
+  apt-get update -qq
+  apt-get install -y -q "${apt_pkgs[@]}"
+fi
 
-# Check OS compatibility
-check_os() {
-    if [[ ! -f /etc/os-release ]]; then
-        error_exit "Cannot determine OS version"
-    fi
+# ── Internet check (after deps so curl is available) ───────────────
+if ! curl -fsS --max-time 5 https://github.com >/dev/null 2>&1; then
+  die "Cannot reach github.com — check network/DNS"
+fi
 
-    source /etc/os-release
-    if [[ "$ID" != "ubuntu" ]] || [[ "$VERSION_ID" != "24.04" ]]; then
-        error_exit "This installer is designed for Ubuntu 24.04 only (detected: $ID $VERSION_ID)"
-    fi
-}
+# ── Clone repo (sparse, just vps/) ─────────────────────────────────
+# We export VPS_BOOTSTRAP_TMP so main.sh's cleanup() can rm -rf it on the
+# way out — this script's own EXIT trap cannot fire because exec replaces
+# our bash process.
+VPS_BOOTSTRAP_TMP=$(mktemp -d /tmp/vps-bootstrap-XXXXXX)
+export VPS_BOOTSTRAP_TMP
+# Fallback cleanup if exec is never reached (e.g., clone failure below).
+trap 'rm -rf "$VPS_BOOTSTRAP_TMP"' EXIT
 
-# Check internet connectivity
-check_internet() {
-    if ! ping -c 1 -q google.com &>/dev/null; then
-        error_exit "No internet connection available"
-    fi
-}
+info "Cloning $REPO @ $BRANCH (sparse: vps/)"
+(
+  cd "$VPS_BOOTSTRAP_TMP"
+  git clone --quiet --depth 1 --branch "$BRANCH" --filter=blob:none --sparse "$REPO" .
+  git sparse-checkout set vps
+) || die "Clone failed — check BRANCH=$BRANCH and REPO=$REPO"
 
-# Check required commands
-check_dependencies() {
-    local deps=(git curl wget)
-    local missing=()
+if [[ ! -x "$VPS_BOOTSTRAP_TMP/vps/main.sh" ]]; then
+  die "main.sh not found at $VPS_BOOTSTRAP_TMP/vps/main.sh — wrong branch?"
+fi
 
-    for cmd in "${deps[@]}"; do
-        if ! command -v "$cmd" &>/dev/null; then
-            missing+=("$cmd")
-        fi
-    done
+success "Sources fetched; handing off to main.sh"
+echo
 
-    if [[ ${#missing[@]} -gt 0 ]]; then
-        info "Installing missing dependencies: ${missing[*]}"
-        apt-get update -qq
-        apt-get install -y "${missing[@]}" || error_exit "Failed to install dependencies"
-    fi
-}
+# ── Hand off ───────────────────────────────────────────────────────
+# When invoked via `curl ... | sudo bash`, our stdin is the pipe (closed
+# the moment install.sh has been read), so any `read` in main.sh / lib/*
+# hits EOF immediately. Re-attach stdin to /dev/tty so the prompts work.
+cd "$VPS_BOOTSTRAP_TMP"
 
-# Download setup files
-download_setup() {
-    info "Downloading setup files..."
-
-    # Create temporary directory
-    mkdir -p "$TEMP_DIR"
-    cd "$TEMP_DIR"
-
-    # Clone repository (sparse checkout for efficiency)
-    git clone --depth 1 --branch "$REPO_BRANCH" --sparse "$REPO_URL" . &>/dev/null ||
-        error_exit "Failed to download setup files"
-
-    git sparse-checkout init --cone &>/dev/null
-    git sparse-checkout set vps &>/dev/null
-
-    # Verify main script exists
-    if [[ ! -f "$SETUP_SCRIPT" ]]; then
-        error_exit "Setup script not found: $SETUP_SCRIPT"
-    fi
-
-    # Make executable
-    chmod +x "$SETUP_SCRIPT"
-
-    success "Setup files downloaded"
-}
-
-# Pre-installation warning
-show_warning() {
-    echo
-    warning "This script will:"
-    echo "  • Install and configure various system packages"
-    echo "  • Modify SSH configuration (custom port)"
-    echo "  • Enable firewall with strict rules"
-    echo "  • Configure security tools (fail2ban, sshguard)"
-    echo "  • Potentially create a new admin user"
-    echo "  • Apply various security hardening measures"
-    echo
-    echo "The script will guide you through interactive configuration."
-    echo
-    read -p "Do you want to continue? [y/N]: " -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        error_exit "Installation cancelled by user"
-    fi
-}
-
-# Cleanup function
-cleanup() {
-    if [[ -d "$TEMP_DIR" ]]; then
-        rm -rf "$TEMP_DIR"
-    fi
-}
-
-# Set trap for cleanup
-trap cleanup EXIT
-
-# Main execution
-main() {
-    clear
-    echo "========================================"
-    echo "   VPS Ubuntu 24.04 Setup Installer     "
-    echo "========================================"
-    echo
-
-    # Checks
-    check_root
-    check_os
-    check_internet
-    check_dependencies
-
-    # Show warning and get confirmation
-    show_warning
-
-    # Download and run setup
-    download_setup
-
-    info "Starting VPS setup..."
-    echo
-
-    # Run the main setup script
-    cd "$TEMP_DIR"
-    bash "$SETUP_SCRIPT"
-}
-
-# Run main
-main "$@"
+if [[ -t 0 ]]; then
+  exec ./vps/main.sh "${ARGS[@]}"
+elif [[ -r /dev/tty ]]; then
+  exec ./vps/main.sh "${ARGS[@]}" </dev/tty
+else
+  die "No TTY available for interactive prompts. Run from an interactive shell, \
+or save install.sh locally and execute it directly (e.g. 'sudo bash ./install.sh')."
+fi
