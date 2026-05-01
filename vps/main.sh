@@ -91,6 +91,15 @@ cleanup() {
 }
 on_error() {
   local lineno="$1" rc="$2" cmd="$3"
+  # When ERR catches a function return (e.g. run_step propagating a
+  # failure), BASH_COMMAND is something like 'return "$rc"' — useless to
+  # print as the failing command, since the actual failure already
+  # surfaced wherever it happened. Emit an abbreviated banner instead.
+  if [[ "$cmd" =~ ^return( |$) ]]; then
+    printf "\n  %sBootstrap aborted%s (rc=%s, line %s). Log: %s\n" \
+      "$C_BOLD$C_RED" "$C_RESET" "$rc" "$lineno" "$LOG_FILE" >&2
+    return
+  fi
   printf "\n%s━━ ERROR ━━%s\n" "$C_BOLD$C_RED" "$C_RESET" >&2
   printf "  command: %s\n" "$cmd" >&2
   printf "  line:    %s\n" "$lineno" >&2

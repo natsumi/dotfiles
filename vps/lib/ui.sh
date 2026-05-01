@@ -108,6 +108,7 @@ SPIN=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
 
 run_step() {
   local desc="$1"; shift
+  local cmd_str="$*"
   local start=$SECONDS
   local rc=0
 
@@ -122,7 +123,9 @@ run_step() {
     if (( rc == 0 )); then
       printf "  %s✓%s %s (%ss)\n" "$C_GREEN" "$C_RESET" "$desc" "$elapsed"
     else
-      printf "  %s✗%s %s (failed after %ss)\n" "$C_RED" "$C_RESET" "$desc" "$elapsed" >&2
+      printf "  %s✗%s %s (rc=%s after %ss)\n" "$C_RED" "$C_RESET" "$desc" "$rc" "$elapsed" >&2
+      printf "    command: %s\n" "$cmd_str" >&2
+      printf "    log:     %s\n" "${LOG_FILE:-?}" >&2
     fi
     return "$rc"
   fi
@@ -176,7 +179,9 @@ run_step() {
   if (( rc == 0 )); then
     printf "  %s✓%s %s (%ss)\n" "$C_GREEN" "$C_RESET" "$desc" "$elapsed"
   else
-    printf "  %s✗%s %s (failed after %ss)\n" "$C_RED" "$C_RESET" "$desc" "$elapsed" >&2
+    printf "  %s✗%s %s (rc=%s after %ss)\n" "$C_RED" "$C_RESET" "$desc" "$rc" "$elapsed" >&2
+    printf "    command: %s\n" "$cmd_str" >&2
+    printf "    log:     %s\n" "${LOG_FILE:-?}" >&2
     printf "    ── last 20 lines of log ──\n" >&2
     tail -20 "$LOG_FILE" 2>/dev/null | sed 's/^/    │ /' >&2
   fi
