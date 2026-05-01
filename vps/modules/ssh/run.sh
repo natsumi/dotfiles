@@ -72,5 +72,12 @@ BANNER
 
   run_step "Restarting ssh" systemctl restart ssh
   success "SSH hardened on port $SSH_PORT (users: $allow_users)"
-  warn "Reconnect with: ssh -p $SSH_PORT ${USERNAME:-root}@<host>"
+
+  # Resolve the server's public IPv4 by asking the kernel which source
+  # address it would use to reach 1.1.1.1. Works on any VPS with a
+  # default route. Falls back to "<host>" if anything goes wrong.
+  local server_ip
+  server_ip=$(ip route get 1.1.1.1 2>/dev/null \
+    | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}')
+  warn "Reconnect with: ssh -p $SSH_PORT ${USERNAME:-root}@${server_ip:-<host>}"
 }

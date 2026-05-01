@@ -34,12 +34,21 @@ module_run() {
     reboot_hint=$'\n  2. Reboot when convenient: sudo reboot'
   fi
 
+  # Resolve the server's public IPv4 by asking the kernel which source
+  # address it would use to reach 1.1.1.1. Falls back to "<host>" if
+  # the lookup fails (e.g. no default route).
+  local server_ip
+  server_ip=$(ip route get 1.1.1.1 2>/dev/null \
+    | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}')
+  server_ip="${server_ip:-<host>}"
+
   # ── Write the human-readable summary ─────────────────────────────
   cat >"$summary" <<EOF
 vps-bootstrap summary
 =====================
 date:           $(date -Is)
 hostname:       $(hostname)
+IPv4:           $server_ip
 Ubuntu:         $UBUNTU_VERSION_ID ($UBUNTU_CODENAME)
 admin user:     ${USERNAME:-[none — root only]}
 SSH port:       $SSH_PORT
@@ -55,7 +64,7 @@ ${timings%$'\n'}
 Important next steps
 --------------------
   1. Open a NEW terminal and verify SSH works on the new port:
-       ssh -p $SSH_PORT ${USERNAME:-root}@<host>
+       ssh -p $SSH_PORT ${USERNAME:-root}@${server_ip}
      Do NOT close this session until you've confirmed.${reboot_hint}
 EOF
 
