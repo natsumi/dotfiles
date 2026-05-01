@@ -15,7 +15,9 @@
 setup_logging() {
   local stamp
   stamp=$(date +%Y%m%d-%H%M%S)
-  LOG_FILE="${PWD}/vps-bootstrap-${stamp}.log"
+  # Write to the user's invocation cwd (set by install.sh), falling back
+  # to PWD if main.sh was invoked directly.
+  LOG_FILE="${INVOKED_FROM:-$PWD}/vps-bootstrap-${stamp}.log"
 
   : >"$LOG_FILE" || die "Cannot write to $LOG_FILE"
 

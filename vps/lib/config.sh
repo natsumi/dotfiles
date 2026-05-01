@@ -91,13 +91,17 @@ prompt_config() {
   fi
 
   # ── Summary + final confirm ──────────────────────────────────────
+  local password_status pubkey_status
+  if [[ -n "$PASSWORD" ]]; then password_status="[set]"; else password_status="[skip]"; fi
+  if [[ -n "$SSH_PUBKEY" ]]; then pubkey_status="to be installed"; else pubkey_status="already present"; fi
+
   printf "\n%s━━ Configuration summary ━━%s\n" "$C_BOLD$C_CYAN" "$C_RESET"
   printf "  Username:        %s\n" "${USERNAME:-[skip]}"
-  printf "  Password:        %s\n" "${PASSWORD:+[set]}${PASSWORD:-[skip]}"
+  printf "  Password:        %s\n" "$password_status"
   printf "  Hostname:        %s\n" "$HOSTNAME"
   printf "  SSH port:        %s\n" "$SSH_PORT"
   printf "  Timezone:        %s\n" "$TIMEZONE"
-  printf "  SSH public key:  %s\n" "${SSH_PUBKEY:+to be installed}${SSH_PUBKEY:-already present}"
+  printf "  SSH public key:  %s\n" "$pubkey_status"
   printf "  Install Docker:  %s\n\n" "$INSTALL_DOCKER"
 
   if ! ask_yn "Proceed with this configuration?" "Y"; then

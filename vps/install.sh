@@ -5,6 +5,11 @@
 
 set -Eeuo pipefail
 
+# Capture the user's invocation cwd before we cd anywhere. Logs, summary
+# files, and backups will be written here so they don't end up in the
+# tmpdir (which the EXIT trap removes).
+export INVOKED_FROM="$PWD"
+
 REPO_DEFAULT="https://github.com/natsumi/dotfiles"
 BRANCH_DEFAULT="main"
 

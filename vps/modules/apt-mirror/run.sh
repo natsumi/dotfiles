@@ -12,7 +12,7 @@
 
 module_run() {
   local target=/etc/apt/sources.list.d/ubuntu.sources
-  local backup_dir="${PWD}/vps-bootstrap-backup"
+  local backup_dir="${INVOKED_FROM:-$PWD}/vps-bootstrap-backup"
   mkdir -p "$backup_dir"
 
   if [[ -f "$target" ]]; then

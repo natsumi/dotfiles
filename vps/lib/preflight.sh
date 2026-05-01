@@ -81,7 +81,7 @@ Remove the directory if you're sure no other instance is active."
 }
 
 _check_prior_run() {
-  local stamp="${PWD}/vps-bootstrap.stamp"
+  local stamp="${INVOKED_FROM:-$PWD}/vps-bootstrap.stamp"
   if [[ -f "$stamp" ]]; then
     warn "Found prior run record: $stamp"
     grep -E '^(date|hostname|version)=' "$stamp" 2>/dev/null | sed 's/^/    /'

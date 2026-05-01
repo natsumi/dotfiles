@@ -14,8 +14,9 @@
 
 # shellcheck disable=SC2154
 module_run() {
-  local summary="${PWD}/vps-bootstrap-summary.txt"
-  local stamp="${PWD}/vps-bootstrap.stamp"
+  local out_dir="${INVOKED_FROM:-$PWD}"
+  local summary="$out_dir/vps-bootstrap-summary.txt"
+  local stamp="$out_dir/vps-bootstrap.stamp"
 
   local reboot_needed="no"
   [[ -f /var/run/reboot-required ]] && reboot_needed="yes"

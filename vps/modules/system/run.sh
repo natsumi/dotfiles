@@ -13,7 +13,7 @@
 #
 
 module_run() {
-  local backup_dir="${PWD}/vps-bootstrap-backup"
+  local backup_dir="${INVOKED_FROM:-$PWD}/vps-bootstrap-backup"
   mkdir -p "$backup_dir"
 
   # ── Hostname ─────────────────────────────────────────────────────

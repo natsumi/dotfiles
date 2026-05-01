@@ -64,8 +64,13 @@ ask() {
 
 # ask_yn <prompt> [default(Y|N)] — exit 0 if yes
 ask_yn() {
-  local prompt="$1" default="${2:-N}" reply
-  printf "%s?%s %s [y/N]: " "$C_CYAN" "$C_RESET" "$prompt" >/dev/tty
+  local prompt="$1" default="${2:-N}" reply hint
+  if [[ "$default" =~ ^[Yy]$ ]]; then
+    hint="[Y/n]"
+  else
+    hint="[y/N]"
+  fi
+  printf "%s?%s %s %s: " "$C_CYAN" "$C_RESET" "$prompt" "$hint" >/dev/tty
   IFS= read -r reply </dev/tty
   reply="${reply:-$default}"
   [[ "$reply" =~ ^[Yy]$ ]]

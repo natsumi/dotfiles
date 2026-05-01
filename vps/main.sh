@@ -125,7 +125,7 @@ declare -a STEP_STATUS=()
 total=${#SELECTED[@]}
 n=0
 for entry in "${SELECTED[@]}"; do
-  ((n++))
+  ((++n))  # pre-increment so the expression is non-zero on the first iter
   id="${entry%%|*}"
   name="${entry#*|}"
   MODULE_DIR="$VPS_DIR/modules/$id"
