@@ -42,7 +42,7 @@ The bootstrap iterates an ordered manifest of modules. Each module is a self-con
 
 | ID | Display Name | What it does |
 |---|---|---|
-| `apt-mirror` | APT Mirror Configuration | Replaces `/etc/apt/sources.list.d/ubuntu.sources` with the Pilot Fiber mirror, codename-templated. |
+| `apt-mirror` | APT Mirror Configuration | **Disabled by default** (commented out in `manifest.sh`). Replaces `/etc/apt/sources.list.d/ubuntu.sources` with the Pilot Fiber mirror, codename-templated. |
 | `system` | System Settings | Hostname (`hostnamectl` + `/etc/hosts`) and timezone (`timedatectl`). |
 | `update` | System Update | `apt update` + `upgrade` + `autoremove`. |
 | `packages` | Base Packages | Installs everything in `modules/packages/packages.list`. |
@@ -81,7 +81,7 @@ The bootstrap iterates an ordered manifest of modules. Each module is a self-con
 
 ## Files produced
 
-In your current working directory (where `main.sh` runs from — typically `/root` after a sudo + curl-pipe):
+In the directory you invoked the bootstrap from (`install.sh` captures `$PWD` before any `cd`, exports it as `INVOKED_FROM`, and the runner writes all output paths there):
 
 - `vps-bootstrap-YYYYMMDD-HHMMSS.log` — full log (ANSI-stripped, includes bash trace)
 - `vps-bootstrap-summary.txt` — readable summary printed at the end

@@ -103,7 +103,7 @@ vps/
 
 ```bash
 MODULES=(
-  "apt-mirror|APT Mirror Configuration"
+  # "apt-mirror|APT Mirror Configuration"  # disabled by default; uncomment to use the Pilot Fiber mirror
   "system|System Settings (hostname, timezone)"
   "update|System Update"
   "packages|Base Packages"
