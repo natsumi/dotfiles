@@ -4,7 +4,7 @@
 
 # shellcheck disable=SC2034
 MODULES=(
-  "apt-mirror|APT Mirror Configuration"
+  # "apt-mirror|APT Mirror Configuration"  # disabled — re-enable if you want the Pilot Fiber mirror
   "system|System Settings (hostname, timezone)"
   "update|System Update"
   "packages|Base Packages"

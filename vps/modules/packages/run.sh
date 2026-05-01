@@ -38,10 +38,6 @@ module_run() {
     die "No installable packages found"
   fi
 
-  # Best-effort: if apt-get refuses one or more packages (rc=100), warn
-  # and continue rather than aborting the whole bootstrap. The streaming
-  # output above shows exactly which packages failed.
   run_step "Installing ${#available[@]} packages" \
-    apt-get install -y -q "${available[@]}" || \
-    warn "Some packages failed to install (continuing — see log for details)"
+    apt-get install -y -q "${available[@]}"
 }
