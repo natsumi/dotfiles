@@ -10,7 +10,7 @@
 #
 
 module_run() {
-  run_step "Adding neovim PPA" add-apt-repository -y ppa:neovim-ppa/unstable
+  run_step "Adding neovim PPA" add-apt-repository -y ppa:neovim-ppa/stable
   run_step "Refreshing apt after PPA add" apt-get update -y -q
   run_step "Installing neovim" apt-get install -y -q neovim
 }

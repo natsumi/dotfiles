@@ -8,7 +8,7 @@ MODULES=(
   "system|System Settings (hostname, timezone)"
   "update|System Update"
   "packages|Base Packages"
-  "neovim|Neovim (latest unstable)"
+  # "neovim|Neovim (latest unstable)" # disabled
   "user|Admin User & Sudo"
   "ssh|SSH Hardening"
   "firewall|UFW Firewall"
