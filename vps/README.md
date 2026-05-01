@@ -114,3 +114,17 @@ In the directory you invoked the bootstrap from (`install.sh` captures `$PWD` be
 - **A module failed** — The runner prints the last 20 lines of log inline. The full log is at `./vps-bootstrap-YYYYMMDD-HHMMSS.log`. Re-run with `--only <id>` after fixing.
 - **Re-run safety** — Modules are idempotent. Re-running the whole script on the same server is supported.
 - **Want to test changes from a branch** — `BRANCH=my_branch` (with underscores; the script expects no slashes).
+
+## Docker + UFW (important)
+
+**Docker bypasses UFW by default.** When you publish a container port with `-p 80:80` (or via `ports:` in compose), Docker writes its own `iptables` rules into the `DOCKER` chain, which is matched *before* UFW's filter rules. The result is that published container ports are reachable from anywhere on the internet **regardless of what `ufw status` says**. This is a long-standing Docker design choice, not a bug; it has not changed on Ubuntu 26.04 or with recent Docker versions.
+
+This means: if you set `ufw deny 80`, then `docker run -p 80:80 nginx`, port 80 IS reachable from outside.
+
+The three common ways people deal with this:
+
+1. **Bind containers to localhost and front them with a reverse proxy.** `-p 127.0.0.1:8080:8080` keeps the container off the internet; an nginx/traefik/caddy on the host (gated by UFW) proxies public traffic to it. This is the cleanest pattern and what most personal VPS setups end up doing.
+2. **Use the `ufw-docker` workaround** — community recipe that adds rules to `/etc/ufw/after.rules` filtering Docker traffic through `DOCKER-USER`. Lets UFW actually gate published container ports. See <https://github.com/chaifeng/ufw-docker>.
+3. **Set `"iptables": false` in `/etc/docker/daemon.json`** — tells Docker not to manage iptables at all. You then handle container networking entirely yourself. Heavy.
+
+The bootstrap doesn't enable any of these — it just leaves Docker at its default. Pick the pattern that fits your deployment.
