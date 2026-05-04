@@ -1,0 +1,5 @@
+# Project-local debug gem configuration. Loaded by rdbg / binding.b sessions.
+config set save_history true
+config set show_frames 30
+config set skip_path /vendor/
+config set skip_path /gems/

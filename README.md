@@ -155,33 +155,18 @@ When setting up a new development environment, mise automatically installs defau
 
 ## Ruby Gems
 
-| Package               | Description                                            | Homepage                                                                                               |
-| --------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| amazing_print         | Pretty print Ruby objects with formatting and colors   | [github.com/amazing-print/amazing_print](https://github.com/amazing-print/amazing_print)               |
-| bundler               | Ruby dependency manager and project bootstrapping tool | [bundler.io](https://bundler.io/)                                                                      |
-| byebug                | Debugger for Ruby                                      | [github.com/deivid-rodriguez/byebug](https://github.com/deivid-rodriguez/byebug)                       |
-| debug                 | Modern Ruby debugger                                   | [github.com/ruby/debug](https://github.com/ruby/debug)                                                 |
-| fastri                | Fast Ruby Interface tool for ri documentation          | [github.com/rdp/fastri](https://github.com/rdp/fastri)                                                 |
-| neovim                | Ruby support for Neovim editor                         | [github.com/alexgenco/neovim-ruby](https://github.com/alexgenco/neovim-ruby)                           |
-| pry                   | Interactive REPL for Ruby                              | [pryrepl.org](https://pryrepl.org/)                                                                    |
-| pry-byebug            | Adds debugging commands to pry                         | [github.com/deivid-rodriguez/pry-byebug](https://github.com/deivid-rodriguez/pry-byebug)               |
-| pry-clipboard         | Adds clipboard integration to pry                      | [github.com/hotchpotch/pry-clipboard](https://github.com/hotchpotch/pry-clipboard)                     |
-| pry-doc               | Adds documentation support to pry                      | [github.com/pry/pry-doc](https://github.com/pry/pry-doc)                                               |
-| pry-macro             | Adds macro capabilities to pry                         | [github.com/baweaver/pry-macro](https://github.com/baweaver/pry-macro)                                 |
-| pry-stack_explorer    | Browse call-stack in pry sessions                      | [github.com/pry/pry-stack_explorer](https://github.com/pry/pry-stack_explorer)                         |
-| pry-state             | Shows variable states in pry sessions                  | [github.com/SudhagarS/pry-state](https://github.com/SudhagarS/pry-state)                               |
-| pry-toys              | Collection of fun pry commands                         | [github.com/ariabov/pry-toys](https://github.com/ariabov/pry-toys)                                     |
-| rb-readline           | Pure Ruby readline implementation                      | [github.com/ConnorAtherton/rb-readline](https://github.com/ConnorAtherton/rb-readline)                 |
-| rcodetools            | Collection of Ruby development tools                   | [github.com/seattlerb/rcodetools](https://github.com/seattlerb/rcodetools)                             |
-| rubocop               | Ruby static code analyzer and formatter                | [rubocop.org](https://rubocop.org/)                                                                    |
-| ruby-debug-ide        | Ruby debugger IDE protocol implementation              | [github.com/ruby-debug/ruby-debug-ide](https://github.com/ruby-debug/ruby-debug-ide)                   |
-| ruby_parser           | Ruby parser written in Ruby                            | [github.com/seattlerb/ruby_parser](https://github.com/seattlerb/ruby_parser)                           |
-| ruby-lsp              | Language Server Protocol implementation for Ruby       | [shopify.github.io/ruby-lsp](https://shopify.github.io/ruby-lsp/)                                      |
-| rufo                  | Fast Ruby formatter                                    | [github.com/ruby-formatter/rufo](https://github.com/ruby-formatter/rufo)                               |
-| solargraph            | Ruby code completion and documentation tool            | [solargraph.org](https://solargraph.org/)                                                              |
-| solargraph-rails      | Rails integration for Solargraph                       | [github.com/iftheshoefitsteal/solargraph-rails](https://github.com/iftheshoefitsteal/solargraph-rails) |
-| solargraph-standardrb | StandardRB integration for Solargraph                  | [github.com/testdouble/solargraph-standardrb](https://github.com/testdouble/solargraph-standardrb)     |
-| standard              | Ruby style guide, linter, and formatter                | [github.com/testdouble/standard](https://github.com/testdouble/standard)                               |
+| Package             | Description                                                              | Homepage                                                                                 |
+| ------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| amazing_print       | Pretty print Ruby objects with formatting and colors                     | [github.com/amazing-print/amazing_print](https://github.com/amazing-print/amazing_print) |
+| bundler             | Ruby dependency manager and project bootstrapping tool                   | [bundler.io](https://bundler.io/)                                                        |
+| debug               | Modern Ruby debugger (stdlib, replaces pry/byebug)                       | [github.com/ruby/debug](https://github.com/ruby/debug)                                   |
+| neovim              | Ruby support for Neovim editor                                           | [github.com/alexgenco/neovim-ruby](https://github.com/alexgenco/neovim-ruby)             |
+| repl_type_completor | Type-aware autocomplete for IRB (Ruby type analysis vs. regex matching)  | [github.com/ruby/repl_type_completor](https://github.com/ruby/repl_type_completor)       |
+| rubocop             | Ruby static code analyzer and formatter                                  | [rubocop.org](https://rubocop.org/)                                                      |
+| ruby-lsp            | Language Server Protocol implementation for Ruby                         | [shopify.github.io/ruby-lsp](https://shopify.github.io/ruby-lsp/)                        |
+| ruby_parser         | Ruby parser written in Ruby                                              | [github.com/seattlerb/ruby_parser](https://github.com/seattlerb/ruby_parser)             |
+| rufo                | Fast Ruby formatter                                                      | [github.com/ruby-formatter/rufo](https://github.com/ruby-formatter/rufo)                 |
+| standard            | Ruby style guide, linter, and formatter                                  | [github.com/testdouble/standard](https://github.com/testdouble/standard)                 |
 
 ## Go Packages
 

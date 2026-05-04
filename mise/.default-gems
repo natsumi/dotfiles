@@ -1,46 +1,17 @@
 # Pretty print Ruby objects with nice formatting and colors
 amazing_print
+
 # Ruby dependency manager and project bootstrapping tool
 bundler
 
-# Debugger for Ruby
-byebug
-
-# Fast Ruby Interface tool for ri documentation
-fastri
+# Modern Ruby debugger (replaces pry/byebug)
+debug
 
 # Ruby support for Neovim editor
 neovim
 
-# Interactive REPL for Ruby
-pry
-
-# Adds debugging commands to pry
-pry-byebug
-
-# Adds clipboard integration to pry
-pry-clipboard
-
-# Adds documentation support to pry
-pry-doc
-
-# Adds macro capabilities to pry
-pry-macro
-
-# Browse call-stack in pry sessions
-pry-stack_explorer
-
-# Shows variable states in pry sessions
-pry-state
-
-# Collection of fun pry commands
-pry-toys
-
-# Pure Ruby readline implementation
-rb-readline
-
-# Collection of Ruby development tools
-rcodetools
+# Type-aware autocomplete for IRB (switches completion engine to Ruby type analysis)
+repl_type_completor
 
 # Ruby static code analyzer and formatter
 rubocop
@@ -54,20 +25,5 @@ ruby-lsp
 # Fast Ruby formatter
 rufo
 
-# Ruby code completion and documentation tool
-solargraph
-
-# Rails integration for Solargraph
-solargraph-rails
-
-# StandardRB integration for Solargraph
-solargraph-standardrb
-
 # Ruby style guide, linter, and formatter
 standard
-
-# Modern Ruby debugger
-debug
-
-# Ruby debugger IDE protocol implementation
-ruby-debug-ide
