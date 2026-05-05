@@ -45,8 +45,35 @@ if defined?(Rails)
   IRB.conf[:PROMPT_MODE] = :RAILS_ENV
 end
 
-# fzf history search. Type `fzf` at the IRB prompt to fuzzy-search ~/.irb_history.
-# Selected line is inserted into the current input buffer.
+# Shared fuzzy-history picker used by both the `fzf` IRB command and the
+# Ctrl-R Reline binding below. Returns the selected line, or nil if the
+# history file is missing, empty, or the user cancelled fzf.
+module FzfHistoryPicker
+  module_function
+
+  def history_file
+    IRB.conf[:HISTORY_FILE] || File.expand_path("~/.irb_history")
+  end
+
+  def pick
+    return nil unless File.exist?(history_file)
+
+    # Feed fzf newest-first and de-duplicated. #reverse puts the most recent
+    # commands first; #uniq then keeps the first occurrence of each duplicate
+    # (i.e. the most recent run). --tiebreak=index preserves that ordering
+    # when fzf would otherwise tie-break by line length.
+    choices = File.readlines(history_file, chomp: true).reverse.uniq.join("\n")
+    selected = IO.popen("fzf --tiebreak=index", "r+") { |io|
+      io.write(choices)
+      io.close_write
+      io.read
+    }.chomp
+    selected.empty? ? nil : selected
+  end
+end
+
+# fzf history search. Type `fzf` at the IRB prompt to fuzzy-search the IRB
+# history file. Selected line is inserted into the current input buffer.
 begin
   require "irb/command"
 
@@ -55,15 +82,14 @@ begin
     description "Fuzzy-search IRB history with fzf"
 
     def execute(*)
-      history_file = File.expand_path("~/.irb_history")
-      unless File.exist?(history_file)
-        puts "No history file at #{history_file} yet."
+      unless File.exist?(FzfHistoryPicker.history_file)
+        puts "No history file at #{FzfHistoryPicker.history_file} yet."
         return
       end
-      selected = `tac #{history_file} | awk '!seen[$0]++' | fzf --tiebreak=index`.chomp
-      return if selected.empty?
-      if Reline.respond_to?(:line_buffer=)
-        Reline.line_buffer = selected
+      selected = FzfHistoryPicker.pick
+      return if selected.nil?
+      if Reline.respond_to?(:insert_text)
+        Reline.insert_text(selected)
       else
         puts selected
       end
@@ -75,14 +101,22 @@ rescue LoadError, NameError
   # IRB::Command API not available — fzf command silently disabled.
 end
 
-# Best-effort: rebind Ctrl-R to the same fzf flow. Reline's keymap API has
-# shifted across versions; if the constant or method we expect isn't present,
-# the rescue keeps IRB loading cleanly and Ctrl-R falls back to Reline's
-# default incremental search.
+# Ctrl-R -> fzf history picker. Reline dispatches bindings by calling
+# method(symbol) on Reline::LineEditor, so the action must be defined there.
+# If Reline's API changes, the rescue keeps .irbrc loading and Ctrl-R falls
+# back to Reline's default incremental search.
 begin
-  Reline::KeyActor::Emacs::DEFAULT_KEY_BINDINGS[[0x12]] = ->(_) {
-    IRB::Command.execute(:fzf)
-  }
-rescue
-  # Keymap rebind unavailable on this Reline version — type `fzf` instead.
+  class Reline::LineEditor
+    def fzf_history_search(_key)
+      selected = FzfHistoryPicker.pick
+      return if selected.nil?
+
+      Reline.insert_text(selected)
+      rerender
+    end
+  end
+
+  Reline.core.config.add_default_key_binding([0x12], :fzf_history_search)
+rescue NameError
+  # Reline's binding API not as expected — type `fzf` at the prompt instead.
 end
