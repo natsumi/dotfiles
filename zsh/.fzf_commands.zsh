@@ -12,6 +12,15 @@ fco() {
     git checkout $(echo "$branch" | sed 's/^..//' | awk '{print $1}' | sed 's#^remotes/[^/]*/##')
 }
 
+# fwt - cd into a git worktree
+fwt() {
+  local worktrees target
+  worktrees=$(git worktree list) || return
+  target=$(echo "$worktrees" | fzf +m \
+    --preview 'echo {} | awk "{print \$1}" | xargs -I{} git -C {} log --oneline --decorate --color=always -20') &&
+    cd "$(echo "$target" | awk '{print $1}')"
+}
+
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
