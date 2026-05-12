@@ -27,11 +27,12 @@
       "Bash(npx playwright-cli:*)",
       "Bash(ruby:*)",
       "Bash(yarn:*)",
-      "mcp__context7__resolve-library-id",
+      "mcp__plugin_context7_context7__*",
       "Skill(fizzy)",
       "Skill(playwright-cli)",
       "WebSearch"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "hooks": {
     "PreToolUse": [
@@ -44,132 +45,6 @@
           }
         ]
       }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      }
-    ],
-    "SubagentStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/scripts/hook-handle-use.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/peon-ping/peon.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
@@ -178,14 +53,26 @@
     "padding": 0
   },
   "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "cctop@cctop": true,
+    "lua-lsp@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": false,
     "claude-code-wakatime@wakatime": true,
     "context7@claude-plugins-official": true,
-    "ruby-lsp@claude-plugins-official": true
+    "ruby-lsp@claude-plugins-official": true,
+    "superpowers-ruby@superpowers-ruby": true,
+    "superpowers@superpowers-marketplace": false,
+    "slack@claude-plugins-official": false
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-ruby": {
+      "source": {
+        "source": "github",
+        "repo": "lucianghinda/superpowers-ruby"
+      }
+    }
   },
   "effortLevel": "high",
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }
