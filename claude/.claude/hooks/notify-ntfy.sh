@@ -26,7 +26,7 @@ click_url=""
 if [ -n "$session_id" ]; then
   bridge_id=$(jq -r --arg s "$session_id" \
     'select(.sessionId == $s) | .bridgeSessionId // empty' \
-    /home/natsumi/.claude/sessions/*.json 2>/dev/null \
+    "$HOME"/.claude/sessions/*.json 2>/dev/null \
     | grep -m1 '^session_')
   [ -n "$bridge_id" ] && click_url="https://claude.ai/code/$bridge_id"
 fi
