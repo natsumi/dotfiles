@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Guard hook: block file edits and mutating Bash commands on main/master.
-# Allows operations in linked worktrees, on non-main branches, or outside git.
+# Guard hook: block file edits on main/master.
+# Allows edits in linked worktrees, on non-main branches, or outside git.
 #
 # The decision is keyed on the *target file's* repository and branch
 # (read from tool_input.file_path / tool_input.notebook_path on stdin),
@@ -10,37 +10,28 @@
 # linked worktree, so a cwd-based check would block edits the user
 # clearly intends to allow.
 #
-# For Bash, there's no file_path to key on, so we fall back to the hook's
-# cwd. Most Bash invocations are read-only and exit fast (no git calls).
+# Bash is intentionally not guarded: the harness cwd is unreliable
+# for inferring which repo/branch a command targets (subagents often
+# `cd /path/to/worktree && ...` from the harness root), and false
+# positives on git commands were the primary failure mode.
 
 payload=$(cat)
 tool=$(printf '%s' "$payload" | jq -r '.tool_name // empty')
 
-case "$tool" in
-  Bash)
-    cmd=$(printf '%s' "$payload" | jq -r '.tool_input.command // empty')
-    # Cheap early-exit: only proceed for known-mutating commands.
-    case "$cmd" in
-      *"git commit"*|*"git merge"*|*"git rebase"*|*"git reset --hard"*|\
-      *"git push"*|*"git am "*|*"git cherry-pick"*|*"git revert"*) ;;
-      *) exit 0 ;;
-    esac
-    target_dir="."
-    ;;
-  *)
-    file=$(printf '%s' "$payload" | jq -r '.tool_input.file_path // .tool_input.notebook_path // empty')
-    if [ -z "$file" ]; then
-      target_dir="."
-    else
-      # File may not exist yet (Write creating a new file). Walk up to
-      # the first directory that does exist so `git -C` has something real.
-      target_dir=$(dirname -- "$file")
-      while [ ! -d "$target_dir" ] && [ "$target_dir" != "/" ] && [ "$target_dir" != "." ]; do
-        target_dir=$(dirname -- "$target_dir")
-      done
-    fi
-    ;;
-esac
+# Don't guard Bash — see header.
+[ "$tool" = "Bash" ] && exit 0
+
+file=$(printf '%s' "$payload" | jq -r '.tool_input.file_path // .tool_input.notebook_path // empty')
+if [ -z "$file" ]; then
+  target_dir="."
+else
+  # File may not exist yet (Write creating a new file). Walk up to
+  # the first directory that does exist so `git -C` has something real.
+  target_dir=$(dirname -- "$file")
+  while [ ! -d "$target_dir" ] && [ "$target_dir" != "/" ] && [ "$target_dir" != "." ]; do
+    target_dir=$(dirname -- "$target_dir")
+  done
+fi
 
 # Not in a git repo? Allow.
 git -C "$target_dir" rev-parse --git-dir &>/dev/null || exit 0
@@ -60,9 +51,5 @@ if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; the
   exit 0
 fi
 
-if [ "$tool" = "Bash" ]; then
-  echo "Mutating Bash command blocked on $branch. Switch to a feature branch or worktree." >&2
-else
-  echo "Edits must be made in a branch or worktree, not on $branch." >&2
-fi
+echo "Edits must be made in a branch or worktree, not on $branch." >&2
 exit 2
