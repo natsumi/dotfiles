@@ -17,20 +17,47 @@ extract() {
 event=$(extract hook_event_name)
 message=$(extract message)
 cwd=$(extract cwd)
+session_id=$(extract session_id)
+transcript_path=$(extract transcript_path)
 
 project=$(basename "${cwd:-claude}")
 host=$(hostname -s 2>/dev/null || echo claude)
+
+last_assistant_text() {
+  [ -f "$transcript_path" ] || return
+  jq -nr '
+    reduce inputs as $e (null;
+      if $e.type == "assistant"
+        and any($e.message.content[]?; .type == "text")
+      then $e else . end)
+    | (.message.content // [])
+    | map(select(.type == "text") | .text)
+    | join(" ")
+  ' "$transcript_path" 2>/dev/null | tr -s '[:space:]' ' ' | head -c 200
+}
+
+click_url=""
+if [ -n "$session_id" ]; then
+  bridge_id=$(jq -r --arg s "$session_id" \
+    'select(.sessionId == $s) | .bridgeSessionId // empty' \
+    "$HOME"/.claude/sessions/*.json 2>/dev/null \
+    | grep -m1 '^session_')
+  [ -n "$bridge_id" ] && click_url="https://claude.ai/code/$bridge_id"
+fi
 
 case "$event" in
   Notification)
     title="Claude waiting · $host · $project"
     body="${message:-Waiting for input}"
+    preview=$(last_assistant_text)
+    [ -n "$preview" ] && body="$body — $preview"
     tags="bell"
     priority="4"
     ;;
   Stop)
     title="Claude done · $host · $project"
-    body="Turn complete"
+    body="$(last_assistant_text)"
+    body="${body:-Turn complete}"
     tags="heavy_check_mark"
     priority="2"
     ;;
@@ -42,10 +69,14 @@ case "$event" in
     ;;
 esac
 
+click_header=()
+[ -n "$click_url" ] && click_header=(-H "Click: $click_url")
+
 curl -fsS \
   -H "Title: $title" \
   -H "Tags: $tags" \
   -H "Priority: $priority" \
+  "${click_header[@]}" \
   -d "$body" \
   "https://ntfy.sh/$topic" >/dev/null 2>&1 || true
 
