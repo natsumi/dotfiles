@@ -17,9 +17,19 @@ extract() {
 event=$(extract hook_event_name)
 message=$(extract message)
 cwd=$(extract cwd)
+session_id=$(extract session_id)
 
 project=$(basename "${cwd:-claude}")
 host=$(hostname -s 2>/dev/null || echo claude)
+
+click_url=""
+if [ -n "$session_id" ]; then
+  bridge_id=$(jq -r --arg s "$session_id" \
+    'select(.sessionId == $s) | .bridgeSessionId // empty' \
+    /home/natsumi/.claude/sessions/*.json 2>/dev/null \
+    | grep -m1 '^session_')
+  [ -n "$bridge_id" ] && click_url="https://claude.ai/code/$bridge_id"
+fi
 
 case "$event" in
   Notification)
@@ -42,10 +52,14 @@ case "$event" in
     ;;
 esac
 
+click_header=()
+[ -n "$click_url" ] && click_header=(-H "Click: $click_url")
+
 curl -fsS \
   -H "Title: $title" \
   -H "Tags: $tags" \
   -H "Priority: $priority" \
+  "${click_header[@]}" \
   -d "$body" \
   "https://ntfy.sh/$topic" >/dev/null 2>&1 || true
 
