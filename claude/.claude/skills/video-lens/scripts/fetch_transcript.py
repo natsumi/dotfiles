@@ -16,7 +16,7 @@ def _fetch_html_metadata(video_id):
             f"https://www.youtube.com/watch?v={video_id}",
             headers={"User-Agent": "Mozilla/5.0"},
         )
-        html = urllib.request.urlopen(req).read().decode("utf-8", errors="ignore")
+        html = urllib.request.urlopen(req, timeout=10).read().decode("utf-8", errors="ignore")
 
         m = re.search(r"<title>([^<]+)</title>", html)
         title = m.group(1).replace(" - YouTube", "").strip() if m else ""
@@ -93,6 +93,8 @@ def main():
         AgeRestricted = IpBlocked = RequestBlocked = PoTokenRequired = YouTubeRequestFailed = None
 
     title, channel, published, views, duration = _fetch_html_metadata(video_id)
+    if not title:
+        title = f"YouTube video {video_id}"
 
     try:
         try:
@@ -142,45 +144,18 @@ def main():
                 transcript_obj = next(iter(tlist))
             print(f'LANG_WARN: Requested language "{lang_pref}" not available; using {transcript_obj.language_code}')
     else:
-        tracks = list(tlist)
-        # No language requested. Prefer English; otherwise fall back to the
-        # video's original spoken language (the auto-generated track reflects
-        # it), then any remaining track. NOTE: YouTube returns manually-added
-        # tracks alphabetically by language name, so "first track" is NOT a
-        # safe default for multilingual videos.
-
-        # 1. manually-created English (en, then any en-* variant)
-        for want_exact in (True, False):
-            for t in tracks:
-                code = t.language_code
-                is_en = (code == "en") if want_exact else code.startswith("en")
-                if is_en and not getattr(t, "is_generated", False):
-                    transcript_obj = t
-                    break
-            if transcript_obj is not None:
+        for t in tlist:
+            if not getattr(t, "is_translation", False):
+                transcript_obj = t
                 break
-        # 2. any English track, including auto-generated
         if transcript_obj is None:
-            for t in tracks:
-                if t.language_code.startswith("en"):
-                    transcript_obj = t
-                    break
-        # 3. original spoken language: prefer a manual track matching the
-        #    language of the auto-generated track
-        if transcript_obj is None:
-            generated = next((t for t in tracks if getattr(t, "is_generated", False)), None)
-            if generated is not None:
-                orig = generated.language_code
-                transcript_obj = next(
-                    (t for t in tracks
-                     if t.language_code == orig and not getattr(t, "is_generated", False)),
-                    generated,
-                )
-        # 4. last resort: first available track
-        if transcript_obj is None and tracks:
-            transcript_obj = tracks[0]
+            transcript_obj = next(iter(tlist))
 
-    transcript = transcript_obj.fetch()
+    try:
+        transcript = transcript_obj.fetch()
+    except Exception as e:
+        print(f"ERROR:TRANSCRIPT_FETCH_FAILED {type(e).__name__}: {e}", file=sys.stderr)
+        sys.exit(1)
     lang = transcript_obj.language_code
 
     # Detect entry type once before the loop
@@ -193,7 +168,6 @@ def main():
         f"VIEWS: {views}",
         f"DURATION: {duration}",
         f"DATE: {datetime.date.today().isoformat()}",
-        f"TIME: {datetime.datetime.now().strftime('%H%M%S')}",
         f"LANG: {lang}",
     ]
 
