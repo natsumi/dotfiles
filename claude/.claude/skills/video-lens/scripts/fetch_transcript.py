@@ -16,7 +16,7 @@ def _fetch_html_metadata(video_id):
             f"https://www.youtube.com/watch?v={video_id}",
             headers={"User-Agent": "Mozilla/5.0"},
         )
-        html = urllib.request.urlopen(req).read().decode("utf-8", errors="ignore")
+        html = urllib.request.urlopen(req, timeout=10).read().decode("utf-8", errors="ignore")
 
         m = re.search(r"<title>([^<]+)</title>", html)
         title = m.group(1).replace(" - YouTube", "").strip() if m else ""
@@ -93,6 +93,8 @@ def main():
         AgeRestricted = IpBlocked = RequestBlocked = PoTokenRequired = YouTubeRequestFailed = None
 
     title, channel, published, views, duration = _fetch_html_metadata(video_id)
+    if not title:
+        title = f"YouTube video {video_id}"
 
     try:
         try:
@@ -180,7 +182,11 @@ def main():
         if transcript_obj is None and tracks:
             transcript_obj = tracks[0]
 
-    transcript = transcript_obj.fetch()
+    try:
+        transcript = transcript_obj.fetch()
+    except Exception as e:
+        print(f"ERROR:TRANSCRIPT_FETCH_FAILED {type(e).__name__}: {e}", file=sys.stderr)
+        sys.exit(1)
     lang = transcript_obj.language_code
 
     # Detect entry type once before the loop
@@ -193,7 +199,6 @@ def main():
         f"VIEWS: {views}",
         f"DURATION: {duration}",
         f"DATE: {datetime.date.today().isoformat()}",
-        f"TIME: {datetime.datetime.now().strftime('%H%M%S')}",
         f"LANG: {lang}",
     ]
 

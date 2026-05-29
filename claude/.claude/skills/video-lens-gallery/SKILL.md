@@ -9,7 +9,6 @@ description: >
   "backfill metadata", "update index".
 license: MIT
 allowed-tools: Bash
-disable-model-invocation: true
 ---
 
 # video-lens-gallery
