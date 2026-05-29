@@ -63,6 +63,7 @@ ALLOWED_TAGS_BY_KEY = {
         "strong": set(),
         "em": set(),
         "code": set(),
+        "a": {"href", "target", "rel", "class", "data-t"},
     },
     "OUTLINE": {
         "li": set(),
@@ -184,10 +185,10 @@ class AllowlistSanitiser(HTMLParser):
 
             if name == "href":
                 href_seen = True
-                if self.key == "OUTLINE":
+                if self.key in ("OUTLINE", "KEY_POINTS"):
                     linked_id = _extract_youtube_id(value)
                     if linked_id != self.video_id:
-                        raise _Disallowed(f"outline href {value!r}")
+                        raise _Disallowed(f"{self.key.lower()} href {value!r}")
                 elif not _is_http_url(value):
                     raise _Disallowed(f"href {value!r}")
                 kept.append((name, value))
@@ -213,7 +214,7 @@ class AllowlistSanitiser(HTMLParser):
                 continue
 
             if name == "data-t":
-                if self.key != "OUTLINE" or not DATA_T_RE.fullmatch(value):
+                if self.key not in ("OUTLINE", "KEY_POINTS") or not DATA_T_RE.fullmatch(value):
                     raise _Disallowed(f"data-t {value!r}")
                 kept.append((name, value))
                 continue

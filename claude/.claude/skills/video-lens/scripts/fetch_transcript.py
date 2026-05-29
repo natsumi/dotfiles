@@ -144,12 +144,43 @@ def main():
                 transcript_obj = next(iter(tlist))
             print(f'LANG_WARN: Requested language "{lang_pref}" not available; using {transcript_obj.language_code}')
     else:
-        for t in tlist:
-            if not getattr(t, "is_translation", False):
-                transcript_obj = t
+        tracks = list(tlist)
+        # No language requested. Prefer English; otherwise fall back to the
+        # video's original spoken language (the auto-generated track reflects
+        # it), then any remaining track. NOTE: YouTube returns manually-added
+        # tracks alphabetically by language name, so "first track" is NOT a
+        # safe default for multilingual videos.
+
+        # 1. manually-created English (en, then any en-* variant)
+        for want_exact in (True, False):
+            for t in tracks:
+                code = t.language_code
+                is_en = (code == "en") if want_exact else code.startswith("en")
+                if is_en and not getattr(t, "is_generated", False):
+                    transcript_obj = t
+                    break
+            if transcript_obj is not None:
                 break
+        # 2. any English track, including auto-generated
         if transcript_obj is None:
-            transcript_obj = next(iter(tlist))
+            for t in tracks:
+                if t.language_code.startswith("en"):
+                    transcript_obj = t
+                    break
+        # 3. original spoken language: prefer a manual track matching the
+        #    language of the auto-generated track
+        if transcript_obj is None:
+            generated = next((t for t in tracks if getattr(t, "is_generated", False)), None)
+            if generated is not None:
+                orig = generated.language_code
+                transcript_obj = next(
+                    (t for t in tracks
+                     if t.language_code == orig and not getattr(t, "is_generated", False)),
+                    generated,
+                )
+        # 4. last resort: first available track
+        if transcript_obj is None and tracks:
+            transcript_obj = tracks[0]
 
     try:
         transcript = transcript_obj.fetch()

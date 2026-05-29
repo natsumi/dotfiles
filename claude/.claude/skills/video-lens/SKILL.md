@@ -4,6 +4,7 @@ description: Fetch a YouTube transcript and generate an executive summary, key p
 license: MIT
 compatibility: "Requires Python 3 and youtube-transcript-api >=0.6.3. Optional but recommended: yt-dlp and deno for enriched metadata and chapters."
 allowed-tools: Bash Read
+disable-model-invocation: true
 metadata:
   author: kar2phi
   version: "4.0"
@@ -105,27 +106,28 @@ Analyse the full transcript and produce a structured, high-signal summary design
 
 Produce these four sections:
 
-**Summary** — A 2–4 sentence TL;DR (see Length adjustments below).
+**Summary** — A 3–6 sentence TL;DR (see Length adjustments below). Aim for a substantive paragraph that gives the reader real understanding of the video's content and contribution, not just an orientation blurb.
 
-- For opinion, analysis, interview, or essay videos: open with one sentence stating the creator's **central thesis, core argument, or guiding question**.
-- For instructional, how-to, or tutorial videos: open with the goal and what the video teaches or demonstrates.
-- Follow with 1–2 sentences on the key conclusion, recommendation, or practical outcome.
+- For opinion, analysis, interview, or essay videos: open with one sentence stating the creator's **central thesis, core argument, or guiding question**, then add a sentence on the reasoning, framing, or evidence behind it.
+- For instructional, how-to, or tutorial videos: open with the goal and what the video teaches or demonstrates, then add a sentence on the approach, method, or tools used.
+- Follow with 2–3 sentences on the key conclusions, recommendations, or practical outcomes — name the most important specifics (the actual claim, number, technique, or example) rather than gesturing at &ldquo;various points&rdquo;.
 - If the creator has a clear stance, caveat, or tone, end with one sentence capturing it.
 
 **Takeaway** — The single most important thing to take away, in 1–3 sentences. Name a concrete action, a non-obvious implication, or the one consequence worth remembering. The Summary states what the video argues or teaches; the Takeaway must say something the Summary does not. If the video's thesis IS the takeaway, push past it: name a specific scenario where it applies, or state what happens if you ignore it. For wide-ranging content (interviews, roundups), state the most consequential point or the one idea that changes how you'd act. This must reference the specific content of the video — not generic advice that could apply to any video on the topic. Never restate what the Summary already says.
 
-**Key Points** — What does the video **give** you, and what does it **mean**? Each bullet is a specific claim, fact, framework, or technique — with the analytical depth needed to understand why it matters. Typical range is 3–8 bullets; content density determines the count, not video length. Each `<li>` must follow this pattern:
+**Key Points** — What does the video **give** you, and what does it **mean**? Each bullet is a specific claim, fact, framework, or technique — with the analytical depth needed to understand why it matters, plus a timestamp link to where it is introduced in the video. Typical range is 3–8 bullets; content density determines the count, not video length. Each `<li>` must follow this pattern:
 ```html
-<li><strong>Core claim, concept, or term</strong> — one sentence on why it matters or what the viewer should understand from it. Optionally include <em>the speaker's own phrasing</em> when it adds colour or precision.
+<li><a class="ts" data-t="SECONDS" href="https://www.youtube.com/watch?v=VIDEOID&t=SECONDS" target="_blank" rel="noopener noreferrer">▶ M:SS</a> <strong>Core claim, concept, or term</strong> — one sentence on why it matters or what the viewer should understand from it. Optionally include <em>the speaker's own phrasing</em> when it adds colour or precision.
 <p>2–4 sentence analytical paragraph: context, causality, connections to other ideas, implications, and the speaker's reasoning. Must add depth the headline cannot — do not merely expand the headline into a longer sentence.</p></li>
 ```
 The paragraph is the default. Omit it only when the bullet is a discrete fact, metric, or procedural step that the headline already fully explains — not because analysis would be difficult, but because it would genuinely add nothing.
 
 Rules:
+- Each Key Point must open with a timestamp link to where the claim, concept, or example is introduced or first discussed in the transcript. Use the same anchor format and conventions as the Outline: `data-t` and `&t=` are raw seconds; the visible label uses `M:SS` (or `H:MM:SS` for videos ≥1h), matching the transcript timestamp format. Replace `VIDEOID` with the actual video ID. Pick the start time from the transcript line where the speaker first introduces the point, not the middle of the discussion.
 - Include actual formulations, frameworks, and step-by-step procedures with enough detail to reproduce — `"I help [audience] achieve [benefit]"` is more useful than `"she presents a benefit-focused formula."` Concrete content, not abstractions.
 - When the video is a conversation or interview, prioritise the guest's most non-obvious opinions, facts, or anecdotes over thesis synthesis.
 - Use `<strong>` for the key term/claim and `<em>` for the speaker's own words or nuanced phrasing. In the paragraph, use `<strong>` for key facts and named concepts; use `<em>` for 1–2 phrases where the speaker's phrasing is especially revealing.
-- Each Key Point is self-contained — claim plus depth in a single entry. Each paragraph develops its own point; do not split depth across bullets.
+- Each Key Point is self-contained — timestamp, claim, plus depth in a single entry. Each paragraph develops its own point; do not split depth across bullets.
 - Each Key Point must add substance beyond the Summary and Takeaway. Prioritise insight over inventory — no padding.
 
 **Outline** — A list of the major topics/segments with their start times. Each entry has two parts:
@@ -150,7 +152,7 @@ Rules:
 
 #### Length adjustments
 
-Scale Summary, Key Points paragraphs, and Outline entries to the video length: 2 sentences / 1–2 / 3–6 for short (<10 min); 2–3 / 2–3 / 5–12 for medium (10–45 min); 3–4 / 3–4 / 8–15 for long (45–90 min); 3–4 / 3–4 / 10–20 for very long (>90 min). Key Point count is governed by content density (3–8 typical), not video length.
+Scale Summary, Key Points paragraphs, and Outline entries to the video length: 3–4 sentences / 1–2 / 3–6 for short (<10 min); 4–5 / 2–3 / 5–12 for medium (10–45 min); 5–6 / 3–4 / 8–15 for long (45–90 min); 5–6 / 3–4 / 10–20 for very long (>90 min). Key Point count is governed by content density (3–8 typical), not video length.
 
 ### 4. Render the report
 
@@ -165,9 +167,9 @@ Fields to provide:
 | `VIDEO_ID` | YouTube video ID — appears in 3 places in the template; also embed the real video ID in every `href` within `OUTLINE` |
 | `VIDEO_TITLE` | Video title as plain text; renderer escapes it |
 | `VIDEO_URL` | Full original or canonical YouTube URL; renderer validates it matches `VIDEO_ID` and canonicalizes it |
-| `SUMMARY` | 2–4 sentence TL;DR — for opinion/analysis: thesis + conclusion + stance; for tutorials/how-to: goal + outcome. Plain text (goes inside an existing `<p>`) |
+| `SUMMARY` | 3–6 sentence TL;DR — for opinion/analysis: thesis + conclusion + stance; for tutorials/how-to: goal + outcome. Plain text (goes inside an existing `<p>`) |
 | `TAKEAWAY` | 1–3 sentence "so what?" — references specific content, plain text (goes inside an existing `<p>`) |
-| `KEY_POINTS` | **Single HTML string** (not a JSON array) — concatenate all `<li>` blocks into one string. Each item: `<strong>term</strong> — one-sentence insight`, each followed by a `<p>` analytical paragraph (may be omitted for discrete facts/steps). Optionally with `<em>` |
+| `KEY_POINTS` | **Single HTML string** (not a JSON array) — concatenate all `<li>` blocks into one string. Each item: `<a class="ts" data-t="SECONDS" href="https://www.youtube.com/watch?v=VIDEOID&t=SECONDS" target="_blank" rel="noopener noreferrer">▶ M:SS</a> <strong>term</strong> — one-sentence insight`, each followed by a `<p>` analytical paragraph (may be omitted for discrete facts/steps). Optionally with `<em>`. Each timestamp anchors the point to where it is introduced in the transcript (same format conventions as `OUTLINE`). |
 | `OUTLINE` | **Single HTML string** (not a JSON array) — concatenate one `<li>` per topic into one string: `<li><a class="ts" data-t="SECONDS" href="https://www.youtube.com/watch?v=VIDEOID&t=SECONDS" target="_blank" rel="noopener noreferrer">▶ M:SS</a> — <span class="outline-title">Short Title</span><span class="outline-detail">Detail sentence.</span></li>` (where `VIDEOID` = the actual video ID). Title: 3–8 words, scannable. Detail: one sentence of context. (Use the same timestamp format as the transcript lines — `M:SS` or `H:MM:SS`; `data-t` and `&t=` always use raw seconds.) |
 | `DESCRIPTION_SECTION` | **Single HTML string** (not a JSON array). When `YTDLP_DESC_HTML` is non-empty: `<details class="description-details"><summary>YouTube Description</summary><div class="video-description">YTDLP_DESC_HTML</div></details>` with the HTML-safe, linkified description text embedded inline. Otherwise: `""` (empty string — nothing rendered) |
 | `TAGS` | JSON array of 3–5 lowercase topic tags from Step 3 (e.g. `["ai", "hardware"]`) — used by the gallery for filtering |
