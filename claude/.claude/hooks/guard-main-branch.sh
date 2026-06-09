@@ -45,6 +45,14 @@ case "$git_dir" in
 esac
 [ -f "$git_dir/commondir" ] && exit 0
 
+# Gitignored files aren't tracked source — editing them on main can never
+# produce an unwanted commit. This covers throwaway tool state (e.g.
+# .claude/codex-review/ workflow artifacts) that an engine writes via Bash
+# but a skill writes via the guarded Write tool.
+if [ -n "$file" ] && git -C "$target_dir" check-ignore -q "$file" 2>/dev/null; then
+  exit 0
+fi
+
 # On a non-main/master branch? Allow.
 branch=$(git -C "$target_dir" branch --show-current 2>/dev/null)
 if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; then
