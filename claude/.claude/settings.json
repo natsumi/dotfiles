@@ -29,7 +29,7 @@
       "Bash(yarn:*)",
       "mcp__plugin_context7_context7__*",
       "Skill(fizzy)",
-      "Skill(playwright-cli)",
+      "Skill(personal:playwright-cli)",
       "WebSearch"
     ],
     "defaultMode": "auto"

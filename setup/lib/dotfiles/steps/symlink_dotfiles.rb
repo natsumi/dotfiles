@@ -61,7 +61,17 @@ module Dotfiles
       end
 
       def stow_command(package)
-        "stow -v -R --target=\"#{target_dir}\" --dir=\"#{dotfile_dir}\" \"#{package}\""
+        "stow -v -R#{stow_flags(package)} --target=\"#{target_dir}\" --dir=\"#{dotfile_dir}\" \"#{package}\""
+      end
+
+      # The `claude` package shares ~/.claude with Claude Code's own runtime
+      # state (sessions, projects, memory, plugins, caches). Without
+      # --no-folding, stow collapses the whole dir into a single symlink into
+      # this repo, so that runtime state lands on the `main` branch and dirties
+      # it. --no-folding keeps ~/.claude a real directory and symlinks only the
+      # individual tracked files (settings.json, CLAUDE.md, hooks/).
+      def stow_flags(package)
+        package == "claude" ? " --no-folding" : ""
       end
 
       def build_result(successful, failed)
