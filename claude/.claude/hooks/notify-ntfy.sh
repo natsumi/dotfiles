@@ -76,7 +76,7 @@ curl -fsS \
   -H "Title: $title" \
   -H "Tags: $tags" \
   -H "Priority: $priority" \
-  "${click_header[@]}" \
+  ${click_header[@]+"${click_header[@]}"} \
   -d "$body" \
   "https://ntfy.sh/$topic" >/dev/null 2>&1 || true
 
