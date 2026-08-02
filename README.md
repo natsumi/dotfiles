@@ -6,11 +6,27 @@ My very opinated configuration and setup scripts for new and existing Macs.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
 ```
 
+## Homebrew Taps
+
+Homebrew 6 will not load formulae, casks or external commands from non-official
+taps until they are explicitly trusted. The `trust_homebrew_taps` setup step
+runs `brew trust --tap` for every third-party tap used here before any packages
+are installed, and `homebrew/Brewfile` marks the same taps `trusted: true`.
+
+To trust a tap by hand:
+
+```bash
+brew trust --tap asmvik/formulae
+```
+
 ## Yabai Window Manager
 
-[Yabai Window Manager](https://github.com/koekeishiya/yabai)
+[Yabai Window Manager](https://github.com/asmvik/yabai)
 
-[Simple Keyboard Hot Keys](https://github.com/koekeishiya/skhd)
+[Simple Keyboard Hot Keys](https://github.com/asmvik/skhd)
+
+Both are installed from the `asmvik/formulae` tap, which is upstream's current
+home — the old `koekeishiya/*` URLs now redirect there.
 
 # Desktop Applications
 
@@ -82,7 +98,6 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 ## Utilities
 - [aria2](https://aria2.github.io/) - Lightweight multi-protocol download utility
 - [bat](https://github.com/sharkdp/bat) - Cat clone with syntax highlighting
-- [brew-cask-upgrade](https://github.com/buo/brew-cask-upgrade) - Command line tool for upgrading outdated Homebrew Casks
 - [broot](https://github.com/Canop/broot) - Better way to navigate directories
 - [croc](https://github.com/schollz/croc) - Easily and securely send things from one computer to another / Magic Wormhole
 - [eza](https://github.com/eza-community/eza) - Modern replacement for ls
@@ -103,8 +118,8 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 - [zsh](https://www.zsh.org/) - Extended Bourne shell with many improvements
 
 ## Desktop Managers
-- [skhd](https://github.com/koekeishiya/skhd) - Simple hotkey daemon for macOS
-- [yabai](https://github.com/koekeishiya/yabai) - Tiling window manager for macOS
+- [skhd](https://github.com/asmvik/skhd) - Simple hotkey daemon for macOS
+- [yabai](https://github.com/asmvik/yabai) - Tiling window manager for macOS
 
 # Default Language Packages
 

@@ -1,6 +1,6 @@
-tap 'homebrew/bundle'
-tap 'neovim/neovim'
-tap 'buo/cask-upgrade'
+# Homebrew 6 requires non-official taps to be trusted before their formulae
+# are loaded. `trusted: true` is applied before anything is fetched.
+tap 'asmvik/formulae', trusted: true
 
 # Build Tools
 brew 'autoconf'
@@ -69,8 +69,8 @@ brew 'stow'
 brew 'fd'
 
 # Desktop Managers
-brew 'koekeishiya/formulae/skhd'
-brew 'yabai'
+brew 'asmvik/formulae/skhd'
+brew 'asmvik/formulae/yabai'
 
 # Fonts
 # Powerline Fonts

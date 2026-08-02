@@ -20,6 +20,11 @@ readonly REPO_URL="https://github.com/natsumi/dotfiles"
 readonly REPO_BRANCH="${REPO_BRANCH:-main}"
 readonly DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dev/dotfiles}"
 
+# Homebrew 6 prompts for confirmation before installing ("ask mode") whenever it
+# has a TTY. This script is meant to run unattended, and `set -e` would abort on
+# a declined prompt, so opt out for the whole run.
+export HOMEBREW_NO_ASK=1
+
 # Functions
 error_exit() {
     echo -e "${RED}ERROR: $1${NC}" >&2
@@ -108,7 +113,8 @@ install_ruby() {
     info "Installing latest Ruby via mise..."
 
     info "Installing build libraries..."
-    brew install jemalloc libffi libtool libxslt libyaml openssl readline unixodbc xz zlib
+    brew install jemalloc libffi libtool libxslt libyaml openssl readline unixodbc xz zlib \
+        || error_exit "Failed to install Ruby build libraries"
 
     info "Installing Ruby..."
     mise install ruby@latest || error_exit "Failed to install Ruby"

@@ -24,7 +24,7 @@ module Dotfiles
             alfred
             forklift
             google-chrome
-            homebrew/cask-versions/firefox-developer-edition
+            firefox@developer-edition
             itsycal
             shottr
           ],
