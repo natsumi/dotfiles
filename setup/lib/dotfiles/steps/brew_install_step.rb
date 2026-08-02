@@ -62,10 +62,9 @@ module Dotfiles
 
         # `brew list` only reports canonical names, so anything it did not match
         # may still be installed under an alias or a former name — "gpg" is
-        # really "gnupg", "openssl" is "openssl@3", "htop-osx" was renamed to
-        # "htop". Ask Homebrew about those few directly rather than reinstalling
-        # them on every run. Only the leftovers cost a process here, not the
-        # whole list.
+        # really "gnupg" and "openssl" is "openssl@3". Ask Homebrew about those
+        # few directly rather than reinstalling them on every run. Only the
+        # leftovers cost a process here, not the whole list.
         pending.reject! do |category, item|
           next false unless item_installed?(item)
 
