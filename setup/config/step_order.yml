@@ -1,6 +1,7 @@
 categories:
   - name: 'Package Management'
     steps:
+      - trust_homebrew_taps
       - install_homebrew_packages
 
   - name: 'Desktop Applications'

@@ -7,6 +7,7 @@ module Dotfiles
     class InstallHomebrewPackages < BrewInstallStep
       name "install_homebrew_packages"
       description "Install Homebrew packages from Brewfile"
+      depends_on "trust_homebrew_taps"
 
       private
 
@@ -76,8 +77,8 @@ module Dotfiles
             zsh
           ],
           "Desktop Managers" => %w[
-            koekeishiya/formulae/skhd
-            yabai
+            asmvik/formulae/skhd
+            asmvik/formulae/yabai
           ]
         }
       end
