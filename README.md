@@ -104,7 +104,7 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 - [fd](https://github.com/sharkdp/fd) - Simple, fast and user-friendly alternative to find
 - [ffmpeg](https://ffmpeg.org/) - Complete solution for recording, converting, and streaming audio/video
 - [fzf](https://github.com/junegunn/fzf) - Command-line fuzzy finder
-- [htop-osx](https://htop.dev/) - Interactive process viewer for Unix systems
+- [htop](https://htop.dev/) - Interactive process viewer for Unix systems
 - [mas](https://github.com/mas-cli/mas) - Mac App Store command line interface
 
 - [ncdu](https://dev.yorhel.nl/ncdu) - NCurses disk usage analyzer

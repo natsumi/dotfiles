@@ -41,7 +41,7 @@ brew 'stylua'
 # Utitlies
 brew 'croc' # peer-to-peer file transfer
 brew 'ffmpeg'
-brew 'htop-osx'
+brew 'htop'
 brew 'mas'
 brew 'ncdu' # du replacement
 brew 'reattach-to-user-namespace'

@@ -62,7 +62,7 @@ module Dotfiles
             fd
             ffmpeg
             fzf
-            htop-osx
+            htop
             mas
             ncdu
             reattach-to-user-namespace
