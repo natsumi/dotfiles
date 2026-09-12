@@ -1,0 +1,192 @@
+# Linux (Ubuntu 26.04) half of the bootstrap project.
+#
+# Loaded automatically next to mise.toml on Linux (auto_env in .miserc.toml).
+# Every Linux box gets the same treatment, server or not: host packages,
+# SSH hardening on port 2222, a default-deny firewall, fail2ban, unattended
+# security upgrades, kernel hardening and a swap file.
+#
+# mise runs as the admin user and elevates with sudo per step. Sources are
+# relative to this file; the /etc drop-ins live under linux/etc/ mirroring
+# their target paths.
+#
+# The first run on a fresh box happens over SSH on port 22. The sshd drop-in
+# moves sshd to 2222 and the firewall then allows 2222 only, in that order,
+# in the same run. Keep the root session open until `ssh -p 2222` works.
+
+#
+# Packages
+#
+
+[bootstrap.packages]
+# --- Build libraries for compiling ruby/python ---
+"apt:autoconf" = "latest"
+"apt:automake" = "latest"
+"apt:build-essential" = "latest"
+"apt:libbz2-dev" = "latest"
+"apt:libffi-dev" = "latest"
+"apt:liblzma-dev" = "latest"
+"apt:libncurses-dev" = "latest"
+"apt:libreadline-dev" = "latest"
+"apt:libsqlite3-dev" = "latest"
+"apt:libssl-dev" = "latest"
+"apt:libtool" = "latest"
+"apt:libxslt1-dev" = "latest"
+"apt:libyaml-dev" = "latest"
+"apt:tk-dev" = "latest"
+"apt:unixodbc-dev" = "latest"
+"apt:zlib1g-dev" = "latest"
+
+# --- Base system ---
+"apt:ca-certificates" = "latest"
+"apt:curl" = "latest"
+"apt:git" = "latest"
+"apt:gnupg" = "latest"
+"apt:unzip" = "latest"
+"apt:wget" = "latest"
+
+# --- Security (configured below) ---
+"apt:fail2ban" = "latest"
+"apt:ufw" = "latest"
+"apt:unattended-upgrades" = "latest"
+
+# --- Core CLI not covered by the mise registry ---
+"apt:aria2" = "latest"
+"apt:coreutils" = "latest"
+"apt:ffmpeg" = "latest"
+"apt:gawk" = "latest"
+"apt:htop" = "latest"
+"apt:ncdu" = "latest"
+"apt:neovim" = "latest"
+"apt:sqlite3" = "latest"
+"apt:tig" = "latest"
+"apt:tmate" = "latest"
+"apt:tmux" = "latest"
+"apt:tree" = "latest"
+"apt:zsh" = "latest"
+
+# --- Monitoring ---
+"apt:btop" = "latest"
+"apt:iotop" = "latest"
+"apt:nethogs" = "latest"
+
+# --- Network ---
+"apt:bind9-dnsutils" = "latest"
+"apt:mtr-tiny" = "latest"
+"apt:traceroute" = "latest"
+"apt:whois" = "latest"
+
+#
+# Hooks
+#
+# Both commands are no-ops (and need no sudo) once the box is converged.
+
+[bootstrap.hooks.pre-packages]
+run = [
+  "[ \"$(timedatectl show -p Timezone --value)\" = America/Los_Angeles ] || sudo timedatectl set-timezone America/Los_Angeles",
+  "{{ config_root }}/linux/bin/ensure-swap",
+]
+
+#
+# SSH
+#
+# Ubuntu's sshd is socket-activated: the port in sshd_config is picked up by
+# a systemd generator on daemon-reload, and restarting ssh.socket (not the
+# service) makes it listen there. cloud-init's drop-in re-enables password
+# auth and sorts before ours, so it is removed.
+
+[bootstrap.files."/etc/ssh/sshd_config.d/99-vps-hardening.conf"]
+source = "linux/etc/ssh/sshd_config.d/99-vps-hardening.conf"
+owner = "root"
+group = "root"
+mode = "0644"
+notify = ["ssh.socket"]
+
+[bootstrap.files."/etc/ssh/sshd_config.d/50-cloud-init.conf"]
+state = "absent"
+notify = ["ssh.socket"]
+
+[bootstrap.files."/etc/issue.net"]
+source = "linux/etc/issue.net"
+owner = "root"
+group = "root"
+mode = "0644"
+
+[bootstrap.services."ssh.socket"]
+state = "running"
+enabled = true
+on_change = "restart"
+
+#
+# Firewall
+#
+# Non-exclusive: mise owns only the rules below (tagged `mise:<name>` in
+# ufw) and leaves any other ufw rule alone. Docker publishes container ports
+# straight into iptables and bypasses ufw; bind containers to 127.0.0.1 and
+# put a reverse proxy in front.
+
+[bootstrap.linux.firewall]
+backend = "ufw"
+state = "enabled"
+default_incoming = "deny"
+default_outgoing = "allow"
+# The first run is connected on port 22 while the only rule is for 2222.
+# sshd was already moved to 2222 by the files phase above, so this is safe
+# as long as the old session stays open until the new port is confirmed.
+allow_lockout = true
+
+[[bootstrap.linux.firewall.rules]]
+name = "ssh"
+port = 2222
+protocol = "tcp"
+action = "limit"
+
+#
+# fail2ban
+#
+
+[bootstrap.files."/etc/fail2ban/jail.d/vps.local"]
+source = "linux/etc/fail2ban/jail.d/vps.local"
+owner = "root"
+group = "root"
+mode = "0644"
+notify = ["fail2ban"]
+
+[bootstrap.services.fail2ban]
+state = "running"
+enabled = true
+
+#
+# Unattended security upgrades (no automatic reboot)
+#
+# The drop-in is read by apt's daily timers; the service itself only runs at
+# shutdown to finish an in-flight upgrade.
+
+[bootstrap.files."/etc/apt/apt.conf.d/99-vps-upgrades"]
+source = "linux/etc/apt/apt.conf.d/99-vps-upgrades"
+owner = "root"
+group = "root"
+mode = "0644"
+
+[bootstrap.services.unattended-upgrades]
+state = "running"
+enabled = true
+
+#
+# Kernel and network hardening
+#
+# systemd-sysctl re-applies every /etc/sysctl.d drop-in when restarted, which
+# makes the reload declarative too.
+
+[bootstrap.files."/etc/sysctl.d/99-vps-hardening.conf"]
+source = "linux/etc/sysctl.d/99-vps-hardening.conf"
+owner = "root"
+group = "root"
+mode = "0644"
+notify = ["systemd-sysctl"]
+
+[bootstrap.services.systemd-sysctl]
+state = "running"
+# Static unit: it cannot be enabled, and mise's default `enabled = true`
+# would report it as unmanageable.
+enabled = false
+on_change = "restart"

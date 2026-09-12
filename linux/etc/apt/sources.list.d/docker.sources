@@ -1,0 +1,9 @@
+# Docker's apt repository for Ubuntu 26.04 (resolute).
+# Managed by mise bootstrap (mise.docker.toml). The signing key is
+# linux/etc/apt/keyrings/docker.asc in the dotfiles repo, fingerprint
+# 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88.
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: resolute
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc

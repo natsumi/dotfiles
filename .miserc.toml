@@ -1,0 +1,7 @@
+# Early-init mise settings for this repo.
+#
+# auto_env makes mise load mise.linux.toml on Linux and mise.macos.toml on
+# macOS next to mise.toml, so each platform's host packages and system
+# configuration live in their own file. (mise turns this on by default from
+# 2027.6; until then it has to be opted into here.)
+auto_env = true

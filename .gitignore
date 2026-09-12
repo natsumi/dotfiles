@@ -83,3 +83,7 @@ Temporary Items
 .ruby-version
 vim/.vim/autoload/plug.vim
 vim/.vim/plugged
+
+# mise local overrides (see https://mise.jdx.dev/configuration/environments.html)
+mise.local.toml
+mise.*.local.toml

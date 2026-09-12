@@ -4,8 +4,10 @@
 # Usage: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
 #
 # Installs the few things mise cannot install for itself (git and mise), clones
-# this repo, and hands the rest over to `mise bootstrap`. Extra arguments are
-# passed straight through, e.g.:
+# this repo, and hands the rest over to `mise bootstrap`. Run it as the user
+# who will own the machine, never as root: on a fresh Linux box create the
+# admin user first (see README.md). Extra arguments are passed straight
+# through, e.g.:
 #
 #   bootstrap.sh --dry-run
 #   bootstrap.sh --only dotfiles
@@ -42,7 +44,7 @@ warning() {
 
 verify_not_root() {
     if [[ "$(id -u)" -eq 0 ]]; then
-        error_exit "Do not run this as root. Run it as the user who owns \$HOME."
+        error_exit "Do not run this as root. Create the admin user first (see README.md) and run it as that user."
     fi
 }
 

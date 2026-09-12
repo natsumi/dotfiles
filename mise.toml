@@ -2,151 +2,16 @@
 #
 #   mise trust && mise bootstrap
 #
-# Everything a new macOS or Linux machine needs lives here: host packages,
-# git repos (prezto), dotfile symlinks, macOS defaults and the login
-# shell. Versioned languages and CLI tools live in the *global* mise config,
-# which is itself deployed from this repo (mise/.config/mise/config.toml).
-
+# The cross-platform part of machine setup: git repos (prezto), dotfile
+# symlinks and the login shell. Host packages and system configuration are
+# split by platform and loaded automatically (auto_env in .miserc.toml):
 #
-# Packages
+#   mise.linux.toml   apt packages, SSH/firewall/fail2ban hardening
+#   mise.macos.toml   brew packages, casks, fonts, macOS defaults
+#   mise.docker.toml  Docker Engine, opt-in with `mise -E docker bootstrap`
 #
-# macOS uses mise's built-in `brew:`/`brew-cask:` managers, which pour bottles
-# into /opt/homebrew without Homebrew itself being installed. Every brew entry
-# is pinned to `os = "macos"` on purpose: the brew manager also works on Linux
-# and would otherwise create /home/linuxbrew.
-#
-# Cross-platform CLI tools are NOT here - they are `[tools]` in the global
-# config. Only things the registry can't provide stay native packages.
-
-[bootstrap.brew]
-# Adopt an identical app that is already installed instead of replacing it.
-adopt = true
-
-[bootstrap.packages]
-# --- Build libraries for compiling ruby/python (macOS) ---
-"brew:autoconf" = { os = "macos" }
-"brew:automake" = { os = "macos" }
-"brew:jemalloc" = { os = "macos" }
-"brew:libffi" = { os = "macos" }
-"brew:libtool" = { os = "macos" }
-"brew:libxslt" = { os = "macos" }
-"brew:libyaml" = { os = "macos" }
-"brew:openssl@3" = { os = "macos" }
-"brew:readline" = { os = "macos" }
-"brew:unixodbc" = { os = "macos" }
-"brew:xz" = { os = "macos" }
-"brew:zlib" = { os = "macos" }
-
-# --- Core CLI not covered by the mise registry (macOS) ---
-"brew:aria2" = { os = "macos" }
-"brew:coreutils" = { os = "macos" }
-"brew:ffmpeg" = { os = "macos" }
-"brew:gawk" = { os = "macos" }
-"brew:git" = { os = "macos" }
-"brew:gnupg" = { os = "macos" }
-"brew:htop" = { os = "macos" }
-"brew:ncdu" = { os = "macos" }
-"brew:neovim" = { os = "macos" }
-"brew:sqlite" = { os = "macos" }
-"brew:tig" = { os = "macos" }
-"brew:tmate" = { os = "macos" }
-"brew:tmux" = { os = "macos" }
-"brew:tree" = { os = "macos" }
-"brew:wget" = { os = "macos" }
-"brew:zsh" = { os = "macos" }
-
-# --- macOS-only helpers ---
-"brew:reattach-to-user-namespace" = { os = "macos" }
-"brew:terminal-notifier" = { os = "macos" }
-"brew:tmux-mem-cpu-load" = { os = "macos" }
-
-# --- Build libraries for compiling ruby/python (Debian/Ubuntu) ---
-"apt:autoconf" = { os = "linux" }
-"apt:automake" = { os = "linux" }
-"apt:build-essential" = { os = "linux" }
-"apt:curl" = { os = "linux" }
-"apt:libbz2-dev" = { os = "linux" }
-"apt:libffi-dev" = { os = "linux" }
-"apt:liblzma-dev" = { os = "linux" }
-"apt:libncurses-dev" = { os = "linux" }
-"apt:libreadline-dev" = { os = "linux" }
-"apt:libsqlite3-dev" = { os = "linux" }
-"apt:libssl-dev" = { os = "linux" }
-"apt:libtool" = { os = "linux" }
-"apt:libxslt-dev" = { os = "linux" }
-"apt:libyaml-dev" = { os = "linux" }
-"apt:tk-dev" = { os = "linux" }
-"apt:unixodbc-dev" = { os = "linux" }
-"apt:unzip" = { os = "linux" }
-"apt:zlib1g-dev" = { os = "linux" }
-
-# --- Core CLI not covered by the mise registry (Debian/Ubuntu) ---
-"apt:aria2" = { os = "linux" }
-"apt:coreutils" = { os = "linux" }
-"apt:ffmpeg" = { os = "linux" }
-"apt:gawk" = { os = "linux" }
-"apt:git" = { os = "linux" }
-"apt:gnupg" = { os = "linux" }
-"apt:htop" = { os = "linux" }
-"apt:ncdu" = { os = "linux" }
-"apt:neovim" = { os = "linux" }
-"apt:sqlite3" = { os = "linux" }
-"apt:tig" = { os = "linux" }
-"apt:tmate" = { os = "linux" }
-"apt:tmux" = { os = "linux" }
-"apt:tree" = { os = "linux" }
-"apt:wget" = { os = "linux" }
-"apt:zsh" = { os = "linux" }
-
-# --- Desktop applications (macOS) ---
-"brew-cask:alfred" = { os = "macos" }
-"brew-cask:betterdisplay" = { os = "macos" }
-"brew-cask:cursor" = { os = "macos" }
-"brew-cask:discord" = { os = "macos" }
-"brew-cask:firefox@developer-edition" = { os = "macos" }
-"brew-cask:forklift" = { os = "macos" }
-"brew-cask:ghostty" = { os = "macos" }
-"brew-cask:google-chrome" = { os = "macos" }
-"brew-cask:itsycal" = { os = "macos" }
-"brew-cask:jordanbaird-ice" = { os = "macos" }
-"brew-cask:kitty" = { os = "macos" }
-"brew-cask:localsend" = { os = "macos" }
-"brew-cask:mounty" = { os = "macos" }
-"brew-cask:postman" = { os = "macos" }
-"brew-cask:qlvideo" = { os = "macos" }
-"brew-cask:sanesidebuttons" = { os = "macos" }
-"brew-cask:shottr" = { os = "macos" }
-"brew-cask:slack" = { os = "macos" }
-"brew-cask:spotify" = { os = "macos" }
-"brew-cask:spotmenu" = { os = "macos" }
-"brew-cask:stats" = { os = "macos" }
-"brew-cask:sublime-merge" = { os = "macos" }
-"brew-cask:tableplus" = { os = "macos" }
-"brew-cask:telegram" = { os = "macos" }
-"brew-cask:the-unarchiver" = { os = "macos" }
-"brew-cask:trex" = { os = "macos" }
-"brew-cask:visual-studio-code" = { os = "macos" }
-"brew-cask:vlc" = { os = "macos" }
-
-# --- Fonts (macOS) ---
-"brew-cask:font-cascadia-mono-pl" = { os = "macos" }
-"brew-cask:font-consolas-for-powerline" = { os = "macos" }
-"brew-cask:font-menlo-for-powerline" = { os = "macos" }
-"brew-cask:font-anonymice-nerd-font" = { os = "macos" }
-"brew-cask:font-blex-mono-nerd-font" = { os = "macos" }
-"brew-cask:font-dejavu-sans-mono-nerd-font" = { os = "macos" }
-"brew-cask:font-droid-sans-mono-nerd-font" = { os = "macos" }
-"brew-cask:font-fantasque-sans-mono-nerd-font" = { os = "macos" }
-"brew-cask:font-fira-code-nerd-font" = { os = "macos" }
-"brew-cask:font-fira-mono-nerd-font" = { os = "macos" }
-"brew-cask:font-go-mono-nerd-font" = { os = "macos" }
-"brew-cask:font-iosevka-nerd-font" = { os = "macos" }
-"brew-cask:font-jetbrains-mono-nerd-font" = { os = "macos" }
-"brew-cask:font-liberation-nerd-font" = { os = "macos" }
-"brew-cask:font-meslo-lg-nerd-font" = { os = "macos" }
-"brew-cask:font-roboto-mono-nerd-font" = { os = "macos" }
-"brew-cask:font-sauce-code-pro-nerd-font" = { os = "macos" }
-"brew-cask:font-victor-mono-nerd-font" = { os = "macos" }
+# Versioned languages and CLI tools live in the *global* mise config, which
+# is itself deployed from this repo (mise/.config/mise/config.toml).
 
 #
 # Git repositories
@@ -280,133 +145,9 @@ mode = "symlink"
 variants = [{ os = "macos" }]
 
 #
-# macOS defaults
-#
-# Migrated from the old bin/apply_default_settings. The handful of settings
-# that need root live in bin/apply_sudo_defaults and are run by hand.
-
-[bootstrap.macos.dock]
-autohide = true
-autohide_delay = 0.0
-mru_spaces = false
-
-[bootstrap.macos.finder]
-show_extensions_warning = false
-show_pathbar = true
-show_status_bar = true
-preferred_view_style = "list"
-
-[bootstrap.macos.keyboard]
-key_repeat = 0
-press_and_hold = false
-
-[bootstrap.macos.trackpad]
-tap_to_click = true
-
-[bootstrap.macos.defaults.NSGlobalDomain]
-AppleKeyboardUIMode = 3
-AppleShowAllExtensions = true
-NSAutomaticDashSubstitutionEnabled = false
-NSAutomaticQuoteSubstitutionEnabled = false
-NSNavPanelExpandedStateForSaveMode = true
-PMPrintingExpandedStateForPrint = true
-WebKitDeveloperExtras = true
-"com.apple.mouse.tapBehavior" = 1
-"com.apple.swipescrolldirection" = false
-
-[bootstrap.macos.defaults."com.apple.dock"]
-"dashboard-in-overlay" = true
-
-[bootstrap.macos.defaults."com.apple.finder"]
-QLEnableTextSelection = true
-
-[bootstrap.macos.defaults."com.apple.BezelServices"]
-kDimTime = 300
-
-[bootstrap.macos.defaults."com.apple.LaunchServices"]
-LSQuarantine = false
-
-[bootstrap.macos.defaults."com.apple.screensaver"]
-askForPassword = 1
-askForPasswordDelay = 0
-
-[bootstrap.macos.defaults."com.apple.desktopservices"]
-DSDontWriteNetworkStores = true
-DSDontWriteUSBStores = true
-
-[bootstrap.macos.defaults."com.apple.driver.AppleBluetoothMultitouch.trackpad"]
-TrackpadCornerSecondaryClick = 2
-TrackpadRightClick = true
-
-[bootstrap.macos.defaults."com.apple.universalaccess"]
-closeViewScrollWheelToggle = true
-closeViewZoomFollowsFocus = true
-HIDScrollZoomModifierMask = 262144
-
-[bootstrap.macos.defaults."com.apple.Safari"]
-HomePage = "about:blank"
-ShowFavoritesBar = false
-FindOnPageMatchesWordStartsOnly = false
-IncludeInternalDebugMenu = true
-IncludeDevelopMenu = true
-UniversalSearchEnabled = false
-WebKitDeveloperExtrasEnabledPreferenceKey = true
-"com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true
-
-[bootstrap.macos.defaults."com.apple.addressbook"]
-ABShowDebugMenu = true
-
-[bootstrap.macos.defaults."com.apple.iCal"]
-IncludeDebugMenu = true
-
-[bootstrap.macos.defaults."com.apple.TextEdit"]
-RichText = 0
-PlainTextEncoding = 4
-PlainTextEncodingForWrite = 4
-
-[bootstrap.macos.defaults."com.apple.DiskUtility"]
-DUDebugMenuEnabled = true
-"advanced-image-options" = true
-
-[bootstrap.macos.defaults."com.apple.TimeMachine"]
-DoNotOfferNewDisksForBackup = true
-
-[bootstrap.macos.defaults."com.apple.print.PrintingPrefs"]
-"Quit When Finished" = true
-
-[bootstrap.macos.defaults."com.apple.appstore"]
-ShowDebugMenu = true
-
-# VS Code: key repeat instead of the accent popover.
-[bootstrap.macos.defaults."com.microsoft.VSCode"]
-ApplePressAndHoldEnabled = false
-
-# `defaults -currentHost write ...` equivalents.
-[[bootstrap.macos.defaults_entries]]
-domain = "NSGlobalDomain"
-key = "com.apple.trackpad.trackpadCornerClickBehavior"
-host = "current"
-value = 1
-
-[[bootstrap.macos.defaults_entries]]
-domain = "NSGlobalDomain"
-key = "com.apple.trackpad.enableSecondaryClick"
-host = "current"
-value = true
-
-[[bootstrap.macos.defaults_entries]]
-domain = "NSGlobalDomain"
-key = "com.apple.mouse.tapBehavior"
-host = "current"
-value = 1
-
-[bootstrap.hooks.post-defaults]
-run = "killall Dock Finder SystemUIServer 2>/dev/null || true"
-
-#
 # Login shell
 #
-# Valid on macOS and on usr-merged Debian/Ubuntu.
+# Valid on macOS and on usr-merged Ubuntu.
 
 [bootstrap.user]
 login_shell = "/bin/zsh"
@@ -457,6 +198,10 @@ echo "git identity: $(git config --global user.name || true) <$(git config --glo
 
 # The dotfiles phase links the global mise config into place *after* this
 # process loaded its configuration, so its `[tools]` are installed here, in a
-# fresh process. No-op on every later run.
+# fresh process. No-op on every later run. mise never reboots; the second
+# command only prints a reminder when Ubuntu asks for one.
 [bootstrap.hooks.final]
-run = "mise install --yes"
+run = [
+  "mise install --yes",
+  "[ -f /var/run/reboot-required ] && echo '>>> A reboot is required to finish package updates: sudo reboot' || true",
+]
