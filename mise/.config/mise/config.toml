@@ -35,4 +35,4 @@ stylua = "latest"
 mas = { version = "latest", os = "macos" }
 
 [settings]
-trusted_config_paths = ["~/dev"]
+trusted_config_paths = ["~/dev", "~/.paseo/worktrees"]
