@@ -24,7 +24,7 @@ runs `mise bootstrap --yes`. Any extra arguments are passed straight through to
    macOS is Homebrew-free: mise's built-in brew manager pours bottles and casks
    into `/opt/homebrew` without Homebrew being installed.
 2. **Repos** - prezto and prezto-contrib are cloned into `~`, then a
-   `post-repos` hook initialises prezto's submodules and clones zplug.
+   `post-repos` hook initialises prezto's submodules.
 3. **Dotfiles** - every symlink in the `[dotfiles]` section of `mise.toml`, plus
    the managed block in `~/.gitconfig`.
 4. **macOS defaults** - the `[bootstrap.macos.*]` preferences, followed by a

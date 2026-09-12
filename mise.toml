@@ -3,7 +3,7 @@
 #   mise trust && mise bootstrap
 #
 # Everything a new macOS or Linux machine needs lives here: host packages,
-# git repos (prezto, zplug), dotfile symlinks, macOS defaults and the login
+# git repos (prezto), dotfile symlinks, macOS defaults and the login
 # shell. Versioned languages and CLI tools live in the *global* mise config,
 # which is itself deployed from this repo (mise/.config/mise/config.toml).
 
@@ -158,18 +158,11 @@ adopt = true
 "~/.zprezto/contrib" = { url = "https://github.com/belak/prezto-contrib.git" }
 
 # prezto ships its modules as git submodules and `[bootstrap.repos]` does not
-# initialise them.
-#
-# zplug is cloned here rather than declared in `[bootstrap.repos]` because it
-# rewrites files inside its own checkout on first use; mise would then treat
-# the repo as dirty and abort every later bootstrap.
-#
-# All commands are idempotent.
+# initialise them. Both commands are idempotent.
 [bootstrap.hooks.post-repos]
 run = [
   "git -C ~/.zprezto submodule update --init --recursive --depth 1",
   "git -C ~/.zprezto/contrib submodule update --init --recursive --depth 1",
-  "[ -d ~/.zplug/.git ] || git clone --depth 1 https://github.com/zplug/zplug.git ~/.zplug",
 ]
 
 #

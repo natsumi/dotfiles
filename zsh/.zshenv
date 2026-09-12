@@ -1,6 +1,3 @@
-# ZPlug
-export ZPLUG_HOME=~/.zplug
-
 # use nvim as the visual editor
 export VISUAL=nvim
 export EDITOR=$VISUAL
@@ -33,10 +30,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # Kitty Terminal
 export KITTY_CONFIG_DIRECTORY="${HOME}/.config/kitty"
 
-# Bundle - Allow mulitple gems to be installed at once
-[[ -f /usr/local/bin/nproc ]] && export BUNDLE_JOBS=$(/usr/local/bin/nproc)
-[[ -f /opt/homebrew/bin/nproc ]] && export BUNDLE_JOBS=$(/opt/homebrew/bin/nproc)
-
+# Bundle - install gems in parallel, one job per CPU (works on macOS and Linux)
+export BUNDLE_JOBS=$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)
 
 # Github CLI - opt out of telemetry
 export GH_TELEMETRY=false

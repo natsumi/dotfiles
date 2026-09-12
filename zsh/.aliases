@@ -15,10 +15,6 @@ if [ -x "$(command -v ncdu)" ]; then
   alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 fi
 
-if [ -x "$(command -v fd)" ]; then
-  alias find="fd"
-fi
-
 if [ -x "$(command -v diff-so-fancy)" ]; then
   alias diff="git diff --no-index"
 fi
@@ -27,10 +23,6 @@ fi
 if [ -x "$(command -v nvim)" ]; then
   alias vim="nvim"
 fi
-
-# Emacs
-alias e="emacsclient -t -a ''"
-alias ec="emacsclient -c -n -a ''"
 
 # Tmux
 alias tma='tmux attach'
@@ -60,7 +52,7 @@ alias path='echo $PATH | tr -s ":" "\n"'
 alias icat="kitty +kitten icat"
 
 # Remove lt alias so localtunnel works
-unalias lt
+unalias lt 2>/dev/null
 
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
