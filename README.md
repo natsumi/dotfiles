@@ -378,6 +378,32 @@ dependencies and anything without a mise registry entry - is declared in
 - [wget](https://www.gnu.org/software/wget/) - Internet file retriever
 - [zsh](https://www.zsh.org/) - Extended Bourne shell with many improvements
 
+## Host packages by platform
+
+Everything below comes from `[bootstrap.packages]`; the CLI tools above that
+are not listed here come from `[tools]` in the global config and are the same
+on both platforms.
+
+**macOS** (`mise.macos.toml`, `brew:`)
+
+- Build libraries for ruby/python: autoconf, automake, jemalloc, libffi, libtool, libxslt, libyaml, openssl@3, readline, unixodbc, xz, zlib
+- CLI: aria2, coreutils, ffmpeg, gawk, git, gnupg, htop, ncdu, neovim, sqlite, tig, tmate, tmux, tree, wget, zsh
+- macOS helpers: reattach-to-user-namespace, terminal-notifier, tmux-mem-cpu-load
+- Desktop applications and fonts: the `brew-cask:` lists above and the 18 Nerd/Powerline font casks
+
+**Linux** (`mise.linux.toml`, `apt:`, Ubuntu 26.04)
+
+- Build libraries for ruby/python: autoconf, automake, build-essential, libbz2-dev, libffi-dev, liblzma-dev, libncurses-dev, libreadline-dev, libsqlite3-dev, libssl-dev, libtool, libxslt1-dev, libyaml-dev, tk-dev, unixodbc-dev, zlib1g-dev
+- Base system: ca-certificates, curl, git, gnupg, unzip, wget
+- Security (configured by the bootstrap): ufw, fail2ban, unattended-upgrades
+- CLI: aria2, coreutils, ffmpeg, gawk, htop, ncdu, neovim, sqlite3, tig, tmate, tmux, tree, zsh
+- Monitoring: btop, iotop, nethogs
+- Network: bind9-dnsutils, mtr-tiny, traceroute, whois
+
+**Linux with `mise -E docker`** (`mise.docker.toml`)
+
+- docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin, plus lazydocker from `[tools]`
+
 # Default Language Packages
 
 When setting up a new development environment, mise automatically installs default packages for each programming language. These packages provide essential development tools, language servers, and utilities.
