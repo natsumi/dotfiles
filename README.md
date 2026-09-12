@@ -220,6 +220,7 @@ dependencies and anything without a mise registry entry - is declared in
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy) - Better git diff output
 - [difftastic](https://github.com/Wilfred/difftastic) - Structural diff tool that understands syntax
 - [fx](https://github.com/antonmedv/fx) - Terminal JSON viewer and processor
+- [gh](https://cli.github.com/) - GitHub CLI
 - [git](https://git-scm.com/) - Distributed version control system
 - [git-delta](https://github.com/dandavison/delta) - Syntax-highlighting pager for git
 - [jq](https://stedolan.github.io/jq/) - Lightweight command-line JSON processor
