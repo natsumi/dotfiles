@@ -5,10 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Fix umask bug in WSL where it is always set to 000
-if [[ ! -z "$WSL_DISTRO_NAME" ]]; then
-  umask 022
-fi
+# Our own completion functions. Must be on fpath before prezto runs compinit.
+fpath=(~/.zsh/completion /opt/homebrew/share/zsh/site-functions $fpath)
 
 # Source Prezto
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -29,25 +27,16 @@ colors
 
 # enable colored output from ls, etc
 export CLICOLOR=1
-export GREP_COLOR="00;38;5;61"
-export GREP_COLORS="00;38;5;61"
+export GREP_COLORS="mt=00;38;5;61"
 
-################
-# HISTORY SETTINGS
-################
-setopt hist_ignore_all_dups inc_append_history
-HISTFILE=~/.histfile
-HISTSIZE=4096
-SAVEHIST=4096
+# History is configured by prezto's history module (~/.zhistory, 10000 lines,
+# shared between shells, duplicates ignored).
 
 # Beep on errors and notify on background task completion
 setopt beep nomatch notify
 
 # Vim Bindings
 bindkey -v
-
-# load our own completion functions
-fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions /opt/homebrew/share/zsh/site-functions $fpath)
 
 ###################
 # TERMINAL SETTINGS
@@ -65,36 +54,13 @@ bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
 bindkey "^K" kill-line
 bindkey "^U" backward-kill-line
-bindkey "^R" history-incremental-search-backward
 bindkey "^P" history-search-backward
 bindkey "^Y" accept-and-hold
 bindkey "^N" insert-last-word
-bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
-
-##############
-# ZPLUG SETTING
-###################
-source ${ZPLUG_HOME}/init.zsh
-
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug 'zdharma-continuum/fast-syntax-highlighting'
-# Forgit options
-forgit_stash_show=gsf
-forgit_diff=gdf
-
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
-
-# Then, source plugins and add commands to $PATH
-zplug load
+# ^R and ^T are bound by fzf below.
 
 # Remove aliases
-unalias gls #git log conflicts with dircolors gls
+unalias gls 2>/dev/null # git log conflicts with dircolors gls
 
 # Load other program settings
 # aliases
@@ -104,29 +70,17 @@ unalias gls #git log conflicts with dircolors gls
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 # Load fzf commands
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/.fzf_commands.zsh ]] && source ~/.fzf_commands.zsh
 
-# Load FZF key bindings and completion
-# ARM M1
-[[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
-[[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]] && source /opt/homebrew/opt/fzf/shell/completion.zsh
-# x86 FZF
-[[ -f ~/usr/local/opt/fzf/shell/key-bindings.zsh ]] && source ~/usr/local/opt/fzf/shell/key-bindings.zsh ]]
-[[ -f ~/usr/local/opt/fzf/shell/completion.zsh ]] && source ~/usr/local/opt/fzf/shell/completion.zsh ]]
-
-# Linux / WSL FZF
-[[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-[[ -f /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
-
 # Mise
-[[ -f /opt/homebrew/bin/mise ]] && eval "$(mise activate zsh)"
 [[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
+
+# FZF key bindings and completion. fzf is a mise tool (on PATH via the shims
+# dir added in .zprofile), so use its built-in shell integration.
+command -v fzf > /dev/null && eval "$(fzf --zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-#
-# SCMPuff
-eval "$(scmpuff init -s)"
 
-export PATH="$HOME/.local/bin:$PATH"
+# SCMPuff
+command -v scmpuff > /dev/null && eval "$(scmpuff init -s)"

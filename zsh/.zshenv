@@ -1,11 +1,3 @@
-# ZPlug
-export ZPLUG_HOME=~/.zplug
-
-# Homebrew
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_NO_INSTALL_UPGRADE=1
-
 # use nvim as the visual editor
 export VISUAL=nvim
 export EDITOR=$VISUAL
@@ -26,9 +18,6 @@ export ERL_AFLAGS="-kernel shell_history enabled shell_history_file_bytes 202400
 # CLI Env
 ######################
 #
-# Bat
-export BAT_THEME="nord"
-
 # Ripgrep
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 
@@ -41,10 +30,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # Kitty Terminal
 export KITTY_CONFIG_DIRECTORY="${HOME}/.config/kitty"
 
-# Bundle - Allow mulitple gems to be installed at once
-[[ -f /usr/local/bin/nproc ]] && export BUNDLE_JOBS=$(/usr/local/bin/nproc)
-[[ -f /opt/homebrew/bin/nproc ]] && export BUNDLE_JOBS=$(/opt/homebrew/bin/nproc)
-
+# Bundle - install gems in parallel, one job per CPU (works on macOS and Linux)
+export BUNDLE_JOBS=$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)
 
 # Github CLI - opt out of telemetry
 export GH_TELEMETRY=false

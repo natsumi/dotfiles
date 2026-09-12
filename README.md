@@ -1,36 +1,168 @@
-My very opinated configuration and setup scripts for new and existing Macs.
+My very opinated configuration and setup scripts for new and existing Macs and Linux boxes.
 
-## Setup a new Mac
+Machine setup is declarative: the root `mise.toml` is a [mise bootstrap](https://mise.jdx.dev/bootstrap.html)
+project that declares host packages, git repos, dotfile symlinks, macOS defaults
+and the login shell. The global mise config (languages and cross-platform CLI
+tools) lives in `mise/.config/mise/config.toml` and is symlinked to
+`~/.config/mise/config.toml`.
+
+## Setup a new Mac or Linux machine
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
 ```
 
-## Homebrew Taps
+The script installs only what mise cannot install for itself - git (Xcode
+command line tools on macOS, `apt-get install git curl` on Debian/Ubuntu) and
+mise itself via <https://mise.run> - clones this repo to `~/dev/dotfiles`, then
+runs `mise bootstrap --yes`. Any extra arguments are passed straight through to
+`mise bootstrap`, so `bootstrap.sh --dry-run` previews the whole thing.
 
-Homebrew 6 will not load formulae, casks or external commands from non-official
-taps until they are explicitly trusted. The `trust_homebrew_taps` setup step
-runs `brew trust --tap` for every third-party tap used here before any packages
-are installed, and `homebrew/Brewfile` marks the same taps `trusted: true`.
+`mise bootstrap` then runs these phases in order:
 
-To trust a tap by hand:
+1. **Packages** - `brew:` / `brew-cask:` on macOS, `apt:` on Debian/Ubuntu.
+   macOS is Homebrew-free: mise's built-in brew manager pours bottles and casks
+   into `/opt/homebrew` without Homebrew being installed.
+2. **Repos** - prezto and prezto-contrib are cloned into `~`, then a
+   `post-repos` hook initialises prezto's submodules.
+3. **Dotfiles** - every symlink in the `[dotfiles]` section of `mise.toml`, plus
+   the managed block in `~/.gitconfig`.
+4. **macOS defaults** - the `[bootstrap.macos.*]` preferences, followed by a
+   `post-defaults` hook that restarts Dock, Finder and SystemUIServer.
+5. **Login shell** - `chsh -s /bin/zsh`.
+6. **Tools** - `[tools]` from the global mise config.
+7. **Bootstrap task** - prompts for the git identity if this machine has none.
+8. **Final hook** - `mise install --yes`, which picks up the freshly linked
+   global config in a new process.
+
+Open a new shell afterwards so the new login shell, PATH and mise activation
+take effect.
+
+## Day-to-day
+
+Run these from the repo directory (or pass `mise -C ~/dev/dotfiles ...`), since
+`mise.toml` is a project config:
 
 ```bash
-brew trust --tap asmvik/formulae
+mise bootstrap status                   # everything mise knows about, in one list
+mise bootstrap --dry-run                # preview the whole workflow
+mise bootstrap --only dotfiles          # re-apply just the symlinks
+mise bootstrap dotfiles status          # per-entry: applied / missing / differs
+mise bootstrap dotfiles diff            # what apply would change
+mise bootstrap dotfiles apply           # apply the symlinks and the gitconfig block
+mise bootstrap packages status          # which host packages are missing
+mise bootstrap packages apply           # install the missing ones
+mise bootstrap macos defaults status    # macOS preference drift (skipped on Linux)
+mise bootstrap --skip tools,task        # setup without touching language versions
 ```
 
-## Yabai Window Manager
+mise refuses to update a declared repo (`~/.zprezto`, `~/.zprezto/contrib`)
+that has local changes. Add `--skip-dirty` (or `--skip repos`) if that ever
+happens.
 
-[Yabai Window Manager](https://github.com/asmvik/yabai)
+## Adding a new dotfile
 
-[Simple Keyboard Hot Keys](https://github.com/asmvik/skhd)
+1. Put the file under its tool's directory in this repo, mirroring the path it
+   has in `$HOME` - e.g. `zsh/.zshrc` for `~/.zshrc`, or
+   `helix/.config/helix/config.toml` for `~/.config/helix/config.toml`.
+2. Add a `[dotfiles]` entry to `mise.toml`. Sources are relative to the repo
+   root.
 
-Both are installed from the `asmvik/formulae` tap, which is upstream's current
-home — the old `koekeishiya/*` URLs now redirect there.
+   A single file:
+
+   ```toml
+   [dotfiles]
+   "~/.gemrc" = { source = "ruby/.gemrc", mode = "symlink" }
+   ```
+
+   A whole directory we own outright:
+
+   ```toml
+   [dotfiles]
+   "~/.config/helix" = { source = "helix/.config/helix", mode = "symlink" }
+   ```
+
+   macOS only:
+
+   ```toml
+   [dotfiles."~/.aerospace.toml"]
+   source = "aerospace/.aerospace.toml"
+   mode = "symlink"
+   variants = [{ os = "macos" }]
+   ```
+
+   Use `mode = "symlink-each"` (as `~/.claude` does) when the target directory
+   also holds files mise should leave alone.
+3. Preview and apply:
+
+   ```bash
+   mise bootstrap dotfiles apply --dry-run
+   mise bootstrap dotfiles apply
+   ```
+
+## Adding a package or tool
+
+**Host packages** (native libraries, GUI apps, things with no mise registry
+entry) go in `[bootstrap.packages]` in `mise.toml`. Add them by hand, or let
+mise write the entry:
+
+```bash
+mise bootstrap packages use brew:foo
+mise bootstrap packages use apt:foo
+```
+
+Every `brew:` / `brew-cask:` entry must carry `os = "macos"` - mise's brew
+manager also works on Linux and would otherwise create `/home/linuxbrew`.
+
+**Versioned tools** (anything in the mise registry, plus `npm:` / `ubi:`
+backends) go in `[tools]` in `mise/.config/mise/config.toml`, then:
+
+```bash
+mise install
+```
+
+## Migrating an existing machine from stow
+
+mise reads the existing stow symlinks as already applied, so there is very
+little to do:
+
+```bash
+cd ~/dev/dotfiles
+mise trust
+mise bootstrap dotfiles apply --dry-run
+mise bootstrap dotfiles apply
+```
+
+The one thing that conflicts is a pre-existing *real* `~/.config/mise/config.toml`,
+since this repo now owns that path. Either move it aside first:
+
+```bash
+mv ~/.config/mise/config.toml ~/.config/mise/config.toml.bak
+```
+
+or let mise replace it with `mise bootstrap dotfiles apply --force`. Merge
+anything machine-specific from the backup into
+`mise/.config/mise/config.toml` (or into `~/.config/mise/config.local.toml`).
+
+GNU Stow is no longer used or installed.
+
+## macOS sudo defaults
+
+A few system settings need root and are not managed by mise. Run them by hand
+after bootstrap:
+
+```bash
+bin/apply_sudo_defaults
+```
+
+## Servers
+
+Server/VPS provisioning is separate and unchanged; see `vps/`.
 
 # Desktop Applications
 
-These applications are installed via the `bin/install_desktop_apps` script.
+These applications are declared as `brew-cask:` entries in `mise.toml` and
+installed by `mise bootstrap packages apply` on macOS.
 
 ## Productivity Applications
 
@@ -78,17 +210,22 @@ These applications are installed via the `bin/install_desktop_apps` script.
 
 # Tools Included
 
-These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
+Cross-platform CLI tools are `[tools]` in the global mise config
+(`mise/.config/mise/config.toml`). Everything else - native libraries, build
+dependencies and anything without a mise registry entry - is declared in
+`[bootstrap.packages]` in `mise.toml` as `brew:` (macOS) or `apt:` (Linux).
 
 ## Development Tools
 - [awk](https://www.gnu.org/software/gawk/) - Pattern scanning and text processing language
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy) - Better git diff output
 - [difftastic](https://github.com/Wilfred/difftastic) - Structural diff tool that understands syntax
 - [fx](https://github.com/antonmedv/fx) - Terminal JSON viewer and processor
+- [gh](https://cli.github.com/) - GitHub CLI
 - [git](https://git-scm.com/) - Distributed version control system
 - [git-delta](https://github.com/dandavison/delta) - Syntax-highlighting pager for git
 - [jq](https://stedolan.github.io/jq/) - Lightweight command-line JSON processor
 - [mise](https://github.com/jdx/mise) - Development environment manager
+- [neovim](https://neovim.io/) - Hyperextensible Vim-based text editor
 - [overmind](https://github.com/DarthSim/overmind) - Process manager for Procfile-based applications
 - [ripgrep](https://github.com/BurntSushi/ripgrep) - Extremely fast text search tool
 - [scmpuff](https://github.com/mroth/scmpuff) - Numeric shortcuts for common git commands
@@ -97,7 +234,6 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 
 ## Utilities
 - [aria2](https://aria2.github.io/) - Lightweight multi-protocol download utility
-- [bat](https://github.com/sharkdp/bat) - Cat clone with syntax highlighting
 - [broot](https://github.com/Canop/broot) - Better way to navigate directories
 - [croc](https://github.com/schollz/croc) - Easily and securely send things from one computer to another / Magic Wormhole
 - [eza](https://github.com/eza-community/eza) - Modern replacement for ls
@@ -106,9 +242,7 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 - [fzf](https://github.com/junegunn/fzf) - Command-line fuzzy finder
 - [htop](https://htop.dev/) - Interactive process viewer for Unix systems
 - [mas](https://github.com/mas-cli/mas) - Mac App Store command line interface
-
 - [ncdu](https://dev.yorhel.nl/ncdu) - NCurses disk usage analyzer
-- [stow](https://www.gnu.org/software/stow/) - Symlink farm manager
 - [terminal-notifier](https://github.com/julienXX/terminal-notifier) - Send macOS notifications from the terminal
 - [tmate](https://tmate.io/) - Instant terminal sharing
 - [tmux-mem-cpu-load](https://github.com/thewtex/tmux-mem-cpu-load) - CPU, RAM memory, and load monitor for tmux
@@ -116,10 +250,6 @@ These are tools that are installed via `brew bundle --file=homebrew/Brewfile`
 - [tree](https://mama.indstate.edu/users/ice/tree/) - Directory listing in tree format
 - [wget](https://www.gnu.org/software/wget/) - Internet file retriever
 - [zsh](https://www.zsh.org/) - Extended Bourne shell with many improvements
-
-## Desktop Managers
-- [skhd](https://github.com/asmvik/skhd) - Simple hotkey daemon for macOS
-- [yabai](https://github.com/asmvik/yabai) - Tiling window manager for macOS
 
 # Default Language Packages
 

@@ -26,16 +26,17 @@ fi
 #
 # Paths
 #
-export PATH="/usr/local/opt/openssl/bin:$PATH"
+
+# mise itself (installed by https://mise.run) and other user binaries.
+export PATH="$HOME/.local/bin:$PATH"
 
 # mise shims: resolve mise-managed tools (hk, etc.) in non-interactive
 # subprocesses like git hooks. `mise activate` (in .zshrc) only sets PATH for
 # interactive shells, so hooks couldn't find hk without this.
 #
 # The shims live under mise's data dir, which defaults to ~/.local/share/mise
-# on both macOS and Linux — Homebrew installs only the mise binary, not the
-# data dir, so the path is the same there. Honor MISE_DATA_DIR if set, and
-# only prepend when the dir actually exists.
+# on both macOS and Linux. Honor MISE_DATA_DIR if set, and only prepend when
+# the dir actually exists.
 mise_shims="${MISE_DATA_DIR:-$HOME/.local/share/mise}/shims"
 [[ -d "$mise_shims" ]] && export PATH="$mise_shims:$PATH"
 unset mise_shims
@@ -75,4 +76,6 @@ fi
 TMPPREFIX="${TMPDIR%/}/zsh"
 
 # Apple Silicon support
-[[ -f /opt/homebrew/bin/brew ]] &&  eval $(/opt/homebrew/bin/brew shellenv)
+# mise pours brew bottles into /opt/homebrew without Homebrew itself, so
+# just put that prefix on PATH when it exists.
+[[ -d /opt/homebrew/bin ]] && export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
