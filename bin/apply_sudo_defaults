@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# DESCRIPTION
+# The handful of macOS system settings that need root.
+#
+# Everything else lives in `[bootstrap.macos.*]` in the repo's mise.toml and is
+# applied by `mise bootstrap macos defaults apply`. Run this one by hand:
+#
+#   bin/apply_sudo_defaults
+
+set -euo pipefail
+
+if [[ "$OSTYPE" != darwin* ]]; then
+    echo "This script only applies to macOS. Current OS: $OSTYPE" >&2
+    exit 1
+fi
+
+printf "System - Reveal IP address, hostname, OS version, etc. when clicking the login window clock\n"
+sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+
+printf "System - Automatically restart if system freezes\n"
+sudo systemsetup -setrestartfreeze on
+
+printf "System - Disable automatic software updates\n"
+sudo softwareupdate --schedule off

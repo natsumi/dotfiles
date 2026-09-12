@@ -107,21 +107,12 @@ unalias gls #git log conflicts with dircolors gls
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/.fzf_commands.zsh ]] && source ~/.fzf_commands.zsh
 
-# Load FZF key bindings and completion
-# ARM M1
-[[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
-[[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]] && source /opt/homebrew/opt/fzf/shell/completion.zsh
-# x86 FZF
-[[ -f ~/usr/local/opt/fzf/shell/key-bindings.zsh ]] && source ~/usr/local/opt/fzf/shell/key-bindings.zsh ]]
-[[ -f ~/usr/local/opt/fzf/shell/completion.zsh ]] && source ~/usr/local/opt/fzf/shell/completion.zsh ]]
-
-# Linux / WSL FZF
-[[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-[[ -f /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
-
 # Mise
-[[ -f /opt/homebrew/bin/mise ]] && eval "$(mise activate zsh)"
 [[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
+
+# FZF key bindings and completion. fzf is a mise tool (on PATH via the shims
+# dir added in .zprofile), so use its built-in shell integration.
+command -v fzf > /dev/null && eval "$(fzf --zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh

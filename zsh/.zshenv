@@ -1,11 +1,6 @@
 # ZPlug
 export ZPLUG_HOME=~/.zplug
 
-# Homebrew
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_NO_INSTALL_UPGRADE=1
-
 # use nvim as the visual editor
 export VISUAL=nvim
 export EDITOR=$VISUAL
@@ -26,9 +21,6 @@ export ERL_AFLAGS="-kernel shell_history enabled shell_history_file_bytes 202400
 # CLI Env
 ######################
 #
-# Bat
-export BAT_THEME="nord"
-
 # Ripgrep
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 

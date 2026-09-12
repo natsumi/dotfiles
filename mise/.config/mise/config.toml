@@ -1,0 +1,38 @@
+# Global mise configuration.
+#
+# Deployed to ~/.config/mise/config.toml by the `[dotfiles]` section of the
+# repo's root mise.toml. Edit it here, then run `mise install`.
+#
+# Default packages for each language come from the ~/.default-* files, which
+# are symlinked from this repo's mise/ directory.
+
+[tools]
+# Languages
+node = "latest"
+python = "latest"
+ruby = "latest"
+
+# Cross-platform CLI tools (macOS and Linux)
+broot = "latest"
+croc = "latest"
+delta = "latest"
+difftastic = "latest"
+eza = "latest"
+fd = "latest"
+fx = "latest"
+fzf = "latest"
+gh = "latest"
+jq = "latest"
+lua-language-server = "latest"
+overmind = "latest"
+ripgrep = "latest"
+shfmt = "latest"
+stylua = "latest"
+"npm:diff-so-fancy" = "latest"
+"ubi:mroth/scmpuff" = "latest"
+
+# macOS only
+mas = { version = "latest", os = "macos" }
+
+[settings]
+trusted_config_paths = ["~/dev"]

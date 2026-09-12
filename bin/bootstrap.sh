@@ -1,31 +1,28 @@
 #!/bin/bash
 
-# New Mac setup
+# New Mac / Linux setup
 # Usage: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
+#
+# Installs the few things mise cannot install for itself (git and mise), clones
+# this repo, and hands the rest over to `mise bootstrap`. Extra arguments are
+# passed straight through, e.g.:
+#
+#   bootstrap.sh --dry-run
+#   bootstrap.sh --only dotfiles
 
 set -euo pipefail
 
-# Cleanup temp files on exit
-trap 'rm -f /tmp/dotfiles.tar.gz' EXIT
-
-# Color definitions
 readonly RED='\033[0;31m'
 readonly GREEN='\033[0;32m'
 readonly YELLOW='\033[1;33m'
 readonly BLUE='\033[0;34m'
 readonly NC='\033[0m'
 
-# Configuration
 readonly REPO_URL="https://github.com/natsumi/dotfiles"
 readonly REPO_BRANCH="${REPO_BRANCH:-main}"
 readonly DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dev/dotfiles}"
+readonly MISE_BIN="$HOME/.local/bin/mise"
 
-# Homebrew 6 prompts for confirmation before installing ("ask mode") whenever it
-# has a TTY. This script is meant to run unattended, and `set -e` would abort on
-# a declined prompt, so opt out for the whole run.
-export HOMEBREW_NO_ASK=1
-
-# Functions
 error_exit() {
     echo -e "${RED}ERROR: $1${NC}" >&2
     exit 1
@@ -43,25 +40,70 @@ warning() {
     echo -e "${YELLOW}⚠ $1${NC}"
 }
 
-verify_macos() {
-    if [[ "$OSTYPE" != "darwin"* ]]; then
-        error_exit "This script is designed for macOS only. Current OS: $OSTYPE"
+verify_not_root() {
+    if [[ "$(id -u)" -eq 0 ]]; then
+        error_exit "Do not run this as root. Run it as the user who owns \$HOME."
     fi
-    success "Verified running on macOS"
+}
+
+ensure_git_macos() {
+    if xcode-select -p &> /dev/null; then
+        success "Xcode command line tools are installed"
+        return 0
+    fi
+
+    info "Installing Xcode command line tools..."
+    xcode-select --install || true
+
+    warning "Finish the Xcode command line tools installer, this will continue automatically"
+    until xcode-select -p &> /dev/null; do
+        sleep 10
+    done
+    success "Xcode command line tools installed"
+}
+
+ensure_git_linux() {
+    if command -v git &> /dev/null && command -v curl &> /dev/null; then
+        success "git and curl are installed"
+        return 0
+    fi
+
+    command -v apt-get &> /dev/null \
+        || error_exit "git and curl are required. Install them with your package manager and re-run."
+
+    info "Installing git and curl..."
+    sudo apt-get update || error_exit "Failed to update apt metadata"
+    sudo apt-get install -y git curl || error_exit "Failed to install git and curl"
+    success "git and curl installed"
+}
+
+ensure_git() {
+    case "$OSTYPE" in
+        darwin*) ensure_git_macos ;;
+        linux*) ensure_git_linux ;;
+        *) error_exit "Unsupported OS: $OSTYPE" ;;
+    esac
+}
+
+install_mise() {
+    if [[ -x "$MISE_BIN" ]]; then
+        success "mise is already installed"
+        return 0
+    fi
+
+    info "Installing mise..."
+    curl -fsSL https://mise.run | sh || error_exit "Failed to install mise"
+    success "mise installed"
 }
 
 clone_repository() {
-    info "Setting up dotfiles repository..."
-
     if [[ -d "$DOTFILES_DIR/.git" ]]; then
         success "Dotfiles repo already cloned at $DOTFILES_DIR"
         return 0
     fi
 
     if [[ -d "$DOTFILES_DIR" ]] && [[ -n "$(ls -A "$DOTFILES_DIR" 2>/dev/null)" ]]; then
-        warning "Directory $DOTFILES_DIR already exists and is not empty (but is not a git repo)"
-        info "Skipping clone to avoid overwriting existing files"
-        return 0
+        error_exit "$DOTFILES_DIR exists, is not empty and is not a git repo"
     fi
 
     mkdir -p "$(dirname "$DOTFILES_DIR")" || error_exit "Failed to create parent directory"
@@ -71,72 +113,23 @@ clone_repository() {
     success "Cloned dotfiles repository to $DOTFILES_DIR"
 }
 
-install_homebrew() {
-    if command -v brew &> /dev/null; then
-        success "Homebrew is already installed"
-        return 0
-    fi
-
-    info "Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || error_exit "Failed to install Homebrew"
-
-    # Add Homebrew to PATH (only if not already present)
-    if ! grep -qF '/opt/homebrew/bin/brew shellenv' ~/.zprofile 2>/dev/null; then
-        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-    fi
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-
-    success "Homebrew installed successfully"
-}
-
-install_mise() {
-    if command -v mise &> /dev/null; then
-        success "mise is already installed"
-        return 0
-    fi
-
-    info "Installing mise..."
-    brew install mise || error_exit "Failed to install mise"
-
-    # Initialize mise for current session
-    eval "$(mise activate bash)"
-
-    success "mise installed successfully"
-}
-
-install_ruby() {
-    if mise ls --installed ruby 2>/dev/null | grep -q ruby; then
-        success "Ruby is already installed via mise"
-        return 0
-    fi
-
-    info "Installing latest Ruby via mise..."
-
-    info "Installing build libraries..."
-    brew install jemalloc libffi libtool libxslt libyaml openssl readline unixodbc xz zlib \
-        || error_exit "Failed to install Ruby build libraries"
-
-    info "Installing Ruby..."
-    mise install ruby@latest || error_exit "Failed to install Ruby"
-    mise use -g ruby@latest || error_exit "Failed to set global Ruby version"
-
-    success "Ruby installed and set as global version"
-}
-
 main() {
-    info "Starting macOS bootstrap process..."
+    info "Starting bootstrap..."
 
-    verify_macos
-    clone_repository
-    install_homebrew
+    verify_not_root
+    ensure_git
     install_mise
-    install_ruby
 
-    success "Bootstrap completed successfully!"
+    export PATH="$HOME/.local/bin:$PATH"
+
+    clone_repository
 
     cd "$DOTFILES_DIR" || error_exit "Failed to cd to $DOTFILES_DIR"
-    ruby setup/setup_system.rb
+
+    "$MISE_BIN" trust || error_exit "Failed to trust $DOTFILES_DIR/mise.toml"
+    "$MISE_BIN" bootstrap --yes "$@" || error_exit "mise bootstrap failed"
+
+    success "Bootstrap completed. Open a new shell to pick up the new environment."
 }
 
-# Run main function
-main
+main "$@"

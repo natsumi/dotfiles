@@ -75,4 +75,6 @@ fi
 TMPPREFIX="${TMPDIR%/}/zsh"
 
 # Apple Silicon support
-[[ -f /opt/homebrew/bin/brew ]] &&  eval $(/opt/homebrew/bin/brew shellenv)
+# mise pours brew bottles into /opt/homebrew without Homebrew itself, so
+# just put that prefix on PATH when it exists.
+[[ -d /opt/homebrew/bin ]] && export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
