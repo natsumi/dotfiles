@@ -1,0 +1,224 @@
+# macOS half of the bootstrap project.
+#
+# Loaded automatically next to mise.toml on macOS (auto_env in .miserc.toml).
+# Host packages, desktop apps, fonts and system defaults. macOS is
+# Homebrew-free: mise's built-in `brew:`/`brew-cask:` managers pour bottles
+# and casks into /opt/homebrew without Homebrew being installed.
+#
+# Cross-platform CLI tools are NOT here - they are `[tools]` in the global
+# config. Only things the registry can't provide stay native packages.
+
+[bootstrap.brew]
+# Adopt an identical app that is already installed instead of replacing it.
+adopt = true
+
+[bootstrap.packages]
+# --- Build libraries for compiling ruby/python ---
+"brew:autoconf" = "latest"
+"brew:automake" = "latest"
+"brew:jemalloc" = "latest"
+"brew:libffi" = "latest"
+"brew:libtool" = "latest"
+"brew:libxslt" = "latest"
+"brew:libyaml" = "latest"
+"brew:openssl@3" = "latest"
+"brew:readline" = "latest"
+"brew:unixodbc" = "latest"
+"brew:xz" = "latest"
+"brew:zlib" = "latest"
+
+# --- Core CLI not covered by the mise registry ---
+"brew:aria2" = "latest"
+"brew:coreutils" = "latest"
+"brew:ffmpeg" = "latest"
+"brew:gawk" = "latest"
+"brew:git" = "latest"
+"brew:gnupg" = "latest"
+"brew:htop" = "latest"
+"brew:ncdu" = "latest"
+"brew:neovim" = "latest"
+"brew:sqlite" = "latest"
+"brew:tig" = "latest"
+"brew:tmate" = "latest"
+"brew:tmux" = "latest"
+"brew:tree" = "latest"
+"brew:wget" = "latest"
+"brew:zsh" = "latest"
+
+# --- macOS-only helpers ---
+"brew:reattach-to-user-namespace" = "latest"
+"brew:terminal-notifier" = "latest"
+"brew:tmux-mem-cpu-load" = "latest"
+# --- Desktop applications ---
+"brew-cask:alfred" = "latest"
+"brew-cask:betterdisplay" = "latest"
+"brew-cask:cursor" = "latest"
+"brew-cask:discord" = "latest"
+"brew-cask:firefox@developer-edition" = "latest"
+"brew-cask:forklift" = "latest"
+"brew-cask:ghostty" = "latest"
+"brew-cask:google-chrome" = "latest"
+"brew-cask:itsycal" = "latest"
+"brew-cask:jordanbaird-ice" = "latest"
+"brew-cask:kitty" = "latest"
+"brew-cask:localsend" = "latest"
+"brew-cask:mounty" = "latest"
+"brew-cask:postman" = "latest"
+"brew-cask:quicklook-video" = "latest"
+"brew-cask:sanesidebuttons" = "latest"
+"brew-cask:shottr" = "latest"
+"brew-cask:slack" = "latest"
+"brew-cask:spotify" = "latest"
+"brew-cask:spotmenu" = "latest"
+"brew-cask:stats" = "latest"
+"brew-cask:sublime-merge" = "latest"
+"brew-cask:tableplus" = "latest"
+"brew-cask:telegram" = "latest"
+"brew-cask:the-unarchiver" = "latest"
+"brew-cask:trex" = "latest"
+"brew-cask:visual-studio-code" = "latest"
+"brew-cask:vlc" = "latest"
+
+# --- Fonts ---
+"brew-cask:font-cascadia-mono-pl" = "latest"
+"brew-cask:font-consolas-for-powerline" = "latest"
+"brew-cask:font-menlo-for-powerline" = "latest"
+"brew-cask:font-anonymice-nerd-font" = "latest"
+"brew-cask:font-blex-mono-nerd-font" = "latest"
+"brew-cask:font-dejavu-sans-mono-nerd-font" = "latest"
+"brew-cask:font-droid-sans-mono-nerd-font" = "latest"
+"brew-cask:font-fantasque-sans-mono-nerd-font" = "latest"
+"brew-cask:font-fira-code-nerd-font" = "latest"
+"brew-cask:font-fira-mono-nerd-font" = "latest"
+"brew-cask:font-go-mono-nerd-font" = "latest"
+"brew-cask:font-iosevka-nerd-font" = "latest"
+"brew-cask:font-jetbrains-mono-nerd-font" = "latest"
+"brew-cask:font-liberation-nerd-font" = "latest"
+"brew-cask:font-meslo-lg-nerd-font" = "latest"
+"brew-cask:font-roboto-mono-nerd-font" = "latest"
+"brew-cask:font-sauce-code-pro-nerd-font" = "latest"
+"brew-cask:font-victor-mono-nerd-font" = "latest"
+
+#
+# macOS defaults
+#
+# Migrated from the old bin/apply_default_settings. The handful of settings
+# that need root live in bin/apply_sudo_defaults and are run by hand.
+
+[bootstrap.macos.dock]
+autohide = true
+autohide_delay = 0.0
+mru_spaces = false
+
+[bootstrap.macos.finder]
+show_extensions_warning = false
+show_pathbar = true
+show_status_bar = true
+preferred_view_style = "list"
+
+[bootstrap.macos.keyboard]
+key_repeat = 0
+press_and_hold = false
+
+[bootstrap.macos.trackpad]
+tap_to_click = true
+
+[bootstrap.macos.defaults.NSGlobalDomain]
+AppleKeyboardUIMode = 3
+AppleShowAllExtensions = true
+NSAutomaticDashSubstitutionEnabled = false
+NSAutomaticQuoteSubstitutionEnabled = false
+NSNavPanelExpandedStateForSaveMode = true
+PMPrintingExpandedStateForPrint = true
+WebKitDeveloperExtras = true
+"com.apple.mouse.tapBehavior" = 1
+"com.apple.swipescrolldirection" = false
+
+[bootstrap.macos.defaults."com.apple.dock"]
+"dashboard-in-overlay" = true
+
+[bootstrap.macos.defaults."com.apple.finder"]
+QLEnableTextSelection = true
+
+[bootstrap.macos.defaults."com.apple.BezelServices"]
+kDimTime = 300
+
+[bootstrap.macos.defaults."com.apple.LaunchServices"]
+LSQuarantine = false
+
+[bootstrap.macos.defaults."com.apple.screensaver"]
+askForPassword = 1
+askForPasswordDelay = 0
+
+[bootstrap.macos.defaults."com.apple.desktopservices"]
+DSDontWriteNetworkStores = true
+DSDontWriteUSBStores = true
+
+[bootstrap.macos.defaults."com.apple.driver.AppleBluetoothMultitouch.trackpad"]
+TrackpadCornerSecondaryClick = 2
+TrackpadRightClick = true
+
+[bootstrap.macos.defaults."com.apple.universalaccess"]
+closeViewScrollWheelToggle = true
+closeViewZoomFollowsFocus = true
+HIDScrollZoomModifierMask = 262144
+
+[bootstrap.macos.defaults."com.apple.Safari"]
+HomePage = "about:blank"
+ShowFavoritesBar = false
+FindOnPageMatchesWordStartsOnly = false
+IncludeInternalDebugMenu = true
+IncludeDevelopMenu = true
+UniversalSearchEnabled = false
+WebKitDeveloperExtrasEnabledPreferenceKey = true
+"com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true
+
+[bootstrap.macos.defaults."com.apple.addressbook"]
+ABShowDebugMenu = true
+
+[bootstrap.macos.defaults."com.apple.iCal"]
+IncludeDebugMenu = true
+
+[bootstrap.macos.defaults."com.apple.TextEdit"]
+RichText = 0
+PlainTextEncoding = 4
+PlainTextEncodingForWrite = 4
+
+[bootstrap.macos.defaults."com.apple.DiskUtility"]
+DUDebugMenuEnabled = true
+"advanced-image-options" = true
+
+[bootstrap.macos.defaults."com.apple.TimeMachine"]
+DoNotOfferNewDisksForBackup = true
+
+[bootstrap.macos.defaults."com.apple.print.PrintingPrefs"]
+"Quit When Finished" = true
+
+[bootstrap.macos.defaults."com.apple.appstore"]
+ShowDebugMenu = true
+
+# VS Code: key repeat instead of the accent popover.
+[bootstrap.macos.defaults."com.microsoft.VSCode"]
+ApplePressAndHoldEnabled = false
+
+# `defaults -currentHost write ...` equivalents.
+[[bootstrap.macos.defaults_entries]]
+domain = "NSGlobalDomain"
+key = "com.apple.trackpad.trackpadCornerClickBehavior"
+host = "current"
+value = 1
+
+[[bootstrap.macos.defaults_entries]]
+domain = "NSGlobalDomain"
+key = "com.apple.trackpad.enableSecondaryClick"
+host = "current"
+value = true
+
+[[bootstrap.macos.defaults_entries]]
+domain = "NSGlobalDomain"
+key = "com.apple.mouse.tapBehavior"
+host = "current"
+value = 1
+
+[bootstrap.hooks.post-defaults]
+run = "killall Dock Finder SystemUIServer 2>/dev/null || true"

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+#
+# Create a swap file when the machine has no swap at all. Run by the
+# pre-packages hook in mise.linux.toml on every bootstrap; exits early
+# (without sudo) once any swap is active.
+#
+# Size: 2x RAM below 2GB of RAM, otherwise 4GB.
+
+set -euo pipefail
+
+if [ -n "$(swapon --noheadings --show=NAME)" ]; then
+    exit 0
+fi
+
+total_mb=$(awk '/^MemTotal:/ {print int($2/1024)}' /proc/meminfo)
+if (( total_mb < 2048 )); then
+    size_mb=$((total_mb * 2))
+else
+    size_mb=4096
+fi
+
+echo "No swap active - creating a ${size_mb}MB /swapfile (RAM: ${total_mb}MB)"
+
+# fallocate fails on ZFS and some btrfs layouts. Treat swap as best-effort.
+if ! sudo fallocate -l "${size_mb}M" /swapfile; then
+    echo "fallocate failed (zfs/btrfs?) - skipping swap" >&2
+    sudo rm -f /swapfile
+    exit 0
+fi
+
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+if ! grep -qE '^\s*/swapfile\b' /etc/fstab; then
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab > /dev/null
+fi
+
+echo "Swap active (${size_mb}MB)"

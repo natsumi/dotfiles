@@ -1,0 +1,53 @@
+# Docker Engine for Linux boxes. Opt-in:
+#
+#   mise -E docker bootstrap --update
+#
+# `--update` refreshes apt metadata after the repository files below are
+# written, which mise does not do on its own once /var/lib/apt/lists exists.
+# Log out and back in afterwards for the docker group to take effect.
+
+[bootstrap.directories."/etc/apt/keyrings"]
+owner = "root"
+group = "root"
+mode = "0755"
+phase = "pre-packages"
+
+[bootstrap.files."/etc/apt/keyrings/docker.asc"]
+source = "linux/etc/apt/keyrings/docker.asc"
+owner = "root"
+group = "root"
+mode = "0644"
+phase = "pre-packages"
+
+[bootstrap.files."/etc/apt/sources.list.d/docker.sources"]
+source = "linux/etc/apt/sources.list.d/docker.sources"
+owner = "root"
+group = "root"
+mode = "0644"
+phase = "pre-packages"
+
+[bootstrap.packages]
+"apt:docker-ce" = "latest"
+"apt:docker-ce-cli" = "latest"
+"apt:containerd.io" = "latest"
+"apt:docker-buildx-plugin" = "latest"
+"apt:docker-compose-plugin" = "latest"
+
+[bootstrap.files."/etc/docker/daemon.json"]
+source = "linux/etc/docker/daemon.json"
+owner = "root"
+group = "root"
+mode = "0644"
+notify = ["docker"]
+
+[bootstrap.services.docker]
+state = "running"
+enabled = true
+
+[bootstrap.services.containerd]
+state = "running"
+enabled = true
+
+# Let the admin user talk to the daemon without sudo.
+[bootstrap.hooks.post-packages]
+run = "id -nG | grep -qw docker || sudo usermod -aG docker \"$USER\""

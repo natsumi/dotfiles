@@ -1,28 +1,34 @@
-My very opinated configuration and setup scripts for new and existing Macs and Linux boxes.
+My very opinionated configuration and setup for new and existing Macs and Linux boxes.
 
-Machine setup is declarative: the root `mise.toml` is a [mise bootstrap](https://mise.jdx.dev/bootstrap.html)
-project that declares host packages, git repos, dotfile symlinks, macOS defaults
-and the login shell. The global mise config (languages and cross-platform CLI
-tools) lives in `mise/.config/mise/config.toml` and is symlinked to
-`~/.config/mise/config.toml`.
+Machine setup is declarative, driven by [mise bootstrap](https://mise.jdx.dev/bootstrap.html):
 
-## Setup a new Mac or Linux machine
+| File | Loaded | Declares |
+|---|---|---|
+| `mise.toml` | always | git repos (prezto), `[dotfiles]` symlinks, login shell, git identity prompt |
+| `mise.linux.toml` | on Linux, automatically (`auto_env` in `.miserc.toml`) | apt packages, SSH hardening, firewall, fail2ban, unattended upgrades, sysctl, swap |
+| `mise.macos.toml` | on macOS, automatically | brew packages, casks, fonts, macOS defaults |
+| `mise.docker.toml` | `mise -E docker` | Docker Engine (Linux) |
+| `mise/.config/mise/config.toml` | symlinked to `~/.config/mise/config.toml` | languages and cross-platform CLI tools (`[tools]`) |
+
+Sources for the Linux system files live under `linux/etc/`, mirroring their
+target paths.
+
+## Setup a new Mac
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
 ```
 
-The script installs only what mise cannot install for itself - git (Xcode
-command line tools on macOS, `apt-get install git curl` on Debian/Ubuntu) and
-mise itself via <https://mise.run> - clones this repo to `~/dev/dotfiles`, then
-runs `mise bootstrap --yes`. Any extra arguments are passed straight through to
-`mise bootstrap`, so `bootstrap.sh --dry-run` previews the whole thing.
+The script installs only what mise cannot install for itself - the Xcode
+command line tools and mise via <https://mise.run> - clones this repo to
+`~/dev/dotfiles`, then runs `mise bootstrap --yes`. Any extra arguments are
+passed straight through, so `bootstrap.sh --dry-run` previews the whole thing.
 
 `mise bootstrap` then runs these phases in order:
 
-1. **Packages** - `brew:` / `brew-cask:` on macOS, `apt:` on Debian/Ubuntu.
-   macOS is Homebrew-free: mise's built-in brew manager pours bottles and casks
-   into `/opt/homebrew` without Homebrew being installed.
+1. **Packages** - `brew:` / `brew-cask:` from `mise.macos.toml`. macOS is
+   Homebrew-free: mise's built-in brew manager pours bottles and casks into
+   `/opt/homebrew` without Homebrew being installed.
 2. **Repos** - prezto and prezto-contrib are cloned into `~`, then a
    `post-repos` hook initialises prezto's submodules.
 3. **Dotfiles** - every symlink in the `[dotfiles]` section of `mise.toml`, plus
@@ -36,7 +42,101 @@ runs `mise bootstrap --yes`. Any extra arguments are passed straight through to
    global config in a new process.
 
 Open a new shell afterwards so the new login shell, PATH and mise activation
-take effect.
+take effect. A few system settings need root and are not managed by mise; run
+them by hand once:
+
+```bash
+bin/apply_sudo_defaults
+```
+
+## Setup a new Linux box (Ubuntu 26.04)
+
+Every Linux box gets the server treatment: SSH on port **2222** with keys only,
+a default-deny firewall, fail2ban, unattended security upgrades, kernel
+hardening, a swap file and the `America/Los_Angeles` timezone. Only Ubuntu
+26.04 is supported.
+
+mise runs as the admin user and uses `sudo` where a step needs it, so a fresh
+box that only has `root` needs the user first. In the root session:
+
+```bash
+adduser --gecos "" natsumi     # prompts for the password
+usermod -aG sudo natsumi
+install -d -m 700 -o natsumi -g natsumi /home/natsumi/.ssh
+install -m 600 -o natsumi -g natsumi /root/.ssh/authorized_keys /home/natsumi/.ssh/authorized_keys
+```
+
+**Keep that root session open.** From a second terminal log in as the user
+(still on port 22) and run the same command as on a Mac:
+
+```bash
+ssh natsumi@HOST
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
+```
+
+`sudo` asks for the password when a step needs it. On top of the shared phases
+above, Linux runs these before the repos phase:
+
+1. **Pre-packages hook** - sets the timezone and creates `/swapfile` when the
+   box has no swap at all.
+2. **Packages** - `apt:` packages from `mise.linux.toml`.
+3. **System files** - the sshd drop-in (port 2222, no passwords, root by key
+   only), `/etc/issue.net`, the fail2ban jail, the unattended-upgrades
+   drop-in and the sysctl hardening. cloud-init's sshd drop-in is removed
+   because it re-enables password auth.
+4. **Services** - `ssh.socket` is restarted so sshd listens on 2222; fail2ban
+   and unattended-upgrades are enabled and running.
+5. **Firewall** - ufw with incoming denied and a rate-limited rule for
+   2222/tcp only. mise tags its rules and leaves any others alone.
+
+When it finishes:
+
+1. From a third terminal, confirm the new port works:
+
+   ```bash
+   ssh -p 2222 natsumi@HOST
+   ```
+
+   Only then close the root session. If it does not work, fix it from the
+   root session (or the provider's console): `sudo sshd -t` shows config
+   errors, `sudo ufw status` the firewall.
+2. Reboot if the final hook says a reboot is required: `sudo reboot`.
+3. Open a new shell for zsh and mise activation.
+
+### Docker (optional)
+
+```bash
+cd ~/dev/dotfiles
+mise -E docker bootstrap --update
+```
+
+Adds Docker's apt repository (key committed in `linux/etc/apt/keyrings/`),
+installs Docker Engine with the compose and buildx plugins, writes
+`/etc/docker/daemon.json` and adds you to the `docker` group (log out and back
+in for that to take effect). `--update` is needed because mise does not
+refresh apt metadata on its own after writing the repository file.
+
+**Docker bypasses ufw.** A published port (`-p 80:80`) is reachable from the
+internet regardless of `ufw status`. Bind containers to `127.0.0.1` and put a
+reverse proxy on the host in front of them.
+
+### Skipping the root session with cloud-init
+
+Providers that accept user-data can create the admin user at boot, so the box
+never arrives root-only and only the bootstrap command is needed:
+
+```yaml
+#cloud-config
+users:
+  - name: natsumi
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAA... you@laptop
+```
+
+Set a password afterwards with `sudo passwd natsumi` if you want one.
 
 ## Day-to-day
 
@@ -45,6 +145,7 @@ Run these from the repo directory (or pass `mise -C ~/dev/dotfiles ...`), since
 
 ```bash
 mise bootstrap status                   # everything mise knows about, in one list
+mise bootstrap plan                     # what a run would change (needs sudo on Linux)
 mise bootstrap --dry-run                # preview the whole workflow
 mise bootstrap --only dotfiles          # re-apply just the symlinks
 mise bootstrap dotfiles status          # per-entry: applied / missing / differs
@@ -52,6 +153,10 @@ mise bootstrap dotfiles diff            # what apply would change
 mise bootstrap dotfiles apply           # apply the symlinks and the gitconfig block
 mise bootstrap packages status          # which host packages are missing
 mise bootstrap packages apply           # install the missing ones
+mise bootstrap packages upgrade --manager apt   # upgrade the installed apt packages
+mise bootstrap files status             # Linux: /etc drop-ins, applied / update
+mise bootstrap services status          # Linux: sshd, fail2ban, unattended-upgrades
+mise bootstrap firewall status          # Linux: ufw policy and rules (needs sudo)
 mise bootstrap macos defaults status    # macOS preference drift (skipped on Linux)
 mise bootstrap --skip tools,task        # setup without touching language versions
 ```
@@ -103,16 +208,20 @@ happens.
 ## Adding a package or tool
 
 **Host packages** (native libraries, GUI apps, things with no mise registry
-entry) go in `[bootstrap.packages]` in `mise.toml`. Add them by hand, or let
-mise write the entry:
+entry) go in the platform file, so no `os` selectors are needed:
 
-```bash
-mise bootstrap packages use brew:foo
-mise bootstrap packages use apt:foo
+```toml
+# mise.linux.toml
+[bootstrap.packages]
+"apt:foo" = "latest"
+
+# mise.macos.toml
+[bootstrap.packages]
+"brew:foo" = "latest"
+"brew-cask:foo" = "latest"
 ```
 
-Every `brew:` / `brew-cask:` entry must carry `os = "macos"` - mise's brew
-manager also works on Linux and would otherwise create `/home/linuxbrew`.
+Then `mise bootstrap packages apply`.
 
 **Versioned tools** (anything in the mise registry, plus `npm:` / `ubi:`
 backends) go in `[tools]` in `mise/.config/mise/config.toml`, then:
@@ -121,7 +230,30 @@ backends) go in `[tools]` in `mise/.config/mise/config.toml`, then:
 mise install
 ```
 
-## Migrating an existing machine from stow
+## Adding a Linux system file
+
+1. Put the file under `linux/etc/`, mirroring its target path - e.g.
+   `linux/etc/sysctl.d/99-vps-hardening.conf` for
+   `/etc/sysctl.d/99-vps-hardening.conf`.
+2. Declare it in `mise.linux.toml`, naming the service to restart when it
+   changes:
+
+   ```toml
+   [bootstrap.files."/etc/fail2ban/jail.d/vps.local"]
+   source = "linux/etc/fail2ban/jail.d/vps.local"
+   owner = "root"
+   group = "root"
+   mode = "0644"
+   notify = ["fail2ban"]
+   ```
+3. Preview and apply:
+
+   ```bash
+   mise bootstrap files apply --dry-run
+   mise bootstrap files apply
+   ```
+
+## Migrating an existing machine
 
 mise reads the existing stow symlinks as already applied, so there is very
 little to do:
@@ -144,25 +276,17 @@ or let mise replace it with `mise bootstrap dotfiles apply --force`. Merge
 anything machine-specific from the backup into
 `mise/.config/mise/config.toml` (or into `~/.config/mise/config.local.toml`).
 
-GNU Stow is no longer used or installed.
+A Linux box set up by the old `vps/` scripts already has the same `/etc`
+drop-ins, so mise adopts them. The one content change is the SSH port moving
+to 2222; check `mise bootstrap files status` first, and after the run delete
+the old ufw rule for port 22 by hand (`sudo ufw delete allow 22/tcp`).
 
-## macOS sudo defaults
-
-A few system settings need root and are not managed by mise. Run them by hand
-after bootstrap:
-
-```bash
-bin/apply_sudo_defaults
-```
-
-## Servers
-
-Server/VPS provisioning is separate and unchanged; see `vps/`.
+GNU Stow and the `vps/` scripts are no longer used.
 
 # Desktop Applications
 
-These applications are declared as `brew-cask:` entries in `mise.toml` and
-installed by `mise bootstrap packages apply` on macOS.
+These applications are declared as `brew-cask:` entries in `mise.macos.toml`
+and installed by `mise bootstrap packages apply` on macOS.
 
 ## Productivity Applications
 
@@ -213,7 +337,8 @@ installed by `mise bootstrap packages apply` on macOS.
 Cross-platform CLI tools are `[tools]` in the global mise config
 (`mise/.config/mise/config.toml`). Everything else - native libraries, build
 dependencies and anything without a mise registry entry - is declared in
-`[bootstrap.packages]` in `mise.toml` as `brew:` (macOS) or `apt:` (Linux).
+`[bootstrap.packages]` as `brew:` in `mise.macos.toml` or `apt:` in
+`mise.linux.toml`.
 
 ## Development Tools
 - [awk](https://www.gnu.org/software/gawk/) - Pattern scanning and text processing language
@@ -224,6 +349,7 @@ dependencies and anything without a mise registry entry - is declared in
 - [git](https://git-scm.com/) - Distributed version control system
 - [git-delta](https://github.com/dandavison/delta) - Syntax-highlighting pager for git
 - [jq](https://stedolan.github.io/jq/) - Lightweight command-line JSON processor
+- [lazydocker](https://github.com/jesseduffield/lazydocker) - Terminal UI for Docker (Linux)
 - [mise](https://github.com/jdx/mise) - Development environment manager
 - [neovim](https://neovim.io/) - Hyperextensible Vim-based text editor
 - [overmind](https://github.com/DarthSim/overmind) - Process manager for Procfile-based applications
@@ -235,6 +361,7 @@ dependencies and anything without a mise registry entry - is declared in
 ## Utilities
 - [aria2](https://aria2.github.io/) - Lightweight multi-protocol download utility
 - [broot](https://github.com/Canop/broot) - Better way to navigate directories
+- [btop](https://github.com/aristocratos/btop) - Resource monitor (Linux)
 - [croc](https://github.com/schollz/croc) - Easily and securely send things from one computer to another / Magic Wormhole
 - [eza](https://github.com/eza-community/eza) - Modern replacement for ls
 - [fd](https://github.com/sharkdp/fd) - Simple, fast and user-friendly alternative to find
@@ -250,6 +377,32 @@ dependencies and anything without a mise registry entry - is declared in
 - [tree](https://mama.indstate.edu/users/ice/tree/) - Directory listing in tree format
 - [wget](https://www.gnu.org/software/wget/) - Internet file retriever
 - [zsh](https://www.zsh.org/) - Extended Bourne shell with many improvements
+
+## Host packages by platform
+
+Everything below comes from `[bootstrap.packages]`; the CLI tools above that
+are not listed here come from `[tools]` in the global config and are the same
+on both platforms.
+
+**macOS** (`mise.macos.toml`, `brew:`)
+
+- Build libraries for ruby/python: autoconf, automake, jemalloc, libffi, libtool, libxslt, libyaml, openssl@3, readline, unixodbc, xz, zlib
+- CLI: aria2, coreutils, ffmpeg, gawk, git, gnupg, htop, ncdu, neovim, sqlite, tig, tmate, tmux, tree, wget, zsh
+- macOS helpers: reattach-to-user-namespace, terminal-notifier, tmux-mem-cpu-load
+- Desktop applications and fonts: the `brew-cask:` lists above and the 18 Nerd/Powerline font casks
+
+**Linux** (`mise.linux.toml`, `apt:`, Ubuntu 26.04)
+
+- Build libraries for ruby/python: autoconf, automake, build-essential, libbz2-dev, libffi-dev, liblzma-dev, libncurses-dev, libreadline-dev, libsqlite3-dev, libssl-dev, libtool, libxslt1-dev, libyaml-dev, tk-dev, unixodbc-dev, zlib1g-dev
+- Base system: ca-certificates, curl, git, gnupg, unzip, wget
+- Security (configured by the bootstrap): ufw, fail2ban, unattended-upgrades
+- CLI: aria2, coreutils, ffmpeg, gawk, htop, ncdu, neovim, sqlite3, tig, tmate, tmux, tree, zsh
+- Monitoring: btop, iotop, nethogs
+- Network: bind9-dnsutils, mtr-tiny, traceroute, whois
+
+**Linux with `mise -E docker`** (`mise.docker.toml`)
+
+- docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin, plus lazydocker from `[tools]`
 
 # Default Language Packages
 

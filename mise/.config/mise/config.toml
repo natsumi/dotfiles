@@ -34,5 +34,8 @@ stylua = "latest"
 # macOS only
 mas = { version = "latest", os = "macos" }
 
+# Linux only (pairs with `mise -E docker bootstrap`)
+lazydocker = { version = "latest", os = "linux" }
+
 [settings]
-trusted_config_paths = ["~/dev"]
+trusted_config_paths = ["~/dev", "~/.paseo/worktrees"]
