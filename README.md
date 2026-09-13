@@ -5,7 +5,7 @@ Machine setup is declarative, driven by [mise bootstrap](https://mise.jdx.dev/bo
 | File | Loaded | Declares |
 |---|---|---|
 | `mise.toml` | always | git repos (prezto), `[dotfiles]` symlinks, login shell, git identity prompt |
-| `mise.linux.toml` | on Linux, automatically (`auto_env` in `.miserc.toml`) | apt packages, SSH hardening, firewall, fail2ban, unattended upgrades, sysctl, swap |
+| `mise.linux.toml` | on Linux, automatically (`auto_env` in `.miserc.toml`) | apt packages, SSH hardening, firewall, fail2ban, unattended upgrades, sysctl, swap, Linux-only dotfiles (systemd user PATH) |
 | `mise.macos.toml` | on macOS, automatically | brew packages, casks, fonts, macOS defaults |
 | `mise.docker.toml` | `mise -E docker` | Docker Engine (Linux) |
 | `mise/.config/mise/config.toml` | symlinked to `~/.config/mise/config.toml` | languages and cross-platform CLI tools (`[tools]`) |
@@ -88,6 +88,17 @@ above, Linux runs these before the repos phase:
    and unattended-upgrades are enabled and running.
 5. **Firewall** - ufw with incoming denied and a rate-limited rule for
    2222/tcp only. mise tags its rules and leaves any others alone.
+
+The dotfiles phase also links `~/.config/environment.d/999-user-path.conf`
+(declared in `mise.linux.toml`). systemd user services do not source the zsh
+profile, so without it they only get systemd's default PATH and cannot find
+anything in `~/.local/bin` or the mise shims. For example, a `paseo.service`
+started at boot reports the Claude and Codex providers as "not found". The
+`999-` prefix matters: Ubuntu's `99-environment.conf` resets PATH from
+`/etc/environment`, and a file that sorts before it is silently overridden.
+The user manager only reads the file at login, so log out and back in (or
+reboot) after it is first linked or changed. Check it with
+`systemctl --user show-environment | grep ^PATH=`.
 
 When it finishes:
 
@@ -195,6 +206,9 @@ happens.
    mode = "symlink"
    variants = [{ os = "macos" }]
    ```
+
+   Linux only: put the entry in a `[dotfiles]` table in `mise.linux.toml`
+   instead (as `~/.config/environment.d/999-user-path.conf` is).
 
    Use `mode = "symlink-each"` (as `~/.claude` does) when the target directory
    also holds files mise should leave alone.
