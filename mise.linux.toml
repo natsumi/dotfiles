@@ -76,6 +76,18 @@
 "apt:whois" = "latest"
 
 #
+# Dotfiles
+#
+# Linux-only additions to the `[dotfiles]` map in mise.toml.
+
+[dotfiles]
+# systemd user services do not source the shell profile, so they would not
+# see ~/.local/bin or the mise shims (paseo.service could not find claude or
+# codex). The user manager reads this at login. The 999- prefix makes it sort
+# after Ubuntu's 99-environment.conf, which resets PATH.
+"~/.config/environment.d/999-user-path.conf" = { source = "systemd/.config/environment.d/999-user-path.conf", mode = "symlink" }
+
+#
 # Hooks
 #
 # Both commands are no-ops (and need no sudo) once the box is converged.
