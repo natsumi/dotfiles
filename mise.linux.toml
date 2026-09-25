@@ -90,12 +90,19 @@
 #
 # Hooks
 #
-# Both commands are no-ops (and need no sudo) once the box is converged.
+# All commands are no-ops (and need no sudo) once the box is converged.
+#
+# The QEMU guest agent is only installed when the hypervisor exposes its
+# virtio channel (Proxmox: VM Options > QEMU Guest Agent, then a full stop
+# and start). A plain VPS has no such device and is skipped. It is not in
+# [bootstrap.services] because that would fail on hosts without the channel;
+# the package's udev rule starts it at boot whenever the device exists.
 
 [bootstrap.hooks.pre-packages]
 run = [
   "[ \"$(timedatectl show -p Timezone --value)\" = America/Los_Angeles ] || sudo timedatectl set-timezone America/Los_Angeles",
   "{{ config_root }}/linux/bin/ensure-swap",
+  "[ ! -e /dev/virtio-ports/org.qemu.guest_agent.0 ] || systemctl is-active --quiet qemu-guest-agent || { sudo apt-get install -y qemu-guest-agent && sudo systemctl start qemu-guest-agent; }",
 ]
 
 #
