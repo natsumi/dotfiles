@@ -156,10 +156,13 @@ login_shell = "/bin/zsh"
 # Final steps
 #
 
-# Git identity is machine-specific, so it is prompted for rather than declared.
+# Git identity and the Linux hostname are machine-specific, so they are
+# prompted for rather than declared. Each entry runs as its own script, so the
+# early `exit 0` in the first one does not skip the second.
 [tasks.bootstrap]
-description = "Prompt for the git identity when this machine has none"
-run = """
+description = "Prompt for the git identity and, on Linux, a default hostname"
+run = [
+"""
 set -eu
 
 name=$(git config --global user.name || true)
@@ -194,7 +197,9 @@ if [ -z "$email" ]; then
 fi
 
 echo "git identity: $(git config --global user.name || true) <$(git config --global user.email || true)>"
-"""
+""",
+  "[ \"$(uname -s)\" != Linux ] || {{ config_root }}/linux/bin/set-hostname",
+]
 
 # The dotfiles phase links the global mise config into place *after* this
 # process loaded its configuration, so its `[tools]` are installed here, in a
