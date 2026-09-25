@@ -4,7 +4,7 @@ Machine setup is declarative, driven by [mise bootstrap](https://mise.jdx.dev/bo
 
 | File | Loaded | Declares |
 |---|---|---|
-| `mise.toml` | always | git repos (prezto), `[dotfiles]` symlinks, login shell, git identity prompt |
+| `mise.toml` | always | git repos (prezto), `[dotfiles]` symlinks, login shell, git identity and hostname prompts |
 | `mise.linux.toml` | on Linux, automatically (`auto_env` in `.miserc.toml`) | apt packages, SSH hardening, firewall, fail2ban, unattended upgrades, sysctl, swap, Linux-only dotfiles (systemd user PATH) |
 | `mise.macos.toml` | on macOS, automatically | brew packages, casks, fonts, macOS defaults |
 | `mise.docker.toml` | `mise -E docker` | Docker Engine (Linux) |
@@ -37,7 +37,8 @@ passed straight through, so `bootstrap.sh --dry-run` previews the whole thing.
    `post-defaults` hook that restarts Dock, Finder and SystemUIServer.
 5. **Login shell** - `chsh -s /bin/zsh`.
 6. **Tools** - `[tools]` from the global mise config.
-7. **Bootstrap task** - prompts for the git identity if this machine has none.
+7. **Bootstrap task** - prompts for the git identity if this machine has none
+   and, on Linux, for a hostname (see below).
 8. **Final hook** - `mise install --yes`, which picks up the freshly linked
    global config in a new process.
 
@@ -88,6 +89,12 @@ above, Linux runs these before the repos phase:
    and unattended-upgrades are enabled and running.
 5. **Firewall** - ufw with incoming denied and a rate-limited rule for
    2222/tcp only. mise tags its rules and leaves any others alone.
+
+The bootstrap task asks for a hostname only while the box still has a
+provider or installer default (`ubuntu`, `ubuntu-*`, `localhost`, `ip-*`,
+`vps-*`), so a name you already chose is left alone. It updates `/etc/hosts`
+and tells cloud-init to keep the name across reboots. To rename a box later:
+`linux/bin/set-hostname <name>`.
 
 The dotfiles phase also links `~/.config/environment.d/999-user-path.conf`
 (declared in `mise.linux.toml`). systemd user services do not source the zsh

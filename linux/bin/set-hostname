@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+# Set the machine's hostname. Run by the `bootstrap` task in mise.toml on
+# Linux on every bootstrap.
+#
+#   set-hostname          prompt, but only while the hostname is still a
+#                         provider/installer default and stdin is a terminal
+#   set-hostname NAME     set NAME without asking
+#
+# Updates /etc/hostname (via hostnamectl) and the 127.0.1.1 line in
+# /etc/hosts, and tells cloud-init to keep the name across reboots.
+
+set -euo pipefail
+
+current=$(hostname)
+
+is_default() {
+    case "$1" in
+        ubuntu | ubuntu-* | localhost | localhost.* | ip-* | vps-*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+valid() {
+    # RFC 1123 label: 1-63 letters, digits and hyphens, no leading/trailing hyphen.
+    [[ "$1" =~ ^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?$ ]]
+}
+
+name=${1:-}
+
+if [ -z "$name" ]; then
+    if ! is_default "$current"; then
+        echo "hostname already set: $current"
+        exit 0
+    fi
+
+    if [ ! -t 0 ]; then
+        echo "hostname is still the default ($current). Set it with:"
+        echo "  $0 <name>"
+        exit 0
+    fi
+
+    while true; do
+        printf 'Hostname for this machine [%s]: ' "$current"
+        read -r name
+        name=${name:-$current}
+        valid "$name" && break
+        echo "Invalid hostname: letters, digits and hyphens, up to 63 characters"
+    done
+fi
+
+valid "$name" || { echo "Invalid hostname: $name" >&2; exit 1; }
+
+if [ "$name" = "$current" ]; then
+    echo "hostname unchanged: $current"
+    exit 0
+fi
+
+sudo hostnamectl set-hostname "$name"
+
+if grep -qE '^127\.0\.1\.1\b' /etc/hosts; then
+    sudo sed -i -E "s/^127\.0\.1\.1\b.*/127.0.1.1\t$name/" /etc/hosts
+else
+    printf '127.0.1.1\t%s\n' "$name" | sudo tee -a /etc/hosts > /dev/null
+fi
+
+# Without this, cloud-init can put the provider's name back on reboot.
+if [ -d /etc/cloud/cloud.cfg.d ]; then
+    echo 'preserve_hostname: true' | sudo tee /etc/cloud/cloud.cfg.d/99-preserve-hostname.cfg > /dev/null
+fi
+
+echo "hostname: $current -> $name"
