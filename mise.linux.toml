@@ -178,13 +178,18 @@ enabled = true
 # Unattended security upgrades (no automatic reboot)
 #
 # The drop-in is read by apt's daily timers; the service itself only runs at
-# shutdown to finish an in-flight upgrade.
+# shutdown to finish an in-flight upgrade. It is named after the stock
+# 50unattended-upgrades it overrides (loaded after it, so ours wins); the old
+# 99-vps-upgrades name is removed.
 
-[bootstrap.files."/etc/apt/apt.conf.d/99-vps-upgrades"]
-source = "linux/etc/apt/apt.conf.d/99-vps-upgrades"
+[bootstrap.files."/etc/apt/apt.conf.d/52unattended-upgrades-local"]
+source = "linux/etc/apt/apt.conf.d/52unattended-upgrades-local"
 owner = "root"
 group = "root"
 mode = "0644"
+
+[bootstrap.files."/etc/apt/apt.conf.d/99-vps-upgrades"]
+state = "absent"
 
 [bootstrap.services.unattended-upgrades]
 state = "running"
