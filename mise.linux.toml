@@ -71,6 +71,7 @@
 
 # --- Network ---
 "apt:bind9-dnsutils" = "latest"
+"apt:mosh" = "latest"
 "apt:mtr-tiny" = "latest"
 "apt:traceroute" = "latest"
 "apt:whois" = "latest"
@@ -158,6 +159,14 @@ name = "ssh"
 port = 2222
 protocol = "tcp"
 action = "limit"
+
+# mosh needs no daemon: the client logs in over SSH (port 2222), starts a
+# per-session mosh-server, then talks to it over UDP on one port from this
+# range (one port per concurrent session).
+[[bootstrap.linux.firewall.rules]]
+name = "mosh"
+port = "60000-61000"
+protocol = "udp"
 
 #
 # fail2ban
