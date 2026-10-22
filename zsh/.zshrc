@@ -61,6 +61,8 @@ bindkey "^N" insert-last-word
 
 # Remove aliases
 unalias gls 2>/dev/null # git log conflicts with dircolors gls
+# prezto's noglob breaks local globs (scp *.tgz host:); quote remote globs instead
+unalias scp rsync sftp 2>/dev/null
 
 # Load other program settings
 # aliases
