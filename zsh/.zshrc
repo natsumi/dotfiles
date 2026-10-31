@@ -74,8 +74,8 @@ unalias scp rsync sftp 2>/dev/null
 # Load fzf commands
 [[ -f ~/.fzf_commands.zsh ]] && source ~/.fzf_commands.zsh
 
-# Mise
-[[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
+# Mise: ~/.local/bin on Linux, /opt/homebrew/bin on macOS (PATH set in .zshenv)
+command -v mise > /dev/null && eval "$(mise activate zsh)"
 
 # FZF key bindings and completion. fzf is a mise tool (on PATH via the shims
 # dir added in .zprofile), so use its built-in shell integration.

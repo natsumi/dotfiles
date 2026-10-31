@@ -2,10 +2,12 @@
 export VISUAL=nvim
 export EDITOR=$VISUAL
 
-# Non-interactive SSH commands (e.g. mosh starting mosh-server) only read
-# .zshenv, so put the brew prefix on PATH here too. Login shells re-add it in
-# .zprofile after path_helper reorders PATH.
+# Non-interactive SSH commands (e.g. mosh starting mosh-server) and non-login
+# shells only read .zshenv, so put the brew prefix and ~/.local/bin (mise on
+# Linux) on PATH here too. Login shells re-add them in .zprofile after
+# path_helper reorders PATH.
 [[ -d /opt/homebrew/bin ]] && export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+[[ -d ~/.local/bin ]] && export PATH="$HOME/.local/bin:$PATH"
 
 ######################
 # Programming Env
