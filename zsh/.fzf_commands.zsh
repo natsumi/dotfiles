@@ -50,3 +50,12 @@ _gb() {
     sed 's/^..//' | cut -d' ' -f1 |
     sed 's#^remotes/##'
 }
+
+# Ctrl-G Ctrl-B - pick git branches with fzf and insert them at the cursor
+fzf-gb-widget() {
+  local result=$(_gb | while read -r item; do echo -n "${(q)item} "; done)
+  zle reset-prompt
+  LBUFFER+=$result
+}
+zle -N fzf-gb-widget
+bindkey '^g^b' fzf-gb-widget

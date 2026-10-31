@@ -29,16 +29,14 @@ zstyle ':prezto:load' pmodule \
   'utility' \
   'rails' \
   'git' \
-  'fasd' \
+  'zoxide' \
   'tmux' \
   'completion' \
+  'syntax-highlighting' \
   'autosuggestions' \
   'contrib-prompt' \
   'prompt'
 
-# Completion
-# color the files to match LS_COLORS
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 #
 # Editor
 #

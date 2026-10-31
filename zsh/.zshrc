@@ -5,8 +5,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Our own completion functions. Must be on fpath before prezto runs compinit.
-fpath=(~/.zsh/completion /opt/homebrew/share/zsh/site-functions $fpath)
+# Brew completion functions. Must be on fpath before prezto runs compinit.
+fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+
+# Mise: ~/.local/bin on Linux, /opt/homebrew/bin on macOS (PATH set in .zshenv).
+# Activate before prezto and ~/.aliases so their `command -v` checks (zoxide,
+# eza, ...) see mise-managed tools in non-login shells too.
+command -v mise > /dev/null && eval "$(mise activate zsh)"
 
 # Source Prezto
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -34,9 +39,6 @@ export GREP_COLORS="mt=00;38;5;61"
 
 # Beep on errors and notify on background task completion
 setopt beep nomatch notify
-
-# Vim Bindings
-bindkey -v
 
 ###################
 # TERMINAL SETTINGS
@@ -74,11 +76,8 @@ unalias scp rsync sftp 2>/dev/null
 # Load fzf commands
 [[ -f ~/.fzf_commands.zsh ]] && source ~/.fzf_commands.zsh
 
-# Mise: ~/.local/bin on Linux, /opt/homebrew/bin on macOS (PATH set in .zshenv)
-command -v mise > /dev/null && eval "$(mise activate zsh)"
-
-# FZF key bindings and completion. fzf is a mise tool (on PATH via the shims
-# dir added in .zprofile), so use its built-in shell integration.
+# FZF key bindings and completion. fzf is a mise tool (on PATH via mise
+# activate above), so use its built-in shell integration.
 command -v fzf > /dev/null && eval "$(fzf --zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

@@ -28,7 +28,7 @@ fi
 #
 
 # mise itself (installed by https://mise.run) and other user binaries.
-export PATH="$HOME/.local/bin:$PATH"
+[[ -d ~/.local/bin ]] && export PATH="$HOME/.local/bin:$PATH"
 
 # mise shims: resolve mise-managed tools (hk, etc.) in non-interactive
 # subprocesses like git hooks. `mise activate` (in .zshrc) only sets PATH for
