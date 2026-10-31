@@ -95,9 +95,7 @@ run = [
 # the tools phase, so `[bootstrap.hooks.final]` re-runs `mise install` in a
 # fresh process to pick up its `[tools]` on a first bootstrap.
 "~/.config/mise/config.toml" = { source = "mise/.config/mise/config.toml", mode = "symlink" }
-"~/.asdfrc" = { source = "mise/.asdfrc", mode = "symlink" }
 "~/.default-gems" = { source = "mise/.default-gems", mode = "symlink" }
-"~/.default-golang-pkgs" = { source = "mise/.default-golang-pkgs", mode = "symlink" }
 "~/.default-npm-packages" = { source = "mise/.default-npm-packages", mode = "symlink" }
 "~/.default-python-packages" = { source = "mise/.default-python-packages", mode = "symlink" }
 

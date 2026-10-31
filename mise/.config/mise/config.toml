@@ -30,7 +30,7 @@ shfmt = "latest"
 stylua = "latest"
 zoxide = "latest"
 "npm:diff-so-fancy" = "latest"
-"ubi:mroth/scmpuff" = "latest"
+"github:mroth/scmpuff" = "latest"
 
 # macOS only
 mas = { version = "latest", os = "macos" }
