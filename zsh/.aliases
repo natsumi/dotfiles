@@ -15,10 +15,6 @@ if [ -x "$(command -v ncdu)" ]; then
   alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 fi
 
-if [ -x "$(command -v diff-so-fancy)" ]; then
-  alias diff="git diff --no-index"
-fi
-
 # Vim
 if [ -x "$(command -v nvim)" ]; then
   alias vim="nvim"
@@ -36,14 +32,9 @@ alias ber="bundle exec rspec"
 alias berc="bundle exec rubocop"
 
 # Rails
-alias frrc="foreman run rails console"
-alias frrs="foreman run rails s -b 0.0.0.0"
-alias frrr="foreman run rails runner"
-alias frbe="foreman run bundle exec"
 alias rc="rails c"
 alias rs="rails s"
 alias rmigrate="rake db:migrate db:rollback && rake db:migrate"
-alias rfix="bundle exec rubocop --safe-auto-correct"
 
 # Pretty print the PATH env
 alias path='echo $PATH | tr -s ":" "\n"'
