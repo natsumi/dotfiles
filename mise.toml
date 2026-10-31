@@ -54,8 +54,6 @@ run = [
 
 # --- zsh ---
 "~/.aliases" = { source = "zsh/.aliases", mode = "symlink" }
-"~/.dircolors" = { source = "zsh/.dircolors", mode = "symlink" }
-"~/.dircolors_jellybeans" = { source = "zsh/.dircolors_jellybeans", mode = "symlink" }
 "~/.fzf_commands.zsh" = { source = "zsh/.fzf_commands.zsh", mode = "symlink" }
 "~/.p10k.zsh" = { source = "zsh/.p10k.zsh", mode = "symlink" }
 "~/.zpreztorc" = { source = "zsh/.zpreztorc", mode = "symlink" }
