@@ -1,10 +1,15 @@
-# Docker Engine for Linux boxes. Opt-in:
+# Docker Engine for Linux boxes. Opt-in env, usually next to `server`:
 #
-#   mise -E docker bootstrap --update
+#   echo 'env = ["server", "docker"]' > .miserc.local.toml   # once per machine
+#   mise bootstrap --update
 #
 # `--update` refreshes apt metadata after the repository files below are
 # written, which mise does not do on its own once /var/lib/apt/lists exists.
-# Log out and back in afterwards for the docker group to take effect.
+# bootstrap.sh passes it on Linux.
+#
+# Nobody is added to the `docker` group: membership is root without a sudo
+# password. Use `sudo docker`, or on a workstation add yourself by hand
+# (README.md, "Docker").
 
 [bootstrap.directories."/etc/apt/keyrings"]
 owner = "root"
@@ -33,21 +38,51 @@ phase = "pre-packages"
 "apt:docker-buildx-plugin" = "latest"
 "apt:docker-compose-plugin" = "latest"
 
+# Written before the packages phase, so dockerd's first start (from the
+# package's postinst) already reads it. Most settings only take effect when
+# dockerd starts, and some (a storage driver, for one) change where images and
+# containers live: written later, a fresh box would run on defaults until its
+# first restart. No storage driver is set, so Docker uses its default
+# containerd image store.
+[bootstrap.directories."/etc/docker"]
+owner = "root"
+group = "root"
+mode = "0755"
+phase = "pre-packages"
+
 [bootstrap.files."/etc/docker/daemon.json"]
 source = "linux/etc/docker/daemon.json"
 owner = "root"
 group = "root"
 mode = "0644"
+phase = "pre-packages"
 notify = ["docker"]
 
+# A change to daemon.json needs a real restart; `reload` only re-reads a few
+# keys. live-restore keeps containers running across it.
 [bootstrap.services.docker]
 state = "running"
 enabled = true
+on_change = "restart"
 
 [bootstrap.services.containerd]
 state = "running"
 enabled = true
 
-# Let the admin user talk to the daemon without sudo.
-[bootstrap.hooks.post-packages]
-run = "id -nG | grep -qw docker || sudo usermod -aG docker \"$USER\""
+#
+# Updates
+#
+# Unattended within the pinned major version; see the comments in both files.
+
+[bootstrap.files."/etc/apt/apt.conf.d/53unattended-upgrades-docker"]
+source = "linux/etc/apt/apt.conf.d/53unattended-upgrades-docker"
+owner = "root"
+group = "root"
+mode = "0644"
+
+[bootstrap.files."/etc/apt/preferences.d/docker"]
+source = "linux/etc/apt/preferences.d/docker"
+owner = "root"
+group = "root"
+mode = "0644"
+phase = "pre-packages"

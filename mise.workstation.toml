@@ -1,0 +1,58 @@
+# Linux workstation profile (e.g. Roberto). Opt-in env, layered on top of the
+# server-safe base in mise.linux.toml:
+#
+#   echo 'env = ["workstation"]' > .miserc.local.toml   # once per machine
+#   mise bootstrap
+#
+# Adds what a box needs for development but a server must not have: the build
+# libraries mise uses to compile ruby and python, media tools, and remote
+# terminal sharing (tmate, mosh). Language runtimes, CLI tools and the
+# developer dotfiles come from mise.toml and the global mise config, which
+# every non-server machine gets (mise.server.toml switches them off).
+#
+# Linux only: macOS gets its equivalents from mise.macos.toml and does not
+# need this env.
+
+#
+# Packages
+#
+
+[bootstrap.packages]
+# --- Build libraries for compiling ruby/python ---
+"apt:autoconf" = "latest"
+"apt:automake" = "latest"
+"apt:build-essential" = "latest"
+"apt:libbz2-dev" = "latest"
+"apt:libffi-dev" = "latest"
+"apt:liblzma-dev" = "latest"
+"apt:libncurses-dev" = "latest"
+"apt:libreadline-dev" = "latest"
+"apt:libsqlite3-dev" = "latest"
+"apt:libssl-dev" = "latest"
+"apt:libtool" = "latest"
+"apt:libxslt1-dev" = "latest"
+"apt:libyaml-dev" = "latest"
+"apt:tk-dev" = "latest"
+"apt:unixodbc-dev" = "latest"
+"apt:zlib1g-dev" = "latest"
+
+# --- Media and downloads ---
+"apt:aria2" = "latest"
+"apt:ffmpeg" = "latest"
+
+# --- Remote terminals ---
+"apt:mosh" = "latest"
+"apt:tmate" = "latest"
+
+#
+# Firewall
+#
+# Adds to the ufw policy declared in mise.linux.toml.
+
+# mosh needs no daemon: the client logs in over SSH (port 2222), starts a
+# per-session mosh-server, then talks to it over UDP on one port from this
+# range (one port per concurrent session).
+[[bootstrap.linux.firewall.rules]]
+name = "mosh"
+port = "60000-61000"
+protocol = "udp"

@@ -1,0 +1,12 @@
+// Managed by mise bootstrap (mise.docker.toml).
+//
+// Lets unattended-upgrades install Docker Engine updates from Docker's apt
+// repository (Origin "Docker", Suite = the Ubuntu codename). Allowed-Origins
+// lists add up across files, so this extends 52unattended-upgrades-local.
+//
+// /etc/apt/preferences.d/docker keeps those updates within one major version;
+// moving to the next major is a deliberate edit there. live-restore in
+// daemon.json keeps containers running while dockerd restarts.
+Unattended-Upgrade::Allowed-Origins {
+    "Docker:${distro_codename}";
+};

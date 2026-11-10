@@ -1,0 +1,14 @@
+# Managed by mise bootstrap (mise.docker.toml).
+#
+# Docker Engine updates install unattended (53unattended-upgrades-docker), but
+# only within this major version: majors can drop old API versions and break
+# clients such as reverse proxies and management agents. To move to the next
+# major, change the first stanza, re-run `mise -E ... bootstrap`, then
+# `sudo apt-get install docker-ce docker-ce-cli`.
+Package: docker-ce docker-ce-cli docker-ce-rootless-extras
+Pin: version 5:29.*
+Pin-Priority: 500
+
+Package: docker-ce docker-ce-cli docker-ce-rootless-extras
+Pin: version *
+Pin-Priority: -1

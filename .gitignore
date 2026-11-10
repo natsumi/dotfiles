@@ -87,3 +87,6 @@ vim/.vim/plugged
 # mise local overrides (see https://mise.jdx.dev/configuration/environments.html)
 mise.local.toml
 mise.*.local.toml
+
+# This machine's profile, e.g. env = ["workstation"] (README.md, "Profiles")
+.miserc.local.toml

@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+#
+# Check that this box matches the server profile (mise.server.toml on top of
+# mise.linux.toml, optionally mise.docker.toml). Read-only; uses sudo to read
+# the sshd and firewall state. Prints PASS/FAIL per check and exits non-zero
+# if any check fails.
+#
+#   linux/bin/check-server
+
+# Helpers run indirectly through check(); single quotes are deliberate.
+# shellcheck disable=SC2016,SC2329
+
+set -uo pipefail
+
+fails=0
+pass() { printf '  PASS  %s\n' "$1"; }
+fail() { printf '  FAIL  %s\n' "$1"; fails=$((fails + 1)); }
+check() { local desc=$1; shift; if "$@" > /dev/null 2>&1; then pass "$desc"; else fail "$desc"; fi; }
+absent() { ! command -v "$1"; }
+not_installed() { ! dpkg-query -W -f='${Status}' "$1" 2> /dev/null | grep -q 'install ok installed'; }
+
+sshd=$(sudo sshd -T 2> /dev/null)
+ufw=$(sudo ufw status verbose 2> /dev/null)
+apt=$(apt-config dump 2> /dev/null)
+
+echo "sshd"
+check "listens on 2222 only" grep -qx 'port 2222' <<< "$sshd"
+check "password auth off" grep -qx 'passwordauthentication no' <<< "$sshd"
+check "PermitRootLogin no" grep -qx 'permitrootlogin no' <<< "$sshd"
+check "root denied (DenyUsers root)" grep -qx 'denyusers root' <<< "$sshd"
+check "post-quantum kex preferred" grep -q '^kexalgorithms mlkem768x25519-sha256,' <<< "$sshd"
+check "cloud-init sshd drop-in removed" test ! -e /etc/ssh/sshd_config.d/50-cloud-init.conf
+
+echo "firewall"
+check "ufw active" grep -q '^Status: active' <<< "$ufw"
+check "incoming denied by default" grep -q 'deny (incoming)' <<< "$ufw"
+check "2222/tcp rate-limited" grep -qE '^2222/tcp +LIMIT IN' <<< "$ufw"
+check "no mosh UDP rule" bash -c '! grep -q "60000:61000" <<< "$1"' _ "$ufw"
+
+echo "updates"
+check "unattended-upgrades running" systemctl is-active unattended-upgrades
+check "automatic reboot on" grep -q 'Unattended-Upgrade::Automatic-Reboot "true";' <<< "$apt"
+check "reboot window 04:00" grep -q 'Unattended-Upgrade::Automatic-Reboot-Time "04:00";' <<< "$apt"
+check "fail2ban running" systemctl is-active fail2ban
+
+echo "no developer toolchain"
+for cmd in gcc cc g++ make ffmpeg aria2c tmate mosh-server; do
+    check "no $cmd" absent "$cmd"
+done
+for pkg in build-essential libssl-dev; do
+    check "package $pkg not installed" not_installed "$pkg"
+done
+mise_bin=$(command -v mise || echo "$HOME/.local/bin/mise")
+if tools=$("$mise_bin" ls --installed 2> /dev/null | awk '{print $1}'); then
+    for lang in node python ruby; do
+        check "no mise $lang" bash -c '! grep -qx "$1" <<< "$2"' _ "$lang" "$tools"
+    done
+else
+    fail "mise ls (mise not found at $mise_bin)"
+fi
+check "no ~/.claude" test ! -e "$HOME/.claude"
+check "no nvim config" test ! -e "$HOME/.config/nvim"
+
+if command -v docker > /dev/null; then
+    echo "docker"
+    check "daemon running" systemctl is-active docker
+    check "daemon.json installed" test -f /etc/docker/daemon.json
+    check "json-file logs, rotated" bash -c 'sudo docker info --format "{{.LoggingDriver}}" | grep -qx json-file'
+    check "storage matches daemon.json (containerd store unless a driver is set)" bash -c '
+        want=$(sed -n "s/.*\"storage-driver\": *\"\([^\"]*\)\".*/\1/p" /etc/docker/daemon.json)
+        if [ -n "$want" ]; then
+            [ "$(sudo docker info --format "{{.Driver}}")" = "$want" ]
+        else
+            sudo docker info --format "{{.DriverStatus}}" | grep -q io.containerd.snapshotter
+        fi'
+    check "live-restore on" bash -c 'sudo docker info --format "{{.LiveRestoreEnabled}}" | grep -qx true'
+    check "$USER not in docker group" bash -c '! id -nG | grep -qw docker'
+    check "Docker origin allowed for unattended upgrades" grep -q '"Docker:${distro_codename}";' <<< "$apt"
+    check "docker-ce candidate inside the pinned major" bash -c '
+        pin=$(awk "/^Pin: version/ {print \$3; exit}" /etc/apt/preferences.d/docker) || exit 1
+        cand=$(apt-cache policy docker-ce | awk "/Candidate:/ {print \$2}")
+        [ -n "$pin" ] && [[ "$cand" == $pin ]]'
+fi
+
+echo
+if [ "$fails" -eq 0 ]; then
+    echo "All checks passed."
+else
+    echo "$fails check(s) failed."
+fi
+[ -f /var/run/reboot-required ] && echo "Note: a reboot is pending (/var/run/reboot-required)."
+exit $(( fails > 0 ))

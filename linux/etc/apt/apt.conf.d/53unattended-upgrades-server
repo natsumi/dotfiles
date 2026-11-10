@@ -1,0 +1,13 @@
+// Managed by mise bootstrap (mise.server.toml).
+//
+// Servers reboot on their own when an upgrade needs it (kernel, libc,
+// systemd), so security fixes actually take effect. Loaded after
+// 52unattended-upgrades-local, so these values win.
+//
+// apt-daily-upgrade.timer runs around 06:00 (randomised by up to an hour);
+// when that run leaves /var/run/reboot-required behind, unattended-upgrades
+// schedules the reboot for the next 04:00 (America/Los_Angeles, set by the
+// pre-packages hook). Logged-in sessions do not hold it back.
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-WithUsers "true";
+Unattended-Upgrade::Automatic-Reboot-Time "04:00";

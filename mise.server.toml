@@ -1,0 +1,85 @@
+# Server profile. Opt-in env, layered on top of the server-safe base in
+# mise.linux.toml:
+#
+#   echo 'env = ["server", "docker"]' > .miserc.local.toml   # once per machine
+#   mise bootstrap --update
+#
+# bootstrap.sh writes that file when DOTFILES_ENV is set (README.md,
+# "Profiles"). On top of the base this:
+#
+# - reboots automatically in a nightly window when an upgrade needs it,
+# - refuses root over SSH and prefers post-quantum key exchange,
+# - swaps the global mise config for one with prebuilt CLI tools only (no
+#   languages, no language servers, nothing that needs a compiler),
+# - switches off the developer dotfiles that mise.toml gives every other
+#   machine (editor, terminal and language configs, ~/.claude).
+#
+# A server never selects `workstation`, so it also gets no build libraries,
+# ffmpeg, aria2, tmate or mosh, and no mosh UDP firewall rule.
+
+#
+# SSH
+#
+# Sorts before 99-vps-hardening.conf; see the comments in the file for why
+# that matters.
+
+[bootstrap.files."/etc/ssh/sshd_config.d/10-server.conf"]
+source = "linux/etc/ssh/sshd_config.d/10-server.conf"
+owner = "root"
+group = "root"
+mode = "0644"
+notify = ["ssh.socket"]
+
+#
+# Unattended upgrades: automatic reboots
+#
+
+[bootstrap.files."/etc/apt/apt.conf.d/53unattended-upgrades-server"]
+source = "linux/etc/apt/apt.conf.d/53unattended-upgrades-server"
+owner = "root"
+group = "root"
+mode = "0644"
+
+#
+# Dotfiles
+#
+# Same keys as in mise.toml, so these replace the inherited entries.
+
+[dotfiles]
+# Lean global mise config. The final hook's `mise install` then installs only
+# these tools.
+"~/.config/mise/config.toml" = { source = "mise/.config/mise/config.server.toml", mode = "symlink" }
+
+# The workstation gitconfig block pages through diff-so-fancy, an npm tool a
+# server does not have.
+"~/.gitconfig/dotfiles" = { comment = "#", block = '''
+[push]
+	default = simple
+[color]
+	ui = true
+''' }
+
+# Developer dotfiles a server has no use for. nvim stays installed but runs
+# without the LazyVim config, which needs a C compiler for treesitter parsers.
+"~/.claude" = { source = "claude/.claude", mode = "symlink-each", enabled = false }
+"~/.config/ccstatusline" = { source = "ccstatusline/.config/ccstatusline", mode = "symlink", enabled = false }
+"~/.config/ghostty" = { source = "ghostty/.config/ghostty", mode = "symlink", enabled = false }
+"~/.config/helix" = { source = "helix/.config/helix", mode = "symlink", enabled = false }
+"~/.config/kitty" = { source = "kitty/.config/kitty", mode = "symlink", enabled = false }
+"~/.config/nvim" = { source = "neovim/.config/nvim", mode = "symlink", enabled = false }
+"~/.config/yt-dlp" = { source = "yt-dlp/.config/yt-dlp", mode = "symlink", enabled = false }
+"~/.aprc" = { source = "ruby/.aprc", mode = "symlink", enabled = false }
+"~/.gemrc" = { source = "ruby/.gemrc", mode = "symlink", enabled = false }
+"~/.irbrc" = { source = "ruby/.irbrc", mode = "symlink", enabled = false }
+"~/.rdbgrc" = { source = "ruby/.rdbgrc", mode = "symlink", enabled = false }
+"~/.rspec" = { source = "ruby/.rspec", mode = "symlink", enabled = false }
+"~/.rubocop.yml" = { source = "ruby/.rubocop.yml", mode = "symlink", enabled = false }
+"~/.rufo" = { source = "ruby/.rufo", mode = "symlink", enabled = false }
+"~/.iex.exs" = { source = "elixir/.iex.exs", mode = "symlink", enabled = false }
+"~/.ideavimrc" = { source = "jetbrains/.ideavimrc", mode = "symlink", enabled = false }
+"~/.prettierrc" = { source = "prettier/.prettierrc", mode = "symlink", enabled = false }
+"~/.stylelintrc" = { source = "eslint/.stylelintrc", mode = "symlink", enabled = false }
+"~/.wezterm.lua" = { source = "wezterm/.wezterm.lua", mode = "symlink", enabled = false }
+"~/.default-gems" = { source = "mise/.default-gems", mode = "symlink", enabled = false }
+"~/.default-npm-packages" = { source = "mise/.default-npm-packages", mode = "symlink", enabled = false }
+"~/.default-python-packages" = { source = "mise/.default-python-packages", mode = "symlink", enabled = false }
