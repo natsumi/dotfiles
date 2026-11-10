@@ -1,0 +1,22 @@
+# Global mise configuration for servers.
+#
+# Deployed to ~/.config/mise/config.toml instead of config.toml by
+# mise.server.toml. Prebuilt CLI tools only: no languages, language servers
+# or anything installed through npm/pip/gem, so nothing needs a compiler.
+# Edit it here, then run `mise install`.
+
+[tools]
+delta = "latest"
+eza = "latest"
+fd = "latest"
+fzf = "latest"
+jq = "latest"
+ripgrep = "latest"
+zoxide = "latest"
+"github:mroth/scmpuff" = "latest"
+
+# Pairs with `-E docker`.
+lazydocker = "latest"
+
+[settings]
+trusted_config_paths = ["~/dev"]
