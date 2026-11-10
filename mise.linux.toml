@@ -1,9 +1,17 @@
-# Linux (Ubuntu 26.04) half of the bootstrap project.
+# Linux (Ubuntu 26.04) half of the bootstrap project: the server-safe base.
 #
 # Loaded automatically next to mise.toml on Linux (auto_env in .miserc.toml).
-# Every Linux box gets the same treatment, server or not: host packages,
-# SSH hardening on port 2222, a default-deny firewall, fail2ban, unattended
-# security upgrades, kernel hardening and a swap file.
+# Every Linux box gets this, workstation or server: everyday admin tools, SSH
+# hardening on port 2222, a default-deny firewall, fail2ban, unattended
+# security upgrades, kernel hardening and a swap file. Nothing here needs a
+# compiler. Profile-specific additions live in their own env files:
+#
+#   mise.workstation.toml  build libraries, ffmpeg, aria2, tmate, mosh
+#   mise.server.toml       automatic reboots, no root SSH, lean dotfiles
+#   mise.docker.toml       Docker Engine
+#
+# A machine picks its profile in the untracked .miserc.local.toml next to this
+# file (README.md, "Profiles").
 #
 # mise runs as the admin user and elevates with sudo per step. Sources are
 # relative to this file; the /etc drop-ins live under linux/etc/ mirroring
@@ -18,24 +26,6 @@
 #
 
 [bootstrap.packages]
-# --- Build libraries for compiling ruby/python ---
-"apt:autoconf" = "latest"
-"apt:automake" = "latest"
-"apt:build-essential" = "latest"
-"apt:libbz2-dev" = "latest"
-"apt:libffi-dev" = "latest"
-"apt:liblzma-dev" = "latest"
-"apt:libncurses-dev" = "latest"
-"apt:libreadline-dev" = "latest"
-"apt:libsqlite3-dev" = "latest"
-"apt:libssl-dev" = "latest"
-"apt:libtool" = "latest"
-"apt:libxslt1-dev" = "latest"
-"apt:libyaml-dev" = "latest"
-"apt:tk-dev" = "latest"
-"apt:unixodbc-dev" = "latest"
-"apt:zlib1g-dev" = "latest"
-
 # --- Base system ---
 "apt:ca-certificates" = "latest"
 "apt:curl" = "latest"
@@ -49,17 +39,14 @@
 "apt:ufw" = "latest"
 "apt:unattended-upgrades" = "latest"
 
-# --- Core CLI not covered by the mise registry ---
-"apt:aria2" = "latest"
+# --- Everyday admin CLI not covered by the mise registry ---
 "apt:coreutils" = "latest"
-"apt:ffmpeg" = "latest"
 "apt:gawk" = "latest"
 "apt:htop" = "latest"
 "apt:ncdu" = "latest"
 "apt:neovim" = "latest"
 "apt:sqlite3" = "latest"
 "apt:tig" = "latest"
-"apt:tmate" = "latest"
 "apt:tmux" = "latest"
 "apt:tree" = "latest"
 "apt:zsh" = "latest"
@@ -71,7 +58,6 @@
 
 # --- Network ---
 "apt:bind9-dnsutils" = "latest"
-"apt:mosh" = "latest"
 "apt:mtr-tiny" = "latest"
 "apt:traceroute" = "latest"
 "apt:whois" = "latest"
@@ -160,13 +146,6 @@ port = 2222
 protocol = "tcp"
 action = "limit"
 
-# mosh needs no daemon: the client logs in over SSH (port 2222), starts a
-# per-session mosh-server, then talks to it over UDP on one port from this
-# range (one port per concurrent session).
-[[bootstrap.linux.firewall.rules]]
-name = "mosh"
-port = "60000-61000"
-protocol = "udp"
 
 #
 # fail2ban
