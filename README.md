@@ -5,13 +5,67 @@ Machine setup is declarative, driven by [mise bootstrap](https://mise.jdx.dev/bo
 | File | Loaded | Declares |
 |---|---|---|
 | `mise.toml` | always | git repos (prezto), `[dotfiles]` symlinks, login shell, git identity and hostname prompts |
-| `mise.linux.toml` | on Linux, automatically (`auto_env` in `.miserc.toml`) | apt packages, SSH hardening, firewall, fail2ban, unattended upgrades, sysctl, swap, Linux-only dotfiles (systemd user PATH) |
+| `mise.linux.toml` | on Linux, automatically (`auto_env` in `.miserc.toml`) | the server-safe base: everyday admin packages, SSH hardening, firewall, fail2ban, unattended upgrades, sysctl, swap, Linux-only dotfiles (systemd user PATH) |
 | `mise.macos.toml` | on macOS, automatically | brew packages, casks, fonts, macOS defaults |
-| `mise.docker.toml` | `mise -E docker` | Docker Engine (Linux) |
+| `mise.workstation.toml` | `workstation` profile | Linux development extras: build libraries, ffmpeg, aria2, tmate, mosh and its firewall rule |
+| `mise.server.toml` | `server` profile | automatic reboots, no root SSH, lean global mise config, developer dotfiles switched off |
+| `mise.docker.toml` | `docker` profile | Docker Engine (Linux) and its update policy |
 | `mise/.config/mise/config.toml` | symlinked to `~/.config/mise/config.toml` | languages and cross-platform CLI tools (`[tools]`) |
+| `mise/.config/mise/config.server.toml` | symlinked there instead on servers | prebuilt CLI tools only |
+
+Which of the profile files a machine loads is set once per machine in
+`.miserc.local.toml`; see [Profiles](#profiles).
 
 Sources for the Linux system files live under `linux/etc/`, mirroring their
 target paths.
+
+## Profiles
+
+Every machine gets `mise.toml` plus its platform file. A Linux box then picks
+a **profile**: extra env files layered on top of `mise.linux.toml`. The base
+is safe for a server on its own; the profiles add to it, never the other way
+round, because a mise env file can add packages, hooks and firewall rules but
+cannot take away ones another file declared.
+
+| Profile | Use it for | Adds | Leaves out |
+|---|---|---|---|
+| *(none)* | macOS; a Linux box you only want hardened | - | build libraries, media tools, tmate/mosh |
+| `workstation` | a Linux box you develop on (Roberto) | build libraries for ruby/python, ffmpeg, aria2, tmate, mosh + UDP 60000-61000 | - |
+| `server` | a server or VM that runs services | automatic reboots at 04:00 when an upgrade needs one, `PermitRootLogin no` + `DenyUsers root`, post-quantum SSH key exchange, lean global mise config | language runtimes, language servers, compilers, editor/terminal/language dotfiles, `~/.claude`, tmate/mosh |
+| `docker` | any Linux box that runs containers, usually with `server` | Docker Engine, `daemon.json`, unattended updates within one major version | membership of the `docker` group |
+
+The profile lives in `.miserc.local.toml` in the repo root. It is untracked,
+so each machine keeps its own:
+
+```bash
+cd ~/dev/dotfiles
+echo 'env = ["workstation"]' > .miserc.local.toml        # Linux workstation
+echo 'env = ["server", "docker"]' > .miserc.local.toml   # server running containers
+```
+
+mise reads it before anything else, only inside this repo, and then loads the
+matching `mise.<profile>.toml` files on every run, so day to day it is just
+`mise bootstrap`. Check what a machine loads with `mise config ls`.
+
+`bootstrap.sh` writes the file on a fresh machine when you pass
+`DOTFILES_ENV` (it never overwrites an existing one):
+
+```bash
+DOTFILES_ENV=server,docker /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
+```
+
+Two things to know:
+
+- **`-E` replaces the file's list for that run, it does not add to it.** On a
+  workstation, `mise -E docker bootstrap` would drop `workstation`; write
+  `mise -E workstation,docker bootstrap` instead (or add `docker` to the file).
+- **Changing a profile only adds.** mise never uninstalls apt packages and
+  leaves firewall rules it no longer declares in place, so moving a box from
+  `workstation` to `server` keeps the compilers. Build servers fresh instead.
+
+To check a server against its profile, run `linux/bin/check-server`. It is
+read-only and prints PASS/FAIL for sshd, the firewall, upgrades and reboots,
+the absence of a toolchain and, with `docker`, the daemon settings.
 
 ## Setup a new Mac
 
@@ -52,10 +106,12 @@ bin/apply_sudo_defaults
 
 ## Setup a new Linux box (Ubuntu 26.04)
 
-Every Linux box gets the server treatment: SSH on port **2222** with keys only,
-a default-deny firewall, fail2ban, unattended security upgrades, kernel
-hardening, a swap file and the `America/Los_Angeles` timezone. Only Ubuntu
-26.04 is supported.
+Every Linux box gets the hardened base from `mise.linux.toml`: SSH on port
+**2222** with keys only, a default-deny firewall, fail2ban, unattended security
+upgrades, kernel hardening, a swap file and the `America/Los_Angeles`
+timezone. On top of that it gets a [profile](#profiles): `workstation` for a
+box you develop on, `server` (usually with `docker`) for one that runs
+services. Only Ubuntu 26.04 is supported.
 
 mise runs as the admin user and uses `sudo` where a step needs it, so a fresh
 box that only has `root` needs the user first. In the root session:
@@ -68,27 +124,47 @@ install -m 600 -o natsumi -g natsumi /root/.ssh/authorized_keys /home/natsumi/.s
 ```
 
 **Keep that root session open.** From a second terminal log in as the user
-(still on port 22) and run the same command as on a Mac:
+(still on port 22) and run the bootstrap with the box's profile:
 
 ```bash
 ssh natsumi@HOST
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
+
+# a workstation
+DOTFILES_ENV=workstation /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/main/bin/bootstrap.sh)"
+
+# a server: pin a tag, for both the script and the clone
+TAG=v2026.11.10
+DOTFILES_ENV=server,docker REPO_BRANCH=$TAG \
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/natsumi/dotfiles/$TAG/bin/bootstrap.sh)"
 ```
+
+Servers pin a tag so a rebuild months later gets the same configuration.
+`git clone -b` takes a branch or a tag, not a commit SHA, so tag the commit
+you tested. mise itself is installed at its latest release (checksum-verified
+by mise.run) and never updates itself afterwards; set `MISE_VERSION=v…` to pin
+one for a rebuild. `bootstrap.sh` also passes `--update` on Linux
+so apt sees repositories added during the run (Docker's). `--update` also
+pulls the prezto repos, so after the first run use plain `mise bootstrap`
+rather than re-running the script.
 
 `sudo` asks for the password when a step needs it. On top of the shared phases
 above, Linux runs these before the repos phase:
 
 1. **Pre-packages hook** - sets the timezone and creates `/swapfile` when the
    box has no swap at all.
-2. **Packages** - `apt:` packages from `mise.linux.toml`.
+2. **Packages** - `apt:` packages from `mise.linux.toml`, plus the profile's
+   (`mise.workstation.toml`, `mise.docker.toml`).
 3. **System files** - the sshd drop-in (port 2222, no passwords, root by key
    only), `/etc/issue.net`, the fail2ban jail, the unattended-upgrades
    drop-in and the sysctl hardening. cloud-init's sshd drop-in is removed
-   because it re-enables password auth.
+   because it re-enables password auth. The `server` profile adds
+   `10-server.conf` (no root login, post-quantum key exchange first) and the
+   automatic-reboot drop-in.
 4. **Services** - `ssh.socket` is restarted so sshd listens on 2222; fail2ban
    and unattended-upgrades are enabled and running.
 5. **Firewall** - ufw with incoming denied and a rate-limited rule for
-   2222/tcp only. mise tags its rules and leaves any others alone.
+   2222/tcp. `workstation` adds UDP 60000-61000 for mosh. mise tags its rules
+   and leaves any others alone.
 
 The bootstrap task asks for a hostname only while the box still has a
 provider or installer default (`ubuntu`, `ubuntu-*`, `localhost`, `ip-*`,
@@ -118,21 +194,43 @@ When it finishes:
    Only then close the root session. If it does not work, fix it from the
    root session (or the provider's console): `sudo sshd -t` shows config
    errors, `sudo ufw status` the firewall.
-2. Reboot if the final hook says a reboot is required: `sudo reboot`.
+2. Reboot if the final hook says a reboot is required: `sudo reboot`. A
+   `server` would also reboot itself at the next 04:00.
 3. Open a new shell for zsh and mise activation.
+4. On a server, run `linux/bin/check-server`.
 
-### Docker (optional)
+### Docker
+
+Part of the profile: put `docker` in `.miserc.local.toml` (or pass it in
+`DOTFILES_ENV`), then
 
 ```bash
 cd ~/dev/dotfiles
-mise -E docker bootstrap --update
+mise bootstrap --update
 ```
 
-Adds Docker's apt repository (key committed in `linux/etc/apt/keyrings/`),
-installs Docker Engine with the compose and buildx plugins, writes
-`/etc/docker/daemon.json` and adds you to the `docker` group (log out and back
-in for that to take effect). `--update` is needed because mise does not
-refresh apt metadata on its own after writing the repository file.
+This adds Docker's apt repository (key committed in `linux/etc/apt/keyrings/`),
+installs Docker Engine with the compose and buildx plugins and writes
+`/etc/docker/daemon.json` (rotated `json-file` logs, `live-restore`,
+`no-new-privileges`, no userland proxy) before the daemon first starts. Images
+live in Docker's default containerd image store, which keeps compressed layers
+next to the unpacked ones, so budget up to about twice the image size on disk. `--update` is needed because mise
+does not refresh apt metadata on its own after writing the repository file.
+
+**Updates.** Docker Engine updates install unattended like Ubuntu's, but only
+within one major version: `/etc/apt/preferences.d/docker` pins `5:29.*`, since
+a new major can drop old API versions and break clients such as reverse
+proxies and management agents. `live-restore` keeps containers running while
+the daemon restarts. To move to the next major, edit the pin in
+`linux/etc/apt/preferences.d/docker`, re-run `mise bootstrap`, then
+`sudo apt-get install docker-ce docker-ce-cli`.
+
+**No `docker` group.** Membership is root without a sudo password, so the
+bootstrap does not add anyone; use `sudo docker`. On a workstation where that
+trade is fine, add yourself once and log out and back in:
+`sudo usermod -aG docker "$USER"`. Boxes set up before this change keep their
+membership (mise removes nothing); take it away with
+`sudo gpasswd -d "$USER" docker`.
 
 **Docker bypasses ufw.** A published port (`-p 80:80`) is reachable from the
 internet regardless of `ufw status`. Bind containers to `127.0.0.1` and put a
@@ -141,7 +239,8 @@ reverse proxy on the host in front of them.
 ### Skipping the root session with cloud-init
 
 Providers that accept user-data can create the admin user at boot, so the box
-never arrives root-only and only the bootstrap command is needed:
+never arrives root-only and only the bootstrap command (with `DOTFILES_ENV`)
+is needed:
 
 ```yaml
 #cloud-config
@@ -154,7 +253,10 @@ users:
       - ssh-ed25519 AAAA... you@laptop
 ```
 
-Set a password afterwards with `sudo passwd natsumi` if you want one.
+Such a user has no password, so mise's `chsh` step (which asks for one)
+cannot run. `bootstrap.sh` sees passwordless sudo and sets the login shell
+with `usermod` first, so the whole run needs no terminal. Set a password
+afterwards with `sudo passwd natsumi` if you want one.
 
 ## Day-to-day
 
@@ -219,6 +321,9 @@ happens.
 
    Use `mode = "symlink-each"` (as `~/.claude` does) when the target directory
    also holds files mise should leave alone.
+
+   Development-only (editor, terminal, language tooling): also add the same
+   key to `mise.server.toml` with `enabled = false`, so servers skip it.
 3. Preview and apply:
 
    ```bash
@@ -229,10 +334,13 @@ happens.
 ## Adding a package or tool
 
 **Host packages** (native libraries, GUI apps, things with no mise registry
-entry) go in the platform file, so no `os` selectors are needed:
+entry) go in the platform file, so no `os` selectors are needed. On Linux,
+decide whether a server should have it: admin tools go in `mise.linux.toml`,
+anything for development (compilers, `-dev` libraries, media tools) in
+`mise.workstation.toml`.
 
 ```toml
-# mise.linux.toml
+# mise.linux.toml (every Linux box) or mise.workstation.toml (dev boxes only)
 [bootstrap.packages]
 "apt:foo" = "latest"
 
@@ -245,7 +353,9 @@ entry) go in the platform file, so no `os` selectors are needed:
 Then `mise bootstrap packages apply`.
 
 **Versioned tools** (anything in the mise registry, plus `npm:` / `ubi:`
-backends) go in `[tools]` in `mise/.config/mise/config.toml`, then:
+backends) go in `[tools]` in `mise/.config/mise/config.toml`. If a server
+should have it too, and it is a prebuilt binary (no npm/pip/gem), also add it
+to `mise/.config/mise/config.server.toml`. Then:
 
 ```bash
 mise install
@@ -256,8 +366,9 @@ mise install
 1. Put the file under `linux/etc/`, mirroring its target path - e.g.
    `linux/etc/sysctl.d/99-vps-hardening.conf` for
    `/etc/sysctl.d/99-vps-hardening.conf`.
-2. Declare it in `mise.linux.toml`, naming the service to restart when it
-   changes:
+2. Declare it in `mise.linux.toml` (every Linux box) or the profile file it
+   belongs to (`mise.server.toml`, `mise.docker.toml`), naming the service to
+   restart when it changes:
 
    ```toml
    [bootstrap.files."/etc/fail2ban/jail.d/vps.local"]
@@ -412,16 +523,26 @@ on both platforms.
 - macOS helpers: reattach-to-user-namespace, terminal-notifier, tmux-mem-cpu-load
 - Desktop applications and fonts: the `brew-cask:` lists above and the 18 Nerd/Powerline font casks
 
-**Linux** (`mise.linux.toml`, `apt:`, Ubuntu 26.04)
+**Linux, every box** (`mise.linux.toml`, `apt:`, Ubuntu 26.04)
 
-- Build libraries for ruby/python: autoconf, automake, build-essential, libbz2-dev, libffi-dev, liblzma-dev, libncurses-dev, libreadline-dev, libsqlite3-dev, libssl-dev, libtool, libxslt1-dev, libyaml-dev, tk-dev, unixodbc-dev, zlib1g-dev
 - Base system: ca-certificates, curl, git, gnupg, unzip, wget
 - Security (configured by the bootstrap): ufw, fail2ban, unattended-upgrades
-- CLI: aria2, coreutils, ffmpeg, gawk, htop, ncdu, neovim, sqlite3, tig, tmate, tmux, tree, zsh
+- CLI: coreutils, gawk, htop, ncdu, neovim, sqlite3, tig, tmux, tree, zsh
 - Monitoring: btop, iotop, nethogs
 - Network: bind9-dnsutils, mtr-tiny, traceroute, whois
 
-**Linux with `mise -E docker`** (`mise.docker.toml`)
+**Linux with the `workstation` profile** (`mise.workstation.toml`)
+
+- Build libraries for ruby/python: autoconf, automake, build-essential, libbz2-dev, libffi-dev, liblzma-dev, libncurses-dev, libreadline-dev, libsqlite3-dev, libssl-dev, libtool, libxslt1-dev, libyaml-dev, tk-dev, unixodbc-dev, zlib1g-dev
+- CLI: aria2, ffmpeg, mosh, tmate
+
+**Linux with the `server` profile** (`mise/.config/mise/config.server.toml`
+replaces the global `[tools]`)
+
+- delta, eza, fd, fzf, jq, ripgrep, zoxide, scmpuff, lazydocker. No languages,
+  language servers or default packages.
+
+**Linux with the `docker` profile** (`mise.docker.toml`)
 
 - docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin, plus lazydocker from `[tools]`
 
