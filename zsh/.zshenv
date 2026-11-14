@@ -40,8 +40,17 @@ export KITTY_CONFIG_DIRECTORY="${HOME}/.config/kitty"
 # Bundle - install gems in parallel, one job per CPU (works on macOS and Linux)
 export BUNDLE_JOBS=$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)
 
-# Github CLI - opt out of telemetry
+######################
+# Telemetry opt-outs
+######################
+# Cross-tool convention (https://consoledonottrack.com)
+export DO_NOT_TRACK=1
+# Github CLI
 export GH_TELEMETRY=false
+# Claude Code (usage telemetry only; error reporting stays on)
+export DISABLE_TELEMETRY=1
+# Yarn 2+ (Berry); Yarn 1 sends none
+export YARN_ENABLE_TELEMETRY=0
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
