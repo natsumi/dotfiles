@@ -31,7 +31,7 @@ cannot take away ones another file declared.
 |---|---|---|---|
 | *(none)* | macOS; a Linux box you only want hardened | - | build libraries, media tools, tmate/mosh |
 | `workstation` | a Linux box you develop on (Roberto) | build libraries for ruby/python, ffmpeg, aria2, tmate, mosh + UDP 60000-61000 | - |
-| `server` | a server or VM that runs services | automatic reboots at 04:00 when an upgrade needs one, `PermitRootLogin no` + `DenyUsers root`, post-quantum SSH key exchange, lean global mise config | language runtimes, language servers, compilers, editor/terminal/language dotfiles, `~/.claude`, tmate/mosh |
+| `server` | a server or VM that runs services | automatic reboots at 04:00 when an upgrade needs one, `PermitRootLogin no` + `DenyUsers root`, post-quantum SSH key exchange, lean global mise config | language runtimes, language servers, compilers, editor/terminal/language dotfiles, tmate/mosh |
 | `docker` | any Linux box that runs containers, usually with `server` | Docker Engine, `daemon.json`, unattended updates within one major version | membership of the `docker` group |
 
 The profile lives in `.miserc.local.toml` in the repo root. It is untracked,
@@ -319,7 +319,7 @@ happens.
    Linux only: put the entry in a `[dotfiles]` table in `mise.linux.toml`
    instead (as `~/.config/environment.d/999-user-path.conf` is).
 
-   Use `mode = "symlink-each"` (as `~/.claude` does) when the target directory
+   Use `mode = "symlink-each"` when the target directory
    also holds files mise should leave alone.
 
    Development-only (editor, terminal, language tooling): also add the same
