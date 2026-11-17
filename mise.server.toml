@@ -12,7 +12,7 @@
 # - swaps the global mise config for one with prebuilt CLI tools only (no
 #   languages, no language servers, nothing that needs a compiler),
 # - switches off the developer dotfiles that mise.toml gives every other
-#   machine (editor, terminal and language configs, ~/.claude).
+#   machine (editor, terminal and language configs).
 #
 # A server never selects `workstation`, so it also gets no build libraries,
 # ffmpeg, aria2, tmate or mosh, and no mosh UDP firewall rule.
@@ -61,7 +61,6 @@ mode = "0644"
 
 # Developer dotfiles a server has no use for. nvim stays installed but runs
 # without the LazyVim config, which needs a C compiler for treesitter parsers.
-"~/.claude" = { source = "claude/.claude", mode = "symlink-each", enabled = false }
 "~/.config/ccstatusline" = { source = "ccstatusline/.config/ccstatusline", mode = "symlink", enabled = false }
 "~/.config/ghostty" = { source = "ghostty/.config/ghostty", mode = "symlink", enabled = false }
 "~/.config/helix" = { source = "helix/.config/helix", mode = "symlink", enabled = false }

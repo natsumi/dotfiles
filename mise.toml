@@ -47,11 +47,6 @@ run = [
 "~/.config/yt-dlp" = { source = "yt-dlp/.config/yt-dlp", mode = "symlink" }
 "~/.tmux" = { source = "tmux/.tmux", mode = "symlink" }
 
-# ~/.claude also holds Claude Code's own runtime state (sessions, projects,
-# plugins, caches), so link the tracked files individually instead of
-# collapsing the whole directory - the old `stow --no-folding` behaviour.
-"~/.claude" = { source = "claude/.claude", mode = "symlink-each" }
-
 # --- zsh ---
 "~/.aliases" = { source = "zsh/.aliases", mode = "symlink" }
 "~/.fzf_commands.zsh" = { source = "zsh/.fzf_commands.zsh", mode = "symlink" }

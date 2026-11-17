@@ -58,7 +58,6 @@ if tools=$("$mise_bin" ls --installed 2> /dev/null | awk '{print $1}'); then
 else
     fail "mise ls (mise not found at $mise_bin)"
 fi
-check "no ~/.claude" test ! -e "$HOME/.claude"
 check "no nvim config" test ! -e "$HOME/.config/nvim"
 
 if command -v docker > /dev/null; then
