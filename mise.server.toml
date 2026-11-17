@@ -61,7 +61,6 @@ mode = "0644"
 
 # Developer dotfiles a server has no use for. nvim stays installed but runs
 # without the LazyVim config, which needs a C compiler for treesitter parsers.
-"~/.config/ccstatusline" = { source = "ccstatusline/.config/ccstatusline", mode = "symlink", enabled = false }
 "~/.config/ghostty" = { source = "ghostty/.config/ghostty", mode = "symlink", enabled = false }
 "~/.config/helix" = { source = "helix/.config/helix", mode = "symlink", enabled = false }
 "~/.config/kitty" = { source = "kitty/.config/kitty", mode = "symlink", enabled = false }

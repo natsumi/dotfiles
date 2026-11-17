@@ -39,7 +39,6 @@ run = [
 
 [dotfiles]
 # --- Directories we own outright ---
-"~/.config/ccstatusline" = { source = "ccstatusline/.config/ccstatusline", mode = "symlink" }
 "~/.config/ghostty" = { source = "ghostty/.config/ghostty", mode = "symlink" }
 "~/.config/helix" = { source = "helix/.config/helix", mode = "symlink" }
 "~/.config/kitty" = { source = "kitty/.config/kitty", mode = "symlink" }
