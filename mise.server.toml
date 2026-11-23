@@ -31,7 +31,7 @@ mode = "0644"
 notify = ["ssh.socket"]
 
 #
-# Unattended upgrades: automatic reboots
+# Unattended upgrades: -updates pocket too, automatic reboots
 #
 
 [bootstrap.files."/etc/apt/apt.conf.d/53unattended-upgrades-server"]

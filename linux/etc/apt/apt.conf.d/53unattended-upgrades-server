@@ -1,8 +1,18 @@
 // Managed by mise bootstrap (mise.server.toml).
 //
+// Servers also take Ubuntu's -updates pocket (stable release updates), not
+// only -security, so bug fixes and new kernels install without a manual
+// full-upgrade. Allowed-Origins lists add up across files, so this extends
+// 52unattended-upgrades-local; workstations stay security-only. Phased
+// updates still apply, so some packages arrive a few days after release.
+Unattended-Upgrade::Allowed-Origins {
+    "${distro_id}:${distro_codename}-updates";
+};
+
 // Servers reboot on their own when an upgrade needs it (kernel, libc,
-// systemd), so security fixes actually take effect. Loaded after
-// 52unattended-upgrades-local, so these values win.
+// systemd), so fixes actually take effect. Loaded after
+// 52unattended-upgrades-local, so these values win. The previous kernel stays
+// installed, so a bad one can be undone from the boot menu.
 //
 // apt-daily-upgrade.timer runs around 06:00 (randomised by up to an hour);
 // when that run leaves /var/run/reboot-required behind, unattended-upgrades
